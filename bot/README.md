@@ -19,7 +19,7 @@ cp ../.env.example ../.env
 docker compose up -d
 ```
 
-Dashboard: `http://192.168.1.10:9000`
+Dashboard: `http://192.168.1.10:9100` (host 9100 because Portainer already uses 9000)
 
 Then in the UI:
 

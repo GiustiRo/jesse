@@ -15,7 +15,8 @@ services:
     volumes:
       - ../..:/src
     ports:
-      - "9000:9000"
+      # Host 9100: Portainer already binds 9000 on this Pi.
+      - "9100:9000"
     command: bash -c "pip install -q socksio && jesse run"
     container_name: jesse
 
