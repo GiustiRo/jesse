@@ -17,7 +17,7 @@ services:
     ports:
       # Host 9100: Portainer already binds 9000 on this Pi.
       - "9100:9000"
-    command: bash -c "pip install -q socksio && jesse run"
+    command: bash -c "pip install -q socksio pysocks && jesse run"
     container_name: jesse
 
   postgres:

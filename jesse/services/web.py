@@ -118,7 +118,7 @@ class GetCandlesRequestJson(BaseModel):
 class GetLogsRequestJson(BaseModel):
     id: str
     type: str
-    start_time: int
+    start_time: Optional[int] = 0
 
 
 class GetStrategyChartsRequestJson(BaseModel):

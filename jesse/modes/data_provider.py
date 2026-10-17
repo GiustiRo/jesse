@@ -26,50 +26,20 @@ def get_candles(exchange: str, symbol: str, timeframe: str):
     from jesse.models.Option import Option
     o = Option.get(Option.type == 'config')
     db_config = json.loads(o.json)
-    warmup_candles_num = db_config['live']['warm_up_candles']
+    warmup_candles_num = max(int(db_config['live']['warm_up_candles']), 500)
 
-    one_min_count = jh.timeframe_to_one_minutes(timeframe)
     finish_date = jh.now(force_fresh=True)
     start_date = jh.get_candle_start_timestamp_based_on_timeframe(timeframe, warmup_candles_num)
+    start_date = max(start_date, finish_date - (90 * 24 * 60 * 60 * 1000))
 
-    # fetch value of generate_candles_from_1m fresh from the database
-    o = Option.get(Option.type == 'config')
-    generate_candles_from_1m: bool = json.loads(o.json)['live']['generate_candles_from_1m']
-
-    # fetch 1m candles from database
-    if generate_candles_from_1m:
-        timeframe_to_fetch = '1m'
-    else:
-        timeframe_to_fetch = timeframe
-
-    candles = np.array(
-        candle_repository.fetch_candles_from_db(exchange, symbol, timeframe_to_fetch, start_date, finish_date)
+    candles = candle_service.load_chart_candles(
+        exchange, symbol, timeframe, start_date, finish_date
     )
 
     # if there are no candles in the database, return []
     if candles.size == 0:
         database.close_connection()
         return []
-
-    if generate_candles_from_1m:
-        # leave out first candles until the timestamp of the first candle is the beginning of the timeframe
-        timeframe_duration = one_min_count * 60_000
-        while candles[0][0] % timeframe_duration != 0:
-            candles = candles[1:]
-
-        # generate bigger candles from 1m candles
-        if timeframe != '1m':
-            generated_candles = []
-            for i in range(len(candles)):
-                if (i + 1) % one_min_count == 0:
-                    bigger_candle = candle_service.generate_candle_from_one_minutes(
-                        timeframe,
-                        candles[(i - (one_min_count - 1)):(i + 1)],
-                        True
-                    )
-                    generated_candles.append(bigger_candle)
-
-            candles = generated_candles
 
     database.close_connection()
 

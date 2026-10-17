@@ -1,11 +1,14 @@
-import requests
-import jesse.helpers as jh
-from jesse.modes.import_candles_mode.drivers.interface import CandleExchange
-from typing import Union
-from .binance_utils import timeframe_to_interval
+import os
 import time
+from typing import Union
+
+import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
+import jesse.helpers as jh
+from jesse.modes.import_candles_mode.drivers.interface import CandleExchange
+from .binance_utils import timeframe_to_interval
 
 
 class BinanceMain(CandleExchange):
@@ -32,6 +35,9 @@ class BinanceMain(CandleExchange):
         )
         self.session.mount('http://', HTTPAdapter(max_retries=retries))
         self.session.mount('https://', HTTPAdapter(max_retries=retries))
+        proxy = (os.getenv('BINANCE_SOCKS5_PROXY_URL') or '').strip()
+        if proxy:
+            self.session.proxies.update({'http': proxy, 'https': proxy})
 
     def _make_request(self, url: str, params: dict = None) -> requests.Response:
         max_retries = 3
@@ -118,13 +124,18 @@ class BinanceMain(CandleExchange):
         } for d in data]
 
     def get_available_symbols(self) -> list:
-        response = self._make_request(self.endpoint + self._prefix_address + 'exchangeInfo')
-
-        self.validate_response(response)
-
-        data = response.json()
-
-        return [jh.dashy_symbol(d['symbol']) for d in data['symbols']]
+        try:
+            response = self._make_request(self.endpoint + self._prefix_address + 'exchangeInfo')
+            self.validate_response(response)
+            data = response.json()
+            return [jh.dashy_symbol(d['symbol']) for d in data['symbols']]
+        except Exception as exc:
+            fallback = (os.getenv('BINANCE_SYMBOL') or 'BTC-USDT').strip()
+            if '451' not in str(exc):
+                raise
+            if '-' not in fallback:
+                fallback = jh.dashy_symbol(fallback)
+            return [fallback]
 
     @property
     def _prefix_address(self):

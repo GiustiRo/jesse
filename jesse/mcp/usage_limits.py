@@ -161,8 +161,7 @@ def get_user_plan() -> str:
 
     Returns:
       - the plan string on success;
-      - ``'guest'`` when there is NO license token at all (a guest — metered, smaller
-        allowance; deliberately NOT fail-open);
+      - ``'lifetime'`` when there is NO license token (self-hosted OSS, unmetered);
       - ``None`` on a real backend error (unreachable / non-200 / bad response) so the
         caller FAILS OPEN.
     """
@@ -172,9 +171,8 @@ def get_user_plan() -> str:
 
     access_token = get_access_token()
     if not access_token:
-        # No license token at all → the user is a GUEST (metered at the smaller guest
-        # allowance). This is deliberately NOT fail-open — only a real backend error is.
-        return 'guest'
+        # This fork is self-hosted without jesse.trade. Do not meter research tools.
+        return 'lifetime'
 
     try:
         response = requests.post(
@@ -486,6 +484,12 @@ def gated(weight: int, meter_factory=get_usage_meter, plan_getter=get_user_plan)
             # allowance, and the decision for this run. FAIL OPEN if it can't be reached, so the
             # limit check never disrupts the feature.
             if USAGE_METER_BACKEND == "remote":
+                from jesse.services.auth import get_access_token
+
+                # This fork is self-hosted without jesse.trade: with no license token the
+                # remote meter would classify the user as a guest with a zero allowance.
+                if not get_access_token():
+                    return func(*args, **kwargs)
                 decision = _remote_usage_decision("mcp")
                 if decision is None:
                     return func(*args, **kwargs)  # backend down -> fail open

@@ -290,10 +290,10 @@ def test_gate_selects_guest_vs_free_limit():
     assert seen["lim"] == ul.FREE_DAILY_CREDITS
 
 
-def test_no_license_token_is_treated_as_guest(monkeypatch):
-    # No token at all → guest (metered), NOT fail-open. Only a real backend error fails open.
+def test_no_license_token_is_treated_as_self_hosted(monkeypatch):
+    # No jesse.trade token → lifetime (unmetered) on this self-hosted fork.
     monkeypatch.setattr("jesse.services.auth.get_access_token", lambda: None)
-    assert ul.get_user_plan() == "guest"
+    assert ul.get_user_plan() == "lifetime"
 
 
 def test_fail_open_when_plan_undetermined():
@@ -346,6 +346,7 @@ def _gated_remote(monkeypatch, decision):
     import jesse.mcp.usage_limits as ul
     monkeypatch.setattr(ul, "USAGE_METER_BACKEND", "remote")
     monkeypatch.setattr(ul, "_remote_usage_decision", lambda feature: decision)
+    monkeypatch.setattr("jesse.services.auth.get_access_token", lambda: "tok")
     calls = []
 
     @ul.gated(1)
@@ -379,6 +380,14 @@ def test_remote_blocked_guest_gets_account_message(monkeypatch):
     assert out["status"] == "limit_reached" and out["is_guest"] is True
     assert "account" in out["message"].lower()
     assert len(calls) == 0
+
+
+def test_remote_without_license_token_is_unmetered(monkeypatch):
+    # Self-hosted fork: no token means the remote meter is never asked.
+    tool, calls = _gated_remote(monkeypatch, ul.ConsumeResult(allowed=False, used=0, limit=0, is_guest=True))
+    monkeypatch.setattr("jesse.services.auth.get_access_token", lambda: None)
+    assert tool() == "ran"
+    assert len(calls) == 1
 
 
 def test_remote_fails_open_when_backend_unreachable(monkeypatch):

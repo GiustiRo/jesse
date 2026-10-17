@@ -18,9 +18,28 @@ from jesse.services.env import ENV_VALUES, is_dev_env
 UPDATE_INFO_CACHE_SECONDS = 15 * 60
 
 
+def _self_hosted_plan_info() -> tuple[dict, dict]:
+    """Unlock the dashboard without a jesse.trade license.
+
+    The Nuxt UI treats missing LICENSE_API_TOKEN as plan=guest with live_trading_tabs=0,
+    which blocks extra Live tabs and greys out exchanges/timeframes. This fork is
+    self-hosted OSS, so we report a lifetime plan with every local exchange and timeframe.
+    """
+    from jesse.info import exchange_info, jesse_supported_timeframes
+
+    return {'plan': 'lifetime'}, {
+        'ip_limit': 99,
+        'live_trading_tabs': 99,
+        'trading_routes': 99,
+        'data_routes': 99,
+        'timeframes': list(jesse_supported_timeframes),
+        'exchanges': {name: True for name in exchange_info},
+    }
+
+
 def _get_plan_info(access_token: str | None) -> tuple[dict, dict]:
     if not access_token:
-        return {'plan': 'guest'}, {}
+        return _self_hosted_plan_info()
 
     try:
         response = requests.post(

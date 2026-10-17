@@ -222,6 +222,22 @@ def stream_one_minute_candles(
             db.close()
 
 
+def count_candles(exchange: str, symbol: str, timeframe: str, start_date: int, finish_date: int) -> int:
+    timeframe_condition = Candle.timeframe == timeframe
+    if timeframe == '1m':
+        timeframe_condition = timeframe_condition | Candle.timeframe.is_null()
+    return (
+        Candle.select()
+        .where(
+            Candle.exchange == exchange,
+            Candle.symbol == symbol,
+            timeframe_condition,
+            Candle.timestamp.between(start_date, finish_date),
+        )
+        .count()
+    )
+
+
 def fetch_candles_from_db(exchange: str, symbol: str, timeframe: str, start_date: int, finish_date: int) -> tuple:
     res = tuple(
         Candle.select(

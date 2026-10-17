@@ -4,12 +4,11 @@ from typing import Optional
 import jesse.helpers as jh
 from jesse.enums import order_statuses
 from jesse.repositories import (
-    candle_repository,
     closed_trade_repository,
     live_chart_repository,
     order_repository,
 )
-from jesse.services import transformers
+from jesse.services import candle_service, transformers
 from jesse.services.redis import get_live_charts_snapshot
 
 
@@ -29,13 +28,15 @@ def _validate_route(session, exchange: str, symbol: str, timeframe: str) -> None
     if exchange != session.exchange:
         raise ValueError('The requested exchange does not belong to this live session.')
 
+    jh.timeframe_to_one_minutes(timeframe)
+
     belongs_to_session = any(
-        route.get('symbol') == symbol and route.get('timeframe') == timeframe
+        route.get('symbol') == symbol
         for route in _session_routes(session)
         if isinstance(route, dict)
     )
     if not belongs_to_session:
-        raise ValueError('The requested route does not belong to this live session.')
+        raise ValueError('The requested symbol does not belong to this live session.')
 
 
 def _candle_window(
@@ -221,7 +222,7 @@ def get_live_session_chart_data(
             session, timeframe, anchor_time, candle_count
         )
 
-    raw_candles = candle_repository.fetch_candles_from_db(
+    raw_candles = candle_service.load_chart_candles(
         exchange,
         symbol,
         timeframe,
@@ -238,6 +239,12 @@ def get_live_session_chart_data(
             'volume': candle[5],
         }
         for candle in raw_candles
+    ]
+
+    trading_timeframes = [
+        route.get('timeframe')
+        for route in _session_routes(session)
+        if isinstance(route, dict) and route.get('symbol') == symbol and route.get('timeframe')
     ]
 
     orders = [
@@ -261,6 +268,22 @@ def get_live_session_chart_data(
         finish,
         finish >= session_end,
     )
+    if strategy_charts is None:
+        for trading_tf in trading_timeframes:
+            if trading_tf == timeframe:
+                continue
+            strategy_charts = _strategy_charts_for_window(
+                str(session.id),
+                exchange,
+                symbol,
+                trading_tf,
+                jh.key(exchange, symbol, trading_tf),
+                start,
+                finish,
+                finish >= session_end,
+            )
+            if strategy_charts is not None:
+                break
 
     return {
         'route': {

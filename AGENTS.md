@@ -1,5 +1,7 @@
 # Jesse Repository Guide for AI Agents
 
+Read [`DOCS.md`](DOCS.md) before starting any task. It indexes the local documents and records the operating decisions for this checkout.
+
 ## Overview
 The jesse repository is the **core open-source framework** of the Jesse trading system. It contains the main Python codebase for backtesting trading strategies, importing historical data from crypto exchanges, running optimizations, and providing the API backend for the dashboard. It glues together the other repositories and makes them work together.
 

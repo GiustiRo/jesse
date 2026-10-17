@@ -1,4 +1,5 @@
 import threading
+import time
 from typing import Optional
 from uuid import UUID
 
@@ -23,6 +24,7 @@ from jesse.repositories import live_session_repository
 from jesse.services import transformers
 from jesse.modes.data_provider import download_live_log
 from jesse.enums import live_session_statuses, live_session_modes
+from jesse_live.autostart import WANTED_ALIVE_KEY, should_resume, start_args_from_state
 
 router = APIRouter(prefix="/live", tags=["Live Trading"])
 
@@ -70,6 +72,7 @@ def _store_and_start(request_json: LiveRequestJson, trading_mode: str, live_mode
         session_mode=trading_mode,
         exchange=request_json.exchange,
         state={
+            WANTED_ALIVE_KEY: True,
             'form': {
                 'debug_mode': request_json.debug_mode,
                 'paper_mode': request_json.paper_mode,
@@ -101,6 +104,73 @@ def _store_and_start(request_json: LiveRequestJson, trading_mode: str, live_mode
         if not _has_active_marker(str(request_json.id)):
             live_session_repository.restore_live_session(request_json.id, previous)
         raise
+
+
+def resume_wanted_sessions() -> int:
+    """Relaunch live workers that were not stopped from the Live tab."""
+    from jesse.services import logger
+    from jesse_live import live_mode
+
+    resumed = 0
+    with _LIFECYCLE_LOCK:
+        for session in live_session_repository.list_sessions_for_autostart():
+            session_id = str(session.id)
+            if not should_resume(session.status, session.state_json):
+                continue
+            if _has_active_marker(session_id):
+                continue
+            args = start_args_from_state(
+                session_id,
+                session.session_mode,
+                session.exchange,
+                session.state_json,
+            )
+            if args is None:
+                logger.info(
+                    f"Live session {session_id} was interrupted but has no stored routes; not resuming",
+                    send_notification=False,
+                )
+                continue
+            try:
+                request_json = LiveRequestJson(**args)
+                trading_mode = (
+                    live_session_modes.LIVETRADE
+                    if request_json.paper_mode is False
+                    else live_session_modes.PAPERTRADE
+                )
+                _store_and_start(request_json, trading_mode, live_mode, session)
+                resumed += 1
+                print(f"Resumed live session {session_id} after dashboard restart", flush=True)
+                logger.info(
+                    f"Resumed live session {session_id} after dashboard restart",
+                    send_notification=True,
+                )
+            except Exception as exc:
+                logger.error(
+                    f"Could not resume live session {session_id}: {exc}",
+                    send_notification=True,
+                )
+    return resumed
+
+
+def start_autostart_thread() -> None:
+    """Wait for the coordinator, then resume wanted live sessions."""
+    worker = threading.Thread(target=_autostart_worker, name="live-autostart", daemon=True)
+    worker.start()
+
+
+def _autostart_worker() -> None:
+    from jesse.services import logger
+
+    time.sleep(3)
+    try:
+        jh.validate_cwd()
+        count = resume_wanted_sessions()
+        if count:
+            print(f"Auto-resumed {count} live session(s) after restart", flush=True)
+            logger.info(f"Auto-resumed {count} live session(s) after restart", send_notification=True)
+    except Exception as exc:
+        logger.error(f"Live auto-resume failed: {exc}", send_notification=False)
 
 
 def _has_active_marker(session_id: str) -> bool:
@@ -136,6 +206,7 @@ def cancel_live(request_json: LiveCancelRequestJson):
     # A stop that arrives while the same session is being started waits for the start to publish
     # its active marker, so removing the marker cannot happen first and be undone by the start.
     with _LIFECYCLE_LOCK:
+        live_session_repository.set_wanted_alive(request_json.id, False)
         process_manager.cancel_process(request_json.id)
 
     return JSONResponse({'message': f'Live process with ID of {request_json.id} terminated.'}, status_code=200)
@@ -148,7 +219,7 @@ def get_logs(json_request: GetLogsRequestJson) -> JSONResponse:
     """
     from jesse_live.services.data_provider import get_logs
 
-    arr = get_logs(json_request.id, json_request.type, json_request.start_time)
+    arr = get_logs(json_request.id, json_request.type, json_request.start_time or 0)
 
     return JSONResponse({
         'id': json_request.id,

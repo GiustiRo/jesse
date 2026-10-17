@@ -1,0 +1,250 @@
+#jesse-arm-tab,
+#jesse-arm-panel,
+#jesse-arm-panel * {
+  box-sizing: border-box;
+}
+
+#jesse-arm-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: auto;
+  padding: 8px 4px;
+  border: 0;
+  border-left: 3px solid #ff2a2a;
+  background: linear-gradient(180deg, #3a0505 0%, #1a0000 100%);
+  color: #ff6b6b;
+  cursor: pointer;
+  font-family: "Cascadia Mono", "IBM Plex Mono", "Consolas", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+#jesse-arm-tab:hover,
+#jesse-arm-tab.is-open {
+  background: #5a0000;
+  color: #fff;
+}
+
+#jesse-arm-tab .jesse-arm-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff2a2a;
+  box-shadow: 0 0 8px #ff2a2a;
+}
+
+#jesse-arm-tab.is-live .jesse-arm-dot {
+  background: #ff2a2a;
+  animation: jesse-arm-pulse 1.4s ease-in-out infinite;
+}
+
+#jesse-arm-tab.is-dry .jesse-arm-dot {
+  background: #f5c542;
+  box-shadow: 0 0 8px #f5c542;
+  animation: none;
+}
+
+#jesse-arm-tab.is-paused .jesse-arm-dot {
+  background: #6b7280;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes jesse-arm-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+#jesse-arm-panel {
+  display: none;
+  position: fixed;
+  inset: 0 0 0 var(--jesse-arm-nav, 220px);
+  z-index: 80;
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(255, 40, 40, 0.18), transparent 55%),
+    #090505;
+  color: #f4e8e4;
+  font-family: "Cascadia Mono", "IBM Plex Mono", "Consolas", ui-monospace, monospace;
+  overflow: auto;
+}
+
+#jesse-arm-panel.is-open {
+  display: block;
+}
+
+.jesse-arm-shell {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 0 28px 64px;
+}
+
+.jesse-arm-kicker {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: #ff5a5a;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.jesse-arm-shell h1 {
+  margin: 0 0 12px;
+  font-size: 42px;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  color: #fff;
+}
+
+.jesse-arm-lede {
+  margin: 0 0 32px;
+  max-width: 46ch;
+  color: #c9b4b0;
+  line-height: 1.5;
+}
+
+.jesse-arm-gate,
+.jesse-arm-board {
+  border: 1px solid #5a1a1a;
+  background: #120808;
+  padding: 24px;
+}
+
+.jesse-arm-gate label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ff8a8a;
+  margin-bottom: 8px;
+}
+
+.jesse-arm-gate input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #7a2222;
+  background: #070303;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+}
+
+.jesse-arm-gate input:focus {
+  border-color: #ff2a2a;
+}
+
+.jesse-arm-error {
+  min-height: 1.4em;
+  margin: 10px 0 0;
+  color: #ff6b6b;
+  font-size: 13px;
+}
+
+.jesse-arm-btn {
+  margin-top: 16px;
+  padding: 12px 18px;
+  border: 0;
+  background: #ff2a2a;
+  color: #140000;
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.jesse-arm-btn:hover {
+  background: #ff4d4d;
+}
+
+.jesse-arm-status {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.jesse-arm-status.live { color: #ff2a2a; }
+.jesse-arm-status.dry { color: #f5c542; }
+.jesse-arm-status.paused { color: #9ca3af; }
+
+.jesse-arm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0;
+  border-top: 1px solid #3a1515;
+}
+
+.jesse-arm-row:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.jesse-arm-copy h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.jesse-arm-copy p {
+  margin: 0;
+  color: #b9a29d;
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 42ch;
+}
+
+.jesse-arm-switch {
+  position: relative;
+  width: 72px;
+  height: 36px;
+  flex: 0 0 72px;
+  border: 1px solid #7a2222;
+  background: #2a0a0a;
+  cursor: pointer;
+}
+
+.jesse-arm-switch span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 28px;
+  height: 28px;
+  background: #6b7280;
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.jesse-arm-switch.is-on {
+  background: #3a0000;
+  border-color: #ff2a2a;
+}
+
+.jesse-arm-switch.is-on span {
+  transform: translateX(36px);
+  background: #ff2a2a;
+}
+
+.jesse-arm-foot {
+  margin-top: 18px;
+  color: #8a6f6b;
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  #jesse-arm-panel {
+    inset: 56px 0 0 0;
+  }
+}

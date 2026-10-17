@@ -1,0 +1,44 @@
+name: jesse-research
+
+services:
+  jesse:
+    image: ${JESSE_IMAGE:-salehmir/jesse:latest}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    tty: true
+    restart: unless-stopped
+    env_file:
+      - ../.env.research
+    environment:
+      PYTHONPATH: /src
+      JESSE_ENV_FILE: /src/bot/.env.research
+    working_dir: /src/bot
+    volumes:
+      # Use the checked-out framework and strategies so local edits are immediately testable.
+      - ../..:/src
+    ports:
+      - "${RESEARCH_PORT:-9200}:9000"
+    # Research/backtests do not need the dashboard's language server. Skipping its download
+    # makes a fresh local stack deterministic even when GitHub is slow or unavailable.
+    command: jesse run --skip-lsp
+
+  postgres:
+    image: timescale/timescaledb:2.19.3-pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: jesse_research
+      POSTGRES_PASSWORD: research_only
+      POSTGRES_DB: jesse_research
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    volumes:
+      - jesse-research-postgres:/var/lib/postgresql/data
+
+volumes:
+  jesse-research-postgres:
+    name: jesse-research-postgres

@@ -28,6 +28,7 @@ from jesse.services.historical_data import (
 )
 from jesse.services.historical_data.errors import ProviderPaginationError
 from jesse.repositories import candle_repository
+from jesse.modes.import_candles_mode.sparse import should_refill_sparse_window
 
 
 # Retained only for the inactive legacy fill helper; the shared importer never synthesizes gaps.
@@ -351,6 +352,14 @@ def _run(
         latest_timestamp,
         interval,
     )
+    stored_in_window = candle_repository.count_candles(
+        exchange, symbol, '1m', effective_start_timestamp, end_timestamp - interval,
+    )
+    if should_refill_sparse_window(stored_in_window, effective_start_timestamp, end_timestamp, interval):
+        # An interrupted import plus a few live 1m rows can make first/last look complete
+        # while years in the middle are empty. Refetch the requested window; existing
+        # rows stay (on_conflict ignore).
+        import_ranges = [(effective_start_timestamp, end_timestamp)]
     if isinstance(provider, CandleExchange) and mode in (
         live_session_modes.LIVETRADE, live_session_modes.PAPERTRADE,
     ):

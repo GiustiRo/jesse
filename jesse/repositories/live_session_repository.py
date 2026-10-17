@@ -5,6 +5,7 @@ from jesse.models.LiveSession import LiveSession
 from jesse.services.db import database
 from jesse.enums import live_session_statuses
 from jesse.enums import live_session_modes
+from jesse_live.autostart import WANTED_ALIVE_KEY, merge_wanted_alive
 
 
 
@@ -110,6 +111,7 @@ def store_live_session(
             'updated_at': jh.now_to_timestamp(True)
         }
         if state:
+            state = merge_wanted_alive(state, existing_session.state_json)
             if isinstance(state, dict) and 'form' in state and isinstance(state['form'], dict):
                 for key in ['debug_mode', 'export_chart', 'export_csv', 'export_json', 'fast_mode', 'benchmark']:
                     if key in state['form']:
@@ -190,6 +192,9 @@ def update_live_session_state(id: str, state: dict) -> None:
         return
     
     _ensure_db_open()
+
+    existing = get_live_session_by_id(id)
+    state = merge_wanted_alive(state, existing.state_json if existing else None)
     
     if isinstance(state, dict) and 'form' in state and isinstance(state['form'], dict):
         for key in ['debug_mode', 'export_chart', 'export_csv', 'export_json', 'fast_mode', 'benchmark']:
@@ -219,6 +224,7 @@ def upsert_live_session_state(id: str, state: dict) -> None:
                 state['form'][key] = jh.normalize_bool(state['form'].get(key))
     
     existing_session = get_live_session_by_id(id)
+    state = merge_wanted_alive(state, existing_session.state_json if existing_session else None)
     
     if existing_session:
         # Update existing session's state
@@ -272,6 +278,34 @@ def update_live_session_notes(
         d['strategy_codes'] = json.dumps(strategy_codes)
     
     LiveSession.update(**d).where(LiveSession.id == id).execute()
+
+
+def set_wanted_alive(id: str, value: bool) -> None:
+    """Record whether this session should come back after a dashboard restart."""
+    if jh.is_unit_testing():
+        return
+
+    _ensure_db_open()
+    session = get_live_session_by_id(id)
+    if session is None:
+        return
+    state = dict(session.state_json or {})
+    state[WANTED_ALIVE_KEY] = bool(value)
+    LiveSession.update(
+        state=json.dumps(state),
+        updated_at=jh.now_to_timestamp(True),
+    ).where(LiveSession.id == id).execute()
+
+
+def list_sessions_for_autostart() -> List[LiveSession]:
+    """Non-draft sessions that might need to be relaunched after a reboot."""
+    if jh.is_unit_testing():
+        return []
+
+    _ensure_db_open()
+    return list(
+        LiveSession.select().where(LiveSession.status != live_session_statuses.DRAFT)
+    )
 
 
 def update_live_session_finished(id: str, finished_at: int = None) -> None:

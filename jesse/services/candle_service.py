@@ -80,6 +80,31 @@ def generate_completed_candles_from_observed_minutes(
     return np.array(generated) if generated else np.zeros((0, 6))
 
 
+def load_chart_candles(
+        exchange: str,
+        symbol: str,
+        timeframe: str,
+        start_date: int,
+        finish_date: int,
+) -> np.ndarray:
+    """Load chart candles from stored 1m rows, falling back to the requested timeframe."""
+    one_m = np.array(
+        candle_repository.fetch_candles_from_db(exchange, symbol, '1m', start_date, finish_date)
+    )
+    if one_m.size == 0:
+        native = candle_repository.fetch_candles_from_db(
+            exchange, symbol, timeframe, start_date, finish_date
+        )
+        return np.array(native) if native else np.zeros((0, 6))
+    if timeframe == '1m':
+        return one_m
+    return generate_completed_candles_from_observed_minutes(
+        timeframe,
+        one_m,
+        int(finish_date) + 60_000,
+    )
+
+
 def candle_dict_to_np_array(candle: dict) -> np.ndarray:
     return np.array([
         candle['timestamp'],
@@ -614,6 +639,11 @@ def add_candle(
 
 
 def _store_or_update_candle_into_db(exchange: str, symbol: str, timeframe: str, candle: np.ndarray) -> None:
+    # Live rows in the candle table become first/last bounds for historical import.
+    # When persistency is off, keep them in memory only so an interrupted import
+    # cannot be bracketed by a handful of recent live minutes.
+    if not jh.get_config('env.data.persistency', True):
+        return
     # if it's not an initial candle, add it to the storage, if already exists, update it
     if f'{exchange}-{symbol}' in store.candles.initiated_pairs:
         candle_repository.store_candle_into_db(exchange, symbol, timeframe, candle, on_conflict='replace')

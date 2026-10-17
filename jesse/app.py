@@ -24,6 +24,9 @@ JESSE_DIR = os.path.dirname(os.path.abspath(__file__))
 async def lifespan(app):
     from jesse.services import research_jobs
     research_jobs.accept_jobs()
+    if jh.has_live_trade_plugin():
+        from jesse.controllers.live_controller import start_autostart_thread
+        start_autostart_thread()
     yield
     from jesse.services.db import database
     database.close_connection()
@@ -116,6 +119,8 @@ if is_test_env():
 if jh.has_live_trade_plugin():
     from jesse.controllers.live_controller import router as live_router
     fastapi_app.include_router(live_router)
+    from jesse_live.arm_controller import router as arm_router
+    fastapi_app.include_router(arm_router)
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # #
