@@ -1,0 +1,7 @@
+# FBS0B_BTC_USDT_2021_changes_part1.json
+
+Analysis e59c586237944330917483c5429ccedd. Original JSON payload SHA256 ce7c37beb8e455d34a4bb805bed989904110a0485ef007b3847049353a375c17. Connector retrieved truncated=false. The JSON payload below preserves original content.
+
+```json
+[{"kind":"retained_changed","symbol":"BTC-USDT","side":"short","open":1632787200000,"differences":{"qty":{"reference":0.067,"fixed":0.066},"fee":{"reference":3.9218905600000005,"fixed":3.86335488},"PNL":{"reference":37.81776944000021,"fixed":37.25332512000021}},"reference_orders":[{"side":"sell","type":"MARKET","qty":-0.067,"filled_qty":-0.067,"price":42122.69,"status":"EXECUTED","created_at":1632787200000.0,"canceled_at":null,"executed_at":1632787200000.0,"reduce_only":false,"submitted_via":null},{"side":"buy","type":"MARKET","qty":0.067,"filled_qty":0.067,"price":41499.71,"status":"EXECUTED","created_at":1632960000000.0,"canceled_at":null,"executed_at":1632960000000.0,"reduce_only":true,"submitted_via":"take-profit"}],"fixed_orders":[{"side":"sell","type":"MARKET","qty":-0.066,"filled_qty":-0.066,"price":42122.69,"status":"EXECUTED","created_at":1632787200000.0,"canceled_at":null,"executed_at":1632787200000.0,"reduce_only":false,"submitted_via":null},{"side":"buy","type":"MARKET","qty":0.066,"filled_qty":0.066,"price":41499.71,"status":"EXECUTED","created_at":1632960000000.0,"canceled_at":null,"executed_at":1632960000000.0,"reduce_only":true,"submitted_via":"take-profit"}]}]
+```

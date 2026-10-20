@@ -1,0 +1,6 @@
+# Protocolo: capacidad compartida sin reserva nocional por activo
+Motivación previa: atribución conserva pesosociosos y BTCsolo usa pocaexposición. La comparación anteriorrespondeactividad adicionalconcontexto fijo,no asignación eficiente. Ahora aislar una sola modificación: retirar techo nocionalindividualcapital*4.4*inverseATRshare, conservar techo bruto global4.4x,risk3%/trade,8%agregado,reservasórdenes,buffer90%margen,5xisolated. No subiryoptimizar riesgo ni señales.
+Referencia permaneceintacta;usarclones. Fee.00045,tresrutas/contexto,10000,mismoperíodo2020Oct15–2025Dec31exclusivo,4h,modonormal,warmup240.2026reservado.
+Casos:3activoslong+BTCshort;BTCambosconotrasrutasinactivas;3activosconordeninverso. No escoger orden ganador.
+Criterios antesdecorrer: comparar todos frenteasuscontroles conreserva. Regularidadactivosytodosmeses,trimestres,exposición yDD. RechazarpromociónsiDD>25%,si mejora solo por riesgo/exposición sinregularidad suficiente,o sisensibilidad material al orden. Una mejora parcialnoapruebafase2. Si aparece dependenciaalorden,noseleccionarpermutaciónmásrentable; revisarasignación y equidadantesdeseguir.
+Noes prueba de ATRconmismoreloj, sino eliminación deese mecanismo de techo paraaislarsuimpacto. No elimina fuentesproxy/ejecución/funding. NingunocumpleOOSporserdesarrolloobservado. Noampliarbarrido deweights paraforzar65–70/80.

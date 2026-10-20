@@ -163,6 +163,8 @@ def _execute_backtest(
             run_silently=jh.should_execute_silently(),
             generate_csv=csv,
             generate_json=json,
+            # Persist numerical equity independently of optional candle-chart exports.
+            generate_equity_curve=True,
             benchmark=benchmark,
             generate_hyperparameters=True,
             fast_mode=fast_mode,
@@ -266,6 +268,7 @@ def _execute_backtest(
         update_backtest_session_results(
             id=client_id,
             metrics=result.get('metrics'),
+            equity_curve=result.get('equity_curve'),
             trades=result.get('trades'),
             hyperparameters=result.get('hyperparameters'),
             chart_data=chart_data,

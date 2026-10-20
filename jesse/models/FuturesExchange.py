@@ -134,7 +134,10 @@ class FuturesExchange(Exchange):
         base_asset = jh.base_asset(order.symbol)
 
         if not order.reduce_only:
-            order_array = np.array([order.qty, order.price])
+            # Gap fills replace order.price for real fill/fee accounting. The
+            # pending margin was reserved at submission, so release that row.
+            submitted_price = (order.vars or {}).get('submitted_price', order.price)
+            order_array = np.array([order.qty, submitted_price])
             if order.side == sides.BUY:
                 item_index = np.where(np.all(self.buy_orders[base_asset].array == order_array, axis=1))[0]
                 if len(item_index) > 0:

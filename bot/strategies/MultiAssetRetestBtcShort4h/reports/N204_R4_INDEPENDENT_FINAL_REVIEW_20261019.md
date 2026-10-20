@@ -1,0 +1,17 @@
+# N204 R4 independent final review — 2026-10-19
+
+PASS: the final24-row matrix, empty eligible set and no selected candidate agree with the frozen protocol and MCP session results. No material final eligibility or ranking error found.
+
+Read N204_R4_RESULTS_MATRIX_20261019.md in full and independently fetched summary for all24 linked final sessions:24/24 finished without errors; exact net and engine DD agree with the matrix JSON within numerical precision. Recomputed each row's nominal, +5 active-month/quarter, +10 and DD gates, plus minimum M65/Q80 margin:24/24 match. All12 recipes have nominal net below N204 in BOTH B/C, which alone fails the first mandatory gate. The minimum ranking score applies only among eligible recipes; with none eligible there is no winner and no reason to launch the six conditional confirmation/sensitivity runs. Isolated passing MQ or +10 cells do not rescue a failed joint recipe.
+
+Reference net: B13056.614915077664, C13239.442379846792 USDT. Closest nominal T403 remains below by60.526641/64.320947. Technical repaired T404 is11712.874448452887/11877.88694749642, below by1343.740467/1361.555432. No rounding or near-tie exception is permitted.
+
+T404 technical defect was material despite reconciling PNL: a7e-18 residual position remained until timeout and blocked an original STOP in raw C. Read the quarantine record, repaired real-execution QA and repaired fills/MTM audit. The repaired C residue executes MARKET at1646405340000, the TP2 timestamp and trade.closed_at; the original STOP now executes1646410260000. Matrix correctly links the repaired B/C sessions, preserves raw outcomes separately and does not treat raw C as intended strategy evidence. Accounting PASS alone did not establish operational correctness; checking position state was necessary. Improvement versus raw includes downstream state, not merely the recovered trade's PNL.
+
+Execution counting:30 actual runs =24 original variant runs +2 technical T404 dust reruns +2 original diagnostic runs +2 diagnostic log reruns. Equivalently26 economic executions including the quarantined raw pair +4 diagnostic executions. Final decision matrix contains24 valid variant results =22 original +2 repaired; do not add the repaired pair again to those24. No additional economic hypothesis was created by the repair; no six conditional verification runs were warranted or launched.
+
+Active-month denominators differ from calendar61/63 and are displayed separately; frozen quarterly bins19/21 and thresholds65%/80% remain unchanged. Cost overlays add per-fill costs on fixed quantities/prices/timestamps and rebuild MTM; they are neither pure fill-price slippage nor enginefee reruns. Original fee-dependent PAXG policy remains official.
+
+Conclusion: retain immutable N204 as the existing research reference; promote none of the12 R4 recipes. This does not upgrade N204 into an approved strategy or establish that it meets monthly regularity. The reused2020–2025 sample and dependent B/C portfolios provide conditional development evidence, not OOS performance, causal alpha or proof against overfitting. 2026 remains closed even to inspection. Source preservation does not imply all economic long opportunities survive: X402 and X404 retain30/31 original BTC long entries, per published path checks.
+
+This review used read-only MCP sources/results and report writing only; no new analysis jobs, backtests, variants, source changes or threshold changes.

@@ -1,0 +1,23 @@
+# PAXG segunda ronda — protocolo calendario primario previo
+Fecha local18octubre2026. Ronda0 shocks terminada/rechazada sin ajustes; ver ResearchPaxgShockContinue4h/reports/PAXG_INDEPENDENT_RESULTS_20261018.md. Root autorizó DOSfull nuevos sobre mecanismo distinto, no elcuarto reservadoarobustezshocks. Alterminarserán5PAXGfullnuevos(2shocks+control+2calendario). Historialglobalampliamenteadaptativo2020–25, noOOS.
+
+## Fundamento e identificación
+Primarias verificadas porroot: [PaxosPAXGoldPriceDetermination](https://support.paxos.com/articles/7818174259-pax-gold-price-determination) y [PAXGguide](https://docs.paxos.com/guides/stablecoin/paxg). Mint/redeemSUN18:00ET→FRI17:00ET,breakdiario17–18ET; secundariotoken24/7. Suposición09–17London fue corregidaANTEScódigo: NOusada.
+Hipótesisexploratoria: cambioPAXGmientrasprimariocerradopuederevertirhaciaanclapropiaanterioralcierre alacercarsereapertura. Rival:descubrimientoinformativoperdura, oMRgenéricaexplicarespuesta. NOorojusto observado,primaformal,mint/redemptionreal niCOMEXflow.
+Mecanismopuedeserespecíficotokenspot: superviviente NOaprobadaBinanceperp hastacorroboracióndepreciopropio. Proxyaceptadoparadesarrollarprecio,noidentidadejecutabilidaddemostrada. Sinfunding,datosnuevosodescargas.
+
+## Recetas congeladas
+ResearchPaxgWeekendReturn1h: anclaFriday16:00America/New_York,eventoSunday16NY,máximo24hdesde fill(Monday16). Ancla exacta2fechaslocalesprevias;Friday16es1hantescierre17 ySunday16es2hantesreapertura18, noafirmarfixingcierre/reaperturaexactos. Horafijaexante, noseleccionadaporresultados.
+ResearchPaxgWeekdayReturn1h: anclaMonday16NY,eventoWednesday16NY,cierreThursday16. Únicadiferencia weekdays0/2vs4/6. Mismahora,lag2fechas,horizonte24h,normalizaciónysizing. ControlMRgenérica;díaspuedendiferirpormuchasrazones,nodiseñoaleatorizadoniidentificacióncausal.
+AnclayeventorequierenúltimaM1propiaexactaT−60s,preciofinito/positivo yparidadclose1h/M1 math.isclose(rel1e−10,abs1e−8),sinimputar. ATR14Jessedefault4h,sólo timestamps+4h<=Tcompletos,30velasmínimo;guardadoalancla, nocontaminadoporvolatilidaddelevento.
+Eventoabs(precioevento−ancla)>=1ATR4hancla define desplazamientomaterialexante. FadeambossentidosMARKET:subida→short,bajada→long. TargetLIMITprecioancla ystop2ATRancladesdefillefectivo,24hmaxdesdefillreal. Targetesnivelnaturaldehipótesis;stopseguridadcomúnfijo. Sintrailing/BE/macro/volumen/piramidado. Posiciónabiertaignoranuevoseventossincola. Anclasactualizanmientrasopen.
+IANA NY porZoneInfo,cambiosDSTdan47/49hUTCdeFriday16aSunday16;lag2fechaslocalesesintencional. Holdposterior24hSunday16→Monday16nocrucetransición. ATRsinfiltradohoras:tokencontinuo,calendarioprediceeventoprecioactual,nooroobservado.
+Stops/targetsgestionados24/7;timeexitdeudaseconservahastaquoteM1frescaconsistente. Sincroníafreshnesspuedenoidentificardatosrellenadosporproveedor.
+
+## Ejecución y presupuesto
+PAXG-USDT1hBinancePerpetualFutures;auxiliaresM1+4h;2020-10-15→2025-12-31EXCLUSIVO;10000USDT,5xaislado,fee.00045porladotodasórdenesincluidoLIMIT;1%trade/8%agregado,max4.4xnocional y90%margin,step.0001. Reserva10bpssizingNOslippagesimulado. Warmup240actual,30barras4h;startupcashsiinsuficiente.
+Dosfullsolamente,max2backtestspropios/4global,1analysispropio. Sinvariarhoras/umbral/ancla/stops/targets/direccionesoaños despuésresultados. AisladasMARKETsinpendingledger;integracióncarterarequiererevisiónreservasroot. Noframework/scripts/instalaciones/live/Pi/2026.
+
+## Gates y análisis
+Promesa requierenneto>0,PF>=1.2,muestra>=30,DD<=25%,ventajanetapornocionalfrenteweekdaycontrol yresistencia5bpsextraRTsobremismosfills. Gatesdescriptivosdesarrollo,noconfirmatorios. Sibothpositivoscomparables,sóloMRgenérica,noevidenciacierre. Sinretirarshorts/elegirañosfavorables.
+Regularidad65–70%meses/80%qesmetacartera,noexigiracada señal. Completarhastaterminal;run_analysiscontodoslossnapshots:fees/fills/wallet,horariosNY/48±1lag/24hmax,targetstop,direcciones,añoscohortes,concentraciónycostes. RootMTMV4calendarioexacto;nocurvamotor00:01comofindía. NoMCpararescatarfallosfundamentales. Persistirtodosresultadosydescartes.

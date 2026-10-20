@@ -1,0 +1,5 @@
+# Hipótesis previa a resultados: estrategias por activo
+
+La primera familia universal STOP26 no superó el control BTC. Esta variante prueba una composición diferenciada, sin optimizar cada parámetro por activo: BTC conserva confirmación de cierre de ruptura26 (con suelo de stop0.8% original); PAXG ruptura lenta55 STOP y stop2.5ATR; SPY LIMIT a mínimo de vela o .25ATR bajo cierre, RSI3<=20 en régimen EMA120 creciente, con precio sobreEMA120-ATR. SPY sale totalmente enEMA20 (target conocido antes deorden), solo si recorrido>=1ATR y3comisionesroundtrip; stop1.5ATR y caducidad5días. No hay parciales. Hereda blend50/50igualgross e inversoATR, techo3% por operación/8% agregado, gross4.4x.
+
+Es un cambio de familia, no una ablación aislada. Cualquier resultado necesita estabilidad y evaluación por componente antes de aceptación. Se conserva la misma ventana2020-10-15 a2025-12-31; no usa2026. Aún sin ejecutar al guardar esta especificación. BTC de esta variante no replica todos los detalles del control original (trailing por mejorcierre y diferente asignación compartida); no afirmar equivalencia exacta.

@@ -1,0 +1,13 @@
+# Nuevos ángulos — alcance actualizado18/10/2026
+
+## Decisión humana vigente
+El usuario DESCARTÓ VIX/COT y su descargador por dependencia de alimentación externa y retrasos. No hay autorización pendiente para esas fuentes ni para funding; no crearlos/ejecutarlos. Los protocolos externos quedan archivados sin prueba económica. El trabajo autorizado continúa SOLO con BTC y velas/precio/volumen disponibles, conservando PAXG/SPY de la combinada de referencia. El usuario pide nuevos indicadores/estructuras y autoriza explícitamente subagentes y una línea experimental. Esto no autoriza nuevos research_scripts, instalaciones, fondos, Pi/live/paper ni modificaciones de framework.
+
+Referencia inmutable: MultiAssetRetestBtcShort4h, http://localhost:9200/#/backtest/2dbdb4dc-6b32-42d1-b637-15eefa6a4ecb.2020–2025 desarrollo muy observado;2026 reservado. Metas65–70%mesesactivos positivos,80%trimestres,DD>=−25%,rentabilidadútil resistente a costes,mostrar todoslosmeses yperíodoscompletos.18backtests adicionales previos sin aceptación. Objetivo económico NO logrado.
+
+## Tanda acotada autorizada
+1. AngleCombinedBtcVolume4h: única puerta de participación para entradasBTC ambasdirecciones, volumen4h>=mediana28observacionesanteriores delmismobloqueUTC. Fechasdiarias exactas, finitospositivos,actualexcluida. MantenerTODASlasotrasreglasdelacombinada. Protocolo yfuente pendientesdereviewantesrun. No confundir volumenagregado conorderflowagresor.
+2. AngleCombinedBtcStructure4h: reemplazar condiciónRSI3<=20delshortBTCpor secuenciaH1-L1-H2máximomenor confirmado2barrascadaladoycrucefrescobajoL1; mantenermacro/ATR/stop/TP/72h ytodoslongsyotrosactivos. Definiciónequívoca de pivots debesercerradaantesrun. No esnuevafamiliaindependienteporrenombrarcontinuación.
+3. AngleBtcProbability4h: laboratorioauxiliarstandaloneBTC4h,cuatroestadospor2signosretornos,aprendizajeseccuencial1080etiquetasmadurasM1,shrinkage20casos,n>=80,heurísticamean−1SE>0. Stop3ATR conbufferliquidación exante,exitnextbar,1%riesgo,feesseñalfijosmás10bpshaircut. Startupcashíntegro,singrilla/Kelly/HMM/redes,datoexterno oRST. Fuenteenreview;unrunúnicopreviamentejustificado. No escombinadanisustitutodelareferencia.
+
+Máximo2backtests simultáneos. Hipótesis/protocolos yfuentesANTESdecorridas;ningúncambio deumbralestrasverfallo. Siuna prometiera, controlescomparables,costes,concentración,añosprespecificados yrobustezantespromover. Entrenamientocausal no haceindependienteelhistórico dedesarrollo.

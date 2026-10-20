@@ -1,0 +1,3 @@
+# R9 — guardia física de objetivo positivo
+
+Antes de ejecutar los vecinos T18/T22 (ambos aún drafts), revisión detectó que el guard heredado entry>2*d no garantiza TPpositivo para2.2R. Se exige entry>max(2*d,target_distance) en ambos controles; T18 conserva exactamente el guardoriginal y T22 rechaza adicionalmente un precioTPnulo/negativo. No cambia señal, sizing, riesgo, reloj ni constantes de investigación. No se inspeccionaron resultados T. QA añade rechazo sintético y comparación AST del sizing salvo esta guardia. Se refrescan fuentes/snapshots en los mismos drafts antes de ejecutar. Es corrección de validez física, no búsqueda de rendimiento. El protocolo de vecinos2R±10% permanece.

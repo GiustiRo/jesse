@@ -13,6 +13,7 @@ Leer este archivo antes de trabajar en el repo. El detalle vive en los documento
 | [`bot/docs/local-research.md`](bot/docs/local-research.md) | Réplica Docker local para backtests y Monte Carlo. |
 | [`bot/docs/raspberry-pi.md`](bot/docs/raspberry-pi.md) | SSH, rutas y operación de la Pi. Local y gitignored; no copiar secretos al chat ni a git. |
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
+| [`bot/docs/multi-asset-pivot-handoff.md`](bot/docs/multi-asset-pivot-handoff.md) | Instructivo de handoff Fase 2: pivote multi-activo (`BTC` + `PAXG` + `SPY`), ejecución intra-vela y auditor mensual. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
 
 ## Dónde trabajar
@@ -31,6 +32,6 @@ Leer este archivo antes de trabajar en el repo. El detalle vive en los documento
 - Timeframes: A explorar/definir.
 - Candidata: A explorar/definir.
 - Descartadas: ``TrendBreakout5m``, `SqueezeRelease5m`, `RangeFade5m`, `TrendPullback5m`.
-- Calibrar solo con 2020–2025. 2026 está reservado. Criterios OOS fijados: PF ≥ 1.2, drawdown no peor que −25% y unos 20 trades.
+- Calibrar solo con 2020–2025. El 2026-10-19 el usuario autorizó abrir 2026 para evaluar K1001: capital inicial 10.000 USDT, riesgo objetivo 2% por operación / 6% agregado y isolated 3x, carteras B/C con fee nominal y estresado. Ventana 2026-01-01 inclusiva → 2026-10-19 exclusiva. Protocolo: [`K1001_OOS_2026_10K_PROTOCOL_20261019.md`](bot/strategies/MultiAssetRetestBtcShort4h/reports/K1001_OOS_2026_10K_PROTOCOL_20261019.md). Criterios OOS: neto positivo, PF ≥ 1.2, drawdown no peor que −25% y al menos 20 trades; neto positivo bajo estrés. Esta autorización no cubre live/paper. Si 2026 se usa después para ajustar reglas, pasa a desarrollo de esa nueva versión.
 - No ejecutar `jesse install-live` ni definir `LICENSE_API_TOKEN`. Estamos en un repo opensource 100% customizable!
 - No commitear `.env`, `bot/docs/raspberry-pi.md` ni claves, y no imprimirlas.
