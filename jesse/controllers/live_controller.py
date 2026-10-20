@@ -1,9 +1,11 @@
 import threading
 import time
+from copy import deepcopy
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, HTTPException
+from pydantic import ValidationError
 from fastapi.responses import JSONResponse
 
 from jesse.services.auth import require_auth, require_auth_token
@@ -52,6 +54,20 @@ def live(request_json: LiveRequestJson) -> JSONResponse:
                 },
                 status_code=409,
             )
+        # Bundled dashboard forms may omit fields introduced after their build.
+        # Preserve explicitly saved feed opt-ins unless the caller sends a mode.
+        previous_state = getattr(existing_session, 'state_json', {}) if existing_session else {}
+        previous_config = previous_state.get('form', {}).get('config', {}) if isinstance(previous_state, dict) else {}
+        inherited = False
+        for name in ('funding', 'open_interest'):
+            if name not in request_json.config and name in previous_config:
+                request_json.config[name] = deepcopy(previous_config[name])
+                inherited = True
+        if inherited:
+            try:
+                request_json = LiveRequestJson.model_validate(request_json.model_dump())
+            except ValidationError as exc:
+                raise HTTPException(status_code=422, detail='Saved funding/OI options are incompatible with this live request') from exc
         _store_and_start(request_json, trading_mode, live_mode, existing_session)
 
     mode = 'live' if request_json.paper_mode is False else 'paper'

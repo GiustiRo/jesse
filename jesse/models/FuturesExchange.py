@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import jesse_rust as jr
 
 import jesse.helpers as jh
@@ -102,6 +103,25 @@ class FuturesExchange(Exchange):
         logger.info(
             f'Added realized PNL of {round(realized_pnl, 2)}. Balance for {self.settlement_currency} on {self.name} changed from {round(self.assets[self.settlement_currency], 2)} to {round(new_balance, 2)}')
         self.assets[self.settlement_currency] = new_balance
+
+    def apply_funding(self, cashflow: float) -> None:
+        """Backtest financing changes the wallet once, independently of fees.
+
+        Live wallet balances already contain the venue's financing; applying
+        simulated funding there would debit the same payment twice.
+        """
+        if jh.is_live():
+            raise ValueError('Simulated funding accounting is only supported in backtests')
+        if not math.isfinite(cashflow):
+            raise ValueError('Funding cashflow must be finite')
+        if not math.isfinite(self.wallet_balance + cashflow):
+            raise ValueError('Funding would produce a nonfinite wallet balance')
+        if cashflow < 0 and self.available_margin + cashflow < 0:
+            # Jesse's isolated liquidation approximation does not simulate a
+            # funding debit consuming isolated collateral after free cash is
+            # exhausted. Fail instead of inventing a survivable venue position.
+            raise InsufficientMargin('Funding exhausts available margin; venue collateral liquidation is not modeled')
+        self.assets[self.settlement_currency] += cashflow
 
     def on_order_submission(self, order: Order) -> None:
         if jh.is_livetrading():

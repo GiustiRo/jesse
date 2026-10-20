@@ -2,6 +2,9 @@ name: jesse-research
 
 services:
   jesse:
+    # Reap orphaned analysis/research children after cancellation or timeout.
+    # Jesse is not an init process; zombies otherwise remain under container PID 1.
+    init: true
     image: ${JESSE_IMAGE:-salehmir/jesse:latest}
     depends_on:
       postgres:

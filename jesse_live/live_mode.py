@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import math
 import time
 import traceback
 
@@ -22,6 +23,8 @@ from jesse_live.candles import closed_klines, inject_native_candles, last_timest
 from jesse_live.chart import CHART_TIMEFRAMES, chart_routes, current_candles_map, trading_routes, update_forming
 from jesse_live.discord import DiscordNotifier
 from jesse_live.exchange import BinancePerpetualFuturesDriver
+from jesse_live.funding import LiveFunding, validate_live_features
+from jesse_live.reconciliation import cancel_pending_entries, require_flat_start, synchronize_fills
 from jesse_live.settings import allocation_pct, allow_trading, discord_enabled, discord_webhook_url, is_armed
 
 
@@ -36,6 +39,7 @@ def run(
     data_routes,
     trading_mode,
 ):
+    funding_enabled, interest_enabled = validate_live_features(conf, trading_mode, exchange, routes)
     if database.is_closed():
         database.open_connection()
 
@@ -133,13 +137,22 @@ def run(
         client.ping()
         price = client.ticker_price(symbol)
         wallet = client.account_balance_usdt()
-        allocated = _apply_wallet_allocation(exchange, wallet)
+        allocated = _apply_wallet_allocation(exchange, wallet, strict=funding_enabled or interest_enabled)
         logger.info(
             f"Binance connected price={price} usdt_wallet={wallet} allocated={allocated}",
             send_notification=True,
         )
 
         started_at = jh.now_to_timestamp()
+        live_inputs = None
+        if funding_enabled or interest_enabled:
+            require_flat_start(client, symbol)
+            store.app.session_info['live_inputs_enabled'] = True
+            store.app.session_info['live_position'] = {'status': 'ready', 'position_qty': 0.0,
+                                                        'observed_at': started_at, 'error': None}
+            live_inputs = LiveFunding(str(client_id), started_at, funding_enabled, interest_enabled,
+                                      account_key=client.api_key)
+            _refresh_live_inputs(live_inputs, client, exchange, symbol, started_at)
         forming: dict = {}
         _warmup_candles(client, exchange, symbol)
         _publish_dashboard(exchange, symbol, allocated, started_at, price, forming)
@@ -165,8 +178,15 @@ def run(
                 last_armed, last_allow = armed, trading
             try:
                 last_price = client.ticker_price(symbol)
-                allocated = _apply_wallet_allocation(exchange, client.account_balance_usdt())
+                allocated = _apply_wallet_allocation(
+                    exchange, client.account_balance_usdt(), strict=live_inputs is not None,
+                )
                 now_ms = jh.now_to_timestamp()
+                if live_inputs is not None:
+                    _refresh_live_inputs(live_inputs, client, exchange, symbol, now_ms)
+                    # Always reconcile pending fills before strategy callbacks,
+                    # even when ARMAS is off or an input blocks a new entry.
+                    _sync_fills(client, exchange, symbol)
                 minute = now_ms // 60_000
                 if minute != last_minute:
                     new_trading_candle = _refresh_candles(client, exchange, symbol, timeframe)
@@ -285,9 +305,37 @@ def _publish_dashboard(
             "leverage": 1,
             "exchange": exchange,
             "routes": _dashboard_routes(),
+            "funding": store.app.session_info.get('funding', {'mode': 'disabled', 'status': 'disabled'}),
+            "open_interest": store.app.session_info.get('open_interest', {'mode': 'disabled', 'status': 'disabled'}),
         })
     except Exception as exc:
         logger.error(f"dashboard publish failed: {exc}", send_notification=False)
+
+
+def _refresh_live_inputs(manager: LiveFunding, client: BinanceFuturesClient,
+                         exchange: str, symbol: str, now_ms: int) -> None:
+    position = store.positions.get_position(exchange, symbol)
+    if position is None:
+        raise ValueError('Live funding/open-interest requires an initialized position')
+    previous = store.app.session_info.get('funding', {}).get('status')
+    manager.refresh(client, position, now_ms)
+    position_state = store.app.session_info.get('live_position')
+    if position_state is not None:
+        try:
+            manager.record_position_status(position_state)
+        except OSError:
+            store.app.session_info['live_position'] = {'status': 'error', 'error': 'Journal write failed'}
+    if not manager.ready or manager.payload['entry_cancellations']['pending_count']:
+        result = cancel_pending_entries(client, exchange, symbol)
+        try:
+            manager.record_entry_cancellations(result)
+        except OSError:
+            # Preserve the block in memory even if the audit disk is unavailable.
+            manager.payload['entry_cancellations']['pending_count'] = max(1, result['pending_count'])
+    store.app.session_info['funding'] = manager.snapshot()
+    store.app.session_info['open_interest'] = manager.interest_snapshot()
+    if previous != manager.snapshot()['status']:
+        logger.info(f"Funding status={manager.snapshot()['status']} cashflow={manager.snapshot()['cashflow_decimal']} USDT (account scope; wallet already includes payments)")
 
 
 def _position_payloads(exchange: str, symbol: str, price: float) -> list[dict]:
@@ -400,12 +448,33 @@ def _copy_precisions(exchange: str) -> None:
     accounting.vars["precisions"] = driver.vars.get("precisions", {})
 
 
-def _apply_wallet_allocation(exchange: str, wallet: float | None) -> float:
+def _apply_wallet_allocation(exchange: str, wallet: float | None, *, strict: bool = False) -> float:
+    """Live inputs require a real positive wallet, never the legacy demo fallback."""
+    if strict:
+        try:
+            actual = float(wallet) if wallet is not None and not isinstance(wallet, bool) else math.nan
+            percent = float(allocation_pct())
+        except (TypeError, ValueError):
+            actual, percent = math.nan, math.nan
+        if (not math.isfinite(actual) or actual <= 0 or not math.isfinite(percent)
+                or not 0 < percent <= 100 or not math.isfinite(actual * percent / 100)
+                or actual * percent / 100 <= 0):
+            # Block the existing entry guard too, without changing the last real
+            # wallet value. The live loop retries the account read before running
+            # another strategy callback; reduce-only exits remain permitted.
+            store.app.session_info['live_position'] = {
+                'status': 'error', 'error': 'A finite positive Binance wallet and allocation are required',
+            }
+            raise ValueError('Funding/OI live requires a finite positive Binance wallet balance and allocation')
     accounting = store.exchanges.get_exchange(exchange)
-    total = float(wallet or 0)
-    allocated = total * (allocation_pct() / 100.0)
-    if allocated <= 0:
-        allocated = 1000.0
+    if strict:
+        allocated = actual * (percent / 100.0)
+    else:
+        total = float(wallet or 0)
+        allocated = total * (allocation_pct() / 100.0)
+        if allocated <= 0:
+            # Preserve the pre-feature demo fallback only for disabled sessions.
+            allocated = 1000.0
     accounting._wallet_balance = allocated
     accounting._available_margin = allocated
     accounting._started_balance = allocated
@@ -449,6 +518,14 @@ def _refresh_candles(client: BinanceFuturesClient, exchange: str, symbol: str, t
 
 
 def _sync_fills(client: BinanceFuturesClient, exchange: str, symbol: str) -> None:
+    if store.app.session_info.get('live_inputs_enabled'):
+        try:
+            store.app.session_info['live_position'] = synchronize_fills(client, exchange, symbol)
+        except Exception as exc:
+            detail = str(exc) if isinstance(exc, ValueError) else type(exc).__name__
+            store.app.session_info['live_position'] = {'status': 'error', 'error': detail}
+            logger.error(f'Position reconciliation failed: {type(exc).__name__}', send_notification=False)
+        return
     if not allow_trading():
         return
     for order in store.orders.get_active_orders(exchange, symbol):

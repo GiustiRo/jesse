@@ -157,6 +157,14 @@ def _execute_backtest(
     # run backtest simulation
     result = None
     try:
+        store.funding.configure(
+            user_config.get('funding'), jh.date_to_timestamp(start_date),
+            jh.date_to_timestamp(finish_date), router.routes,
+        )
+        store.open_interest.configure(
+            user_config.get('open_interest'), jh.date_to_timestamp(start_date),
+            jh.date_to_timestamp(finish_date), router.routes,
+        )
         publish_status('Initializing strategies and preparing the simulation…')
         result = simulator(
             candles,
@@ -543,6 +551,18 @@ def _handle_warmup_candles(warmup_candles: dict, start_date: str) -> None:
 
 def simulator(*args, fast_mode: bool = False, **kwargs) -> dict:
     candles = args[0] if args else kwargs['candles']
+    # Skip mode must not jump over cash settlements or causal rate updates.
+    if store.funding.enabled or store.open_interest.enabled:
+        fast_mode = False
+    if store.funding.enabled:
+        for stream in candles.values():
+            if stream['exchange'] == 'Binance Perpetual Futures' and stream['symbol'] == 'BTC-USDT':
+                rows = stream['candles']
+                if (not len(rows) or rows[0, 0] > store.funding.start
+                        or rows[-1, 0] + 60_000 < store.funding.finish):
+                    raise ValueError('BTC execution candles do not span the full funding backtest window')
+                if len(rows) > 1 and not np.all(np.diff(rows[:, 0]) == 60_000):
+                    raise ValueError('Funding requires uninterrupted BTC one-minute execution candles')
     uses_timestamp_replay = _uses_observed_timestamp_replay(candles)
     store.candles.uses_timestamp_buckets = uses_timestamp_replay
     if uses_timestamp_replay:
@@ -1009,6 +1029,10 @@ def _timestamp_simulator(
                 last_update_time=last_update_time,
             )
 
+        if store.funding.enabled:
+            store.funding.settle(int(store.app.time), store)
+        if store.open_interest.enabled:
+            store.open_interest.advance(int(store.app.time))
         for route in routes_info:
             if (route.exchange, route.symbol, route.timeframe) in updated_routes:
                 route.strategy._execute()
@@ -1158,6 +1182,8 @@ def _step_simulator(
 
     for i in range(length):
         # update time
+        if store.funding.enabled:
+            store.funding.settle(int(first_candles_set[i, 0]), store)
         store_app.time = first_candles_set[i, 0] + 60_000
         i_next = i + 1
 
@@ -1251,6 +1277,10 @@ def _step_simulator(
                                                     last_update_time=last_update_time)
 
         # now that all new generated candles are ready, execute
+        if store.funding.enabled:
+            store.funding.settle(int(store_app.time), store)
+        if store.open_interest.enabled:
+            store.open_interest.advance(int(store_app.time))
         for r, count, strategy, exchange, symbol in routes_info:
             if store.candles.uses_timestamp_buckets:
                 if r.timeframe in updated_timeframes:
@@ -1786,6 +1816,16 @@ def _generate_outputs(
     if generate_hyperparameters:
         result["hyperparameters"] = stats.hyperparameters(router.routes)
     result["metrics"] = report.portfolio_metrics()
+    if store.funding.enabled:
+        result['funding'] = store.funding.snapshot()
+        # Session-results MCP persists metrics, including this distinct ledger.
+        if result['metrics'] is None:
+            result['metrics'] = {}
+        result['metrics']['funding'] = result['funding']
+    if store.open_interest.enabled:
+        if result['metrics'] is None:
+            result['metrics'] = {}
+        result['metrics']['open_interest'] = store.open_interest.snapshot()
     result["trades"] = report.trades()
     # generate logs in json and csv format
     logs_path = store_logs(generate_json, generate_csv)

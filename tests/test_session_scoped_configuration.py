@@ -9,6 +9,7 @@ from jesse.controllers import backtest_controller, live_controller, monte_carlo_
 from jesse.enums import live_session_statuses
 from jesse.info import exchange_info
 from jesse.mcp.tools.services import backtest as mcp_backtest_service
+from jesse.services import funding, open_interest
 from jesse.services.web import (
     BacktestRequestJson,
     LiveRequestJson,
@@ -139,8 +140,36 @@ def test_significance_test_request_requires_session_state():
         SignificanceTestRequestJson(**payload)
 
 
-def test_mcp_backtest_launch_sends_final_state_in_start_request(monkeypatch):
+@pytest.mark.parametrize('historical', [False, True], ids=['market-data-disabled', 'market-data-historical'])
+def test_mcp_backtest_launch_sends_final_state_in_start_request(monkeypatch, tmp_path, historical):
     request_payload = _backtest_request({}).model_dump()
+    features = {'funding': {'mode': 'disabled'}, 'open_interest': {'mode': 'disabled'}}
+    exchange, exchange_type = 'Binance Spot', 'spot'
+    if historical:
+        # Synthetic, fully validated snapshots exercise the actual preflight;
+        # enabled feeds must neither bypass it nor use invented dataset IDs.
+        monkeypatch.setattr(funding, '_root', lambda: tmp_path / 'funding')
+        monkeypatch.setattr(open_interest, '_root', lambda: tmp_path / 'open-interest')
+        start, finish = 1_704_067_200_000, 1_706_745_600_000  # January 2024 UTC
+        exchange, exchange_type = funding.EXCHANGE, 'futures'
+        funding_id = funding.save_dataset({
+            'schema': 1, 'source': funding.SOURCE, 'exchange': exchange, 'symbol': 'BTC-USDT',
+            'start': start, 'finish': finish,
+            'events': [{'exchange': exchange, 'symbol': 'BTC-USDT', 'settled_at': timestamp,
+                        'rate_decimal': .0001, 'mark_price': 10_000}
+                       for timestamp in range(start, finish, funding.MAX_INTERVAL_MS)],
+        })
+        oi_id = open_interest.save_dataset({
+            'schema': 1, 'source': open_interest.SOURCE, 'exchange': exchange, 'symbol': 'BTC-USDT',
+            'start': start, 'finish': finish, 'period_ms': open_interest.PERIOD_MS,
+            'availability_lag_ms': open_interest.AVAILABILITY_LAG_MS,
+            'observations': [{'exchange': exchange, 'symbol': 'BTC-USDT', 'observed_at': start,
+                              'available_at': start + open_interest.AVAILABILITY_LAG_MS,
+                              'quantity_base': 20_000., 'value_quote': 200_000_000.}],
+        })
+        features = {'funding': {'mode': 'historical', 'dataset_id': funding_id},
+                    'open_interest': {'mode': 'historical', 'dataset_id': oi_id, 'max_age_ms': 600_000}}
+        request_payload['exchange'] = exchange
     form = {
         key: value
         for key, value in request_payload.items()
@@ -177,11 +206,12 @@ def test_mcp_backtest_launch_sends_final_state_in_start_request(monkeypatch):
         mcp_backtest_service,
         'load_session_run_config',
         lambda mode, exchange, overrides: {
+            **features,
             'logging': {},
             'warm_up_candles': 210,
             'exchange': {
                 'name': exchange,
-                'type': 'spot',
+                'type': exchange_type,
                 'balance': 10_000,
                 'fee': 0.001,
             },
@@ -194,9 +224,14 @@ def test_mcp_backtest_launch_sends_final_state_in_start_request(monkeypatch):
     assert len(http_calls) == 2
     launch_state = http_calls[-1][1]['json']['state']
     assert launch_state is state
-    assert launch_state['form']['routes'][0]['exchange'] == 'Binance Spot'
-    assert launch_state['form']['config']['exchange']['type'] == 'spot'
+    assert launch_state['form']['routes'][0]['exchange'] == exchange
+    assert launch_state['form']['config']['exchange']['type'] == exchange_type
     assert launch_state['results']['selectedRoute']['symbol'] == 'BTC-USDT'
+    # The engine-shaped request must preserve both disabled defaults and the
+    # selected immutable history IDs; neither may disappear during conversion.
+    for name, expected in features.items():
+        assert launch_state['form']['config'][name] == expected
+        assert http_calls[-1][1]['json']['config'][name] == expected
 
 
 def test_live_rejects_reusing_a_terminal_session_id(monkeypatch):

@@ -15,6 +15,7 @@ Leer este archivo antes de trabajar en el repo. El detalle vive en los documento
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`bot/docs/multi-asset-pivot-handoff.md`](bot/docs/multi-asset-pivot-handoff.md) | Instructivo de handoff Fase 2: pivote multi-activo (`BTC` + `PAXG` + `SPY`), ejecución intra-vela y auditor mensual. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
+| [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad, supuestos temporales y límites de live. |
 
 ## Dónde trabajar
 
@@ -27,7 +28,7 @@ Leer este archivo antes de trabajar en el repo. El detalle vive en los documento
 - Solo `BTC-USDT` perpetual. Una sesión por cuenta: Binance one-way netea el símbolo.
 - Objetivo vivo: 5x isolated, sin piramidar. El live de la Pi puede seguir en 2x; cambiarlo a 5x antes de operar (en Binance ya está en 5x Aislado)
 - Riesgo elegido: 2% por trade. Meta aceptada: 20–30% anual (Negociable).
-- Fee de backtest: `0.00045` (taker VIP0 con BNB). Funding fuera para no complejizar.
+- Fee de backtest: `0.00045` (taker VIP0 con BNB). Funding desactivado por defecto para preservar los resultados previos; la integración optativa BTC Binance se desarrolla en `feature/funding-integration`, con datasets versionados y supuestos explícitos. No confundir validación de código con autorización para operar.
 - Prioridad: rentabilidad, no frecuencia.
 - Timeframes: A explorar/definir.
 - Candidata: A explorar/definir.

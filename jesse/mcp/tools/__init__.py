@@ -60,6 +60,8 @@ def register_tools(mcp):
     Args:
         mcp: The MCP server instance (FastMCP object).
     """
+    from .funding import register_funding_tools
+    register_funding_tools(mcp)
     # Register tools by category
     # Order doesn't matter, but grouping by domain improves maintainability
 

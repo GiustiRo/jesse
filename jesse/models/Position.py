@@ -3,6 +3,12 @@ import numpy as np
 import jesse.helpers as jh
 
 
+# Match the OSS HTTP adapter: three missed 30s polls invalidate an input;
+# tolerate up to five seconds of vendor/host clock skew after time sync.
+_INPUT_STALE_MS = 90_000
+_INPUT_CLOCK_SKEW_MS = 5_000
+
+
 class Position:
     id: str = None
     entry_price: float = None
@@ -39,13 +45,59 @@ class Position:
         return self._mark_price
 
     @property
-    def funding_rate(self) -> float:
+    def open_interest(self) -> Union[float, None]:
+        """BTC base quantity, or None when disabled, missing or stale."""
+        from jesse.store import store
+        if jh.is_live():
+            timestamp = getattr(self, '_open_interest_timestamp', None)
+            if timestamp is None or not -_INPUT_CLOCK_SKEW_MS <= jh.now_to_timestamp() - timestamp <= _INPUT_STALE_MS:
+                return None
+            return getattr(self, '_open_interest', None)
+        observation = store.open_interest.current(self.exchange_name, self.symbol, int(store.app.time))
+        return observation.quantity_base if observation is not None else None
+
+    @property
+    def open_interest_timestamp(self) -> Union[int, None]:
+        from jesse.store import store
+        if jh.is_live():
+            return getattr(self, '_open_interest_timestamp', None) if self.open_interest is not None else None
+        observation = store.open_interest.current(self.exchange_name, self.symbol, int(store.app.time))
+        return observation.observed_at if observation is not None else None
+
+    @property
+    def settled_funding_rate(self) -> Union[float, None]:
+        """Latest settled historical rate, never a prediction of the next charge."""
+        from jesse.store import store
+        if jh.is_live():
+            observed = getattr(self, '_settled_funding_observed_at', None)
+            if observed is None or not -_INPUT_CLOCK_SKEW_MS <= jh.now_to_timestamp() - observed <= _INPUT_STALE_MS:
+                return None
+            return getattr(self, '_settled_funding_rate', None)
+        event = store.funding.known.get((self.exchange_name, self.symbol))
+        return event.rate_decimal if event is not None else None
+
+    @property
+    def settled_funding_timestamp(self) -> Union[int, None]:
+        from jesse.store import store
+        if jh.is_live():
+            return getattr(self, '_settled_funding_timestamp', None) if self.settled_funding_rate is not None else None
+        event = store.funding.known.get((self.exchange_name, self.symbol))
+        return event.settled_at if event is not None else None
+
+    @property
+    def funding_rate(self) -> Union[float, None]:
         if not jh.is_live():
-            return 0
+            from jesse.store import store
+            # Final settled rates are exposed explicitly; an estimated future
+            # rate cannot be reconstructed from final historical payments.
+            return None if store.funding.enabled else 0
 
         if self.exchange_type == 'spot':
             raise ValueError('funding rate is not applicable to spot trading')
 
+        timestamp = getattr(self, '_funding_rate_timestamp', None)
+        if timestamp is None or not -_INPUT_CLOCK_SKEW_MS <= jh.now_to_timestamp() - timestamp <= _INPUT_STALE_MS:
+            return None
         return self._funding_rate
 
     @property
@@ -56,6 +108,8 @@ class Position:
         if self.exchange_type == 'spot':
             raise ValueError('funding rate is not applicable to spot trading')
 
+        if self.funding_rate is None:
+            return None
         return self._next_funding_timestamp
 
     @property

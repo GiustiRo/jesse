@@ -17,6 +17,7 @@ from jesse.services import order_service, candle_service
 from jesse.services import trading_hours as trading_hours_service
 from jesse.repositories import order_repository
 from jesse.store import store
+from jesse.services.funding import FundingHistoryRow
 from jesse.services.cache import cached
 from jesse.services import notifier
 from jesse.services.color import generate_unique_hex_color
@@ -1771,12 +1772,40 @@ class Strategy(ABC):
         return self.position.mark_price
 
     @property
-    def funding_rate(self) -> float:
+    def funding_rate(self) -> Optional[float]:
         return self.position.funding_rate
 
     @property
-    def next_funding_timestamp(self) -> int:
+    def next_funding_timestamp(self) -> Optional[int]:
         return self.position.next_funding_timestamp
+
+    @property
+    def settled_funding_rate(self) -> Optional[float]:
+        """Last final rate visible strictly after its settlement timestamp."""
+        return self.position.settled_funding_rate
+
+    @property
+    def settled_funding_timestamp(self) -> Optional[int]:
+        return self.position.settled_funding_timestamp
+
+    def get_funding_history(self, count: int = 100) -> List[FundingHistoryRow]:
+        """Causal historical settlements, oldest first; no future estimated rates.
+
+        Live current/final observations use funding_rate and
+        settled_funding_rate. Historical rate windows require imported datasets.
+        """
+        if jh.is_live():
+            raise ValueError('Funding history windows require a historical dataset in backtest mode')
+        return store.funding.history(int(store.app.time), count)
+
+    @property
+    def open_interest(self) -> Optional[float]:
+        """Observed BTC base quantity; missing/stale values remain None."""
+        return self.position.open_interest
+
+    @property
+    def open_interest_timestamp(self) -> Optional[int]:
+        return self.position.open_interest_timestamp
 
     @property
     def liquidation_price(self) -> float:

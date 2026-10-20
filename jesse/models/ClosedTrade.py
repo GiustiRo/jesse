@@ -43,6 +43,8 @@ class ClosedTrade(peewee.Model):
         if attributes is None:
             attributes = {}
 
+        # A supplied serialized financing amount must survive reconstruction.
+        self.funding = 0.0
         for a, value in attributes.items():
             setattr(self, a, value)
 
@@ -68,6 +70,7 @@ class ClosedTrade(peewee.Model):
             "PNL": self.pnl,
             "PNL_percentage": self.pnl_percentage,
             "holding_period": self.holding_period,
+            **({'funding': self.funding} if self.funding != 0 else {}),
             "opened_at": self.opened_at,
             "closed_at": self.closed_at,
         }
@@ -90,6 +93,7 @@ class ClosedTrade(peewee.Model):
             "PNL": self.pnl,
             "PNL_percentage": self.pnl_percentage,
             "holding_period": self.holding_period,
+            **({'funding': self.funding} if self.funding != 0 else {}),
         }
 
     @property
@@ -116,7 +120,7 @@ class ClosedTrade(peewee.Model):
             profit *= -1
         
         # subtract actual fee (which already uses order fees if available)
-        return profit - self.fee
+        return profit - self.fee + self.funding
 
     @property
     def pnl_percentage(self) -> float:

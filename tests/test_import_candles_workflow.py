@@ -123,6 +123,20 @@ def _configure_import(monkeypatch, state, driver, fixed_now):
         'get_candle_timestamp_bounds',
         lambda exchange, symbol, timeframe: state.get('bounds', (None, None)),
     )
+
+    def count_candles(exchange, symbol, timeframe, start, finish):
+        # The importer now checks interior coverage through the repository,
+        # rather than its module's Candle alias. These fixtures describe a
+        # contiguous stored range unless an explicit page count overrides it.
+        state.setdefault('count_requests', []).append((exchange, symbol, timeframe, start, finish))
+        if start in state['counts']:
+            return state['counts'][start]
+        first, last = state.get('bounds', (None, None))
+        if first is None or last is None:
+            return 0
+        return max(0, (min(last, finish) - max(first, start)) // 60_000 + 1)
+
+    monkeypatch.setattr(importer.candle_repository, 'count_candles', count_candles)
     monkeypatch.setattr(
         importer.candle_repository,
         'store_observed_candles',
@@ -159,6 +173,7 @@ def test_import_paginates_with_exact_timestamps_and_closes_database(monkeypatch)
     assert len(state['stored']) == 1440
     assert state['stored'][0].timestamp == start
     assert state['stored'][-1].timestamp == start + 1439 * 60_000
+    assert state['count_requests'] == [(driver.name, 'BTC-USDT', '1m', start, start + 1439 * 60_000)]
     assert progress and progress[0][0] == 'client-1'
     assert database_events == ['open', 'close']
     assert '1440 observed candles' in result
@@ -478,7 +493,9 @@ def test_prefix_backfill_stops_when_the_exchange_only_has_later_candles(monkeypa
     _configure_import(monkeypatch, state, driver, fixed_now)
     monkeypatch.setattr(importer, '_store_import_progress', lambda *values: None)
 
-    result = importer.run('client-prefix', driver.name, 'AAPL-USDT', '2022-01-01', running_via_dashboard=False)
+    # Keep this window near the listing: a years-long request with only 36h
+    # stored intentionally takes the separate sparse-window refill path.
+    result = importer.run('client-prefix', driver.name, 'AAPL-USDT', '2023-12-31', running_via_dashboard=False)
 
     assert len(fetches) == 1
     assert fetches[0][1] < listing

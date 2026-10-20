@@ -21,7 +21,7 @@ _BASE_LOGGING = {
 }
 
 _MODE_FIELDS = {
-    'backtest': ('logging', 'warm_up_candles', 'exchange'),
+    'backtest': ('logging', 'warm_up_candles', 'exchange', 'funding', 'open_interest'),
     'optimization': (
         'objective_function',
         'warm_up_candles',
@@ -88,6 +88,8 @@ def _mode_defaults(mode: str, exchange_name: str) -> dict:
             'logging': deepcopy(_BASE_LOGGING),
             'warm_up_candles': 210,
             'exchange': exchange,
+            'funding': {'mode': 'disabled'},
+            'open_interest': {'mode': 'disabled'},
         }
     if mode == 'optimization':
         return {
@@ -189,6 +191,8 @@ def backtest_engine_config(run_config: dict) -> dict:
         'logging': deepcopy(run_config['logging']),
         'warm_up_candles': int(run_config['warm_up_candles']),
         'exchanges': {exchange['name']: exchange},
+        'funding': deepcopy(run_config.get('funding', {'mode': 'disabled'})),
+        'open_interest': deepcopy(run_config.get('open_interest', {'mode': 'disabled'})),
     }
 
 
@@ -249,6 +253,7 @@ _DEFAULT_LIVE_EXCHANGE = {
 }
 
 LIVE_CONFIG_FIELDS = (
+    'funding', 'open_interest',
     'persistency', 'generate_candles_from_1m', 'logging', 'warm_up_candles',
     'order_backup_check_seconds', 'candle_backup_refresh_seconds', 'notifications', 'exchange',
 )
@@ -378,6 +383,8 @@ def normalize_live_run_config(value: object, fallback: dict) -> dict:
     """Fill a (possibly partial or malformed) live run config from `fallback`, field by field."""
     source = _record(value)
     return {
+        'funding': deepcopy(source.get('funding', fallback.get('funding', {'mode': 'disabled'}))),
+        'open_interest': deepcopy(source.get('open_interest', fallback.get('open_interest', {'mode': 'disabled'}))),
         'persistency': _boolean_value(source.get('persistency'), fallback['persistency']),
         'generate_candles_from_1m': _boolean_value(
             source.get('generate_candles_from_1m'), fallback['generate_candles_from_1m'],
@@ -413,6 +420,8 @@ def live_session_defaults(settings: object, exchanges: Optional[dict] = None) ->
     live = _record(root.get('live'))
     legacy_exchanges = _record(live.get('exchanges'))
     derived_fallback = {
+        'funding': {'mode': 'disabled'},
+        'open_interest': {'mode': 'disabled'},
         'persistency': _boolean_value(live.get('persistency'), True),
         'generate_candles_from_1m': _boolean_value(live.get('generate_candles_from_1m'), False),
         'logging': _normalize_logging(live.get('logging'), _LIVE_LOGGING),
@@ -519,6 +528,8 @@ def live_engine_config(run_config: dict) -> dict:
     """Convert a LiveRunConfig into the request shape /live passes to the live engine (liveEngineConfig)."""
     exchange = deepcopy(run_config['exchange'])
     return {
+        'funding': deepcopy(run_config.get('funding', {'mode': 'disabled'})),
+        'open_interest': deepcopy(run_config.get('open_interest', {'mode': 'disabled'})),
         'persistency': run_config['persistency'],
         'generate_candles_from_1m': run_config['generate_candles_from_1m'],
         'logging': deepcopy(run_config['logging']),
