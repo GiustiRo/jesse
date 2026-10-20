@@ -94,14 +94,33 @@ def register_funding_tools(mcp):
         return response.json()
 
     @mcp.tool()
-    async def import_open_interest(start_date: str, finish_date: str) -> dict:
-        """Import Binance BTC five-minute OI over UTC [start,finish), recent30days ONLY.
+    async def import_open_interest(start_date: str, finish_date: str, source: str = 'rest',
+                                   allow_archive_assumptions: bool = False, background: bool = False) -> dict:
+        """Import Binance BTC five-minute OI over UTC [start,finish).
 
-        No account keys. Older windows are refused rather than invented. Original
-        publication timestamps are unknown: strategy availability uses the explicit
-        six-minute lag assumption. Does not provide causal OI history for2020–25.
+        source='rest' covers recent30days. source='archive' or 'auto' supports
+        Binance public daily metrics from September2020, requiring explicit
+        allow_archive_assumptions=True: original publication/revision timestamps
+        are unknown, and replay assumes label+6minutes availability. No invented
+        coverage or interpolation. No keys or trading sessions.
+
+        background=True returns a job_id immediately; archive/auto windows over
+        seven days always run in background. Poll get_open_interest_import_status
+        until finished/failed/interrupted; finished.result contains dataset_id.
         """
-        return await run_blocking(oi_request, 'import', {'start_date': start_date, 'finish_date': finish_date})
+        return await run_blocking(oi_request, 'import', {'start_date': start_date, 'finish_date': finish_date,
+                                                        'source': source,
+                                                        'allow_archive_assumptions': allow_archive_assumptions,
+                                                        'background': background})
+
+    @mcp.tool()
+    async def get_open_interest_import_status(job_id: str) -> dict:
+        """Read durable progress/result of an OI import/update; never starts a download.
+
+        A backend restart interrupts unfinished jobs; retry the original import
+        to reuse verified daily files without substituting an incomplete dataset.
+        """
+        return await run_blocking(oi_request, 'job', {'job_id': job_id})
 
     @mcp.tool()
     async def list_open_interest_datasets() -> dict:
@@ -117,6 +136,11 @@ def register_funding_tools(mcp):
         return await run_blocking(oi_request, 'dataset', payload)
 
     @mcp.tool()
-    async def update_open_interest_dataset(dataset_id: str, finish_date: str) -> dict:
-        """Append fresh recent OI with conflict checks and preserve the original snapshot."""
-        return await run_blocking(oi_request, 'update', {'dataset_id': dataset_id, 'finish_date': finish_date})
+    async def update_open_interest_dataset(dataset_id: str, finish_date: str, background: bool = False) -> dict:
+        """Extend OI preserving source/assumptions and old snapshot, with overlap checks.
+
+        background=True (automatic for archive extensions over7days) returns a
+        job_id to poll with get_open_interest_import_status.
+        """
+        return await run_blocking(oi_request, 'update', {'dataset_id': dataset_id, 'finish_date': finish_date,
+                                                        'background': background})

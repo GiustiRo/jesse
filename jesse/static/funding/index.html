@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="dark light">
   <title>Funding e interés abierto · Jesse</title>
   <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="/funding/panel.css?v=1">
+  <link rel="stylesheet" href="/funding/panel.css?v=3">
   <script src="/funding/logic.js?v=1" defer></script>
-  <script src="/funding/panel.js?v=1" defer></script>
+  <script src="/funding/panel.js?v=3" defer></script>
 </head>
 <body>
   <main>
@@ -27,11 +27,14 @@
         <label>Desde (UTC, incluido)<input type="date" id="start-date" required></label>
         <label>Hasta (UTC, excluido)<input type="date" id="finish-date" required></label>
         <label id="period-label" hidden>Intervalo<select id="oi-period"><option value="5m">5 minutos</option></select></label>
+        <label id="oi-source-label" hidden>Fuente<select id="oi-source"><option value="rest">API REST · último mes</option><option value="archive">Archivo oficial Binance · desde septiembre 2020</option><option value="auto">Automática · archivo + API REST</option></select></label>
         <button type="submit" id="import-data">Descargar datos</button>
       </form>
       <label id="allow-mark-proxy-label" class="checkbox-row"><input type="checkbox" id="allow-mark-proxy">Permitir aproximación de mark price cuando Binance no conserve el precio de liquidación</label>
       <p id="mark-proxy-note" class="fine-print">Desactivado por defecto. Si lo habilitás, los precios faltantes se aproximan con la apertura de una vela horaria de mark price de Binance en el límite de liquidación; esos costos dejan de ser exactos.</p>
       <p id="oi-coverage-note" class="callout warning" hidden>La API REST de interés abierto sólo ofrece una ventana reciente. No permite asumir cobertura desde 2020; las solicitudes fuera de cobertura deben rechazarse.</p>
+      <label id="archive-consent-label" class="checkbox-row" hidden><input type="checkbox" id="allow-archive-assumptions">Acepto usar archivos históricos con posibles revisiones y el retraso supuesto de seis minutos; no son un historial certificado de publicación en tiempo real.</label>
+      <div id="oi-job-panel" class="callout neutral" role="status" aria-live="polite" hidden><strong id="oi-job-status"></strong><p id="oi-job-progress"></p><p id="oi-job-reference" class="fine-print"></p></div>
       <p id="library-status" class="muted" role="status">Cargando biblioteca…</p>
       <div class="table-wrap"><table><thead><tr><th>Seleccionar</th><th>Ventana solicitada UTC</th><th>Registros y cobertura</th><th>Fuente y versión</th></tr></thead><tbody id="datasets-body"></tbody></table></div>
       <div class="update-row"><label>Extender versión seleccionada hasta (UTC, excluido)<input type="date" id="update-finish"></label><button type="button" id="update-data" class="secondary" disabled>Descargar actualización</button></div>
@@ -47,7 +50,7 @@
       <form id="session-config-form" hidden>
         <div class="config-grid">
           <fieldset><legend>Funding</legend><label class="checkbox-row"><input type="checkbox" id="enable-funding">Contabilizar funding histórico</label><label>Versión de funding<select id="funding-dataset"><option value="">Seleccioná una versión</option></select></label><div id="funding-exclusions" hidden></div></fieldset>
-          <fieldset><legend>Interés abierto</legend><label class="checkbox-row"><input type="checkbox" id="enable-oi">Exponer interés abierto a la estrategia</label><label>Versión de interés abierto<select id="oi-dataset"><option value="">Seleccioná una versión</option></select></label></fieldset>
+          <fieldset><legend>Interés abierto</legend><label class="checkbox-row"><input type="checkbox" id="enable-oi">Exponer interés abierto a la estrategia</label><label>Versión de interés abierto<select id="oi-dataset"><option value="">Seleccioná una versión</option></select></label><label class="checkbox-row"><input type="checkbox" id="allow-missing-oi">Permitir OI con huecos: los datos faltantes o vencidos serán None</label><p id="oi-selection-warning" class="callout warning" hidden></p></fieldset>
         </div>
         <p class="fine-print">Se guarda únicamente en un borrador. Ejecutá luego el backtest desde el dashboard o MCP. Si el borrador está abierto en otra pestaña, volvé a abrirlo para cargar la configuración guardada.</p>
         <button type="submit" id="save-config">Guardar configuración del borrador</button>

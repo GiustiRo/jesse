@@ -1,7 +1,11 @@
 """Vendor-boundary and asof tests; no exchange account or real network is used."""
 
 from dataclasses import asdict
+from datetime import datetime, timezone
+from hashlib import sha256
+import io
 from types import SimpleNamespace
+import zipfile
 
 import pytest
 
@@ -107,6 +111,66 @@ def test_import_exhausts_ascending_inclusive_pages_and_records_gaps(monkeypatch)
     dataset = oi.load_dataset(result['dataset_id'])
     assert dataset['observations'][0]['quantity_base'] == 20000
     assert dataset['observations'][0]['available_at'] == START + 360_000
+
+
+def test_listing_reuses_verified_metadata_without_deserializing_again(monkeypatch):
+    identifier = oi.save_dataset(_dataset())
+    original_load = oi.load_dataset
+    loaded = []
+
+    def load(dataset_id):
+        loaded.append(dataset_id)
+        return original_load(dataset_id)
+
+    monkeypatch.setattr(oi, 'load_dataset', load)
+    first = oi.list_datasets()
+    assert loaded == [identifier]
+    first[0]['status'] = 'caller modified this copy'
+    assert oi.list_datasets()[0]['status'] == 'incomplete'
+    assert loaded == [identifier]
+    # Explicit reads still verify and deserialize on every invocation.
+    oi.load_dataset(identifier)
+    assert loaded == [identifier, identifier]
+
+
+def test_listing_invalidates_changed_or_removed_files_instead_of_hiding_corruption():
+    identifier = oi.save_dataset(_dataset())
+    assert oi.list_datasets()[0]['dataset_id'] == identifier
+    path = oi._path(identifier)
+    path.write_text('{}')
+    with pytest.raises(ValueError, match='checksum'):
+        oi.list_datasets()
+    assert str(path.absolute()) not in oi._metadata_cache
+    oi.save_dataset(_dataset())
+    assert oi.list_datasets()[0]['dataset_id'] == identifier
+    path.unlink()
+    assert oi.list_datasets() == []
+    assert str(path.absolute()) not in oi._metadata_cache
+
+
+def test_listing_cache_never_crosses_project_roots(tmp_path, monkeypatch):
+    first_root, second_root = tmp_path / 'first-project', tmp_path / 'second-project'
+    monkeypatch.setattr(oi, '_root', lambda: first_root)
+    identifier = oi.save_dataset(_dataset())
+    assert oi.list_datasets()[0]['dataset_id'] == identifier
+    monkeypatch.setattr(oi, '_root', lambda: second_root)
+    assert oi.save_dataset(_dataset()) == identifier
+    oi._path(identifier).write_text('{}')
+    with pytest.raises(ValueError, match='checksum'):
+        oi.list_datasets()
+    monkeypatch.setattr(oi, '_root', lambda: first_root)
+    assert oi.list_datasets()[0]['dataset_id'] == identifier
+
+
+def test_listing_metadata_cache_evicts_older_summaries(monkeypatch):
+    # A small test cap exercises the same LRU bound without creating 201 files.
+    monkeypatch.setattr(oi, 'METADATA_CACHE_LIMIT', 2)
+    for index in range(3):
+        oi.save_dataset(_dataset([_observation(quantity=20_000 + index)]))
+    assert len(oi.list_datasets()) == 3
+    assert len(oi._metadata_cache) <= 2
+    assert all('observations' not in summary and 'archive_files' not in summary
+               for _, summary in oi._metadata_cache.values())
 
 
 def test_last_five_minute_bucket_finishes_without_a_rounded_plus_one_ms_query(monkeypatch):
@@ -341,3 +405,238 @@ def test_invalid_snapshot_is_not_persisted(mutation):
     with pytest.raises(ValueError):
         oi.save_dataset(_dataset() | mutation)
     assert oi.list_datasets() == []
+
+
+class _ArchiveResponse(_Response):
+    def __init__(self, content=b'', status=200):
+        super().__init__(None)
+        self.content = content
+        self.status_code = status
+        self.headers = {'Last-Modified': 'Wed, 18 Mar 2026 12:30:27 GMT'}
+
+    @property
+    def text(self):
+        return self.content.decode()
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise oi.requests.HTTPError(f'HTTP {self.status_code}')
+
+
+def _archive_zip(day, *, duplicate=False, conflict=False, include_next_midnight=False, quantity='20000'):
+    # Exact audited Binance daily metrics field names. Old files contain exact
+    # duplicate rows; a different OI value at the same label must never be chosen.
+    start = int(datetime.strptime(day, '%Y-%m-%d').replace(tzinfo=timezone.utc).timestamp() * 1000)
+    rows = ['create_time,symbol,sum_open_interest,sum_open_interest_value']
+    for timestamp in range(start, start + oi.DAY_MS + (oi.PERIOD_MS if include_next_midnight else 0), oi.PERIOD_MS):
+        label = datetime.fromtimestamp(timestamp / 1000, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+        rows.append(f'{label},BTCUSDT,{quantity},200000000')
+        if duplicate:
+            rows.append(f'{label},BTCUSDT,{"21000" if conflict else quantity},200000000')
+    output = io.BytesIO()
+    with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(f'BTCUSDT-metrics-{day}.csv', '\n'.join(rows))
+    return output.getvalue()
+
+
+def _archive_http(monkeypatch, payloads, *, checksum_corrupt=False):
+    calls = []
+    xml = (f'<ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">'
+           f'<Contents><Key>{oi.ARCHIVE_PREFIX}BTCUSDT-metrics-2020-09-01.zip</Key>'
+           '<LastModified>2026-03-18T12:30:27Z</LastModified></Contents></ListBucketResult>').encode()
+    monkeypatch.setattr(oi.requests, 'get', lambda *args, **kwargs: _ArchiveResponse(xml))
+
+    class Client:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def get(self, url, timeout, params=None):
+            calls.append(url)
+            if url.endswith('/futures/data/openInterestHist'):
+                labels = range(params['startTime'], params['endTime'] + 1, oi.PERIOD_MS)
+                return _Response([_vendor_row(timestamp) for timestamp in labels])
+            filename = url.rsplit('/', 1)[-1].removesuffix('.CHECKSUM')
+            day = filename.removeprefix('BTCUSDT-metrics-').removesuffix('.zip')
+            payload = payloads.get(day)
+            if payload is None:
+                return _ArchiveResponse(status=404)
+            if url.endswith('.CHECKSUM'):
+                checksum = '0' * 64 if checksum_corrupt else sha256(payload).hexdigest()
+                return _ArchiveResponse(f'{checksum}  {filename}'.encode())
+            return _ArchiveResponse(payload)
+
+    monkeypatch.setattr(oi.requests, 'Session', Client)
+    return calls
+
+
+def test_archive_catalog_and_verified_duplicate_rows_provide_2020_history(monkeypatch):
+    day = '2020-09-01'
+    start = 1_598_918_400_000
+    calls = _archive_http(monkeypatch, {day: _archive_zip(day, duplicate=True)})
+    progress = []
+    result = oi.import_binance_history(start, start + oi.DAY_MS, source='archive',
+                                      allow_archive_assumptions=True, progress_callback=progress.append)
+    assert result['source'] == oi.ARCHIVE_SOURCE
+    assert result['observation_count'] == 288
+    assert result['archive_identical_duplicate_rows'] == 288
+    assert result['archive_verified_file_count'] == 1
+    assert result['status'] == 'ready'
+    assert result['point_in_time_certified'] is False
+    assert result['original_publication_known'] is False
+    assert result['archive_catalog']['first_archive_date'] == day
+    assert 'archive_files' not in result  # Metadata stays bounded for multi-year MCP results.
+    dataset = oi.load_dataset(result['dataset_id'])
+    manifest = dataset['archive_files'][0]
+    assert manifest['sha256'] == sha256(_archive_zip(day, duplicate=True)).hexdigest()
+    assert manifest['checksum_last_modified'] == 'Wed, 18 Mar 2026 12:30:27 GMT'
+    assert progress[-1]['phase'] == 'complete'
+    assert progress[-1]['fetched_days'] == progress[-1]['total_days'] == 1
+    assert len(calls) == 2
+
+
+def test_archive_requires_explicit_assumptions_and_refuses_before_first_published_date(monkeypatch):
+    _archive_http(monkeypatch, {})
+    start = 1_598_918_400_000
+    with pytest.raises(ValueError, match='allow_archive_assumptions'):
+        oi.import_binance_history(start, start + oi.DAY_MS, source='archive')
+    with pytest.raises(ValueError, match='begins 2020-09-01'):
+        oi.import_binance_history(start - oi.DAY_MS, start + oi.DAY_MS, source='archive',
+                                 allow_archive_assumptions=True)
+
+
+def test_archive_cache_reuses_only_checksum_verified_content(monkeypatch):
+    day = '2020-09-01'
+    start = 1_598_918_400_000
+    payload = _archive_zip(day)
+    calls = _archive_http(monkeypatch, {day: payload})
+    first = oi.import_binance_history(start, start + oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+    second = oi.import_binance_history(start, start + oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+    assert first['dataset_id'] == second['dataset_id']
+    assert sum(url.endswith('.zip') for url in calls) == 1
+    assert sum(url.endswith('.CHECKSUM') for url in calls) == 2
+    cache = oi._root() / 'archives' / f'{sha256(payload).hexdigest()}.zip'
+    cache.write_bytes(b'corrupt')
+    with pytest.raises(ValueError, match='checksum'):
+        oi.import_binance_history(start, start + oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+
+
+@pytest.mark.parametrize('conflict, checksum_corrupt, message', [
+    (True, False, 'Conflicting'), (False, True, 'checksum'),
+])
+def test_conflicting_or_corrupt_archives_never_publish_a_dataset(monkeypatch, conflict, checksum_corrupt, message):
+    day = '2020-09-01'
+    start = 1_598_918_400_000
+    _archive_http(monkeypatch, {day: _archive_zip(day, duplicate=True, conflict=conflict)},
+                  checksum_corrupt=checksum_corrupt)
+    with pytest.raises(ValueError, match=message):
+        oi.import_binance_history(start, start + oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+    assert oi.list_datasets() == []
+
+
+def test_archive_cross_day_boundary_conflicts_are_never_silently_deduplicated(monkeypatch):
+    start = 1_598_918_400_000
+    _archive_http(monkeypatch, {'2020-09-01': _archive_zip('2020-09-01', include_next_midnight=True),
+                               '2020-09-02': _archive_zip('2020-09-02', quantity='21000')})
+    with pytest.raises(ValueError, match='across daily archives'):
+        oi.import_binance_history(start, start + 2 * oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+    assert oi.list_datasets() == []
+
+
+def test_archive_missing_day_is_explicit_and_update_preserves_original_snapshot(monkeypatch):
+    start = 1_598_918_400_000
+    payloads = {'2020-09-01': _archive_zip('2020-09-01')}
+    _archive_http(monkeypatch, payloads)
+    first = oi.import_binance_history(start, start + oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+    result = oi.update_dataset(first['dataset_id'], start + 2 * oi.DAY_MS)
+    assert result['status'] == 'incomplete'
+    assert result['archive_missing_days'] == ['2020-09-02']
+    assert result['missing_observation_count'] == 288
+    assert oi.load_dataset(first['dataset_id'])['finish'] == start + oi.DAY_MS
+
+
+def test_archive_update_rejects_changed_publisher_checksum_even_if_overlap_oi_is_equal(monkeypatch):
+    start = 1_598_918_400_000
+    payloads = {'2020-09-01': _archive_zip('2020-09-01')}
+    _archive_http(monkeypatch, payloads)
+    first = oi.import_binance_history(start, start + oi.DAY_MS, source='archive', allow_archive_assumptions=True)
+    # Identical OI values but a replaced ZIP (now with duplicate rows) are still
+    # a different source version, not a silently accepted extension of the old one.
+    payloads['2020-09-01'] = _archive_zip('2020-09-01', duplicate=True)
+    payloads['2020-09-02'] = _archive_zip('2020-09-02')
+    with pytest.raises(ValueError, match='revised an existing OI archive'):
+        oi.update_dataset(first['dataset_id'], start + 2 * oi.DAY_MS)
+    assert len(oi.list_datasets()) == 1
+
+
+def test_auto_policy_and_retrospective_evidence_survive_archive_only_initial_window(monkeypatch):
+    start = 1_598_918_400_000
+    _archive_http(monkeypatch, {'2020-09-01': _archive_zip('2020-09-01'),
+                               '2020-09-02': _archive_zip('2020-09-02')})
+    first = oi.import_binance_history(start, start + oi.DAY_MS, source='auto', allow_archive_assumptions=True)
+    assert first['source'] == oi.ARCHIVE_SOURCE
+    assert first['import_source'] == 'auto'
+    updated = oi.update_dataset(first['dataset_id'], start + 2 * oi.DAY_MS)
+    assert updated['import_source'] == 'auto'
+    assert updated['observation_count'] == 576
+    state = oi.OpenInterestState()
+    route = SimpleNamespace(exchange=oi.EXCHANGE, symbol=oi.SYMBOL)
+    state.configure({'mode': 'historical', 'dataset_id': updated['dataset_id']}, start,
+                    start + 2 * oi.DAY_MS, [route])
+    state.advance(start + oi.AVAILABILITY_LAG_MS - 1)
+    assert state.current(oi.EXCHANGE, oi.SYMBOL) is None
+    state.advance(start + oi.AVAILABILITY_LAG_MS)
+    assert state.current(oi.EXCHANGE, oi.SYMBOL).quantity_base == 20000
+    assert state.snapshot()['availability_policy'].startswith('retrospective_archive')
+    assert state.snapshot()['data']['point_in_time_certified'] is False
+
+
+def test_auto_merges_verified_archives_and_recent_rest_without_gaps(monkeypatch):
+    cutoff = ((NOW - 29 * oi.DAY_MS) // oi.DAY_MS) * oi.DAY_MS
+    start, finish = cutoff - oi.DAY_MS, cutoff + oi.DAY_MS
+    day = datetime.fromtimestamp(start / 1000, tz=timezone.utc).strftime('%Y-%m-%d')
+    _archive_http(monkeypatch, {day: _archive_zip(day)})
+    result = oi.import_binance_history(start, finish, source='auto', allow_archive_assumptions=True)
+    assert result['source'] == oi.AUTO_SOURCE
+    assert result['observation_count'] == 576
+    assert result['status'] == 'ready'
+    assert result['rest_range'] == {'start': cutoff, 'finish': finish}
+    assert result['archive_verified_file_count'] == 1
+
+
+def test_archive_cancellation_preserves_cache_and_does_not_publish_incomplete_snapshot(monkeypatch):
+    start = 1_598_918_400_000
+    days = ['2020-09-01', '2020-09-02', '2020-09-03', '2020-09-04', '2020-09-05']
+    calls = _archive_http(monkeypatch, {day: _archive_zip(day) for day in days})
+
+    def cancel(progress):
+        if progress['phase'] == 'archive' and progress['fetched_days'] == 1:
+            raise RuntimeError('cancelled by job')
+
+    with pytest.raises(RuntimeError, match='cancelled by job'):
+        oi.import_binance_history(start, start + 5 * oi.DAY_MS, source='archive',
+                                 allow_archive_assumptions=True, progress_callback=cancel)
+    assert oi.list_datasets() == []
+    assert list((oi._root() / 'archives').glob('*.zip'))
+    assert sum(url.endswith('.zip') for url in calls) <= oi.ARCHIVE_WORKERS
+
+
+def test_archive_gaps_require_explicit_consumption_acknowledgement_and_remain_none(monkeypatch):
+    start = 1_598_918_400_000
+    _archive_http(monkeypatch, {'2020-09-01': _archive_zip('2020-09-01')})
+    result = oi.import_binance_history(start, start + 2 * oi.DAY_MS, source='archive',
+                                      allow_archive_assumptions=True)
+    assert result['missing_observation_count'] == 288
+    options = {'mode': 'historical', 'dataset_id': result['dataset_id']}
+    state = oi.OpenInterestState()
+    routes = [SimpleNamespace(exchange=oi.EXCHANGE, symbol=oi.SYMBOL)]
+    with pytest.raises(ValueError, match='allow_missing_observations=True'):
+        state.configure(options, start, start + 2 * oi.DAY_MS, routes)
+    state.configure(options | {'allow_missing_observations': True}, start, start + 2 * oi.DAY_MS, routes)
+    state.advance(start + oi.AVAILABILITY_LAG_MS)
+    assert state.current(oi.EXCHANGE, oi.SYMBOL).quantity_base == 20000
+    state.advance(start + oi.DAY_MS + oi.AVAILABILITY_LAG_MS + oi.DEFAULT_MAX_AGE_MS)
+    assert state.current(oi.EXCHANGE, oi.SYMBOL) is None
+    assert state.snapshot()['allow_missing_observations'] is True

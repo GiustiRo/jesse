@@ -144,6 +144,63 @@ def test_raw_funding_data_read_is_bounded_paginated_and_checksum_verified(client
     assert last['next_offset'] is None
 
 
+def test_historical_oi_import_forwards_explicit_provenance_consent(client, monkeypatch):
+    calls = []
+    monkeypatch.setattr(controller.open_interest, 'import_binance_history',
+                        lambda *args: calls.append(args) or {'dataset_id': 'a' * 64})
+    result = controller.oi_import(controller.ImportOpenInterestRequest(
+        start_date='2020-09-01', finish_date='2020-09-02', source='archive', allow_archive_assumptions=True))
+    assert result['dataset_id'] == 'a' * 64
+    assert calls == [(controller._timestamp('2020-09-01'), controller._timestamp('2020-09-02'),
+                      '5m', 'archive', True)]
+
+
+def test_long_archive_import_returns_background_job_instead_of_blocking(client, monkeypatch):
+    calls = []
+    job = {'job_id': str(uuid4()), 'status': 'queued'}
+    monkeypatch.setattr(controller.market_data_jobs, 'start_import', lambda *args: calls.append(args) or job)
+    result = controller.oi_import(controller.ImportOpenInterestRequest(
+        start_date='2020-09-01', finish_date='2026-01-01', source='auto', allow_archive_assumptions=True))
+    assert result == job
+    assert calls[0][-2:] == ('auto', True)
+    monkeypatch.setattr(controller.market_data_jobs, 'get_job', lambda identity: job | {'status': 'finished'})
+    assert controller.oi_job(controller.MarketDataJobRequest(job_id=job['job_id']))['status'] == 'finished'
+
+
+def test_background_oi_update_preserves_selected_dataset_and_exclusive_finish(client, monkeypatch):
+    identifier = 'b' * 64
+    calls = []
+    monkeypatch.setattr(controller.open_interest, 'load_dataset',
+                        lambda identity: {'source': 'archive', 'finish': controller._timestamp('2020-09-02')})
+    monkeypatch.setattr(controller.market_data_jobs, 'start_update', lambda *args: calls.append(args) or {'status': 'queued'})
+    assert controller.oi_update(controller.UpdateDatasetRequest(
+        dataset_id=identifier, finish_date='2026-01-01'))['status'] == 'queued'
+    assert calls == [(identifier, controller._timestamp('2026-01-01'))]
+
+
+def test_background_oi_conflict_is_explicit_and_job_lookup_requires_auth(client, monkeypatch):
+    from jesse.services import auth
+    monkeypatch.setitem(auth.ENV_VALUES, 'PASSWORD', 'unit-fixture-password')
+    def busy(*args):
+        raise controller.market_data_jobs.MarketDataJobConflict('Another market data import is active')
+    monkeypatch.setattr(controller.market_data_jobs, 'start_import', busy)
+    with pytest.raises(controller.HTTPException) as error:
+        controller.oi_import(controller.ImportOpenInterestRequest(
+            start_date='2020-09-01', finish_date='2026-01-01', source='archive',
+            allow_archive_assumptions=True, background=True))
+    assert error.value.status_code == 409
+    client.app.dependency_overrides.clear()
+    assert client.http.post('/open-interest/job', json={'job_id': str(uuid4())}).status_code == 401
+
+
+def test_oi_job_list_exposes_mcp_started_imports_with_bounded_pagination(client, monkeypatch):
+    jobs = [{'job_id': str(uuid4()), 'status': 'running', 'progress': {'fetched_days': 20, 'total_days': 1948}}]
+    monkeypatch.setattr(controller.market_data_jobs, 'list_jobs', lambda limit: jobs[:limit])
+    assert controller.oi_jobs(controller.MarketDataJobsRequest(limit=1)) == {'jobs': jobs}
+    with pytest.raises(ValueError):
+        controller.MarketDataJobsRequest(limit=201)
+
+
 def test_existing_mcp_run_config_retains_selected_feeds():
     selected = {'mode': 'historical', 'dataset_id': 'a' * 64}
     run = resolve_session_run_config({}, 'backtest', EXCHANGE, {'funding': selected, 'open_interest': selected})

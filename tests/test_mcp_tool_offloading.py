@@ -103,8 +103,8 @@ SYNC_TOOLS = {'list_indicators', 'get_indicator_details', 'get_exchange_api_key_
 # Every tool the worker registers, including the 7 live/paper session tools, the 2 live/paper
 # trade and order history tools, and the candle export and purge tools; the live tools are
 # registered even without the plugin and answer live_plugin_unavailable then.
-# Ten funding/OI tools add public dataset IO and session accounting inspection.
-REGISTERED_TOOL_COUNT = 111
+# Funding/OI tools include durable progress reads for multi-year archive imports.
+REGISTERED_TOOL_COUNT = 112
 # Tools metered by usage_limits.gated, with the route prefix whose /sessions/{id} they read first.
 GATED_RUN_TOOLS = {
     'run_backtest': 'backtest',
@@ -498,6 +498,10 @@ def test_async_tools_advertise_the_same_schemas_as_synchronous_functions():
      '/funding/session-config'),
     ('get_session_funding', {'session_id': RUN_SESSION_ID}, '/funding/session'),
     ('import_open_interest', {'start_date': '2026-10-01', 'finish_date': '2026-10-02'}, '/open-interest/import'),
+    ('import_open_interest', {'start_date': '2020-09-01', 'finish_date': '2021-01-01',
+                             'source': 'archive', 'allow_archive_assumptions': True, 'background': True},
+     '/open-interest/import'),
+    ('get_open_interest_import_status', {'job_id': RUN_SESSION_ID}, '/open-interest/job'),
     ('list_open_interest_datasets', {}, '/open-interest/datasets'),
     ('get_open_interest_dataset', {'dataset_id': 'b' * 64}, '/open-interest/dataset'),
     ('update_open_interest_dataset', {'dataset_id': 'b' * 64, 'finish_date': '2026-10-02'}, '/open-interest/update'),

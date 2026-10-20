@@ -1,6 +1,6 @@
 # Binance BTC funding and open interest
 
-This project supports **Binance USD-M BTC-USDT** funding and recent open interest,
+This project supports **Binance USD-M BTC-USDT** funding and historical open interest,
 without ML. Funding is optional and disabled by default. Data import and draft
 configuration never start a trading session or place an order.
 
@@ -16,10 +16,14 @@ configuration never start a trading session or place an order.
 - Live estimate, mark and next settlement: public `/fapi/v1/premiumIndex`.
 - Actual account payments: signed `/fapi/v1/income`, `incomeType=FUNDING_FEE`.
   A live account journal is account scope, never invented per-strategy income.
-- OI: public `/fapi/v1/openInterest` and `/futures/data/openInterestHist`.
-  Historical REST is limited to the recent month (importer conservatively uses
-  30 days). This integration **does not provide causal 2020–2025 OI history**.
-  Archives require a separate timestamp/publication-provenance audit.
+- OI: public `/fapi/v1/openInterest` and `/futures/data/openInterestHist` for
+  current/recent observations. Historical REST is limited to the recent month
+  (importer conservatively uses 30 days). Binance's public daily metrics ZIPs
+  extend the history from September 2020. Downloads verify the published SHA-256,
+  retain provenance and detect conflicting duplicates and missing coverage.
+  Archive use requires `allow_archive_assumptions=true`: original publication
+  times are unknown and files can be revised years later. The label+6m replay
+  lag is a research assumption, **not certified point-in-time 2020 data**.
 
 No API keys are needed for historical data or public observations. Signed live
 reads use the session's existing saved Binance credentials. Do not copy account
@@ -40,7 +44,7 @@ keys into research scripts, tool arguments, source control or reports.
 3. Create a normal backtest draft, then
    `configure_session_market_data(session_id, funding={"mode":"historical",
    "dataset_id":"..."})`. Configuration belongs to **form.config**, not global
-   settings. Run using normal `run_backtest`. The dashboard's Funding & OI page
+   settings. Run using normal `run_backtest`. The dashboard's Import Data tabs
    performs the same import/configuration/read requests. Reload a previously open
    backtest tab after changing its draft configuration.
 4. Inspect `get_session_funding(session_id)` or `get_session_results` section
@@ -57,6 +61,42 @@ For OI use `import_open_interest`, `list_open_interest_datasets`,
 `get_open_interest_dataset`, `update_open_interest_dataset`, and the draft's
 `open_interest={"mode":"historical","dataset_id":"..."}`. Missing or stale
 OI is `None`, never a zero or an interpolation across gaps.
+An archive dataset with gaps requires the draft setting
+`open_interest.allow_missing_observations=True` before consumption. The dashboard
+offers a separate unchecked acknowledgement for this case. The result records
+that decision; it does not repair coverage or change the missing-value policy.
+
+`import_open_interest(...,source="archive",allow_archive_assumptions=True)`
+uses the verified daily public archive. `source="auto"` combines archives with
+recent REST observations. Dates before actual archive coverage are rejected;
+there is no invented January–August 2020 series. Funding final rates already
+cover January 2020 onward; some older settlement marks require the explicit
+price approximation above. Historical estimated future funding remains unavailable.
+
+Multi-year OI downloads run as background jobs. Request `background=True`, or
+use an archive/auto window longer than seven days (background is automatic).
+Poll `get_open_interest_import_status(job_id)` until `finished`, `failed` or
+`interrupted`; only `finished.result` identifies a published dataset. Updates
+accept the same background option and preserve the selected source/assumptions.
+Restarted jobs are marked interrupted; re-importing reuses verified daily files.
+The dashboard discovers jobs started through MCP as well as jobs initiated from
+its own import form. The canonical view is `/#/candles/` (Import Data); the old
+`/funding/index.html` URL remains compatible for existing links.
+
+## Timeframes and alignment
+
+Execution candles are stored at one minute; other strategy timeframes are
+generated from those candles. Funding is an event series, usually every eight
+hours for BTC, not a candle timeframe: each payment uses the position at that
+event even if the strategy runs at 1h or 4h. Final funding signal availability
+follows the one-minute publication assumption described below.
+
+OI is an independent five-minute observation series. At each engine timestamp,
+the strategy receives the most recent observation whose `available_at` has
+passed. Under label+6m, the 10:00 label first becomes usable at 10:06, never at
+10:00. No interpolation invents one-minute samples; stale/missing data is None.
+Live uses receipt timestamps and source freshness instead of replaying archive
+publication assumptions.
 
 ## Accounting and execution assumptions
 
@@ -150,6 +190,15 @@ the dashboard shows estimate freshness, actual account income and OI status.
 
 - [Binance market data](https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/rest-api/market-data)
 - [Binance account API](https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/rest-api/account)
+- [Binance public data](https://github.com/binance/binance-public-data)
+- [Binance BTC metrics archive](https://data.binance.vision/?prefix=data/futures/um/daily/metrics/BTCUSDT/)
+- [Tardis Binance coverage](https://docs.tardis.dev/historical-data-details/binance-futures)
+
+Alternative vendors require their own adapter, rights and coverage audit. Tardis
+documents normalized OI from May 2020 (not January); full history requires access
+beyond its first-day-of-month free samples. Coin Metrics exposes an OI catalogue
+but its public/community API refused Binance BTC market access during this audit.
+Neither source was purchased or silently substituted for Binance archive data.
 
 These are Binance venue data. Other venues, instruments, inverse contracts and
 historic estimated funding need their own adapters and coverage audits.

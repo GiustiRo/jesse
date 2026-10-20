@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 import requests
 
 from jesse.services.auth import require_auth
-from jesse.services import funding, open_interest
+from jesse.services import funding, open_interest, market_data_jobs
 from jesse.services.market_data_config import validate_session_options
 from jesse.models.BacktestSession import BacktestSession, get_backtest_session_by_id
 import jesse.helpers as jh
@@ -29,6 +29,8 @@ def _call(function, *args):
         return function(*args)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail='Market dataset not found') from exc
+    except market_data_jobs.MarketDataJobConflict as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
     except (ValueError, KeyError, TypeError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except requests.RequestException as exc:
@@ -50,6 +52,7 @@ class FundingDatasetRequest(BaseModel):
 
 class UpdateDatasetRequest(FundingDatasetRequest):
     finish_date: str
+    background: bool = False
 
 
 class SessionRequest(BaseModel):
@@ -67,6 +70,16 @@ class SessionConfigRequest(BaseModel):
 class ImportOpenInterestRequest(ImportFundingRequest):
     period: str = '5m'
     source: str = 'rest'
+    allow_archive_assumptions: bool = False
+    background: bool = False
+
+
+class MarketDataJobRequest(BaseModel):
+    job_id: UUID
+
+
+class MarketDataJobsRequest(BaseModel):
+    limit: int = Field(default=20, ge=1, le=200)
 
 
 @router.post('/import')
@@ -192,8 +205,25 @@ def oi_datasets():
 
 @oi_router.post('/import')
 def oi_import(request: ImportOpenInterestRequest):
-    return _call(lambda: open_interest.import_binance_history(
-        _timestamp(request.start_date), _timestamp(request.finish_date), request.period, request.source))
+    def start():
+        start, finish = _timestamp(request.start_date), _timestamp(request.finish_date)
+        # Daily archives require thousands of bounded requests over many years;
+        # keep the API and MCP connection responsive instead of timing out mid-import.
+        background = request.background or (request.source != 'rest' and finish - start > 7 * 86_400_000)
+        function = market_data_jobs.start_import if background else open_interest.import_binance_history
+        return function(start, finish, request.period, request.source, request.allow_archive_assumptions)
+    return _call(start)
+
+
+@oi_router.post('/job')
+def oi_job(request: MarketDataJobRequest):
+    return _call(market_data_jobs.get_job, str(request.job_id))
+
+
+@oi_router.post('/jobs')
+def oi_jobs(request: MarketDataJobsRequest):
+    # Jobs created through MCP must also be visible from another dashboard tab.
+    return {'jobs': _call(market_data_jobs.list_jobs, request.limit)}
 
 
 @oi_router.post('/dataset')
@@ -210,4 +240,11 @@ def oi_dataset(request: FundingDatasetRequest):
 
 @oi_router.post('/update')
 def oi_update(request: UpdateDatasetRequest):
-    return _call(lambda: open_interest.update_dataset(request.dataset_id, _timestamp(request.finish_date)))
+    def start():
+        finish = _timestamp(request.finish_date)
+        dataset = open_interest.load_dataset(request.dataset_id)
+        background = request.background or (dataset.get('source') != open_interest.SOURCE
+                                             and finish - dataset['finish'] > 7 * 86_400_000)
+        function = market_data_jobs.start_update if background else open_interest.update_dataset
+        return function(request.dataset_id, finish)
+    return _call(start)
