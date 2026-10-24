@@ -1,7 +1,7 @@
 {
   "format_version": 1,
   "id": "20261024-r49",
-  "updated_at_utc": "2026-10-24 17:25:00 UTC",
+  "updated_at_utc": "2026-10-24 17:50:00 UTC",
   "objective": "Cartera BTC–PAXG–SPY: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, M65/Q80, mediana mensual >0 y positiva sin los 2 mejores meses, medidos a nivel cartera. Cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8 y superar a los benchmarks nulos.",
   "latest": "Fase 2 completada: motor Donchian nulo en BTC/PAXG/SPY, correlación diaria ≤0,16. Cartera RP vol 17% con freno: CAGR 23,1%, DD 15,3%, Sharpe 1,29, M 60%, Q 67%, DSR 0,72: no pasa r9 (faltan CAGR, M65, Q80, DSR). El hueco es la regularidad: ninguna variante supera Q 70%.",
   "next": "Decidir con el usuario antes de la Fase 3: más mangas descorrelacionadas (5–10 perps cripto u otros activos), revisar Q80 para tendencia, o manga de distribución opuesta; y redefinir el freno de DD (resta ~6 pp de CAGR).",
@@ -326,6 +326,7 @@
     }
   },
   "decisions": [
+    "2026-10-24 r49 Fase 2b (protocolo previo a C): freno catastrófico DD ≤−20% → ×0,5, restaura en máximo o 60 d; cartera con vol expansiva (≥120 d de exposición), mensual, 17%, techo 2,5; regla de lado: corto si PnL corto >0 y Sharpe L/S ≥ solo-largo; ETH-corto si Sharpe ≥0,5 y ρ con BTC ≤0,3; N declarado 55.",
     "2026-10-24 r49: la regularidad (M65/Q80, sin los 2 mejores meses) se exige a la cartera, no a cada manga. A las mangas se les piden puertas que no dependen del apalancamiento: DSR ≥0,95, Sharpe ≥0,8, los 5 mejores trades <60% del PnL y superar a los benchmarks nulos.",
     "2026-10-24 r49: riesgo intermedio. Volatilidad de cartera 16–18%; techos de 3% por trade, 8% agregado y 5x aislado; freno de DD en −12% que reduce el riesgo a la mitad hasta volver a −6%; cota ¼–½ Kelly. Reemplaza el perfil fijo 2%/6%/3x.",
     "2026-10-24 r49: se vetan los micro-patrones de menos de 1h sin ejecución maker, HMM/LightGBM sobre un activo y funding/OI como señal de entrada. Funding/OI queda solo como freno de riesgo.",
@@ -404,6 +405,10 @@
     {
       "label": "r49 Fase 2: resultados",
       "path": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md"
+    },
+    {
+      "label": "r49 Fase 2b: diagnóstico y protocolo (fijado antes de C)",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PHASE2B_PROTOCOL.md"
     }
   ],
   "current_stage": {
