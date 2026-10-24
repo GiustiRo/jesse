@@ -180,3 +180,11 @@ pyrightconfig.json
 /bot/research_scripts/data/**/*_1m_*.csv
 !/bot/research_scripts/data/**/*.daily_counts.csv
 !/bot/research_scripts/data/**/*.ny_hour_counts.csv
+
+# Research report dumps: chunked copies of Jesse session logs, records, funding
+# payments and analysis artifacts. They are regenerable from the Jesse DB and the
+# pre-cleanup history lives at tag research-archive-r48. Protocols, verdicts and
+# TRIAL_REGISTRY.json stay tracked.
+/bot/strategies/**/reports/*_PART_[0-9][0-9]*.json
+/bot/strategies/**/reports/*_LOGS_[0-9][0-9].json
+/bot/strategies/**/reports/*RAW_RECEIPT*.json

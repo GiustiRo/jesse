@@ -1,0 +1,432 @@
+{
+  "format_version": 1,
+  "id": "20261024-r49",
+  "updated_at_utc": "2026-10-24 16:38:59 UTC",
+  "objective": "Cartera BTC–PAXG–SPY: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, M65/Q80, mediana mensual >0 y positiva sin los 2 mejores meses, medidos a nivel cartera. Cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8 y superar a los benchmarks nulos.",
+  "latest": "r49 aprobado: revisión crítica, puertas en dos niveles (manga/cartera), riesgo intermedio por volatility targeting y limpieza del espacio de investigación (661 carpetas archivadas y volcados crudos fuera del árbol; todo recuperable en el tag research-archive-r48).",
+  "next": "Fase 0: OOS 2026 de BtcMomentumCore4h congelada, benchmarks nulos 2020-10→2025 y Deflated Sharpe de las referencias. Requiere el MCP jesse-local.",
+  "blockers": "Ninguno técnico. La Fase 0 necesita el MCP jesse-local conectado en la sesión que ejecute.",
+  "counts": {
+    "status": "COMPLETE_PASS_FINAL_AUDIT",
+    "cycles": [
+      {
+        "cycle": "V1",
+        "economic_unique": 96,
+        "nominal_slots": 96,
+        "technical_attempts": 7
+      },
+      {
+        "cycle": "V2",
+        "economic_unique": 16,
+        "nominal_slots": 32,
+        "technical_attempts": 4
+      },
+      {
+        "cycle": "V3",
+        "economic_unique": 33,
+        "nominal_slots": 36,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V4",
+        "economic_unique": 6,
+        "nominal_slots": 6,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V5",
+        "economic_unique": 37,
+        "nominal_slots": 40,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V6",
+        "economic_unique": 21,
+        "nominal_slots": 23,
+        "technical_attempts": 3
+      }
+    ],
+    "new_V5_V6": {
+      "economic_unique": 58,
+      "technical_unique": 6,
+      "total_unique_engine_sessions": 64,
+      "nominal_slots": 63,
+      "reused_slots": 5,
+      "all_sessions_finished": true,
+      "accounting_unique_full_rows": 58
+    },
+    "totals": {
+      "economic_unique": 209,
+      "nominal_slots": 233,
+      "reused_slots": 24,
+      "technical_attempts": 23
+    },
+    "no_independent_sample_count_claim": true,
+    "prior_counts_source": "RESEARCH_CONSOLIDATED_DECISION_20261020.md pre-V5/V6 snapshot",
+    "new_inventory_sources": [
+      "V5_FINAL_SESSION_INVENTORY.json",
+      "V6_FINAL_SESSION_INVENTORY.json"
+    ],
+    "economic_target_reached": false,
+    "closed_at_utc": "2026-10-21 02:14:44 UTC",
+    "discovery_since_r9": {
+      "economic_unique": 70,
+      "technical_backtests": 0,
+      "reused_control_slots": 1,
+      "new_2026_backtests": 0,
+      "not_independent_samples": true,
+      "cycles": {
+        "AB": 3,
+        "CD": 4,
+        "EI": 10,
+        "JM": 7,
+        "N": 2,
+        "O": 2,
+        "P": 2,
+        "Q": 2,
+        "R": 2,
+        "S": 2,
+        "T": 2,
+        "U": 2,
+        "V": 2,
+        "W": 2,
+        "Y": 2,
+        "AA": 2,
+        "K1001_QUOTA": 2,
+        "K1001_MARKET_ENTRY": 1,
+        "R32_C": 2,
+        "R32_A": 2,
+        "R32_B": 2,
+        "R34_C": 2,
+        "R34_A": 2,
+        "R34_B": 1,
+        "R36": 2,
+        "R38": 2,
+        "R40": 2,
+        "R44": 2
+      },
+      "failed_or_replacement_backtests": 0,
+      "completed_economic": 70,
+      "running_economic": 0,
+      "count_basis": "Distinct executed session IDs; not distinct trajectories, hypotheses or independent samples.",
+      "known_reproduced_trajectory_controls": [
+        {
+          "new_session_id": "01af3d1f-a881-468e-ab1a-5b67460591d3",
+          "prior_session_id": "c72b53d8-c986-4131-814b-788cdc0f49e2",
+          "trade_rows": 1481,
+          "max_numeric_row_error": 0
+        }
+      ]
+    },
+    "k1001_existing_record_diagnostic": {
+      "new_economic_backtests": 0,
+      "records": 192,
+      "funding_payments": 1151,
+      "analysis_attempts": 3,
+      "analysis_succeeded": 2,
+      "analysis_failed": 1,
+      "transport_corrected": true,
+      "not_independent_samples": true
+    },
+    "k1001_quota_scenarios": {
+      "new_economic_backtests": 2,
+      "failed_or_replacement_backtests": 0,
+      "technical_backtests": 0,
+      "synthetic_jobs": 1,
+      "synthetic_pass_first_attempt": true,
+      "snapshot_audit_jobs": 1,
+      "snapshot_audit_succeeded": true,
+      "mechanical_join_attempts": 2,
+      "mechanical_join_parse_failure": 1,
+      "partial_telemetry_reconciled": true,
+      "not_independent_samples": true
+    },
+    "k1001_market_entry": {
+      "new_economic_planned": 1,
+      "new_economic_executed": 1,
+      "control_reused": true,
+      "control_session_id": "5c29961d-419a-4207-ae3c-58ad6ccb318c",
+      "technical_backtests": 0,
+      "synthetic_analysis_jobs": 1,
+      "synthetic_pass_first_attempt": true,
+      "completed": 1,
+      "failed_or_replacement_backtests": 0,
+      "snapshot_audit_jobs": 1,
+      "full_accounting_and_trace_invariants_pass": true
+    },
+    "k1001_long_supplement_closure": {
+      "new_economic_backtests": 0,
+      "new_analysis_jobs": 1,
+      "analysis_succeeded_first_attempt": true,
+      "audited_records_reused": 203,
+      "root_mean_checks": 84,
+      "max_mean_check_error": 2.842170943040401e-14,
+      "independent_review_scope": "documentary protocol/code + communicated findings; not independent artifact or full row re-audit"
+    },
+    "r32": {
+      "budget_economic": 6,
+      "economic_started": 6,
+      "economic_finished": 6,
+      "economic_failed_or_replacement": 0,
+      "technical_backtests": 0,
+      "synthetic_jobs": 4,
+      "synthetic_succeeded_first_attempt": 4,
+      "snapshot_analysis_attempts": 4,
+      "snapshot_analysis_succeeded": 3,
+      "snapshot_analysis_failed": 1,
+      "closed_trades": 3333,
+      "funding_payments": 11028,
+      "fully_audited": true,
+      "not_independent_samples": true
+    },
+    "r34": {
+      "budget_economic": 5,
+      "economic_started": 5,
+      "economic_finished": 5,
+      "economic_failed_or_replacement": 0,
+      "synthetic_jobs": 3,
+      "synthetic_firstpass": 3,
+      "snapshot_jobs": 3,
+      "snapshot_firstpass": 3,
+      "closed_trades": 139,
+      "funding_payments": 3324,
+      "fully_audited": true,
+      "not_independent_samples": true
+    },
+    "r36": {
+      "budget_economic": 2,
+      "economic_started": 2,
+      "economic_finished": 2,
+      "economic_failed_or_replacement": 0,
+      "synthetic_jobs": 1,
+      "synthetic_firstpass": 1,
+      "snapshot_jobs": 1,
+      "snapshot_firstpass": 1,
+      "closed_trades": 543,
+      "funding_payments": 1274,
+      "fully_audited": true,
+      "not_independent_samples": true
+    },
+    "r38": {
+      "budget_economic": 2,
+      "economic_started": 2,
+      "economic_finished": 2,
+      "economic_failed_or_replacement": 0,
+      "technical_backtests": 0,
+      "synthetic_jobs": 1,
+      "synthetic_firstpass": 1,
+      "synthetic_outcomes": 104,
+      "snapshot_jobs": 1,
+      "snapshot_firstpass": 1,
+      "closed_trade_records": 484,
+      "funding_payment_records": 4365,
+      "fully_audited": true,
+      "not_independent_samples": true
+    },
+    "r40": {
+      "budget_economic": 2,
+      "economic_started": 2,
+      "economic_finished": 2,
+      "economic_failed_or_replacement": 0,
+      "technical_backtests": 0,
+      "synthetic_jobs": 1,
+      "synthetic_firstpass": 1,
+      "synthetic_checks": 69,
+      "snapshot_jobs": 1,
+      "snapshot_firstpass": 1,
+      "closed_trades": 118,
+      "funding_payments": 554,
+      "fully_audited": true,
+      "not_independent_samples": true,
+      "read_only_orchestration_cells_stopped": 2,
+      "closure_js_parse_errors": 1
+    },
+    "r42": {
+      "observer_budget": 1,
+      "observer_started": 1,
+      "observer_finished": 1,
+      "observer_failed_or_replacement": 0,
+      "new_economic": 0,
+      "synthetic_jobs": 1,
+      "synthetic_firstpass": 1,
+      "synthetic_checks": 137,
+      "snapshot_jobs": 1,
+      "snapshot_firstpass": 1,
+      "forecasts": 11142,
+      "matured_24h": 11137,
+      "matured_daily": 1857,
+      "censored_final": 5,
+      "monthly_valid_fits": 61,
+      "monthly_seed_invalid_fits": 2,
+      "fully_audited": true,
+      "not_independent_samples": true
+    },
+    "r44": {
+      "budget_economic": 2,
+      "economic_started": 2,
+      "economic_finished": 2,
+      "economic_failed_or_replacement": 0,
+      "synthetic_jobs": 1,
+      "synthetic_firstpass": 1,
+      "synthetic_outcomes": 154,
+      "snapshot_jobs": 1,
+      "snapshot_firstpass": 1,
+      "closed_trades": 3330,
+      "funding_payments": 4756,
+      "fully_audited": true,
+      "root_additional_assumption_failure": 1,
+      "native_stop_submissions_log_checked": 3330,
+      "native_stop_cancellations_log_checked": 2503,
+      "not_independent_samples": true
+    },
+    "observers_completed_since_r9": 2,
+    "r46": {
+      "observer_budget": 1,
+      "observer_started": 1,
+      "observer_finished": 1,
+      "observer_failed_or_replacement": 0,
+      "new_economic": 0,
+      "synthetic_jobs": 1,
+      "synthetic_firstpass": 1,
+      "synthetic_outcomes": 88,
+      "snapshot_jobs": 1,
+      "snapshot_firstpass": 1,
+      "origin_days": 1903,
+      "shadows": 3806,
+      "nodes": 33877,
+      "mature_labels": 33874,
+      "mature_common_predictions": 30379,
+      "common_origin_days": 1707,
+      "monthly_fits": 63,
+      "valid_fits": 56,
+      "invalid_seed_fits": 7,
+      "raw_log_bytes": 42874348,
+      "raw_log_lines": 90989,
+      "raw_mcp_paging_complete": false,
+      "raw_complete_public_download": true,
+      "tail500_exact_mcp_match": true,
+      "offline_exposed_input_replay_pass": true,
+      "not_independent_samples": true
+    },
+    "r48": {
+      "documentary_only": true,
+      "new_economic": 0,
+      "new_observers": 0,
+      "new_analysis_jobs": 0,
+      "all_native_running": 0,
+      "subagents_running": 0
+    },
+    "r49": {
+      "economic_new": 0,
+      "note": "r49 es documental y de limpieza; no se ejecutaron backtests."
+    }
+  },
+  "decisions": [
+    "2026-10-24 r49: la regularidad (M65/Q80, sin los 2 mejores meses) se exige a la cartera, no a cada manga. A las mangas se les piden puertas que no dependen del apalancamiento: DSR ≥0,95, Sharpe ≥0,8, los 5 mejores trades <60% del PnL y superar a los benchmarks nulos.",
+    "2026-10-24 r49: riesgo intermedio. Volatilidad de cartera 16–18%; techos de 3% por trade, 8% agregado y 5x aislado; freno de DD en −12% que reduce el riesgo a la mitad hasta volver a −6%; cota ¼–½ Kelly. Reemplaza el perfil fijo 2%/6%/3x.",
+    "2026-10-24 r49: se vetan los micro-patrones de menos de 1h sin ejecución maker, HMM/LightGBM sobre un activo y funding/OI como señal de entrada. Funding/OI queda solo como freno de riesgo.",
+    "2026-10-24 r49: proceso aligerado. Registro global de ensayos con N efectivo y DSR, screening por IC en research_scripts (con opt-in del usuario), un backtest por receta congelada y auditoría completa solo para candidatas.",
+    "2026-10-24 r49: limpieza. 661 carpetas a bot/archive/strategies; 302 volcados *_PART_NN_* (~115 MB) retirados e ignorados; el historial íntegro está en el tag research-archive-r48. Los enlaces de revisiones antiguas a esos archivos quedan rotos a propósito.",
+    "Historial r1–r48: ver HISTORY_SUMMARY.md de r49 y las revisiones anteriores."
+  ],
+  "lines": [
+    "Manga de tendencia BTC: ensamble Donchian/TSMOM de lookbacks fijos, partiendo de BtcMomentumCore4h.",
+    "Mangas PAXG y SPY: el mismo motor (cuenta como una sola familia de ensayos).",
+    "Cartera: risk parity con freno de DD; las puertas r9 se evalúan aquí.",
+    "Opcional, con acuerdo previo: manga de tendencia en 5–10 perps cripto líquidos si la cartera queda corta."
+  ],
+  "methodology": [
+    "Deflated Sharpe (Bailey y López de Prado) con N efectivo obtenido agrupando curvas; PBO/CSCV cuando haya matriz de ensayos.",
+    "Benchmarks nulos por activo: B&H, B&H escalado a la misma exposición y ensamble Donchian sin optimizar.",
+    "Walk-forward sin re-optimización por fold (lookbacks fijos).",
+    "Fee 0,00045 por lado y funding aplicado; exits maker cuando aplique; estrés de candidatas con slippage de stop de 3–5 bps."
+  ],
+  "supersedes": "20261022-r48",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "Línea base y reutilización",
+      "state": "pendiente",
+      "depends": "MCP jesse-local",
+      "gate": "OOS 2026 de BtcMomentumCore4h, benchmarks nulos y DSR de las referencias publicados."
+    },
+    {
+      "order": 1,
+      "title": "Publicar r49 y registro de ensayos",
+      "state": "completada",
+      "depends": "aprobación del usuario",
+      "gate": "PLAN.md, HISTORY_SUMMARY.md y TRIAL_REGISTRY.json publicados."
+    },
+    {
+      "order": 2,
+      "title": "Familia de tendencia en tres activos",
+      "state": "pendiente",
+      "depends": "Fase 0",
+      "gate": "Puertas de manga."
+    },
+    {
+      "order": 3,
+      "title": "Cartera",
+      "state": "pendiente",
+      "depends": "Fase 2",
+      "gate": "Puertas r9 a nivel cartera."
+    },
+    {
+      "order": 4,
+      "title": "Incubación forward",
+      "state": "pendiente",
+      "depends": "Fase 3 y autorización explícita",
+      "gate": "Regla de corte secuencial prerregistrada."
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r49: plan y acuerdos",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PLAN.md"
+    },
+    {
+      "label": "Historial r1–r48 resumido",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/HISTORY_SUMMARY.md"
+    },
+    {
+      "label": "Registro de ensayos",
+      "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    }
+  ],
+  "current_stage": {
+    "stage": "r49_cartera_tendencia",
+    "execution_status": "approved_pending_phase0",
+    "current_focus": "BTC, PAXG y SPY, evaluados como cartera",
+    "risk_profile": {
+      "portfolio_vol_target_pct": [
+        16,
+        18
+      ],
+      "max_risk_per_trade_pct": 3,
+      "aggregate_open_risk_pct": 8,
+      "isolated_leverage_max": 5,
+      "dd_brake": {
+        "trigger_pct": -12,
+        "risk_multiplier": 0.5,
+        "restore_pct": -6
+      },
+      "kelly_cap": "1/4-1/2",
+      "calibrated_once_in": "Fase 3"
+    },
+    "permitted": [
+      "Fases 0–3 de r49 dentro del presupuesto de ≤15 corridas económicas, con un máximo de 2 simultáneas.",
+      "Scripts de screening en research_scripts."
+    ],
+    "excluded": [
+      "Live/paper, Pi, configuración global o instalaciones sin autorización específica.",
+      "Micro-patrones de menos de 1h sin ejecución maker; HMM/LightGBM; funding/OI como señal de entrada.",
+      "Rescatar vecinos de rondas cerradas."
+    ],
+    "new_experiments_authorized": false,
+    "authorization_scope": "Autonomía suspendida a petición expresa del usuario al cerrar R48. No ejecutar ni investigar hasta reanudación humana.",
+    "economic_status": "no_candidate_promoted",
+    "exit_gate": "Cumplir objetivos y suficiencia con medición adecuada; luego acordar estrés antes de promoción.",
+    "goal_status": "paused"
+  }
+}

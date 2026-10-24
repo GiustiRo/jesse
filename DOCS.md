@@ -1,56 +1,69 @@
 # Índice para agentes
 
-Leer este archivo antes de trabajar en el repo. El detalle vive en los documentos enlazados; aquí solo está el mapa y las decisiones vigentes.
+Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las decisiones vigentes; el detalle vive en los documentos enlazados.
 
 ## Documentos
 
 | Documento | Para qué |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Convenciones del framework Jesse: tests, API, typing y publicación. |
-| [`bot/AGENTS.md`](bot/AGENTS.md) | Reglas generadas por Jesse para estrategias vía MCP. |
+| [`bot/AGENTS.md`](bot/AGENTS.md) | Reglas generadas por Jesse para trabajar estrategias vía MCP. |
 | [`LIVE_ADAPTER.md`](LIVE_ADAPTER.md) | Adapter live open source; no instalar el plugin comercial. |
 | [`bot/README.md`](bot/README.md) | Proyecto ejecutable, estrategias y tab ARMAS. |
 | [`bot/docs/local-research.md`](bot/docs/local-research.md) | Réplica Docker local para backtests y Monte Carlo. |
 | [`bot/docs/raspberry-pi.md`](bot/docs/raspberry-pi.md) | SSH, rutas y operación de la Pi. Local y gitignored; no copiar secretos al chat ni a git. |
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
-| [`bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/index.json`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/index.json) | Registro vigente de investigación BTC–PAXG–SPY y cartera; revisión y documentos de continuidad. Vista: <http://localhost:9200/#/research>. Publicar archivos primero e índice al final mediante MCP. |
-| [`bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/EXPLORATION_HISTORY.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/EXPLORATION_HISTORY.md) | Exploraciones posteriores: 14 familias y 47 referencias, incluidos descartes, equivalencias y continuaciones. Consultar antes de proponer otro experimento; los handoffs por sí solos no cubren lo ejecutado. |
-| [`bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md) | Resultados de la revisión intermedia r5: tres revisiones documentales y doce summaries originales contrastados. Referencias, límites y preguntas definidas; ninguna promoción ni nueva prueba económica. |
-| [`bot/docs/multi-asset-pivot-handoff.md`](bot/docs/multi-asset-pivot-handoff.md) | Histórico de Fase 2 multi-activo, ejecución intra-vela y auditor mensual. Sus metas previas y supuesta descorrelación no sustituyen las decisiones del registro vigente. |
+| [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad, supuestos temporales y límites de live. |
+| **[r49 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PLAN.md)** | **Acuerdos vigentes de investigación: puertas, riesgo, costes, fases y proceso.** |
+| [r49 `HISTORY_SUMMARY.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/HISTORY_SUMMARY.md) | Todo lo ejecutado hasta r48 en una página. Leerlo antes de proponer un experimento. |
+| [`TRIAL_REGISTRY.json`](bot/strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json) | Registro global de ensayos (N para el Deflated Sharpe). Toda corrida económica nueva se agrega aquí. |
+| [Hub `index.json`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/index.json) | Revisiones del Hub; vista en <http://localhost:9200/#/research>. |
 
 ## Dónde trabajar
 
 - Investigación, backtests y Monte Carlo: PC local, <http://localhost:9200>, MCP `jesse-local`.
-- Live y administración de la Pi: <http://192.168.1.10:9100>, MCP `jesse-pi`, solo si la tarea lo pide.
+- Live y administración de la Pi: <http://192.168.1.10:9100>, MCP `jesse-pi`, solo si la tarea lo pide. Hoy en la Pi solo corre una POC (`TemaTrendFollowing`), no una operativa.
 - No copiar `.env`, volúmenes ni la base completa entre ambas. La réplica local no tiene claves y no opera.
 
-## Decisiones vigentes
+## Organización del espacio de investigación
 
-- **Segundo ciclo autónomo BTC cerrado, r11:** [`DISCOVERY_RESULTS.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/DISCOVERY_RESULTS.md). Cuatro pruebas C/D nuevas: CUSUM CAGR 8,98% / DD M1 19,27%; absorción −1,12% / 13,53%; reloj de volumen 4,49% / 22,33%; control calendario −4,96% / 38,96%. Ninguna candidata; siete corridas económicas desde r9, sin afirmar independencia. Presupuestos cerrados: no rescatar vecinos ni retirar shorts retrospectivamente. Misma historia 2020–2025, perfil 2%/6%/3x, fee .00045 y funding aplicado; slippage cero, sin estrés ni nueva economía 2026. Auditoría completa de 310/40/424/386 trades reconcilia a <1e−6 USDT. Nueva medición local en estrategias: equity wallet+PnL abierto, marcas M1 y ejecuciones, fronteras mensuales UTC por fase post-funding; 62 meses y 20 trimestres completos. No es DD de todos los extremos intraminuto ni agrupación estricta de eventos por fecha. Ver [`MEASUREMENT.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/MEASUREMENT.md). Framework y configuración global intactos. Autonomía BTC continúa con otra pregunta material, contraste de antecedentes y protocolo previo; continuidad en [`HANDOFF.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/HANDOFF.md).
+- `bot/strategies/` contiene solo estrategias vigentes: referencias, bases de medición y sus dependencias.
+- `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
+- El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-- **Primer ciclo autónomo BTC cerrado, r10:** [`DISCOVERY_RESULTS.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r10/DISCOVERY_RESULTS.md). Matriz BTC existente completada y3backtests nuevos (2hipótesis+1iteración) bajo protocolos A/B: signos CAGR11,59%/DDdiario14,52%; fallo post-funding−7,57%/DD35,24%; signos con gestión de estado23,39%/DD33,10%. Ninguna candidata, presupuestos cerrados. Funding aplicado/verificado, fee.00045, slippage0, perfil2%/6%/3x; sin estrés ni nueva economía2026. Contabilidad completa reconcilia. DD del framework usa daily_balance y curva00:01UTC: métricas mensuales derivadas aproximadas, no acreditar puertas exactas ni máximos intradiarios. Una futura candidata requiere medición suficiente antes de promoción. Tanda nueva: pregunta material/protocolo previo dentro del permiso autónomo vigente; no seguir vecinos de A/B ni retirar shorts por atribución. R9 mantiene objetivos y fases futuras, pero su pausa de ejecución quedó superada por la autorización posterior.
-- **Continuación autónoma autorizada 2026-10-21:** el usuario pide iniciar trabajo, investigar e iterar estrategias BTC autónomamente, decidir durante exploración y dedicar parte a hipótesis creativas; permite subagentes. Esto supera la pausa experimental anterior para trabajo BTC local dentro de protocolos acotados registrados antes de ejecutar. Mantener riesgo2%/6%/3x, costos base taker con descuento+funding, sin slippage inicial ni estrés/variantes de riesgo. Primera tanda: [`BTC_DISCOVERY_A_PROTOCOL_20261021.md`](bot/strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_A_PROTOCOL_20261021.md), dos recetas nuevas, dos corridas2020–25, sin nueva economía2026. Más tandas requieren hipótesis material/control de repetición/protocolo propios; no pedir permiso rutinario ya otorgado. No autoriza live/paper, Pi, instalaciones, reinicios o configuración global.
-- **Consolidación vigente r9:** [`ROADMAP_AND_AGREEMENTS.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r9/ROADMAP_AND_AGREEMENTS.md) y [`AGREEMENTS.json`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r9/AGREEMENTS.json). El usuario aceptó los objetivos r8: BTC individual, CAGR neto base mínimo30%/aspiración40–50%+, DD objetivo20%/techo25%, PF1.2, M65 activos/aspiración70%, Q80, mediana mensual calendario positiva y diagnóstico sin dos mejores meses positivo. Perfil fijo2%/6%/3x. Futuras exploraciones con un costo base taker con descuento y funding activado/aplicado/verificado; neto inicial excluye slippage modelado. Estrés diferido hasta candidatas y acuerdo conjunto, sin variantes de riesgo. El ejemplo de2% de slippage no es una medición ni un techo anual. R8 deja de estar pendiente de aceptación; R7 no aprobada sigue superada. Los objetivos20–30% de decisiones anteriores son históricos para este alcance. Roadmap: matriz BTC existente → protocolo acotado → exploración con costos base → revisión de candidatas → estrés acordado → operabilidad BTC → otras operativas individuales → cartera eventual. Esta publicación no inicia ni autoriza jobs, datos nuevos, cambios de código/configuración o paper/live; veredictos históricos intactos.
-- **Alcance r8 acordado:** foco exclusivo BTC-USDT individual; evaluar cada operativa antes de combinar. PAXG/SPY y cartera quedan para fases futuras eventuales, con intención de igual riesgo por trade cuando corresponda, sin fijar hoy pesos/capital. Mantener 2%/6%/3x, historia extensa y evidencia 2026 existente; no tratar 2026 observado como lockbox virgen. R7 no aprobada queda sustituida: no espera prospectiva obligatoria ni ocho libros. [`BTC_FIRST_PROPOSAL.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r8/BTC_FIRST_PROPOSAL.md) separa alcance acordado de cifras **propuestas**: CAGR mínimo30%, aspiración40–50%, DD objetivo20%/techo25%, recuperar M65 activos (aspiración70%) y Q80. El 65% histórico no es mediana ni porcentaje calendario. Acordar criterios y contrastar evidencia BTC guardada antes de un protocolo nuevo; sin nuevas ejecuciones, consultas de velas, código, live/paper ni Pi. No cambiar veredictos históricos.
-- **Propuesta r7 para debate:** [`PROSPECTIVE_VALIDATION_PROPOSAL.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r7/PROSPECTIVE_VALIDATION_PROPOSAL.md). Diseña una posible observación futura de 12 meses con referencias y controles congelados, cuatro libros principales y cuatro de estrés. Horizonte, capital virtual y puertas son propuestas, no acuerdos ni prerregistro. Instrumentos, datos, funding multiactivo, ejecución, estrés numérico y versiones pendientes. Preparar esta propuesta no autoriza implementar ni iniciar captación, pruebas, paper o live; sigue fijo el perfil 2%/6%/3x y no hay candidata promovida.
-- Etapa actual acordada el 2026-10-21: **validación intermedia de evidencia existente**, sin nuevos backtests, replays, optimizaciones, Monte Carlo ni exploraciones de estrategias, riesgo, apalancamiento, asignación o capital. Perfil fijo de investigación: **2% por operación / 6% agregado / 3x aislado**. Conservar perfiles y cifras históricos; si faltan comparaciones equivalentes, declarar la limitación sin ejecutar de nuevo ni escalar curvas. Entregar definiciones de referencia, fortalezas, debilidades y preguntas pendientes; después acordar con el usuario cómo seguir. No modificar configuración global ni live/paper. Acuerdo: [`INTERMEDIATE_VALIDATION.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r5/INTERMEDIATE_VALIDATION.md), revisión vigente en el índice del Hub.
-- **Resultado r5:** revisión documental completada, publicada en r6. Conservar K1001 B/C como referencias heredadas y N204 B/C como controles equivalentes de 10k/2%/6%/3x; ninguna candidata promovida. K1001 conserva mayor retorno en las cuatro parejas de desarrollo, pero no domina toda medida de riesgo/regularidad. Las cinco diferencias de registros K1001/Y902 son sólo tres situaciones discordantes únicas. Correlaciones/co-pérdidas sí se midieron en 1%/8%/5x; matriz equivalente de versiones 2%/6%/3x no acreditada en anexos R12 revisados. CAGR de cartera no acredita 20–30% por pieza o por año. Siguiente punto: revisar definiciones con el usuario y acordar cómo seguir; no iniciar otra fase automáticamente. Continuidad: [`HANDOFF.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/HANDOFF.md).
-- Operativa vigente: solo `BTC-USDT` perpetual. Una sesión por cuenta: Binance one-way netea el símbolo. Horizonte de investigación: BTC–PAXG–SPY y cartera conjunta; esta ampliación no autoriza live/paper ni acceso a la Pi.
-- Objetivo vivo: 5x isolated, sin piramidar. El live de la Pi puede seguir en 2x; cambiarlo a 5x antes de operar (en Binance ya está en 5x Aislado)
-- Riesgo elegido: 2% por trade. Meta aceptada: 20–30% anual (Negociable).
-- Fee de backtest: `0.00045` (taker VIP0 con BNB). Funding desactivado por defecto para preservar los resultados previos; la integración optativa BTC Binance se desarrolla en `feature/funding-integration`, con datasets versionados y supuestos explícitos. No confundir validación de código con autorización para operar.
-- Prioridad: rentabilidad, no frecuencia.
-- Evaluación por operativa y cartera: meta orientativa 20–30% anual, con años y períodos adversos explícitos. Una pieza inferior puede ser candidata si mejora el conjunto dentro del riesgo. Medir correlación de rendimientos y pérdidas simultáneas; sectores distintos no acreditan diversificación.
-- Registro de investigación: revisión publicada en RESEARCH_HUB/index.json. V1–V6 cerrados sin candidata: 209 económicas únicas, 233 slots, 24 reusos y 23 intentos técnicos aparte; no son muestras independientes. CHANNEL_P parcial, CROSS_P elegible en screening sin confirmación posterior. Los protocolos y veredictos originales permanecen como evidencia histórica. El preflight legacy no calculó su rentabilidad corregida.
-- Antes de nuevos experimentos: hipótesis falsable, protocolo con criterios numéricos propios, presupuesto, versiones de código/datos y cierre fijados antes de ejecutar. Separar ejecución, suficiencia de evidencia y objetivo. Máximo global dos backtests y dos análisis simultáneos, sujeto a límites más estrictos del protocolo. Recuperar timeouts por estado antes de repetir. ML/HMM/visión IA condicionados a necesidad demostrable.
-- Control de repetición: contrastar toda propuesta con protocolos, matrices, fuentes y continuaciones de las exploraciones ejecutadas. Explicar la diferencia material y la información nueva; priorizar reutilizar evidencia o un reanálisis compatible. La prioridad genérica de explorar BTC tendencia/exposición del Hub inicial fue retirada en r4. Las comparaciones de asignación/capital/cartera ya tienen antecedentes R11–R13 y otros; no empezar desde cero ni sumar conteos superpuestos.
-- Timeframes: A explorar/definir.
-- Candidata: A explorar/definir.
-- Descartadas: ``TrendBreakout5m``, `SqueezeRelease5m`, `RangeFade5m`, `TrendPullback5m`.
-- Calibrar solo con 2020–2025. El 2026-10-19 el usuario autorizó abrir 2026 para evaluar K1001: capital inicial 10.000 USDT, riesgo objetivo 2% por operación / 6% agregado y isolated 3x, carteras B/C con fee nominal y estresado. Ventana 2026-01-01 inclusiva → 2026-10-19 exclusiva. Protocolo: [`K1001_OOS_2026_10K_PROTOCOL_20261019.md`](bot/strategies/MultiAssetRetestBtcShort4h/reports/K1001_OOS_2026_10K_PROTOCOL_20261019.md). Criterios OOS: neto positivo, PF ≥ 1.2, drawdown no peor que −25% y al menos 20 trades; neto positivo bajo estrés. Esta autorización no cubre live/paper. Si 2026 se usa después para ajustar reglas, pasa a desarrollo de esa nueva versión.
-- No ejecutar `jesse install-live` ni definir `LICENSE_API_TOKEN`. Estamos en un repo opensource 100% customizable!
-- Exposición histórica adicional a 2026: después de K1001 se ejecutó, por solicitud del usuario registrada en su protocolo, una comparación ampliada de N204/N503/P604/C504/K1005 (20 corridas nuevas y cuatro K1001 reutilizadas). Fue exploratoria tras observar K1001; ninguna de las cinco pasó las puertas. Ver [`OOS_2026_ARCHIVED_CANDIDATES_RESULTS_20261019.md`](bot/strategies/MultiAssetRetestBtcShort4h/reports/OOS_2026_ARCHIVED_CANDIDATES_RESULTS_20261019.md). Este antecedente no autoriza nuevas consultas o pruebas de 2026 ni lo vuelve una reserva virgen para nuevas reglas.
-- No commitear `.env`, `bot/docs/raspberry-pi.md` ni claves, y no imprimirlas.
-- El 2026-10-20 el usuario autorizó instalar herramientas para completar funding/OI. Pyrefly 1.4.0 se instaló en el contenedor local de investigación; indicadores, `Strategy`, estrategias de test y módulos nuevos pasaron sin errores. El frontend servido vive en `jesse/static/`; sus módulos Nuxt distribuidos están en `_nuxt/` y las extensiones editables se mantienen fuera de esos bundles.
+## Decisiones vigentes (r49, 2026-10-24)
+
+- **Objetivo:** cartera BTC–PAXG–SPY con descorrelación real, evaluada como cartera.
+  - Puertas de cartera: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, ≥65% de meses activos positivos, ≥80% de trimestres positivos, mediana mensual >0 y resultado positivo sin los 2 mejores meses.
+  - Puertas de cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8, ≥100 trades (≥30 si es diaria), los 5 mejores trades <60% del PnL y superar a los benchmarks nulos.
+- **Riesgo (perfil intermedio):**
+  - volatilidad objetivo de cartera 16–18%;
+  - techos: 3% por trade, 8% agregado, 5x aislado;
+  - freno de DD: en −12% el riesgo baja a la mitad hasta volver a −6%;
+  - cota ¼–½ Kelly.
+  
+  Reemplaza el perfil fijo 2%/6%/3x.
+- **Costes base:** fee 0,00045 por lado (taker con BNB) y funding aplicado y verificado. Exits maker cuando aplique. Las candidatas se estresan con slippage de stop de 3–5 bps y fee 0,0009.
+- **Datos:** desarrollo con 2020–2025. 2026 ya fue observado (K1001 y candidatas archivadas): es in-sample para cualquier regla diseñada después del 2026-10-19. Excepción: la OOS de `BtcMomentumCore4h`, congelada antes de esa fecha.
+- **Fuera de alcance:**
+  - señales de menos de 1h sin ejecución maker modelada;
+  - HMM/LightGBM sobre un solo activo;
+  - funding/OI como señal de entrada (solo sirven como freno de riesgo);
+  - rescatar vecinos de rondas cerradas.
+- **Proceso:**
+  - hipótesis contrastada con `HISTORY_SUMMARY.md`;
+  - presupuesto fijado antes de ejecutar;
+  - cada corrida económica se agrega a `TRIAL_REGISTRY.json`;
+  - un informe corto por tanda;
+  - auditoría contable completa solo para candidatas;
+  - máximo 2 backtests simultáneos.
+- **Scripts:** el usuario autorizó scripts de screening en `research_scripts/` para r49.
+- **Live:** paper, live, cambios en la Pi o en la configuración global requieren autorización explícita. No ejecutar `jesse install-live` ni definir `LICENSE_API_TOKEN`: es un repo open source 100% customizable.
+- **Operativa en Binance:** perpetuos USDT-M, una sesión por cuenta (one-way netea el símbolo).
+- **Seguridad:** no commitear `.env`, `bot/docs/raspberry-pi.md` ni claves, y no imprimirlas.
+- **Frontend:** el que se sirve vive en `jesse/static/`. Sus módulos Nuxt distribuidos están en `_nuxt/`; las extensiones editables quedan fuera de esos bundles.
+
+## Histórico
+
+Los acuerdos r5–r11 y r9 (BTC individual, 2%/6%/3x, puertas por pieza), el handoff de Fase 2 ([`bot/docs/multi-asset-pivot-handoff.md`](bot/docs/multi-asset-pivot-handoff.md)) y los protocolos OOS de K1001 quedan como evidencia histórica, superada por r49. Sus veredictos no cambian. Ver `HISTORY_SUMMARY.md` y `RESEARCH_HUB/revisions/`.
