@@ -1,7 +1,8 @@
-# Binance BTC funding and open interest
+# Binance funding and open interest
 
-This project supports **Binance USD-M BTC-USDT** funding and historical open interest,
-without ML. Funding is optional and disabled by default. Data import and draft
+This project supports historical funding of **any Binance USD-M USDT-margined
+perpetual** (one dataset per symbol: `BTC-USDT`, `ETH-USDT`, ...) and historical
+open interest for **BTC-USDT only**, without ML. Live funding/OI remains BTC-only. Funding is optional and disabled by default. Data import and draft
 configuration never start a trading session or place an order.
 
 ## Sources and units
@@ -31,31 +32,70 @@ keys into research scripts, tool arguments, source control or reports.
 
 ## Backtest workflow through MCP
 
-1. `import_funding(start_date, finish_date, allow_mark_price_proxy=False)` imports
-   an explicit UTC `[start,finish)` window and returns an immutable `dataset_id`,
-   event count, coverage, gaps, timestamp assumptions and price provenance.
-2. `list_funding_datasets`, `get_funding_dataset` inspect snapshots;
+1. `import_funding(start_date, finish_date, allow_mark_price_proxy=False,
+   symbol="BTC-USDT")` imports an explicit UTC `[start,finish)` window of one
+   symbol and returns an immutable `dataset_id`, its `symbol`, event count,
+   coverage, gaps, timestamp assumptions and price provenance. `symbol` uses
+   Jesse's form (`ETH-USDT`); omitting it imports BTC exactly as before, with
+   the same content hash for the same vendor history.
+2. `list_funding_datasets(symbol=None)`, `get_funding_dataset` inspect snapshots;
    `update_funding_dataset(id,finish_date)` re-fetches the explicit window and
-   creates another ID if the vendor history or coverage changed. Old runs keep
+   creates another ID if the vendor history or coverage changed. It always keeps
+   the dataset's own symbol. Old runs keep
    the old ID. No automatic substitution of the newest dataset.
    `get_funding_dataset(id,include_events=True,offset=0,limit=50)` reads bounded
    raw settlement pages for research; the OI equivalent pages observations with
    their declared availability times. No need to read backend storage directly.
 3. Create a normal backtest draft, then
    `configure_session_market_data(session_id, funding={"mode":"historical",
-   "dataset_id":"..."})`. Configuration belongs to **form.config**, not global
+   "dataset_id":"..."})` for one symbol, or `"dataset_ids":["<btc>","<eth>"]`
+   for several (one per symbol). Configuration belongs to **form.config**, not global
    settings. Run using normal `run_backtest`. The dashboard's Import Data tabs
    performs the same import/configuration/read requests. Reload a previously open
    backtest tab after changing its draft configuration.
 4. Inspect `get_session_funding(session_id)` or `get_session_results` section
    `funding`. Summaries omit the bulky ledger; paged reads and analysis exports
    retain it. Metrics contain `funding.applied`, dataset/version, signed cashflow,
-   scope, exclusions, and a payment ledger linked to trade IDs.
+   scope, exclusions, and a payment ledger (with `symbol`) linked to trade IDs.
+   `dataset_ids` runs also report `dataset_ids`, per-symbol `datasets`
+   descriptions and `cashflow_by_symbol`; their `dataset_id`/`data` are `null`
+   when more than one dataset was used.
 
-Other route symbols must be explicitly listed in `funding.exclude_symbols` when
-only BTC funding is being modeled. The dashboard asks for explicit per-symbol
-exclusions, and the result displays them. Spot and SPX/PAXG proxy prices are not
-automatically assigned Binance BTC funding or assumed fully costed.
+### Per-symbol funding
+
+Each route pays funding **only from the dataset of its own symbol**: an
+`ETH-USDT` position settles ETH rates against ETH settlement marks, never BTC's.
+`scope` lists the symbols with a dataset. Every other route symbol must be listed
+explicitly in `funding.exclude_symbols`; there is no fallback to another
+symbol's rates and no silent zero. Exclusions cannot name a funded symbol, and
+two datasets of the same symbol in one run are refused. The dashboard selects
+one version per symbol, asks for explicit exclusions of the remaining routes, and
+the result displays them. Spot and SPX/PAXG proxy prices are not automatically
+assigned any Binance funding or assumed fully costed.
+
+Validation (coverage of the full window, the eight-hour gap gate, timestamp
+jitter, duplicates) runs on each dataset separately, so one symbol's events can
+never mask a gap in another. Same-minute settlements of different symbols are
+independent cash flows, ordered by symbol in the ledger for reproducibility.
+
+A legacy `dataset_id` config with a BTC dataset is replayed exactly as before
+multi-symbol support (pinned by a golden regression test): same dataset IDs,
+cashflows, metrics and result shape.
+
+Example: an ETH short-first study with BTC as a second route.
+
+```python
+import_funding("2020-01-01", "2026-10-01", allow_mark_price_proxy=True, symbol="ETH-USDT")
+configure_session_market_data(session_id, funding={
+    "mode": "historical", "dataset_ids": ["<btc dataset_id>", "<eth dataset_id>"]})
+# or ETH only, other routes explicitly unfunded:
+configure_session_market_data(session_id, funding={
+    "mode": "historical", "dataset_id": "<eth dataset_id>", "exclude_symbols": ["PAXG-USDT"]})
+```
+
+Binance omits settlement marks on early rows for ETH too (e.g. 2020), so a
+window starting there needs `allow_mark_price_proxy=True`; the proxy uses the
+same symbol's hourly mark-price candles.
 
 For OI use `import_open_interest`, `list_open_interest_datasets`,
 `get_open_interest_dataset`, `update_open_interest_dataset`, and the draft's
@@ -87,7 +127,8 @@ its own import form. The canonical view is `/#/candles/` (Import Data); the old
 
 Execution candles are stored at one minute; other strategy timeframes are
 generated from those candles. Funding is an event series, usually every eight
-hours for BTC, not a candle timeframe: each payment uses the position at that
+hours for BTC and ETH (some perpetuals settle every four or one hour), not a
+candle timeframe: each payment uses the position at that
 event even if the strategy runs at 1h or 4h. Final funding signal availability
 follows the one-minute publication assumption described below.
 
@@ -116,11 +157,12 @@ This is a documented replay approximation, not a claim about millisecond venue
 ordering. Final rates become usable for signals at the next minute boundary;
 original historical publication timestamps are not supplied by Binance.
 
-Funding forces full minute replay even when the form requests fast mode. BTC
-execution candles must be uninterrupted and span the full requested window;
-other instruments may use sparse timestamp replay. Missing funding coverage,
-duplicate/effective timestamps, conflicting history, and gaps above BTC's explicit
-eight-hour coverage gate (plus timestamp jitter) are refused. No fabricated zero
+Funding forces full minute replay even when the form requests fast mode.
+Execution candles of every funded symbol must be uninterrupted and span the full
+requested window; other instruments may use sparse timestamp replay. Missing
+funding coverage, duplicate/effective timestamps, conflicting history, and gaps
+above the explicit eight-hour coverage gate (plus timestamp jitter) of any
+dataset are refused. No fabricated zero
 payments. A historical debit that exhausts available margin raises an explicit
 error: Jesse does not simulate venue-specific funding consumption of isolated
 collateral after free margin is gone.
@@ -135,12 +177,20 @@ oi = self.open_interest                    # BTC base quantity | None
 oi_time = self.open_interest_timestamp      # observation label, UTC ms | None
 
 # Historical-only bounded causal window (oldest first), no future rows.
+# Defaults to this route's symbol when it has a dataset; each row has `symbol`.
 rows = self.get_funding_history(count=30)
+# Another configured symbol, e.g. BTC funding as a signal on an ETH route.
+btc_rows = self.get_funding_history(count=30, symbol="BTC-USDT")
 
 # Live-only estimate of the next payment. NOT a historical final rate.
 estimate = self.funding_rate
 next_time = self.next_funding_timestamp
 ```
+
+With several datasets and a route symbol that has none, `symbol=` is required:
+rates of different symbols are never pooled into one window. A symbol without a
+configured dataset raises instead of returning an empty window.
+`settled_funding_rate` always reads the route's own symbol.
 
 Historical estimated rates are unavailable (`None` with funding enabled).
 Disabled legacy backtests preserve their old `funding_rate == 0` behavior.
@@ -200,5 +250,7 @@ beyond its first-day-of-month free samples. Coin Metrics exposes an OI catalogue
 but its public/community API refused Binance BTC market access during this audit.
 Neither source was purchased or silently substituted for Binance archive data.
 
-These are Binance venue data. Other venues, instruments, inverse contracts and
-historic estimated funding need their own adapters and coverage audits.
+These are Binance venue data. Other venues, non-USDT (inverse or USDC-margined)
+contracts and historic estimated funding need their own adapters and coverage
+audits. Importing a new USDT-M symbol needs no code change, but its coverage and
+settlement interval should be checked in the returned diagnostics.

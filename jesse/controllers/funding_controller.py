@@ -37,10 +37,19 @@ def _call(function, *args):
         raise HTTPException(status_code=502, detail='Binance market data request failed; no partial snapshot published') from exc
 
 
-class ImportFundingRequest(BaseModel):
+class _ImportWindow(BaseModel):
     start_date: str
     finish_date: str
     allow_mark_price_proxy: bool = False
+
+
+class ImportFundingRequest(_ImportWindow):
+    # Older clients omit the symbol; their BTC imports keep the same dataset IDs.
+    symbol: str = funding.DEFAULT_SYMBOL
+
+
+class FundingDatasetsRequest(BaseModel):
+    symbol: str | None = None
 
 
 class FundingDatasetRequest(BaseModel):
@@ -67,7 +76,8 @@ class SessionConfigRequest(BaseModel):
     open_interest: dict | None = None
 
 
-class ImportOpenInterestRequest(ImportFundingRequest):
+# Open interest stays BTC-only, so it does not inherit the funding symbol field.
+class ImportOpenInterestRequest(_ImportWindow):
     period: str = '5m'
     source: str = 'rest'
     allow_archive_assumptions: bool = False
@@ -85,7 +95,7 @@ class MarketDataJobsRequest(BaseModel):
 @router.post('/import')
 def import_history(request: ImportFundingRequest):
     return _call(lambda: funding.import_binance_history(_timestamp(request.start_date), _timestamp(request.finish_date),
-                                                       request.allow_mark_price_proxy))
+                                                       request.allow_mark_price_proxy, request.symbol))
 
 
 @router.post('/dataset')
@@ -101,8 +111,8 @@ def get_dataset(request: FundingDatasetRequest):
 
 
 @router.post('/datasets')
-def datasets():
-    return {'datasets': _call(funding.list_datasets)}
+def datasets(request: FundingDatasetsRequest | None = None):
+    return {'datasets': _call(funding.list_datasets, request.symbol if request else None)}
 
 
 @router.post('/update')
@@ -137,7 +147,10 @@ def session(request: SessionRequest):
         result = metrics.get(name) or {}
         if row.status != 'finished' or result.get('mode') != options.get('mode', 'disabled'):
             return {}
-        if options.get('mode') == 'historical' and result.get('dataset_id') != options.get('dataset_id'):
+        # Funding may name one `dataset_id` or per-symbol `dataset_ids`.
+        def used_ids(value):
+            return value.get('dataset_ids') or [value.get('dataset_id')]
+        if options.get('mode') == 'historical' and used_ids(result) != used_ids(options):
             return {}
         return dict(result)
 
