@@ -1,10 +1,10 @@
 {
   "format_version": 1,
   "id": "20261024-r49",
-  "updated_at_utc": "2026-10-24 18:05:00 UTC",
+  "updated_at_utc": "2026-10-24 21:30:00 UTC",
   "objective": "Cartera BTC–PAXG–SPY: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, M65/Q80, mediana mensual >0 y positiva sin los 2 mejores meses, medidos a nivel cartera. Cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8 y superar a los benchmarks nulos.",
-  "latest": "Fase 2b: el lado corto pierde en BTC/PAXG/SPY (todos quedan solo-largo) y ETH solo-corto tiene Sharpe -0,26. Cartera fijada de antemano: CAGR 29,98%, DD -18,4%, Sharpe 1,41, M ~62%, Q 75% (15/20), DSR 0,79 (N=55): no pasa r9 por CAGR (-0,02 pp), M65 (~-3 pp), Q80 (-1 trimestre) y DSR. CL fuera: HistData WTIUSD sin datos después de 2023-12.",
-  "next": "Acordar con el usuario la 4.ª manga (CL vía Dukascopy u otra fuente) o el piloto de 5–10 perps cripto, o revisar la vara Q80; presupuesto restante 5 corridas.",
+  "latest": "Fase 2c: WTI (Dukascopy) plano solo-largo y negativo L/S; cartera de 4 mangas peor (CAGR 18,9%, DD -22,5%, Q 65%, DSR 0,54). Historia larga oro+SPX: Q 50% en 2013–2020 vs 70% en 2021–25; Q80 no es estable para el motor de tendencia.",
+  "next": "Decidir con el usuario: redefinir la vara de regularidad para tendencia, aprobar la Fase 3b multimercado o cerrar r49 con la cartera de 3 mangas; queda 1 corrida.",
   "blockers": "Ninguno técnico. La Fase 0 necesita el MCP jesse-local conectado en la sesión que ejecute.",
   "counts": {
     "status": "COMPLETE_PASS_FINAL_AUDIT",
@@ -317,13 +317,14 @@
       "subagents_running": 0
     },
     "r49": {
-      "economic_new": 10,
+      "economic_new": 14,
       "technical_failed_attempts": 6,
-      "budget_used": "10/15",
+      "budget_used": "14/15",
       "phase0_report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
       "note": "Fase 0: 2 OOS 2026 + 2 benchmarks nulos. Intentos técnicos sin resultado económico.",
       "phase2_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md",
-      "phase2b_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md"
+      "phase2b_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
+      "phase2c_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
     }
   },
   "decisions": [
@@ -366,7 +367,7 @@
     {
       "order": 2,
       "title": "Familia de tendencia en tres activos",
-      "state": "completada con Fase 2b (lados y ETH evaluados; cartera fijada no pasa r9 por regularidad y CAGR en el umbral)",
+      "state": "completada con Fases 2b y 2c (cartera no pasa r9; regularidad no estable en historia larga)",
       "depends": "Fase 0",
       "gate": "Puertas de manga."
     },
@@ -414,6 +415,10 @@
     {
       "label": "r49 Fase 2b: resultados",
       "path": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md"
+    },
+    {
+      "label": "r49 Fase 2c: WTI e historia larga",
+      "path": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
     }
   ],
   "current_stage": {

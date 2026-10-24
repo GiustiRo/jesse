@@ -486,18 +486,168 @@
       "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PHASE2B_PROTOCOL.md",
       "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
       "analysis_job": "c172a7184cb2446fa604d0de27589359"
+    },
+    {
+      "id": "R49_F2C_LO_WTI",
+      "hypothesis": "Motor nulo solo-largo en WTI (Dukascopy LIGHTCMDUSD, sesión CFD energía).",
+      "session": "063c2564-80c9-4e19-9b64-4add88e660a0",
+      "dashboard_url": "http://localhost:9200/#/backtest/063c2564-80c9-4e19-9b64-4add88e660a0",
+      "strategy": "R49NullDonchianEnsWti",
+      "symbol": "WTI-USDT",
+      "period": "2020-10-15→2026-01-01",
+      "funding": {
+        "mode": "disabled",
+        "reason": "perpetuo TradFi con funding 0 / sin histórico"
+      },
+      "metrics": {
+        "cagr_pct": -0.02,
+        "max_dd_pct": -28.37,
+        "sharpe": 0.05,
+        "trades": 13,
+        "dsr_n57": 0.013
+      },
+      "decision": "B4: solo-largo elegido (L/S peor); incluida en la cartera de 4 mangas, que empeora",
+      "analysis_job": "31e758e48d584b659c24cefcb6b73ead",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2c",
+      "date_utc": "2026-10-24",
+      "exchange": "Custom Data",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
+    },
+    {
+      "id": "R49_F2C_LS_WTI",
+      "hypothesis": "Motor L/S simétrico en WTI.",
+      "session": "bb04bfbf-5be1-4201-ac23-1aa14533191f",
+      "dashboard_url": "http://localhost:9200/#/backtest/bb04bfbf-5be1-4201-ac23-1aa14533191f",
+      "strategy": "R49DonchianLSWti",
+      "symbol": "WTI-USDT",
+      "period": "2020-10-15→2026-01-01",
+      "funding": {
+        "mode": "disabled",
+        "reason": "perpetuo TradFi con funding 0 / sin histórico"
+      },
+      "metrics": {
+        "cagr_pct": -4.17,
+        "max_dd_pct": -38.82,
+        "sharpe": -0.33,
+        "trades": 27,
+        "pnl_long": 759,
+        "pnl_short": -2750,
+        "n_short": 14,
+        "dsr_n57": 0.001
+      },
+      "decision": "B4: corto descartado",
+      "analysis_job": "31e758e48d584b659c24cefcb6b73ead",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2c",
+      "date_utc": "2026-10-24",
+      "exchange": "Custom Data",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
+    },
+    {
+      "id": "R49_F2C_LONG_XAU",
+      "hypothesis": "Validación de historia larga: motor solo-largo sin cambios (clase R49NullDonchianEnsWti, sesión CFD) en oro Dukascopy.",
+      "session": "124232e7-30d0-4dfb-a5b6-9cfc0c8461b2",
+      "dashboard_url": "http://localhost:9200/#/backtest/124232e7-30d0-4dfb-a5b6-9cfc0c8461b2",
+      "strategy": "R49NullDonchianEnsWti",
+      "symbol": "XAU-USDT",
+      "period": "2011-01-03→2026-01-01",
+      "funding": {
+        "mode": "disabled",
+        "reason": "perpetuo TradFi con funding 0 / sin histórico"
+      },
+      "metrics": {
+        "cagr_pct": 7.79,
+        "max_dd_pct": -29.93,
+        "sharpe": 0.68,
+        "trades": 30,
+        "quarters_pos": 0.483,
+        "dsr_n57": 0.62,
+        "sub_2013_2020": {
+          "cagr_pct": 1.7,
+          "sharpe": 0.22,
+          "q_pos": 0.375
+        },
+        "sub_2021_2025": {
+          "cagr_pct": 16.9,
+          "sharpe": 1.2,
+          "q_pos": 0.6
+        }
+      },
+      "decision": "validación (no selección)",
+      "analysis_job": "42ed3bf8a7184f539b4618f149b15f50",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2c",
+      "date_utc": "2026-10-24",
+      "exchange": "Custom Data",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
+    },
+    {
+      "id": "R49_F2C_LONG_SPX",
+      "hypothesis": "Validación de historia larga: motor solo-largo sin cambios (clase R49NullDonchianEnsSpy) en SPX Dukascopy /10.",
+      "session": "3b113aa3-1c44-4ac9-b0c5-e780d3c6eee8",
+      "dashboard_url": "http://localhost:9200/#/backtest/3b113aa3-1c44-4ac9-b0c5-e780d3c6eee8",
+      "strategy": "R49NullDonchianEnsSpy",
+      "symbol": "SPXD-USDT",
+      "period": "2013-01-02→2026-01-01",
+      "funding": {
+        "mode": "disabled",
+        "reason": "perpetuo TradFi con funding 0 / sin histórico"
+      },
+      "metrics": {
+        "cagr_pct": 6.89,
+        "max_dd_pct": -21.14,
+        "sharpe": 0.62,
+        "quarters_pos": 0.577,
+        "dsr_n57": 0.46,
+        "sub_2013_2020": {
+          "cagr_pct": 5.1,
+          "sharpe": 0.49,
+          "q_pos": 0.531
+        },
+        "sub_2021_2025": {
+          "cagr_pct": 9.8,
+          "sharpe": 0.81,
+          "q_pos": 0.65
+        }
+      },
+      "decision": "validación (no selección)",
+      "analysis_job": "42ed3bf8a7184f539b4618f149b15f50",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2c",
+      "date_utc": "2026-10-24",
+      "exchange": "Custom Data",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md",
+      "notes": "Warmup 600 velas (datos 1m desde 2012-01-16); 3 intentos técnicos de warmup fallidos."
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 55,
+    "declared": 57,
     "sensitivity": [
       20,
       200
     ],
     "method": "Conteo de familias de hipótesis en HISTORY_SUMMARY (≈28 ciclos r10–r48 + 6 V1–V6 + ~5 Fase 1 + ~10 cartera/PAXG/SPY). Agrupando las curvas disponibles 2021–2025, las 5 referencias dan una razón de participación de autovalores de 2,8 (Core/Baseline3 ρ=1,00; K1001 B/C ρ=0,99).",
     "dated": "2026-10-24",
-    "phase2b_note": "+5 por decisiones de lado (BTC, PAXG, SPY), inclusión de ETH y construcción B1/B2 (2026-10-24)."
+    "phase2b_note": "+5 por decisiones de lado (BTC, PAXG, SPY), inclusión de ETH y construcción B1/B2 (2026-10-24).",
+    "phase2c_note": "+2 por la decisión de lado de WTI y su inclusión; las corridas largas son validación (2026-10-24)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -620,6 +770,75 @@
         "dcde8606cc594e4895b5ae1fd948cedf",
         "c172a7184cb2446fa604d0de27589359"
       ]
+    },
+    {
+      "id": "R49_F2C_PORTFOLIO_4LEGS",
+      "kind": "combinación analítica de curvas, construcción B",
+      "legs": {
+        "btc": "b4792187-8847-450d-9f52-320edb4a61dd",
+        "paxg": "02a484b6-a237-4ffb-a283-7db32354a61e",
+        "spy": "21063c59-f0f5-4a07-a66a-040f75e3f475",
+        "wti": "063c2564-80c9-4e19-9b64-4add88e660a0"
+      },
+      "metrics": {
+        "cagr_pct": 18.9,
+        "max_dd_pct": -22.48,
+        "sharpe": 1.1,
+        "months_pos": 0.627,
+        "quarters_pos": 0.65,
+        "median_month_pct": 0.47,
+        "ex_top2_months_pct": 69.2,
+        "pf_trades": 6.07,
+        "dsr_n57": 0.54,
+        "brake_days": 360,
+        "trades_per_year_total": "5–13",
+        "size_adjustments_per_year": "40–71"
+      },
+      "gates_r9": {
+        "passed": false,
+        "cagr": false,
+        "dd": false,
+        "pf": true,
+        "m65": false,
+        "q80": false,
+        "median": true,
+        "ex_top2": true,
+        "dsr": false
+      },
+      "analysis_jobs": [
+        "31e758e48d584b659c24cefcb6b73ead"
+      ]
+    },
+    {
+      "id": "R49_F2C_PORTFOLIO_LONG_XAU_SPX",
+      "kind": "combinación analítica de curvas, construcción B, historia larga",
+      "legs": {
+        "xau": "124232e7-30d0-4dfb-a5b6-9cfc0c8461b2",
+        "spx": "3b113aa3-1c44-4ac9-b0c5-e780d3c6eee8"
+      },
+      "period": "2013-08→2025",
+      "metrics": {
+        "cagr_pct": 14.3,
+        "max_dd_pct": -30.17,
+        "sharpe": 0.81,
+        "quarters_pos": 0.58,
+        "quarters": 50,
+        "dsr_n57": 0.7,
+        "sub_2013_2020": {
+          "cagr_pct": 4.7,
+          "sharpe": 0.35,
+          "q_pos": 0.5
+        },
+        "sub_2021_2025": {
+          "cagr_pct": 30.3,
+          "sharpe": 1.39,
+          "q_pos": 0.7
+        }
+      },
+      "analysis_jobs": [
+        "42ed3bf8a7184f539b4618f149b15f50"
+      ],
+      "note": "WTI largo sin correr por presupuesto."
     }
   ]
 }

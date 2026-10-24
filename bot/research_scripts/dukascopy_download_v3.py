@@ -41,7 +41,7 @@ from jesse import helpers as jh
 BASE_URL = 'https://datafeed.dukascopy.com/datafeed'
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(HERE, 'data')
-POINT_DIVISOR = {'USA500IDXUSD': 1000.0, 'XAUUSD': 1000.0}
+POINT_DIVISOR = {'USA500IDXUSD': 1000.0, 'XAUUSD': 1000.0, 'LIGHTCMDUSD': 1000.0}
 # Dukascopy throttles bursts with 503/429. A fixed polite delay plus exponential backoff keeps
 # a ~1,600-file run reliable without hammering the free service.
 REQUEST_DELAY_S = 0.35
@@ -50,6 +50,14 @@ MAX_RETRIES = 8
 
 def _url(inst: str, d: date) -> str:
     return f'{BASE_URL}/{inst}/{d.year}/{d.month - 1:02d}/{d.day:02d}/BID_candles_min_1.bi5'
+
+
+def _set_base_url(url: str) -> None:
+    # The HTTPS endpoint times out from some networks while plain HTTP answers. Integrity
+    # then rests on the strict decoder (LZMA stream, 24-byte records, positive prices,
+    # minute timestamps and OHLC envelope), which rejects any corrupted or foreign payload.
+    global BASE_URL
+    BASE_URL = url.rstrip('/')
 
 
 # Reuse TLS connections: the legacy feed intermittently refuses new connections.
@@ -119,7 +127,10 @@ def main() -> None:
     ap.add_argument('--scale', type=float, default=10.0, help='divide prices by this (10 maps SPX to SPY scale)')
     ap.add_argument('--out', default=None)
     ap.add_argument('--probe', action='store_true', help='decode one day and print, no CSV')
+    ap.add_argument('--base-url', default=None, help='override the datafeed root, e.g. http://datafeed.dukascopy.com/datafeed')
     args = ap.parse_args()
+    if args.base_url:
+        _set_base_url(args.base_url)
 
     inst = args.instrument
     divisor = POINT_DIVISOR.get(inst, 1000.0)
