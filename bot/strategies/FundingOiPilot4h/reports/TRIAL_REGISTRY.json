@@ -346,17 +346,158 @@
       "risk": "vol target 17%, ≤2x nocional, 3x aislado",
       "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md",
       "analysis_job": "7ebbbeed698040d6a88a83a1428a3ca9"
+    },
+    {
+      "id": "R49_F2B_LS_BTC",
+      "hypothesis": "Motor Donchian L/S simétrico (componentes -1/0/+1) en BTC.",
+      "session": "50dbfcfe-7f4c-48ca-958a-aee2560957c0",
+      "dashboard_url": "http://localhost:9200/#/backtest/50dbfcfe-7f4c-48ca-958a-aee2560957c0",
+      "strategy": "R49DonchianLSBtc",
+      "symbol": "BTC-USDT",
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow_usdt": -1988.73
+      },
+      "metrics": {
+        "cagr_pct": 9.43,
+        "max_dd_pct": -23.05,
+        "sharpe": 0.73,
+        "trades": 30,
+        "pnl_long": 7386,
+        "pnl_short": -1381,
+        "n_short": 17,
+        "dsr_n55": 0.26
+      },
+      "decision": "B4: solo-largo (corto pierde; Sharpe L/S 0,73 < 1,04)",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2b",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PHASE2B_PROTOCOL.md",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
+      "analysis_job": "c172a7184cb2446fa604d0de27589359"
+    },
+    {
+      "id": "R49_F2B_LS_PAXG",
+      "hypothesis": "Motor Donchian L/S simétrico en PAXG.",
+      "session": "b633eb35-5ee1-42b6-8504-e61a5c11f35d",
+      "dashboard_url": "http://localhost:9200/#/backtest/b633eb35-5ee1-42b6-8504-e61a5c11f35d",
+      "strategy": "R49DonchianLSPaxg",
+      "symbol": "PAXG-USDT",
+      "funding": {
+        "mode": "disabled",
+        "reason": "sin histórico nativo"
+      },
+      "metrics": {
+        "cagr_pct": 13.21,
+        "max_dd_pct": -18.35,
+        "sharpe": 1.01,
+        "trades": 19,
+        "pnl_long": 10335,
+        "pnl_short": -1229,
+        "n_short": 10,
+        "dsr_n55": 0.5
+      },
+      "decision": "B4: solo-largo (corto pierde; Sharpe 1,01 < 1,26)",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2b",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PHASE2B_PROTOCOL.md",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
+      "analysis_job": "c172a7184cb2446fa604d0de27589359"
+    },
+    {
+      "id": "R49_F2B_LS_SPY",
+      "hypothesis": "Motor Donchian L/S simétrico en SPY (sesión UTC Mon-Fri 00-20).",
+      "session": "ac68589e-459f-4e15-bf8e-e6d28e5e3b11",
+      "dashboard_url": "http://localhost:9200/#/backtest/ac68589e-459f-4e15-bf8e-e6d28e5e3b11",
+      "strategy": "R49DonchianLSSpy",
+      "symbol": "SPY-USDT",
+      "funding": {
+        "mode": "disabled",
+        "reason": "sin histórico nativo"
+      },
+      "metrics": {
+        "cagr_pct": 6.23,
+        "max_dd_pct": -19.85,
+        "sharpe": 0.63,
+        "trades": 18,
+        "pnl_long": 4715,
+        "pnl_short": -1008,
+        "n_short": 11,
+        "dsr_n55": 0.14
+      },
+      "decision": "B4: solo-largo (corto pierde; Sharpe 0,63 < 0,98)",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2b",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PHASE2B_PROTOCOL.md",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
+      "analysis_job": "c172a7184cb2446fa604d0de27589359"
+    },
+    {
+      "id": "R49_F2B_SHORT_ETH",
+      "hypothesis": "Motor Donchian solo-corto (componentes -1/0) en ETH, idea short-first.",
+      "session": "b6b72481-43ef-45df-accd-cedf32b94dca",
+      "dashboard_url": "http://localhost:9200/#/backtest/b6b72481-43ef-45df-accd-cedf32b94dca",
+      "strategy": "R49DonchianShortEth",
+      "symbol": "ETH-USDT",
+      "funding": {
+        "mode": "disabled",
+        "reason": "import_funding solo soporta BTC-USDT; cobro de funding de los cortos no modelado"
+      },
+      "metrics": {
+        "cagr_pct": -2.09,
+        "max_dd_pct": -24.09,
+        "sharpe": -0.26,
+        "trades": 22,
+        "pnl_short": -1045,
+        "rho_btc_leg": -0.15,
+        "dsr_n55": 0.002
+      },
+      "decision": "B5: no entra (Sharpe < 0,5)",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "2b",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PHASE2B_PROTOCOL.md",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
+      "analysis_job": "c172a7184cb2446fa604d0de27589359"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 50,
+    "declared": 55,
     "sensitivity": [
       20,
       200
     ],
     "method": "Conteo de familias de hipótesis en HISTORY_SUMMARY (≈28 ciclos r10–r48 + 6 V1–V6 + ~5 Fase 1 + ~10 cartera/PAXG/SPY). Agrupando las curvas disponibles 2021–2025, las 5 referencias dan una razón de participación de autovalores de 2,8 (Core/Baseline3 ρ=1,00; K1001 B/C ρ=0,99).",
-    "dated": "2026-10-24"
+    "dated": "2026-10-24",
+    "phase2b_note": "+5 por decisiones de lado (BTC, PAXG, SPY), inclusión de ETH y construcción B1/B2 (2026-10-24)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -436,6 +577,49 @@
         "69b680312d0643e688992292603d4eab"
       ],
       "note": "Variantes de construcción (ventanas, techo, freno, equiponderada) se exploraron como diagnóstico; ver informe. Elegir una a posteriori aumenta N."
+    },
+    {
+      "id": "R49_F2B_PORTFOLIO_FIXED",
+      "kind": "combinación analítica de curvas (no backtest), construcción fijada en el protocolo B",
+      "legs": {
+        "btc": "b4792187-8847-450d-9f52-320edb4a61dd",
+        "paxg": "02a484b6-a237-4ffb-a283-7db32354a61e",
+        "spy": "21063c59-f0f5-4a07-a66a-040f75e3f475"
+      },
+      "construction": "riesgo inverso con vol expansiva (≥120 d de exposición por manga), mensual, vol 17%, techo 2,5, freno catastrófico -20%→×0,5 (restaura en máximo o 60 d)",
+      "metrics": {
+        "cagr_pct": 29.98,
+        "max_dd_pct": -18.44,
+        "sharpe": 1.41,
+        "vol_pct": 19.99,
+        "months_pos": 0.617,
+        "quarters_pos_2021_2025": 0.75,
+        "median_month_pct": 1.43,
+        "ex_top2_months_pct": 147.3,
+        "pf_trades": 9.83,
+        "dsr_n55": 0.79,
+        "dsr_n650": 0.49,
+        "brake_days": 0
+      },
+      "gates_r9": {
+        "passed": false,
+        "cagr": false,
+        "dd": true,
+        "pf": true,
+        "m65": false,
+        "q80": false,
+        "median": true,
+        "ex_top2": true,
+        "dsr": false
+      },
+      "excluded": {
+        "cl": "HistData WTIUSD M1 sin archivos después de 2023-12-01; C3 parado sin sustituir la fuente",
+        "eth_short": "B5: Sharpe -0,26"
+      },
+      "analysis_jobs": [
+        "dcde8606cc594e4895b5ae1fd948cedf",
+        "c172a7184cb2446fa604d0de27589359"
+      ]
     }
   ]
 }
