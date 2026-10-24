@@ -635,6 +635,43 @@
       "risk": "vol target 17%, ≤2x nocional, 3x aislado",
       "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md",
       "notes": "Warmup 600 velas (datos 1m desde 2012-01-16); 3 intentos técnicos de warmup fallidos."
+    },
+    {
+      "id": "R49_CLOSE_LONG_WTI",
+      "hypothesis": "Validación de historia larga: motor solo-largo sin cambios en WTI Dukascopy (hueco abr–jul 2020 excluido).",
+      "session": "1f7a8a6f-f830-4ae8-b3f6-ee06d7f9f5d4",
+      "dashboard_url": "http://localhost:9200/#/backtest/1f7a8a6f-f830-4ae8-b3f6-ee06d7f9f5d4",
+      "strategy": "R49NullDonchianEnsWti",
+      "symbol": "WTI-USDT",
+      "exchange": "Custom Data",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2013-01-02→2026-01-01",
+      "funding": {
+        "mode": "disabled"
+      },
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": "close",
+      "date_utc": "2026-10-24",
+      "metrics": {
+        "cagr_pct": -1.61,
+        "max_dd_pct": -28.37,
+        "sharpe": -0.13,
+        "quarters_pos": 0.365,
+        "dsr_n57": 0.003,
+        "sub_2013_2020": {
+          "sharpe": -0.28,
+          "q_pos": 0.438
+        },
+        "sub_2021_2025": {
+          "sharpe": 0.06,
+          "q_pos": 0.25
+        }
+      },
+      "decision": "validación (no selección): WTI descartado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md",
+      "analysis_job": "cdc317dbb6ad40b8903e1b8b4e81614c"
     }
   ],
   "n_effective": {
@@ -839,6 +876,80 @@
         "42ed3bf8a7184f539b4618f149b15f50"
       ],
       "note": "WTI largo sin correr por presupuesto."
+    },
+    {
+      "id": "R49_CLOSE_PORTFOLIO_LONG_XAU_SPX_WTI",
+      "kind": "combinación analítica, construcción B, historia larga 2013-08→2025",
+      "legs": [
+        "xau",
+        "spx",
+        "wti"
+      ],
+      "metrics": {
+        "cagr_pct": 9.11,
+        "max_dd_pct": -32.52,
+        "sharpe": 0.62,
+        "quarters_pos": 0.6,
+        "dsr_n57": 0.44
+      },
+      "analysis_jobs": [
+        "cdc317dbb6ad40b8903e1b8b4e81614c"
+      ]
+    },
+    {
+      "id": "R49_CLOSE_PORTFOLIO_LONG_STAGGERED_XAU_SPX_BTC",
+      "kind": "combinación analítica, construcción B, historia larga 2013-08→2025",
+      "legs": [
+        "xau",
+        "spx",
+        "btc"
+      ],
+      "metrics": {
+        "cagr_pct": 14.29,
+        "max_dd_pct": -30.17,
+        "sharpe": 0.83,
+        "quarters_pos": 0.6,
+        "dsr_n57": 0.73,
+        "sub_2013_2020": {
+          "sharpe": 0.35,
+          "q_pos": 0.5
+        },
+        "sub_2021_2025": {
+          "sharpe": 1.47,
+          "q_pos": 0.75
+        }
+      },
+      "analysis_jobs": [
+        "cdc317dbb6ad40b8903e1b8b4e81614c"
+      ]
+    },
+    {
+      "id": "R49_CLOSE_PORTFOLIO_LONG_STAGGERED_ALL4",
+      "kind": "combinación analítica, construcción B, historia larga 2013-08→2025",
+      "legs": [
+        "xau",
+        "spx",
+        "wti",
+        "btc"
+      ],
+      "metrics": {
+        "cagr_pct": 9.02,
+        "max_dd_pct": -32.52,
+        "sharpe": 0.63,
+        "quarters_pos": 0.58,
+        "dsr_n57": 0.45
+      },
+      "analysis_jobs": [
+        "cdc317dbb6ad40b8903e1b8b4e81614c"
+      ]
     }
-  ]
+  ],
+  "r49_closed": {
+    "date_utc": "2026-10-24",
+    "economic_runs": "15/15",
+    "n_declared": 57,
+    "promoted": null,
+    "best_reference": "Cartera B de 3 mangas solo-largo (BTC/PAXG/SPY) 2021–25: CAGR 29,98%, DD -18,4%, Sharpe 1,41, Q 75%; no pasa r9 y no se sostiene en historia larga.",
+    "report": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md"
+  }
 }

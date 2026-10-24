@@ -1,10 +1,10 @@
 {
   "format_version": 1,
   "id": "20261024-r49",
-  "updated_at_utc": "2026-10-24 21:30:00 UTC",
+  "updated_at_utc": "2026-10-25 00:00:00 UTC",
   "objective": "Cartera BTC–PAXG–SPY: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, M65/Q80, mediana mensual >0 y positiva sin los 2 mejores meses, medidos a nivel cartera. Cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8 y superar a los benchmarks nulos.",
-  "latest": "Fase 2c: WTI (Dukascopy) plano solo-largo y negativo L/S; cartera de 4 mangas peor (CAGR 18,9%, DD -22,5%, Q 65%, DSR 0,54). Historia larga oro+SPX: Q 50% en 2013–2020 vs 70% en 2021–25; Q80 no es estable para el motor de tendencia.",
-  "next": "Decidir con el usuario: redefinir la vara de regularidad para tendencia, aprobar la Fase 3b multimercado o cerrar r49 con la cartera de 3 mangas; queda 1 corrida.",
+  "latest": "r49 cerrada sin candidata (15/15 corridas). Mejor referencia: cartera B de 3 mangas 2021–25 (29,98% / -18,4% / Sharpe 1,41 / Q 75%). Historia larga 2013–2020: Q ~50% y Sharpe ≤0,35 en todas las variantes; Q80 exige Sharpe sostenido ~2,0 (P≈10–13% con el motor de tendencia).",
+  "next": "r50 a acordar con el usuario: redefinir la vara de cartera para historia larga, Fase 3b multimercado (descargas a aprobar) o motor de distribución opuesta. Nada a paper/live.",
   "blockers": "Ninguno técnico. La Fase 0 necesita el MCP jesse-local conectado en la sesión que ejecute.",
   "counts": {
     "status": "COMPLETE_PASS_FINAL_AUDIT",
@@ -317,17 +317,19 @@
       "subagents_running": 0
     },
     "r49": {
-      "economic_new": 14,
+      "economic_new": 15,
       "technical_failed_attempts": 6,
-      "budget_used": "14/15",
+      "budget_used": "15/15",
       "phase0_report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
       "note": "Fase 0: 2 OOS 2026 + 2 benchmarks nulos. Intentos técnicos sin resultado económico.",
       "phase2_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md",
       "phase2b_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2B_RESULTS_20261024.md",
-      "phase2c_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
+      "phase2c_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md",
+      "close_report": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md"
     }
   },
   "decisions": [
+    "2026-10-24 r49 cerrada: sin candidata promovida. La vara Q80/M65 no es alcanzable con tendencia sobre 3–4 activos (requiere Sharpe sostenido ~2,0); se propone redefinirla para r50 junto con la validación multimercado.",
     "2026-10-24 r49 Fase 2b (protocolo previo a C): freno catastrófico DD ≤−20% → ×0,5, restaura en máximo o 60 d; cartera con vol expansiva (≥120 d de exposición), mensual, 17%, techo 2,5; regla de lado: corto si PnL corto >0 y Sharpe L/S ≥ solo-largo; ETH-corto si Sharpe ≥0,5 y ρ con BTC ≤0,3; N declarado 55.",
     "2026-10-24 r49: la regularidad (M65/Q80, sin los 2 mejores meses) se exige a la cartera, no a cada manga. A las mangas se les piden puertas que no dependen del apalancamiento: DSR ≥0,95, Sharpe ≥0,8, los 5 mejores trades <60% del PnL y superar a los benchmarks nulos.",
     "2026-10-24 r49: riesgo intermedio. Volatilidad de cartera 16–18%; techos de 3% por trade, 8% agregado y 5x aislado; freno de DD en −12% que reduce el riesgo a la mitad hasta volver a −6%; cota ¼–½ Kelly. Reemplaza el perfil fijo 2%/6%/3x.",
@@ -374,7 +376,7 @@
     {
       "order": 3,
       "title": "Cartera",
-      "state": "pendiente",
+      "state": "evaluada en Fases 2–2c y cierre: la cartera no pasa r9; regularidad no estable en historia larga",
       "depends": "Fase 2",
       "gate": "Puertas r9 a nivel cartera."
     },
@@ -419,11 +421,15 @@
     {
       "label": "r49 Fase 2c: WTI e historia larga",
       "path": "strategies/FundingOiPilot4h/reports/R49_PHASE2C_RESULTS_20261024.md"
+    },
+    {
+      "label": "r49: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md"
     }
   ],
   "current_stage": {
     "stage": "r49_cartera_tendencia",
-    "execution_status": "approved_pending_phase0",
+    "execution_status": "r49_closed_no_candidate",
     "current_focus": "BTC, PAXG y SPY, evaluados como cartera",
     "risk_profile": {
       "portfolio_vol_target_pct": [
