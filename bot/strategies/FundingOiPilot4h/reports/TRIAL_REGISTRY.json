@@ -74,5 +74,231 @@
       "source": "strategies/FundingOiPilot4h/reports/RESEARCH_CONSOLIDATED_DECISION_20261020.md"
     }
   ],
-  "trials": []
+  "trials": [
+    {
+      "id": "R49_F0_OOS2026_Core_r5",
+      "hypothesis": "OOS 2026 del código congelado BtcMomentumCore4h a riesgo 5%/5x.",
+      "session": "ce3856a8-6ebe-47c4-9053-81e2adf27b82",
+      "dashboard_url": "http://localhost:9200/#/backtest/ce3856a8-6ebe-47c4-9053-81e2adf27b82",
+      "strategy": "BtcMomentumCore4h",
+      "period": "2026-01-01→2026-10-23",
+      "risk": "5%/5x aislado",
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "0ab14bc27fbc9a76ac754bb351f220fc5ac89d874cc062baf17cd690983b86ca",
+        "settlements": 885,
+        "cashflow_usdt": 7.5
+      },
+      "metrics": {
+        "net_pct": -35.16,
+        "cagr_pct": -41.5,
+        "max_dd_pct": -35.16,
+        "sharpe": -2.95,
+        "pf": 0.005,
+        "trades": 10,
+        "win_rate": 0.1,
+        "top5_share": null,
+        "months_pos": 0.0,
+        "quarters_pos": 0.0,
+        "mean_btc_exposure": 0.14,
+        "skew": -2.36,
+        "kurt": 20.2,
+        "dsr_n50": 0.0,
+        "dsr_n650": 0.0
+      },
+      "gates_r49": {
+        "passed": false
+      },
+      "family": "r49_phase0",
+      "round": "r49",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "symbol": "BTC-USDT",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
+      "analysis_job": "e2d5ee40e2684443a0da1adc537c6ec6",
+      "notes": "Limitación: 2026 se vivió en tiempo real aunque las reglas se congelaron antes de abrirlo. 9 de 10 trades cerraron en el stop inicial."
+    },
+    {
+      "id": "R49_F0_OOS2026_Core_R2",
+      "hypothesis": "Misma OOS con copia BtcMomentumCore4hR2: solo risk_pct 5→2 y apalancamiento 3x.",
+      "session": "00e1bb5f-707f-432b-9d6e-fa5544ed9f56",
+      "dashboard_url": "http://localhost:9200/#/backtest/00e1bb5f-707f-432b-9d6e-fa5544ed9f56",
+      "strategy": "BtcMomentumCore4hR2",
+      "period": "2026-01-01→2026-10-23",
+      "risk": "2%/3x aislado",
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "0ab14bc27fbc9a76ac754bb351f220fc5ac89d874cc062baf17cd690983b86ca",
+        "settlements": 885,
+        "cashflow_usdt": 2.68
+      },
+      "metrics": {
+        "net_pct": -15.64,
+        "cagr_pct": -19.0,
+        "max_dd_pct": -15.64,
+        "sharpe": -2.95,
+        "pf": 0.005,
+        "trades": 10,
+        "win_rate": 0.1,
+        "top5_share": null,
+        "months_pos": 0.0,
+        "quarters_pos": 0.0,
+        "mean_btc_exposure": 0.05,
+        "skew": -2.36,
+        "kurt": 20.3,
+        "dsr_n50": 0.0,
+        "dsr_n650": 0.0
+      },
+      "gates_r49": {
+        "passed": false
+      },
+      "family": "r49_phase0",
+      "round": "r49",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "symbol": "BTC-USDT",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
+      "analysis_job": "e2d5ee40e2684443a0da1adc537c6ec6"
+    },
+    {
+      "id": "R49_F0_NULL_BuyHold",
+      "hypothesis": "Benchmark nulo (i): buy & hold BTC, una entrada larga ~1x.",
+      "session": "02e52011-7dcb-45bb-98c1-ce7f15e99a82",
+      "dashboard_url": "http://localhost:9200/#/backtest/02e52011-7dcb-45bb-98c1-ce7f15e99a82",
+      "strategy": "R49NullBuyHoldBtc",
+      "period": "2020-10-15→2026-01-01",
+      "risk": "~1x nocional, 5x aislado solo como colateral",
+      "funding": {
+        "mode": "disabled",
+        "reason": "Con funding histórico el motor se detuvo (InsufficientMargin) a 2x, 5x y 20x: el funding acumulado 2021–22 de un largo ~1x agota el margen libre. B&H sin funding = equivalente spot; favorece al B&H."
+      },
+      "metrics": {
+        "net_pct": 661.3,
+        "cagr_pct": 47.57,
+        "max_dd_pct": -76.74,
+        "sharpe": 0.96,
+        "trades": 1,
+        "months_pos": 0.578,
+        "quarters_pos": 0.545,
+        "mean_btc_exposure": 0.99,
+        "skew": 0.28,
+        "kurt": 6.86,
+        "psr": 0.986
+      },
+      "gates_r49": {
+        "role": "benchmark"
+      },
+      "family": "r49_phase0",
+      "round": "r49",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "symbol": "BTC-USDT",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
+      "analysis_job": "e2d5ee40e2684443a0da1adc537c6ec6",
+      "notes": "5 intentos técnicos en total en Fase 0 (2 de OOS por velas/caché, 3 de B&H por margen); ninguno produjo resultado económico."
+    },
+    {
+      "id": "R49_F0_NULL_DonchianEns",
+      "hypothesis": "Benchmark nulo (ii): ensamble Donchian 20/55/120/250 d en 4h, long/flat, lookbacks fijos, vol objetivo 17%, nocional ≤2x, banda de rebalanceo 25%.",
+      "session": "b4792187-8847-450d-9f52-320edb4a61dd",
+      "dashboard_url": "http://localhost:9200/#/backtest/b4792187-8847-450d-9f52-320edb4a61dd",
+      "strategy": "R49NullDonchianEnsBtc",
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "settlements": 5712,
+        "cashflow_usdt": -2376.7
+      },
+      "metrics": {
+        "net_pct": 88.45,
+        "cagr_pct": 12.92,
+        "max_dd_pct": -11.85,
+        "sharpe": 1.04,
+        "pf": 6.34,
+        "trades": 11,
+        "top5_share": 1.18,
+        "months_pos": 0.469,
+        "quarters_pos": 0.409,
+        "mean_btc_exposure": 0.19,
+        "skew": 0.71,
+        "kurt": 13.27,
+        "dsr_n50": 0.54,
+        "dsr_n650": 0.22,
+        "bh_scaled_cagr_pct": 10.73,
+        "bh_scaled_dd_pct": -21.85
+      },
+      "gates_r49": {
+        "passed": false,
+        "dsr": false,
+        "sharpe": true,
+        "trades": false,
+        "top5": false,
+        "beats_bh_scaled": true,
+        "beats_bh_cagr": false
+      },
+      "family": "r49_phase0",
+      "round": "r49",
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "symbol": "BTC-USDT",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
+      "analysis_job": "e2d5ee40e2684443a0da1adc537c6ec6",
+      "notes": "Listón de referencia para la Fase 2."
+    }
+  ],
+  "n_effective": {
+    "upper_bound": 650,
+    "declared": 50,
+    "sensitivity": [
+      20,
+      200
+    ],
+    "method": "Conteo de familias de hipótesis en HISTORY_SUMMARY (≈28 ciclos r10–r48 + 6 V1–V6 + ~5 Fase 1 + ~10 cartera/PAXG/SPY). Agrupando las curvas disponibles 2021–2025, las 5 referencias dan una razón de participación de autovalores de 2,8 (Core/Baseline3 ρ=1,00; K1001 B/C ρ=0,99).",
+    "dated": "2026-10-24"
+  },
+  "references_dsr_20261024": {
+    "BtcMomentumCore4h_iter9A": {
+      "sharpe": 1.32,
+      "dsr_n650": 0.52,
+      "dsr_n50": 0.82,
+      "note": "sin curva guardada; Sharpe del motor con momentos normales (cota optimista)"
+    },
+    "BtcMomentumBaseline3_risk3": {
+      "sharpe": 1.38,
+      "dsr_n650": 0.59,
+      "dsr_n50": 0.86,
+      "note": "ídem"
+    },
+    "K1001_B": {
+      "sharpe": 1.66,
+      "skew": 1.64,
+      "kurt": 17.3,
+      "dsr_n650": 0.76,
+      "dsr_n50": 0.945
+    },
+    "K1001_C": {
+      "sharpe": 1.65,
+      "skew": 1.49,
+      "kurt": 16.4,
+      "dsr_n650": 0.75,
+      "dsr_n50": 0.941
+    },
+    "V3_CHANNEL_P_replay": {
+      "sharpe": 0.9,
+      "skew": 2.55,
+      "kurt": 18.3,
+      "dsr_n650": 0.02,
+      "dsr_n50": 0.14
+    }
+  }
 }

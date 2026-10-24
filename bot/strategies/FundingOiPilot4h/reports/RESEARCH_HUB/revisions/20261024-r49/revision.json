@@ -1,10 +1,10 @@
 {
   "format_version": 1,
   "id": "20261024-r49",
-  "updated_at_utc": "2026-10-24 16:38:59 UTC",
+  "updated_at_utc": "2026-10-24 17:10:00 UTC",
   "objective": "Cartera BTC–PAXG–SPY: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, M65/Q80, mediana mensual >0 y positiva sin los 2 mejores meses, medidos a nivel cartera. Cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8 y superar a los benchmarks nulos.",
-  "latest": "r49 aprobado: revisión crítica, puertas en dos niveles (manga/cartera), riesgo intermedio por volatility targeting y limpieza del espacio de investigación (661 carpetas archivadas y volcados crudos fuera del árbol; todo recuperable en el tag research-archive-r48).",
-  "next": "Fase 0: OOS 2026 de BtcMomentumCore4h congelada, benchmarks nulos 2020-10→2025 y Deflated Sharpe de las referencias. Requiere el MCP jesse-local.",
+  "latest": "Fase 0 completada: OOS 2026 de BtcMomentumCore4h negativa (−35,2% a 5%, −15,6% a 2%/3x; 1/10 ganadores). Nulo Donchian ensamble Sharpe 1,04 / DD 11,8%. Ninguna referencia pasa DSR ≥0,95 con N_eff=50.",
+  "next": "Fase 2: motor común = ensamble Donchian 20/55/120/250 d vol-target (R49NullDonchianEnsBtc) aplicado sin cambios a BTC, PAXG y SPY; puertas de trades/top-5 a nivel familia o cartera.",
   "blockers": "Ninguno técnico. La Fase 0 necesita el MCP jesse-local conectado en la sesión que ejecute.",
   "counts": {
     "status": "COMPLETE_PASS_FINAL_AUDIT",
@@ -317,8 +317,11 @@
       "subagents_running": 0
     },
     "r49": {
-      "economic_new": 0,
-      "note": "r49 es documental y de limpieza; no se ejecutaron backtests."
+      "economic_new": 4,
+      "technical_failed_attempts": 5,
+      "budget_used": "4/15",
+      "phase0_report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
+      "note": "Fase 0: 2 OOS 2026 + 2 benchmarks nulos. Intentos técnicos sin resultado económico."
     }
   },
   "decisions": [
@@ -346,7 +349,7 @@
     {
       "order": 0,
       "title": "Línea base y reutilización",
-      "state": "pendiente",
+      "state": "completada",
       "depends": "MCP jesse-local",
       "gate": "OOS 2026 de BtcMomentumCore4h, benchmarks nulos y DSR de las referencias publicados."
     },
@@ -392,6 +395,10 @@
     {
       "label": "Registro de ensayos",
       "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    },
+    {
+      "label": "r49 Fase 0: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md"
     }
   ],
   "current_stage": {
