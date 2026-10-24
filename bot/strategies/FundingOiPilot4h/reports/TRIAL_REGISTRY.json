@@ -244,7 +244,7 @@
         "beats_bh_scaled": true,
         "beats_bh_cagr": false
       },
-      "family": "r49_phase0",
+      "family": "r49_trend_donchian_ens",
       "round": "r49",
       "date_utc": "2026-10-24",
       "exchange": "Binance Perpetual Futures",
@@ -254,6 +254,98 @@
       "report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
       "analysis_job": "e2d5ee40e2684443a0da1adc537c6ec6",
       "notes": "Listón de referencia para la Fase 2."
+    },
+    {
+      "id": "R49_F2_DonchianEns_PAXG",
+      "hypothesis": "Motor Donchian nulo (sin cambios de lógica) aplicado a PAXG; misma familia que R49_F0_NULL_DonchianEns.",
+      "session": "02a484b6-a237-4ffb-a283-7db32354a61e",
+      "dashboard_url": "http://localhost:9200/#/backtest/02a484b6-a237-4ffb-a283-7db32354a61e",
+      "strategy": "R49NullDonchianEnsPaxg",
+      "symbol": "PAXG-USDT",
+      "funding": {
+        "mode": "disabled",
+        "reason": "sin histórico nativo; sesgo a favor"
+      },
+      "metrics": {
+        "cagr_pct": 16.22,
+        "max_dd_pct": -13.12,
+        "sharpe": 1.26,
+        "pf": 11.57,
+        "trades": 10,
+        "top5_share": 1.09,
+        "months_pos": 0.469,
+        "quarters_pos": 0.5,
+        "mean_exposure": 0.64,
+        "dsr_n50": 0.73,
+        "bh_cagr_pct": 16.88,
+        "bh_dd_pct": -21.14,
+        "bh_sharpe": 1.05
+      },
+      "gates_r49": {
+        "passed": false,
+        "sharpe": true,
+        "dsr": false,
+        "trades": false,
+        "top5": false
+      },
+      "notes": "Proxy Binance Spot copiado a perpetuo; warmup 280 velas (componente 250 d inactivo hasta mediados de 2021).",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": 2,
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md",
+      "analysis_job": "7ebbbeed698040d6a88a83a1428a3ca9"
+    },
+    {
+      "id": "R49_F2_DonchianEns_SPY",
+      "hypothesis": "Motor Donchian nulo aplicado a SPY con trading_hours UTC Mon-Fri 00-20, velas de sesión, día hábil = 5 velas, anualización 252.",
+      "session": "21063c59-f0f5-4a07-a66a-040f75e3f475",
+      "dashboard_url": "http://localhost:9200/#/backtest/21063c59-f0f5-4a07-a66a-040f75e3f475",
+      "strategy": "R49NullDonchianEnsSpy",
+      "symbol": "SPY-USDT",
+      "funding": {
+        "mode": "disabled",
+        "reason": "sin histórico nativo; sesgo a favor"
+      },
+      "metrics": {
+        "cagr_pct": 9.58,
+        "max_dd_pct": -14.72,
+        "sharpe": 0.98,
+        "pf": 24.68,
+        "trades": 7,
+        "top5_share": 1.04,
+        "months_pos": 0.571,
+        "quarters_pos": 0.619,
+        "mean_exposure": 0.85,
+        "dsr_n50": 0.35,
+        "bh_cagr_pct": 14.0,
+        "bh_dd_pct": -25.27,
+        "bh_sharpe": 0.93
+      },
+      "gates_r49": {
+        "passed": false,
+        "sharpe": true,
+        "dsr": false,
+        "trades": false,
+        "top5": false
+      },
+      "notes": "Proxy HistData SPX CFD /10 (volumen 0); warmup 840 velas (todo lo disponible). 1 intento técnico fallido (warmup 1700 > datos).",
+      "family": "r49_trend_donchian_ens",
+      "round": "r49",
+      "phase": 2,
+      "date_utc": "2026-10-24",
+      "exchange": "Binance Perpetual Futures",
+      "timeframe": "4h",
+      "fee": 0.00045,
+      "period": "2020-10-15→2026-01-01",
+      "risk": "vol target 17%, ≤2x nocional, 3x aislado",
+      "report": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md",
+      "analysis_job": "7ebbbeed698040d6a88a83a1428a3ca9"
     }
   ],
   "n_effective": {
@@ -300,5 +392,50 @@
       "dsr_n650": 0.02,
       "dsr_n50": 0.14
     }
-  }
+  },
+  "portfolio_diagnostics": [
+    {
+      "id": "R49_F2_PORTFOLIO_RP17_BRAKE",
+      "kind": "combinación analítica de curvas (no backtest)",
+      "legs": [
+        "b4792187-8847-450d-9f52-320edb4a61dd",
+        "02a484b6-a237-4ffb-a283-7db32354a61e",
+        "21063c59-f0f5-4a07-a66a-040f75e3f475"
+      ],
+      "construction": "risk parity vol 365 d, rebalanceo mensual, vol objetivo 17%, techo 2,5 por manga, freno DD -12%→x0,5 / -6%",
+      "metrics": {
+        "cagr_pct": 23.1,
+        "max_dd_pct": -15.3,
+        "sharpe": 1.29,
+        "months_pos": 0.6,
+        "quarters_pos": 0.67,
+        "median_month_pct": 0.86,
+        "ex_top2_months_pct": 100.8,
+        "pf_trades": 9.8,
+        "dsr_n50": 0.72
+      },
+      "gates_r9": {
+        "passed": false,
+        "cagr": false,
+        "dd": true,
+        "pf": true,
+        "m65": false,
+        "q80": false,
+        "median": true,
+        "ex_top2": true,
+        "dsr": false
+      },
+      "correlations_daily": {
+        "btc_paxg": 0.006,
+        "btc_spy": 0.156,
+        "paxg_spy": 0.088
+      },
+      "analysis_jobs": [
+        "27018f7d15b544a08a27354149e6dd22",
+        "0f318feda80a40b6b6b3d07b292ccf50",
+        "69b680312d0643e688992292603d4eab"
+      ],
+      "note": "Variantes de construcción (ventanas, techo, freno, equiponderada) se exploraron como diagnóstico; ver informe. Elegir una a posteriori aumenta N."
+    }
+  ]
 }

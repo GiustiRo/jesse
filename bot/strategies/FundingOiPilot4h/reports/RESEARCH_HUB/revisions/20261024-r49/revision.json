@@ -1,10 +1,10 @@
 {
   "format_version": 1,
   "id": "20261024-r49",
-  "updated_at_utc": "2026-10-24 17:10:00 UTC",
+  "updated_at_utc": "2026-10-24 17:25:00 UTC",
   "objective": "Cartera BTC–PAXG–SPY: CAGR neto ≥30% (aspiración 40–50%), DD ≤20% (techo 25%), PF ≥1,2, M65/Q80, mediana mensual >0 y positiva sin los 2 mejores meses, medidos a nivel cartera. Cada manga: Deflated Sharpe ≥0,95 con N declarado, Sharpe neto ≥0,8 y superar a los benchmarks nulos.",
-  "latest": "Fase 0 completada: OOS 2026 de BtcMomentumCore4h negativa (−35,2% a 5%, −15,6% a 2%/3x; 1/10 ganadores). Nulo Donchian ensamble Sharpe 1,04 / DD 11,8%. Ninguna referencia pasa DSR ≥0,95 con N_eff=50.",
-  "next": "Fase 2: motor común = ensamble Donchian 20/55/120/250 d vol-target (R49NullDonchianEnsBtc) aplicado sin cambios a BTC, PAXG y SPY; puertas de trades/top-5 a nivel familia o cartera.",
+  "latest": "Fase 2 completada: motor Donchian nulo en BTC/PAXG/SPY, correlación diaria ≤0,16. Cartera RP vol 17% con freno: CAGR 23,1%, DD 15,3%, Sharpe 1,29, M 60%, Q 67%, DSR 0,72: no pasa r9 (faltan CAGR, M65, Q80, DSR). El hueco es la regularidad: ninguna variante supera Q 70%.",
+  "next": "Decidir con el usuario antes de la Fase 3: más mangas descorrelacionadas (5–10 perps cripto u otros activos), revisar Q80 para tendencia, o manga de distribución opuesta; y redefinir el freno de DD (resta ~6 pp de CAGR).",
   "blockers": "Ninguno técnico. La Fase 0 necesita el MCP jesse-local conectado en la sesión que ejecute.",
   "counts": {
     "status": "COMPLETE_PASS_FINAL_AUDIT",
@@ -317,11 +317,12 @@
       "subagents_running": 0
     },
     "r49": {
-      "economic_new": 4,
-      "technical_failed_attempts": 5,
-      "budget_used": "4/15",
+      "economic_new": 6,
+      "technical_failed_attempts": 6,
+      "budget_used": "6/15",
       "phase0_report": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md",
-      "note": "Fase 0: 2 OOS 2026 + 2 benchmarks nulos. Intentos técnicos sin resultado económico."
+      "note": "Fase 0: 2 OOS 2026 + 2 benchmarks nulos. Intentos técnicos sin resultado económico.",
+      "phase2_report": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md"
     }
   },
   "decisions": [
@@ -363,7 +364,7 @@
     {
       "order": 2,
       "title": "Familia de tendencia en tres activos",
-      "state": "pendiente",
+      "state": "completada (puertas de manga no superadas; cartera no pasa r9)",
       "depends": "Fase 0",
       "gate": "Puertas de manga."
     },
@@ -399,6 +400,10 @@
     {
       "label": "r49 Fase 0: resultados",
       "path": "strategies/FundingOiPilot4h/reports/R49_PHASE0_RESULTS_20261024.md"
+    },
+    {
+      "label": "r49 Fase 2: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R49_PHASE2_RESULTS_20261024.md"
     }
   ],
   "current_stage": {
