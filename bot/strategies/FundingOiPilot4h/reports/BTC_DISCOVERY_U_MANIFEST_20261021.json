@@ -1,0 +1,257 @@
+{
+  "phase": "U_pre_economic",
+  "at": "2026-10-21 21:17:47 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_U_PROTOCOL_20261021.md",
+  "codes": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_U_CODES_20261021.md",
+  "technical_receipt": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_U_TECHNICAL_CHECK_RECEIPT_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "2d9df9fc38ef470f983d39e1a3f17acc",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/2d9df9fc38ef470f983d39e1a3f17acc",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 1079,
+      "exit_code": 0,
+      "started_at": "2026-10-21T21:15:37+00:00",
+      "finished_at": "2026-10-21T21:15:38+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T21:15:38+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "technical_check.json",
+        "size_bytes": 1069,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"PASS\", \"assertions\": 172, \"source_sha256\": {\"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"BtcResearchR16LegacyBase1m\": \"56f5d56aa004f24db450797cee8b11febd84a5804a2a5d70bcd2cd4ed73e6542\", \"BTCExploreR805\": \"246150464d5636e3a107ba8ad69eb63d3ca98de4d1410d75e12044ef0d36e08a\", \"BtcResearchR21ExternalClockBase1m\": \"caa81c408d261e5d802203d8fdf4b9926a616ae1def52e174c481450faa75ebc\", \"BtcResearchR21BtcClock1m\": \"a46e3a9e286bcad0887e828bcdadd3cf5733617081c742b65358cda8566ea3a0\", \"BtcResearchR21EthClock1m\": \"2d548c234aaa72bea131718d2364e82eab1fe660b729b4accfacd4d249cd8846\"}, \"scope\": \"Caller-supplied AST/stubs only. No real strategy/framework imports, observed candles, economic inputs or nested backtests.\", \"limits\": \"TA stub checks arguments/geometry only; not real numerical Wilder seeds, runtime coverage or full broker parity. Floating near-half invariance not claimed.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR21ExternalClockBase1m": "import math\nimport numpy as np\nimport jesse.indicators as ta\n\nfrom strategies.BtcResearchR16LegacyBase1m import BtcResearchR16LegacyBase1m, legacy_history\nfrom strategies.BtcResearchR10Base4h import BAR\n\nMINUTE = 60000\n\n\ndef external_clock_context(btc_minutes, eth_minutes, now, btc_close):\n    \"\"\"Both past M1 windows/cutoffs share validity; ETH sets time only.\"\"\"\n    start = now - BAR\n    windows = []\n    for raw in (btc_minutes, eth_minutes):\n        if raw.ndim != 2 or raw.shape[1] < 6:\n            return None, \"shape\"\n        # Runtime M1 timestamps are sorted (P framework audit). Binary bounds\n        # avoid scanning/copying a growing multi-year history for each decision.\n        times = raw[:, 0]\n        left = int(np.searchsorted(times, start, side=\"left\"))\n        right = int(np.searchsorted(times, now, side=\"left\"))\n        rows = raw[left:right]\n        if (len(rows) != 240\n                or not np.array_equal(rows[:, 0], start + np.arange(240) * MINUTE)):\n            return None, \"clock\"\n        if (not np.all(np.isfinite(rows[:, :6]))\n                or not np.all(rows[:, 1:5] > 0) or np.any(rows[:, 5] < 0)\n                or np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2]))\n                or np.any(np.maximum(rows[:, 1], rows[:, 2]) > rows[:, 3])):\n            return None, \"ohlcv\"\n        windows.append(rows)\n    btc, eth = windows\n    if float(btc[-1, 2]) != float(btc_close):\n        return None, \"btc_close\"\n    cutoffs, fractions = [], []\n    for rows in windows:\n        # Preserve X805 raw arithmetic, including side='left' at exact half.\n        # Normalization is conceptual; near-half floating sums need not scale\n        # identically and are never repaired with an economic epsilon.\n        volume = rows[:, 5]\n        with np.errstate(over=\"ignore\", invalid=\"ignore\"):\n            total = float(np.sum(volume))\n            cumulative = np.cumsum(volume)\n        if not math.isfinite(total) or total <= 0 or not np.all(np.isfinite(cumulative)):\n            return None, \"total\"\n        cutoff = int(np.searchsorted(cumulative, .5 * total, side=\"left\"))\n        if not 0 <= cutoff < 239:\n            return None, \"empty_partition\"\n        cutoffs.append(cutoff)\n        fractions.append(float(cumulative[cutoff] / total))\n    contexts = []\n    for cutoff in cutoffs:\n        first, second = btc[:cutoff+1], btc[cutoff+1:]\n        # ETH second-group volume is allowed to be zero. Only BTC weights price.\n        costs = []\n        for group in (first, second):\n            with np.errstate(over=\"ignore\", invalid=\"ignore\"):\n                weight = float(np.sum(group[:, 5]))\n                typical = np.mean(group[:, [3, 4, 2]], axis=1)\n                products = typical * group[:, 5]\n                weighted = float(np.sum(products))\n            if (not math.isfinite(weight) or weight <= 0\n                    or not np.all(np.isfinite(typical))\n                    or not np.all(np.isfinite(products)) or not math.isfinite(weighted)):\n                return None, \"btc_weight_or_cost\"\n            cost = weighted / weight\n            if not math.isfinite(cost) or cost <= 0:\n                return None, \"btc_cost\"\n            costs.append(cost)\n        contexts.append(dict(cutoff=cutoff, time=int(btc[cutoff, 0]),\n                             first_cost=costs[0], second_cost=costs[1],\n                             first_low=float(np.min(first[:, 4]))))\n    return dict(start=int(start), finish=int(now), btc=contexts[0], eth=contexts[1],\n                btc_first_fraction=fractions[0], eth_first_fraction=fractions[1]), None\n\n\ndef clock_setups(c, context):\n    \"\"\"The ORIGINAL short-only X805 setup, differing only at chosen boundary.\"\"\"\n    w = c[-14:]\n    if (context is None or len(w) != 14 or not np.all(np.isfinite(w))\n            or not np.all(w[:, 1:] > 0) or not np.all(w[:, 3] >= w[:, 4])):\n        return None\n    s, t = c[-2], c[-1]\n    base = bool(s[2] > c[-14, 2] and t[2] < t[1])\n    values = {}\n    for key in (\"btc\", \"eth\"):\n        part = context[key]\n        values[key] = bool(base and part[\"second_cost\"] < part[\"first_cost\"]\n                           and t[2] < part[\"first_low\"])\n    return dict(base=base, **values)\n\n\ndef clock_supplement_event(c, context):\n    \"\"\"Called only AFTER selected full setup has consumed its false->true latch.\"\"\"\n    atr = float(ta.atr(c))  # Real legacy Wilder14/default with exposed history.\n    if not math.isfinite(atr) or atr <= 0:\n        return None\n    s, t = c[-2], c[-1]\n    distance = float(max(s[3], t[3]) + .25 * atr - t[2])\n    if not atr <= distance <= 3 * atr:\n        return None\n    entry = float(t[2])\n    # Exact physical TP guard, common to both clocks, AFTER latch consumption.\n    if not (math.isfinite(distance) and 0 < distance < entry and entry - 2*distance > 0):\n        return None\n    return dict(origin=\"SUPPLEMENT\", direction=-1, entry=entry, distance=distance,\n                target_distance=2*distance, hold_hours=48, order_kind=\"MARKET\",\n                clock_evidence=context)\n\n\nclass BtcResearchR21ExternalClockBase1m(BtcResearchR16LegacyBase1m):\n    MODE = \"abstract\"\n\n    def _clock_count(self, label, value=1):\n        if self.START < int(self.time) < self.FINISH:\n            counts = self.vars.setdefault(\"clock_counts\", {})\n            counts[label] = counts.get(label, 0) + value\n\n    def _clock_invalid(self, reason):\n        self.vars[\"previous_setup\"] = False\n        self.vars[\"supplement_event\"] = None\n        self._clock_count(\"invalid:\" + reason)\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"BTC_CLOCK\", \"ETH_CLOCK\")\n            self.vars[\"checked\"] = True\n            self._log(\"R21_CLOCK_CONFIG\", dict(mode=self.MODE, fraction=.5,\n                      minutes=240, original_setup=\"X805\", branches=3,\n                      risk=.02, aggregate=.06, leverage=3, fee=.00045,\n                      reserve=.001, lot=.001))\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        self.vars[\"decision_at\"] = now\n        self.vars[\"supplement_event\"] = None\n        rows = legacy_history(self.get_candles(self.exchange, self.symbol, \"4h\"), now)\n        self.vars[\"legacy_rows\"] = rows\n        if rows is None:\n            self.vars[\"previous_setup\"] = False\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            self._clock_count(\"btc4h_invalid\")\n            return\n        self.vars[\"history_min\"] = min(self.vars.get(\"history_min\", len(rows)), len(rows))\n        self.vars[\"history_max\"] = max(self.vars.get(\"history_max\", len(rows)), len(rows))\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        self._clock_count(\"btc4h_valid\")\n        if self.is_open or self.entry_orders:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n        context, reason = external_clock_context(\n            self.get_candles(self.exchange, self.symbol, \"1m\"),\n            self.get_candles(self.exchange, \"ETH-USDT\", \"1m\"), now, float(rows[-1, 2]))\n        if context is None:\n            # Missing external data suppresses ONLY supplement, never original\n            # core/runner candidates or their valid BTC history/trailing.\n            self._clock_invalid(reason)\n            return\n        self._clock_count(\"input_valid\")\n        self._clock_count(\"same_cut\", int(context[\"btc\"][\"cutoff\"] == context[\"eth\"][\"cutoff\"]))\n        self._clock_count(\"cut_distance_sum\", abs(context[\"btc\"][\"cutoff\"]-context[\"eth\"][\"cutoff\"]))\n        self._clock_count(\"btc_cut_sum\", context[\"btc\"][\"cutoff\"])\n        self._clock_count(\"eth_cut_sum\", context[\"eth\"][\"cutoff\"])\n        self._clock_count(\"btc_first_fraction_sum\", context[\"btc_first_fraction\"])\n        self._clock_count(\"eth_first_fraction_sum\", context[\"eth_first_fraction\"])\n        setups = clock_setups(rows, context)\n        if setups is None:\n            self._clock_invalid(\"supplement4h\")\n            return\n        self._clock_count(\"base\", int(setups[\"base\"]))\n        self._clock_count(\"btc_setup\", int(setups[\"btc\"]))\n        self._clock_count(\"eth_setup\", int(setups[\"eth\"]))\n        self._clock_count(\"disagreement\", int(setups[\"btc\"] != setups[\"eth\"]))\n        if self.is_open or self.entry_orders:\n            self._clock_count(\"occupied_disagreement\", int(setups[\"btc\"] != setups[\"eth\"]))\n        chosen = \"eth\" if self.MODE == \"ETH_CLOCK\" else \"btc\"\n        setup = setups[chosen]\n        previous = self.vars.get(\"previous_setup\", False)\n        # Update full setup BEFORE taATR, geometry, monetary and occupation gates.\n        self.vars[\"previous_setup\"] = setup\n        if not setup or previous:\n            return\n        self._clock_count(\"selected_transition\")\n        evidence = dict(context, chosen=chosen, setup_btc=setups[\"btc\"], setup_eth=setups[\"eth\"])\n        event = clock_supplement_event(rows, evidence)\n        if event is None:\n            self._clock_count(\"geometry_or_physical_rejection\")\n            return\n        self.vars[\"supplement_event\"] = event\n        self.vars[\"supplement_events\"] = self.vars.get(\"supplement_events\", 0)+1\n        self._clock_count(\"event\")\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        plan = self.vars[\"position_plan\"]\n        if plan[\"origin\"] == \"SUPPLEMENT\":\n            self._log(\"R21_CLOCK_OPEN\", dict(mode=self.MODE, time=int(self.time),\n                      evidence=plan[\"clock_evidence\"]))\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R21_CLOCK_STATS\", dict(stage=stage, mode=self.MODE,\n                  counts=self.vars.get(\"clock_counts\", {})))\n",
+    "BtcResearchR21BtcClock1m": "from strategies.BtcResearchR21ExternalClockBase1m import BtcResearchR21ExternalClockBase1m\n\n\nclass BtcResearchR21BtcClock1m(BtcResearchR21ExternalClockBase1m):\n    MODE = \"BTC_CLOCK\"\n",
+    "BtcResearchR21EthClock1m": "from strategies.BtcResearchR21ExternalClockBase1m import BtcResearchR21ExternalClockBase1m\n\n\nclass BtcResearchR21EthClock1m(BtcResearchR21ExternalClockBase1m):\n    MODE = \"ETH_CLOCK\"\n"
+  },
+  "reviews": {
+    "status": "approved_for_two_economic_preflight",
+    "sha256": "caa81c408d261e5d802203d8fdf4b9926a616ae1def52e174c481450faa75ebc",
+    "economic_sessions_created": 0,
+    "review": "Root and btc_next_material complete final sources conform; fixed newline defect before jobs;172PASS after two harness-only failures; parents unchanged."
+  },
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "3cd02a5c-4275-49fa-8a0c-fa7e9528d604",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery U | BTC_CLOCK | volumen propio frente a externo",
+      "description": "Libro BTC completo: runner, corto original y suplemento X805. Sólo cambia la frontera temporal del suplemento: 50% del volumen BTC o ETH. Precios, costos ponderados y estructura siempre BTC; validez compartida. Riesgo 2%/6%, aislado3x,10k,fee.00045,fundingBTC histórico. Desarrollo adaptativo.",
+      "description_truncated": false,
+      "created_at": 1792617450000,
+      "updated_at": 1792617450000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR21BtcClock1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "ETH-USDT",
+            "timeframe": "1m"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "ETH-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/3cd02a5c-4275-49fa-8a0c-fa7e9528d604"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "81bf2f14-98ad-48f2-a6c2-2151c11512c8",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery U | ETH_CLOCK | volumen propio frente a externo",
+      "description": "Libro BTC completo: runner, corto original y suplemento X805. Sólo cambia la frontera temporal del suplemento: 50% del volumen BTC o ETH. Precios, costos ponderados y estructura siempre BTC; validez compartida. Riesgo 2%/6%, aislado3x,10k,fee.00045,fundingBTC histórico. Desarrollo adaptativo.",
+      "description_truncated": false,
+      "created_at": 1792617451000,
+      "updated_at": 1792617451000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR21EthClock1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "ETH-USDT",
+            "timeframe": "1m"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "ETH-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/81bf2f14-98ad-48f2-a6c2-2151c11512c8"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "limits": "No stress, risk variants, imports, new2026, live/paper. X805 historical control differs due current BTC-only contract, funding/common ETH validity and explicit physical target guard; no historical replay claim. Whole-book PnL endogenous to occupancy/capital."
+}

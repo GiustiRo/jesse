@@ -1,0 +1,79 @@
+{
+  "format_version": 1,
+  "id": "prospective-validation-draft-r7",
+  "status": "draft_for_discussion",
+  "preregistered": false,
+  "execution_authorized": false,
+  "started": false,
+  "registered_at_utc": null,
+  "t0_utc": null,
+  "source_review_revision": "20261021-r6",
+  "agreed_risk": {
+    "per_trade_target_pct": 2,
+    "aggregate_admission_limit_pct": 6,
+    "isolated_leverage": 3
+  },
+  "proposed_design": {
+    "primary_books": [
+      "K1001 B",
+      "K1001 C",
+      "N204 B",
+      "N204 C"
+    ],
+    "stress_books": [
+      "K1001 B stress",
+      "K1001 C stress",
+      "N204 B stress",
+      "N204 C stress"
+    ],
+    "total_trajectories": 8,
+    "virtual_initial_capital_per_book_usdt": 10000,
+    "horizon_months": 12,
+    "automatic_extension": false,
+    "interim_economic_promotion": false,
+    "primary_target": "portfolio",
+    "standalone_component_target": "unresolved_not_estimated_by_attribution",
+    "gates_for_each_K1001": {
+      "net_annualized_return_min": 0.2,
+      "closed_trade_net_pf_min": 1.2,
+      "observed_mtm_drawdown_max": 0.25,
+      "closed_trades_min": 50,
+      "stress_net_positive": true
+    },
+    "sample_threshold_is_power_calculation": false,
+    "decision_order": [
+      "technical_validity",
+      "economic_gates",
+      "sample_sufficiency",
+      "operational_protocol_pass_only"
+    ],
+    "stress_requires_own_equity_sizing_and_positions": true
+  },
+  "pending_before_preregistration": [
+    "User agreement on scope, horizon, thresholds and budget",
+    "Exact native contracts and feed availability/equivalence",
+    "Supported full funding accounting for every derivative",
+    "Causal fill model, latency, depth, calendars, data gap rules and event clocks",
+    "Numeric stress execution and funding assumptions",
+    "Exact annualization, PF net-cost attribution, zero-loss handling and mark conventions",
+    "Immutable code/data manifests and technical readiness evidence",
+    "Future T0 and complete final protocol"
+  ],
+  "versions": {
+    "strategy_hashes": null,
+    "data_manifest": null,
+    "accounting_version": null,
+    "execution_model_version": null
+  },
+  "execution_in_this_delivery": {
+    "new_data": false,
+    "backtests": false,
+    "replays": false,
+    "analysis_jobs": false,
+    "paper": false,
+    "live": false,
+    "strategy_changes": false,
+    "global_config_changes": false
+  },
+  "protocol": null
+}

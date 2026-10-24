@@ -1,0 +1,66 @@
+{
+  "id": "BTC_R14",
+  "title": "BTC_R14: evidencia previa",
+  "asset": "BTC",
+  "family": "ablación / tendencia",
+  "execution": "revisión intermedia completada",
+  "evidence": "histórica; alcance del informe",
+  "objective": "sin evaluar para el nuevo programa",
+  "hypothesis": "Doce backtests nuevos y cuatro anclas reutilizadas; ninguna variante supera puertas congeladas.",
+  "origin": "Investigación anterior al Hub; inventarios completos enlazados",
+  "method": "Inventario y lectura de cierres existentes, sin nuevas ejecuciones.",
+  "protocol": null,
+  "budget": "No mezclar con conteos V1–V6",
+  "versions": "Fuentes y configuración en reportes originales; proxies no equivalen a perpetual nativo.",
+  "periods": [
+    "2020–2025 reutilizado"
+  ],
+  "results": {
+    "scope": "R14 al perfil2%/6%/3x,10k compartidos; no una rentabilidad BTC aislada.",
+    "variants": "Quitar suplemento y eficiencia long redujeron neto;EMA120conpendiente dependió de una entrada y falló amplitud/Calmar. Ninguna pasó gates.",
+    "incremental_case_correction": "La ventaja K1001 sobre Y902 del contrato históricoR10 procede de tres situaciones discordantes, no cinco casos independientes.",
+    "fixed_profile_annual_C": {
+      "source": "strategies/MultiAssetRetestBtcShort4h/reports/BTC_R14_SIN_FUNDING_RESULTS_20261020.md",
+      "scope": "K1001 BASE_C annual MTM returns already reported;2020and2025partial",
+      "nominal_pct": {
+        "2021": 45.54,
+        "2022": 18.1,
+        "2023": 42.07,
+        "2024": 32.47,
+        "2020_partial": 7.14,
+        "2025_partial": 36.13
+      },
+      "stress_pct": {
+        "2021": 39.63,
+        "2022": 15.38,
+        "2023": 37.33,
+        "2024": 26.26,
+        "2020_partial": 6.19,
+        "2025_partial": 16.81
+      },
+      "interpretation": "Historical CAGR does not imply20–30%every year; above30%is not rejected merely for exceeding an orientative target. Portfolio CAGR does not prove each component target."
+    }
+  },
+  "limitations": [
+    "Sin evaluación de la nueva línea.",
+    "Correlaciones, pérdidas simultáneas y comparación con/sin pieza bajo riesgo comparable: sin evaluar en esta revisión.",
+    "Leer los addenda y registros; no sumar curvas aisladas como cuenta compartida."
+  ],
+  "audit": "Revisión documental r5 por tres revisores con contraste de root; no nueva validación económica. Doce summaries y dos lecturas puntuales de cierre corroborados, sin reauditar todos los fills.",
+  "decision": "R14 cerrado sin variante elegible. Conservar K1001/N204 como referencias; no retirar suplemento, apagar longs o retocar EMA a partir de2026. R5 no abre otra exploración.",
+  "references": [
+    {
+      "label": "Resultados de la validación r5",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md"
+    },
+    {
+      "label": "BTC_R14_SIN_FUNDING_RESULTS_20261020.md",
+      "path": "strategies/MultiAssetRetestBtcShort4h/reports/BTC_R14_SIN_FUNDING_RESULTS_20261020.md"
+    },
+    {
+      "label": "Auditoría de tres situaciones discordantes",
+      "path": "strategies/MultiAssetRetestBtcShort4h/reports/BTC_K1001_DISTINCT_CASE_AUDIT_20261019.md"
+    }
+  ],
+  "sessions": []
+}

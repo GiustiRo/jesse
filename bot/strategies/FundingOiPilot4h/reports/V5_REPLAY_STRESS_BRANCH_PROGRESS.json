@@ -1,0 +1,2060 @@
+{
+  "cycle": "V5",
+  "stage": "REPLAY_AND_STRESS",
+  "status": "complete_rejected",
+  "max_active_motors": 1,
+  "max_active_analysis_jobs": 1,
+  "source_verification_ref": "V5_REPLAY_SOURCE_VERIFICATION.json",
+  "source_static_job": "7de5d23d0f0e4e1c824e514d2892b887",
+  "calendar_ref": "V5_REPLAY_CALENDAR.json",
+  "source_ref": "V5_REPLAY_IMPLEMENTATION_SOURCE_20261020.md",
+  "accounting_code_ref": "V5_V6_ACCOUNTING_CODE.json",
+  "start": "2024-01-01",
+  "finish": "2026-01-01",
+  "nominal_config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "scenarios": [
+    {
+      "family": "OI",
+      "scenario": "NOMINAL",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "NOMINAL",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "S1",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "fee": 0.0009,
+      "slip": 0,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "S1",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "fee": 0.0009,
+      "slip": 0,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "S2",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "fee": 0.00045,
+      "slip": 5,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "S2",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "fee": 0.00045,
+      "slip": 5,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "S3",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "fee": 0.0009,
+      "slip": 10,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "S3",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "fee": 0.0009,
+      "slip": 10,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "R09",
+      "strategy": "ResearchV5FundingFPOiReplayR09_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 2.7,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "R09",
+      "strategy": "ResearchV5FundingFPReplayR09_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 2.7,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "R11",
+      "strategy": "ResearchV5FundingFPOiReplayR11_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3.3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "R11",
+      "strategy": "ResearchV5FundingFPReplayR11_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3.3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "A09",
+      "strategy": "ResearchV5FundingFPOiReplayA09_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 108,
+      "ret": 27,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "A09",
+      "strategy": "ResearchV5FundingFPReplayA09_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 108,
+      "ret": 27,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "A11",
+      "strategy": "ResearchV5FundingFPOiReplayA11_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 132,
+      "ret": 33,
+      "lag": 0
+    },
+    {
+      "family": "FP",
+      "scenario": "A11",
+      "strategy": "ResearchV5FundingFPReplayA11_4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 132,
+      "ret": 33,
+      "lag": 0
+    },
+    {
+      "family": "OI",
+      "scenario": "LAG4H",
+      "strategy": "ResearchV5FundingFPOiReplayLag4h",
+      "fee": 0.00045,
+      "slip": 0,
+      "stop": 3,
+      "sma": 120,
+      "ret": 30,
+      "lag": 1
+    }
+  ],
+  "sessions": [
+    {
+      "family": "OI",
+      "scenario": "NOMINAL",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "id": "46f4c14a-1ac2-4cc0-b347-5d6bff007051",
+      "dashboard_url": "http://localhost:9200/#/backtest/46f4c14a-1ac2-4cc0-b347-5d6bff007051",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_NOMINAL_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:43:08.952Z",
+      "finished_observed_at": "2026-10-21T01:44:41.507Z",
+      "metrics_digest": {
+        "N": 84,
+        "net": -6.86651844653887,
+        "DD": -17.669256287775113
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_NOMINAL.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 84,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_NOMINAL_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 84,
+        "net": -6.866518446538871,
+        "PF": 0.8539117648521104,
+        "DD": -17.669256287775113,
+        "CAGR": -3.489614458523238,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": false,
+        "robust_pass": false,
+        "turnover": 82.63979533563345,
+        "fees": 371.8790790103507,
+        "funding": 141.15492232717867,
+        "sampled_dd": -17.669256287775003
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "NOMINAL",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "id": "ff2f12bf-1faf-4bec-808f-800a778421a4",
+      "dashboard_url": "http://localhost:9200/#/backtest/ff2f12bf-1faf-4bec-808f-800a778421a4",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_NOMINAL_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:44:42.281Z",
+      "finished_observed_at": "2026-10-21T01:45:54.384Z",
+      "metrics_digest": {
+        "N": 107,
+        "net": -2.0796065061563604,
+        "DD": -14.311618647638635
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_NOMINAL.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 107,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_NOMINAL_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 107,
+        "net": -2.079606506156359,
+        "PF": 0.9605749237229804,
+        "DD": -14.311618647638635,
+        "CAGR": -1.0438437362836228,
+        "positive_semesters": 2,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": false,
+        "robust_pass": false,
+        "turnover": 109.21267555858337,
+        "fees": 491.4570400136251,
+        "funding": 167.58179242170849,
+        "sampled_dd": -14.311618647638625
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "S1",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "id": "61c51f03-91d9-4142-8ad5-3f52f19cf4cb",
+      "dashboard_url": "http://localhost:9200/#/backtest/61c51f03-91d9-4142-8ad5-3f52f19cf4cb",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_S1_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:46:02.771Z",
+      "finished_observed_at": "2026-10-21T01:47:05.443Z",
+      "metrics_digest": {
+        "N": 84,
+        "net": -10.143576139440231,
+        "DD": -19.63912246196675
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_S1.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 84,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_S1_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 84,
+        "net": -10.14357613944023,
+        "PF": 0.7877819508036844,
+        "DD": -19.63912246196675,
+        "CAGR": -5.200436569951361,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 79.4537455231915,
+        "fees": 715.0837097087236,
+        "funding": 136.4902456939174,
+        "sampled_dd": -19.639122461966675
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "S1",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "id": "12b33663-1fd7-4883-bb74-519549664e21",
+      "dashboard_url": "http://localhost:9200/#/backtest/12b33663-1fd7-4883-bb74-519549664e21",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_S1_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:47:06.788Z",
+      "finished_observed_at": "2026-10-21T01:47:56.025Z",
+      "metrics_digest": {
+        "N": 107,
+        "net": -6.643529971983909,
+        "DD": -17.025102389154522
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_S1.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 107,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_S1_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 107,
+        "net": -6.64352997198391,
+        "PF": 0.8766455076229023,
+        "DD": -17.025102389154522,
+        "CAGR": -3.3743047066577714,
+        "positive_semesters": 0,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 104.39706807282053,
+        "fees": 939.5736126553847,
+        "funding": 161.23294305820883,
+        "sampled_dd": -17.025102389154533
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "S2",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "id": "e7846d15-86e3-4c78-a5c4-c34122b0d8f5",
+      "dashboard_url": "http://localhost:9200/#/backtest/e7846d15-86e3-4c78-a5c4-c34122b0d8f5",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_S2_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:48:00.289Z",
+      "finished_observed_at": "2026-10-21T01:48:49.820Z",
+      "metrics_digest": {
+        "N": 84,
+        "net": -10.418380551390415,
+        "DD": -20.030091651664115
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_S2.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 84,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_S2_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 84,
+        "net": -10.418380551390417,
+        "PF": 0.786189363039675,
+        "DD": -20.030091651664115,
+        "CAGR": -5.345310178639728,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": false,
+        "robust_pass": false,
+        "turnover": 81.09871507029621,
+        "fees": 364.94421781633304,
+        "funding": 138.1068700269438,
+        "sampled_dd": -20.03009165166414
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "S2",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "id": "ef49d5d4-f4b7-4754-a91d-ec13cc6b51c4",
+      "dashboard_url": "http://localhost:9200/#/backtest/ef49d5d4-f4b7-4754-a91d-ec13cc6b51c4",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_S2_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:48:50.669Z",
+      "finished_observed_at": "2026-10-21T01:51:16.307Z",
+      "metrics_digest": {
+        "N": 107,
+        "net": -7.032192824575606,
+        "DD": -17.483515229169434
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_S2.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 107,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_S2_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 107,
+        "net": -7.032192824575605,
+        "PF": 0.8720333952603687,
+        "DD": -17.483515229169434,
+        "CAGR": -3.5753760008608637,
+        "positive_semesters": 0,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": false,
+        "robust_pass": false,
+        "turnover": 106.47290741766987,
+        "fees": 479.12808337951446,
+        "funding": 164.16856158143509,
+        "sampled_dd": -17.483515229169477
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "S3",
+      "strategy": "ResearchV5FundingFPOiReplay4h",
+      "id": "3733bd0f-ab2d-4ef8-b520-8455c1ecb44f",
+      "dashboard_url": "http://localhost:9200/#/backtest/3733bd0f-ab2d-4ef8-b520-8455c1ecb44f",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_S3_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:51:21.864Z",
+      "finished_observed_at": "2026-10-21T01:52:18.340Z",
+      "metrics_digest": {
+        "N": 84,
+        "net": -16.720498952670837,
+        "DD": -24.08121725085207
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_S3.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 84,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_S3_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 84,
+        "net": -16.720498952670837,
+        "PF": 0.6726276663743841,
+        "DD": -24.08121725085207,
+        "CAGR": -8.730975496008275,
+        "positive_semesters": 0,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 76.60667812610527,
+        "fees": 689.4601031349475,
+        "funding": 131.70781627748246,
+        "sampled_dd": -24.081217250852017
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "S3",
+      "strategy": "ResearchV5FundingFPReplay4h",
+      "id": "0d37d117-ee67-4dcb-a3bf-44e16ccd32ad",
+      "dashboard_url": "http://localhost:9200/#/backtest/0d37d117-ee67-4dcb-a3bf-44e16ccd32ad",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_S3_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:52:20.938Z",
+      "finished_observed_at": "2026-10-21T01:53:33.886Z",
+      "metrics_digest": {
+        "N": 107,
+        "net": -15.661284211118321,
+        "DD": -22.969671562552595
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_S3.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 107,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_S3_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 107,
+        "net": -15.661284211118321,
+        "PF": 0.7298323843150548,
+        "DD": -22.969671562552595,
+        "CAGR": -8.15318747471505,
+        "positive_semesters": 0,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 99.39159015779758,
+        "fees": 894.5243114201775,
+        "funding": 155.00579665664128,
+        "sampled_dd": -22.969671562552563
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "R09",
+      "strategy": "ResearchV5FundingFPOiReplayR09_4h",
+      "id": "8d8a26f8-89dc-4afb-818e-1a9b02093d04",
+      "dashboard_url": "http://localhost:9200/#/backtest/8d8a26f8-89dc-4afb-818e-1a9b02093d04",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_R09_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:53:53.637Z",
+      "finished_observed_at": "2026-10-21T01:54:56.268Z",
+      "metrics_digest": {
+        "N": 84,
+        "net": -6.034779703529434,
+        "DD": -18.517682878990183
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_R09.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 84,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_R09_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 84,
+        "net": -6.034779703529435,
+        "PF": 0.8806898896612441,
+        "DD": -18.517682878990183,
+        "CAGR": -3.0602135957960797,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 90.92899498301516,
+        "fees": 409.1804774235682,
+        "funding": 154.5118296303417,
+        "sampled_dd": -18.51768287899026
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "R09",
+      "strategy": "ResearchV5FundingFPReplayR09_4h",
+      "id": "f7c84508-165c-4788-83fc-52a9bd048e19",
+      "dashboard_url": "http://localhost:9200/#/backtest/f7c84508-165c-4788-83fc-52a9bd048e19",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_R09_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:54:57.289Z",
+      "finished_observed_at": "2026-10-21T01:56:04.176Z",
+      "metrics_digest": {
+        "N": 107,
+        "net": -0.4087290656772569,
+        "DD": -14.405856856648613
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_R09.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 107,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_R09_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 107,
+        "net": -0.4087290656772538,
+        "PF": 0.9927652183831331,
+        "DD": -14.405856856648613,
+        "CAGR": -0.20429421636561917,
+        "positive_semesters": 2,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 120.24288413067127,
+        "fees": 541.0929785880209,
+        "funding": 185.95649411112873,
+        "sampled_dd": -14.405856856648647
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "R11",
+      "strategy": "ResearchV5FundingFPOiReplayR11_4h",
+      "id": "65d8ecaa-5769-45cd-a0d1-8ce5eac88c50",
+      "dashboard_url": "http://localhost:9200/#/backtest/65d8ecaa-5769-45cd-a0d1-8ce5eac88c50",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_R11_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:56:10.734Z",
+      "finished_observed_at": "2026-10-21T01:57:21.101Z",
+      "metrics_digest": {
+        "N": 84,
+        "net": -6.601088091741911,
+        "DD": -16.215932616393193
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_R11.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 84,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_R11_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 84,
+        "net": -6.6010880917419055,
+        "PF": 0.8465753858596157,
+        "DD": -16.215932616393193,
+        "CAGR": -3.352373178479917,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 76.15710937796545,
+        "fees": 342.70699220084447,
+        "funding": 132.6391896873476,
+        "sampled_dd": -16.215932616393335
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "R11",
+      "strategy": "ResearchV5FundingFPReplayR11_4h",
+      "id": "bd499d4f-5b7f-4ae1-882b-fac50e6becf3",
+      "dashboard_url": "http://localhost:9200/#/backtest/bd499d4f-5b7f-4ae1-882b-fac50e6becf3",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_R11_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:57:22.365Z",
+      "finished_observed_at": "2026-10-21T01:58:34.225Z",
+      "metrics_digest": {
+        "N": 107,
+        "net": -1.3897412500625848,
+        "DD": -12.520910979486299
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_R11.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 107,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_R11_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 107,
+        "net": -1.389741250062586,
+        "PF": 0.9709342862317647,
+        "DD": -12.520910979486299,
+        "CAGR": -0.6963512016476048,
+        "positive_semesters": 2,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 100.92010252061745,
+        "fees": 454.14046134277834,
+        "funding": 158.89168258661664,
+        "sampled_dd": -12.520910979486233
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "A09",
+      "strategy": "ResearchV5FundingFPOiReplayA09_4h",
+      "id": "37f3b888-9751-4521-96a1-1711768f37f6",
+      "dashboard_url": "http://localhost:9200/#/backtest/37f3b888-9751-4521-96a1-1711768f37f6",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_A09_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:58:39.890Z",
+      "finished_observed_at": "2026-10-21T01:59:41.921Z",
+      "metrics_digest": {
+        "N": 91,
+        "net": -8.77378835704091,
+        "DD": -19.541915635425553
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_A09.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 91,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_A09_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 91,
+        "net": -8.773788357040912,
+        "PF": 0.8243555476290748,
+        "DD": -19.541915635425553,
+        "CAGR": -4.481587030419276,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 89.78014516423843,
+        "fees": 404.0106532390729,
+        "funding": 147.77658061505159,
+        "sampled_dd": -19.541915635425532
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "A09",
+      "strategy": "ResearchV5FundingFPReplayA09_4h",
+      "id": "ec1db1af-39f4-4ad3-83b7-f481566578a6",
+      "dashboard_url": "http://localhost:9200/#/backtest/ec1db1af-39f4-4ad3-83b7-f481566578a6",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_A09_DETAIL.json",
+      "start_requested_at": "2026-10-21T01:59:07.457Z",
+      "finished_observed_at": "2026-10-21T02:00:15.436Z",
+      "metrics_digest": {
+        "N": 112,
+        "net": -1.5062244476484148,
+        "DD": -12.167022710216868
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_A09.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 112,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_A09_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 112,
+        "net": -1.5062244476484161,
+        "PF": 0.9730120681449872,
+        "DD": -12.167022710216868,
+        "CAGR": -0.7549394298285272,
+        "positive_semesters": 2,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 113.9591203529276,
+        "fees": 512.816041588174,
+        "funding": 177.71230588676443,
+        "sampled_dd": -12.167022710216868
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "A11",
+      "strategy": "ResearchV5FundingFPOiReplayA11_4h",
+      "id": "26d1d710-e190-40c2-ab35-c49622e8bca7",
+      "dashboard_url": "http://localhost:9200/#/backtest/26d1d710-e190-40c2-ab35-c49622e8bca7",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_A11_DETAIL.json",
+      "start_requested_at": "2026-10-21T02:00:20.777Z",
+      "finished_observed_at": "2026-10-21T02:01:24.463Z",
+      "metrics_digest": {
+        "N": 82,
+        "net": -9.938799331504027,
+        "DD": -18.66642053480615
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_A11.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 82,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_A11_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 82,
+        "net": -9.938799331504029,
+        "PF": 0.7832838990976968,
+        "DD": -18.66642053480615,
+        "CAGR": -5.092624867420891,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 77.30523624204588,
+        "fees": 347.87356308920647,
+        "funding": 136.89572951980466,
+        "sampled_dd": -18.666420534806093
+      }
+    },
+    {
+      "family": "FP",
+      "scenario": "A11",
+      "strategy": "ResearchV5FundingFPReplayA11_4h",
+      "id": "f81ccfbc-4887-419a-9a5b-2d341b75c93e",
+      "dashboard_url": "http://localhost:9200/#/backtest/f81ccfbc-4887-419a-9a5b-2d341b75c93e",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_FP_A11_DETAIL.json",
+      "start_requested_at": "2026-10-21T02:00:39.830Z",
+      "finished_observed_at": "2026-10-21T02:01:42.930Z",
+      "metrics_digest": {
+        "N": 103,
+        "net": -5.766921945813057,
+        "DD": -16.529100539744224
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_FP_A11.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 103,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_A11_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 103,
+        "net": -5.766921945813062,
+        "PF": 0.8857535414563423,
+        "DD": -16.529100539744224,
+        "CAGR": -2.922332398632821,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": true,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 101.19243244571842,
+        "fees": 455.3659460057325,
+        "funding": 156.74645607207043,
+        "sampled_dd": -16.529100539744277
+      }
+    },
+    {
+      "family": "OI",
+      "scenario": "LAG4H",
+      "strategy": "ResearchV5FundingFPOiReplayLag4h",
+      "id": "08c43974-9ebf-4015-a3bf-f31481bcadfa",
+      "dashboard_url": "http://localhost:9200/#/backtest/08c43974-9ebf-4015-a3bf-f31481bcadfa",
+      "status": "finished",
+      "detail_ref": "V5_REPLAY_OI_LAG4H_DETAIL.json",
+      "start_requested_at": "2026-10-21T02:01:49.375Z",
+      "finished_observed_at": "2026-10-21T02:02:50.427Z",
+      "metrics_digest": {
+        "N": 87,
+        "net": -10.942968771868813,
+        "DD": -20.608490216685272
+      },
+      "audit_ref": "AUDIT_V5_REPLAY_OI_LAG4H.json",
+      "log_audit_status": "passed",
+      "audit_digest": {
+        "bars": 4386,
+        "N": 87,
+        "hashes": 2193,
+        "final_forced": 0
+      },
+      "accounting_ref": "V5_REPLAY_LAG4H_ACCOUNTING.json",
+      "accounting_status": "passed",
+      "financial_digest": {
+        "N": 87,
+        "net": -10.942968771868813,
+        "PF": 0.7775676964074351,
+        "DD": -20.608490216685272,
+        "CAGR": -5.622485989632276,
+        "positive_semesters": 1,
+        "nominal_gates": {
+          "net_positive": false,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        },
+        "nominal_eligible": false,
+        "robust_required": true,
+        "robust_pass": false,
+        "turnover": 84.42787867433326,
+        "fees": 379.92545403449924,
+        "funding": 145.7093003914756,
+        "sampled_dd": -20.608490216685173
+      }
+    }
+  ],
+  "analyses": [
+    {
+      "scenario": "NOMINAL",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T01:45:54.600Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "46f4c14a-1ac2-4cc0-b347-5d6bff007051",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "ff2f12bf-1faf-4bec-808f-800a778421a4",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"bcc7c732e2a54753a291a8dc7a21abce\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/bcc7c732e2a54753a291a8dc7a21abce\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"46f4c14a-1ac2-4cc0-b347-5d6bff007051\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI NOMINAL\",\n        \"size_bytes\": 357205\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"ff2f12bf-1faf-4bec-808f-800a778421a4\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP NOMINAL\",\n        \"size_bytes\": 424378\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 10818,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:45:55+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "bcc7c732e2a54753a291a8dc7a21abce",
+      "rows_ref": "V5_REPLAY_NOMINAL_ACCOUNTING.json",
+      "max_error": 3.456079866737127e-11,
+      "completed_at": "2026-10-21T01:45:58.224Z"
+    },
+    {
+      "scenario": "S1",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T01:47:56.241Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "61c51f03-91d9-4142-8ad5-3f52f19cf4cb",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "12b33663-1fd7-4883-bb74-519549664e21",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.0009,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.0009,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"16a7022e486a462b8f5aef7982f4a30f\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/16a7022e486a462b8f5aef7982f4a30f\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"61c51f03-91d9-4142-8ad5-3f52f19cf4cb\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI S1\",\n        \"size_bytes\": 357302\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"12b33663-1fd7-4883-bb74-519549664e21\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP S1\",\n        \"size_bytes\": 424403\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 10975,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:47:57+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "16a7022e486a462b8f5aef7982f4a30f",
+      "rows_ref": "V5_REPLAY_S1_ACCOUNTING.json",
+      "max_error": 1.2732925824820995e-11,
+      "completed_at": "2026-10-21T01:47:59.278Z"
+    },
+    {
+      "scenario": "S2",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T01:51:16.538Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "e7846d15-86e3-4c78-a5c4-c34122b0d8f5",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "ef49d5d4-f4b7-4754-a91d-ec13cc6b51c4",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 5
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 5
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"29573e28a68b416da748fd380ae67a19\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/29573e28a68b416da748fd380ae67a19\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"e7846d15-86e3-4c78-a5c4-c34122b0d8f5\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI S2\",\n        \"size_bytes\": 366886\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"ef49d5d4-f4b7-4754-a91d-ec13cc6b51c4\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP S2\",\n        \"size_bytes\": 437381\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 11273,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:51:17+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "29573e28a68b416da748fd380ae67a19",
+      "rows_ref": "V5_REPLAY_S2_ACCOUNTING.json",
+      "max_error": 3.637978807091713e-11,
+      "completed_at": "2026-10-21T01:51:20.750Z"
+    },
+    {
+      "scenario": "S3",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T01:53:34.129Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "3733bd0f-ab2d-4ef8-b520-8455c1ecb44f",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "0d37d117-ee67-4dcb-a3bf-44e16ccd32ad",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.0009,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 10
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.0009,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 10
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplay4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"354943e31b9c4356a9b8cb473e8172a8\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/354943e31b9c4356a9b8cb473e8172a8\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"3733bd0f-ab2d-4ef8-b520-8455c1ecb44f\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI S3\",\n        \"size_bytes\": 367183\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"0d37d117-ee67-4dcb-a3bf-44e16ccd32ad\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP S3\",\n        \"size_bytes\": 437716\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 11433,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:53:36+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "354943e31b9c4356a9b8cb473e8172a8",
+      "rows_ref": "V5_REPLAY_S3_ACCOUNTING.json",
+      "max_error": 1.4551915228366852e-11,
+      "completed_at": "2026-10-21T01:53:42.971Z"
+    },
+    {
+      "scenario": "R09",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T01:56:04.438Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "8d8a26f8-89dc-4afb-818e-1a9b02093d04",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "f7c84508-165c-4788-83fc-52a9bd048e19",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplayR09_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplayR09_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"6c0668773e9640ccace560aea49d0966\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/6c0668773e9640ccace560aea49d0966\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"8d8a26f8-89dc-4afb-818e-1a9b02093d04\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI R09\",\n        \"size_bytes\": 356356\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"f7c84508-165c-4788-83fc-52a9bd048e19\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP R09\",\n        \"size_bytes\": 424633\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 11636,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:56:06+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "6c0668773e9640ccace560aea49d0966",
+      "rows_ref": "V5_REPLAY_R09_ACCOUNTING.json",
+      "max_error": 1.0913936421275139e-11,
+      "completed_at": "2026-10-21T01:56:09.380Z"
+    },
+    {
+      "scenario": "R11",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T01:58:34.436Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "65d8ecaa-5769-45cd-a0d1-8ce5eac88c50",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "bd499d4f-5b7f-4ae1-882b-fac50e6becf3",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplayR11_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplayR11_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"ded0891b76634e2b9d0a3348f2cfcca1\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/ded0891b76634e2b9d0a3348f2cfcca1\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"65d8ecaa-5769-45cd-a0d1-8ce5eac88c50\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI R11\",\n        \"size_bytes\": 359692\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"bd499d4f-5b7f-4ae1-882b-fac50e6becf3\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP R11\",\n        \"size_bytes\": 428679\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 11799,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:58:36+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "ded0891b76634e2b9d0a3348f2cfcca1",
+      "rows_ref": "V5_REPLAY_R11_ACCOUNTING.json",
+      "max_error": 1.6370904631912708e-11,
+      "completed_at": "2026-10-21T01:58:38.783Z"
+    },
+    {
+      "scenario": "A09",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T02:00:15.663Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "37f3b888-9751-4521-96a1-1711768f37f6",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "ec1db1af-39f4-4ad3-83b7-f481566578a6",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplayA09_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplayA09_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"0cf3bed3cc3f4fe780b61294c700d3b1\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/0cf3bed3cc3f4fe780b61294c700d3b1\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"37f3b888-9751-4521-96a1-1711768f37f6\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI A09\",\n        \"size_bytes\": 372022\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"ec1db1af-39f4-4ad3-83b7-f481566578a6\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP A09\",\n        \"size_bytes\": 437045\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 11903,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T02:00:17+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "0cf3bed3cc3f4fe780b61294c700d3b1",
+      "rows_ref": "V5_REPLAY_A09_ACCOUNTING.json",
+      "max_error": 1.2732925824820995e-11,
+      "completed_at": "2026-10-21T02:00:19.716Z"
+    },
+    {
+      "scenario": "A11",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T02:01:43.171Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "26d1d710-e190-40c2-ab35-c49622e8bca7",
+          "name": "s_oi"
+        },
+        {
+          "session_type": "backtest",
+          "session_id": "f81ccfbc-4887-419a-9a5b-2d341b75c93e",
+          "name": "s_fp"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplayA11_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        },
+        "s_fp": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPReplayA11_4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"beef0b89265f4595a3b4b463cdf60a0f\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/beef0b89265f4595a3b4b463cdf60a0f\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"26d1d710-e190-40c2-ab35-c49622e8bca7\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI A11\",\n        \"size_bytes\": 355321\n      },\n      {\n        \"name\": \"s_fp\",\n        \"file\": \"inputs/s_fp.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"f81ccfbc-4887-419a-9a5b-2d341b75c93e\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY FP A11\",\n        \"size_bytes\": 412737\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 12002,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T02:01:44+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "beef0b89265f4595a3b4b463cdf60a0f",
+      "rows_ref": "V5_REPLAY_A11_ACCOUNTING.json",
+      "max_error": 3.637978807091713e-12,
+      "completed_at": "2026-10-21T02:01:47.896Z"
+    },
+    {
+      "scenario": "LAG4H",
+      "status": "succeeded",
+      "requested_at": "2026-10-21T02:02:50.654Z",
+      "inputs": [
+        {
+          "session_type": "backtest",
+          "session_id": "08c43974-9ebf-4015-a3bf-f31481bcadfa",
+          "name": "s_oi"
+        }
+      ],
+      "expected": {
+        "s_oi": {
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          },
+          "strategy": "ResearchV5FundingFPOiReplayLag4h",
+          "start": "2024-01-01",
+          "finish": "2026-01-01",
+          "timeframe": "4h"
+        }
+      },
+      "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"d5b9825634164cc8a0bebfdad2b777d1\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/d5b9825634164cc8a0bebfdad2b777d1\",\n    \"inputs\": [\n      {\n        \"name\": \"s_oi\",\n        \"file\": \"inputs/s_oi.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"08c43974-9ebf-4015-a3bf-f31481bcadfa\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V5 REPLAY OI LAG4H\",\n        \"size_bytes\": 368302\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 12054,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T02:02:52+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 5,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "job_id": "d5b9825634164cc8a0bebfdad2b777d1",
+      "rows_ref": "V5_REPLAY_LAG4H_ACCOUNTING.json",
+      "max_error": 2.000888343900442e-11,
+      "completed_at": "2026-10-21T02:02:54.991Z"
+    }
+  ],
+  "fp_lag_reuse": "NOMINAL FP; 18slots/17newruns",
+  "created_at": "2026-10-21T01:43:08.318Z",
+  "execution_cap_addendum": {
+    "at": "2026-10-21T01:59:06.695Z",
+    "root_authorized_motors": 2,
+    "analysis_jobs": 1,
+    "reason": "V6 engines complete; only remaining frozen V5 descriptors"
+  },
+  "completed_at": "2026-10-21T02:04:38.264Z",
+  "summary_ref": "V5_REPLAY_STRESS_BRANCH_SUMMARY.json",
+  "final_report_ref": "V5_FUNDING_REPLAY_STRESS_FINAL_REPORT.md",
+  "replay_wf_comparison_ref": "V5_REPLAY_VS_WF_ENTRY_COMPARISON.json",
+  "no_more_runs": true,
+  "tokens_released": true
+}

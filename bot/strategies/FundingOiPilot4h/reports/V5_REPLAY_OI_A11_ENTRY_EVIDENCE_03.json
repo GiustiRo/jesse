@@ -1,0 +1,274 @@
+{
+  "label": "FUNDING_FPOI",
+  "stage": "OI_A11",
+  "session_id": "26d1d710-e190-40c2-ab35-c49622e8bca7",
+  "dashboard_url": "http://localhost:9200/#/backtest/26d1d710-e190-40c2-ab35-c49622e8bca7",
+  "index_start": 80,
+  "index_finish": 82,
+  "entries": [
+    {
+      "entry": {
+        "kind": "V5_ENTRY",
+        "time": 1766548800000,
+        "direction": -1,
+        "decision": 87311.4,
+        "fill": 87311.4,
+        "capital": 9012.504151132875,
+        "qty": 0.04981789,
+        "distance_pre": 3538.0071428571355,
+        "distance_fill": 3538.0071428571355,
+        "planned_stop_loss": 180.2500686337204,
+        "risk_budget": 180.2500830226575,
+        "stop": 90849.40714285713,
+        "target": null,
+        "atr": {
+          "value": 1179.335714285712,
+          "first": 1766332800000,
+          "last": 1766534400000,
+          "bars": 15,
+          "offset_bars": 0,
+          "sha256": "99772535c47c135341a6cd48710fd90ffe979a24abf86dffb1662409878ec5b9"
+        },
+        "oi": {
+          "quality": "valid",
+          "passed": true,
+          "current": {
+            "time": 1766548800000,
+            "value": 94630.021,
+            "label": 1766548200000,
+            "available_at": 1766548560000,
+            "status": "valid"
+          },
+          "reference": {
+            "time": 1766462400000,
+            "value": 91324.416,
+            "label": 1766461800000,
+            "available_at": 1766462160000,
+            "status": "valid"
+          }
+        },
+        "funding": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "settled_at": 1766534400001,
+          "rate_decimal": 0.0001,
+          "mark_price": 87463,
+          "mark_price_source": "fundingRate.settlement_mark",
+          "available_at": 1766534460000
+        }
+      },
+      "features": {
+        "kind": "V5_FEATURES",
+        "time": 1766548800000,
+        "line": "FUNDING_TREND",
+        "valid": true,
+        "direction": -1,
+        "reason": "setup",
+        "details": {
+          "price": {
+            "valid": true,
+            "reason": "price_state",
+            "direction": -1,
+            "close": 87311.4,
+            "sma": 89571.55757575759,
+            "reference": 88480.8,
+            "sma_period": 132,
+            "return_lag": 33,
+            "first": 1764648000000,
+            "last": 1766534400000,
+            "bars": 132,
+            "sha256": "38448a53b86a7a66a99fdf6084299397d1a09a96e76fe52ff5b42622fce67e9b"
+          },
+          "funding_direction": -1,
+          "funding_settled_at": 1766534400001,
+          "funding_sha256": "50346af6bd53608872c9d6466ae4ed758a3ad1e42f41733ce2ecc1addb985192"
+        }
+      },
+      "publication": {
+        "kind": "V5_FUNDING_PUBLICATION",
+        "time": 1766548800000,
+        "valid": true,
+        "reason": "funding_state",
+        "rows": [
+          [
+            1766476800000,
+            1766476860000,
+            0.00005231
+          ],
+          [
+            1766505600001,
+            1766505660000,
+            0.00001795
+          ],
+          [
+            1766534400001,
+            1766534460000,
+            0.0001
+          ]
+        ],
+        "sha256": "50346af6bd53608872c9d6466ae4ed758a3ad1e42f41733ce2ecc1addb985192",
+        "settled_at": 1766534400001,
+        "direction": -1,
+        "available_at": 1766534460000,
+        "rate_decimal": 0.0001
+      },
+      "close": {
+        "kind": "V5_CLOSE",
+        "time": 1766894400000,
+        "trade_id": "c54f2046-10e8-44e6-88b7-3cd22654aaf4",
+        "reason": "funding_adverse",
+        "pnl": -20.02018721497279,
+        "balance": 8992.483963917903,
+        "gross": -19.010506824001013,
+        "risk_budget": 180.2500830226575,
+        "realized_loss": 20.02018721497279,
+        "loss_over_budget": 0
+      },
+      "indicator_exit": {
+        "kind": "V5_FUNDING_EXIT_STATE",
+        "time": 1766894400000,
+        "opened_at": 1766548800000,
+        "direction": -1,
+        "reason": "funding_adverse",
+        "funding": {
+          "valid": true,
+          "reason": "funding_state",
+          "rows": [
+            [
+              1766880000008,
+              1766880060000,
+              -3.6e-7
+            ]
+          ],
+          "sha256": "7c003ac3f05df6ee2e85e451b2f2535e5ce27fedf811e4517add84135e89673a",
+          "settled_at": 1766880000008,
+          "direction": 1,
+          "available_at": 1766880060000,
+          "rate_decimal": -3.6e-7
+        }
+      },
+      "plan_passed": true
+    },
+    {
+      "entry": {
+        "kind": "V5_ENTRY",
+        "time": 1767196800000,
+        "direction": -1,
+        "decision": 87909,
+        "fill": 87909,
+        "capital": 8992.483963917903,
+        "qty": 0.06147449,
+        "distance_pre": 2845.2000000000044,
+        "distance_fill": 2845.2000000000044,
+        "planned_stop_loss": 179.84967204379586,
+        "risk_budget": 179.84967927835805,
+        "stop": 90754.20000000001,
+        "target": null,
+        "atr": {
+          "value": 948.4000000000015,
+          "first": 1766980800000,
+          "last": 1767182400000,
+          "bars": 15,
+          "offset_bars": 0,
+          "sha256": "b11a3029401fe092fb0a77b157fb084081bd45ee3e89ba5329903e1f100575ed"
+        },
+        "oi": {
+          "quality": "valid",
+          "passed": true,
+          "current": {
+            "time": 1767196800000,
+            "value": 94559.372,
+            "label": 1767196200000,
+            "available_at": 1767196560000,
+            "status": "valid"
+          },
+          "reference": {
+            "time": 1767110400000,
+            "value": 94447.202,
+            "label": 1767109800000,
+            "available_at": 1767110160000,
+            "status": "valid"
+          }
+        },
+        "funding": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "settled_at": 1767168000001,
+          "rate_decimal": 0.00001453,
+          "mark_price": 88569,
+          "mark_price_source": "fundingRate.settlement_mark",
+          "available_at": 1767168060000
+        }
+      },
+      "features": {
+        "kind": "V5_FEATURES",
+        "time": 1767196800000,
+        "line": "FUNDING_TREND",
+        "valid": true,
+        "direction": -1,
+        "reason": "setup",
+        "details": {
+          "price": {
+            "valid": true,
+            "reason": "price_state",
+            "direction": -1,
+            "close": 87909,
+            "sma": 88521.67045454546,
+            "reference": 88796.2,
+            "sma_period": 132,
+            "return_lag": 33,
+            "first": 1765296000000,
+            "last": 1767182400000,
+            "bars": 132,
+            "sha256": "11bd38a919de86996376df152ec577b1b4af2f231b5c0894d2b196e78c7eff9f"
+          },
+          "funding_direction": -1,
+          "funding_settled_at": 1767168000001,
+          "funding_sha256": "b7d2f31a76107bf76b3dc76a4b2288d91bdcec34f8ed144ec1434357efbbde74"
+        }
+      },
+      "publication": {
+        "kind": "V5_FUNDING_PUBLICATION",
+        "time": 1767182400000,
+        "valid": true,
+        "reason": "funding_state",
+        "rows": [
+          [
+            1767110400003,
+            1767110460000,
+            0.00008345
+          ],
+          [
+            1767139200004,
+            1767139260000,
+            0.00002922
+          ],
+          [
+            1767168000001,
+            1767168060000,
+            0.00001453
+          ]
+        ],
+        "sha256": "b7d2f31a76107bf76b3dc76a4b2288d91bdcec34f8ed144ec1434357efbbde74",
+        "settled_at": 1767168000001,
+        "direction": -1,
+        "available_at": 1767168060000,
+        "rate_decimal": 0.00001453
+      },
+      "close": {
+        "kind": "V5_CLOSE",
+        "time": 1767225600000,
+        "trade_id": "be8ffada-8254-42e7-a18e-101bb96c6968",
+        "reason": "calendar_boundary",
+        "pnl": 13.636102931697577,
+        "balance": 9006.1200668496,
+        "gross": 18.491526592000177,
+        "risk_budget": 179.84967927835805,
+        "realized_loss": 0,
+        "loss_over_budget": 0
+      },
+      "indicator_exit": null,
+      "plan_passed": true
+    }
+  ]
+}

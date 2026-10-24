@@ -1,0 +1,5 @@
+# R42: contraste de antecedentes
+
+Revisión dirigida por btc_next_material, sin velas/cobertura/jobs. No identificó HMM discreto BTC con emisiones/matriz de transición/filtro posterior ejecutado; no certifica ausencia universal. Angle cuatro signos y FreshStructure son estados observables con tablas de payoff/frecuencias; R18/R19 kNN; R22 matriz OLS de retornos. Kalman R12 sí era estado latente continuo con1200 operaciones, por lo que no corresponde afirmar primer estado oculto. Módulos dirigidos V1–V6 no ajustan transiciones Markov.
+
+El documento OPEN_SOURCE_ML_CAUSAL_REVIEW_20261019.md pospuso HMM antes de Fresh posteriormente cerrado negativo. Esa secuencia no prueba necesidad ni ventaja de HMM. La pregunta nueva controla exactamente emisiones y ocupaciones estacionarias, y permite sólo rho de persistencia. Se exige evidencia predictiva emparejada antes de plantear economía. Root leyó el documento crítico completo y fuentes Angle/R22/Kalman leaf; los cierres y módulos dirigidos fueron leídos por el agente. No segunda auditoría global de todas las estrategias.

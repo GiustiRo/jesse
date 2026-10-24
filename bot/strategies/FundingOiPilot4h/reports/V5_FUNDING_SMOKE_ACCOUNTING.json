@@ -1,0 +1,42 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "40d929bbe9704644ad1797b461479a5f",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/40d929bbe9704644ad1797b461479a5f",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "f236262f-399e-45e9-a8af-431293109246",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 SMOKE FUNDING_TREND",
+        "size_bytes": 18338
+      }
+    ],
+    "status": "succeeded",
+    "pid": 8807,
+    "exit_code": 0,
+    "started_at": "2026-10-21T00:56:44+00:00",
+    "finished_at": "2026-10-21T00:56:44+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-22T00:56:44+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 3206,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"timeframe\": \"4h\", \"sharpe\": 5.908991026792357, \"session_id\": \"f236262f-399e-45e9-a8af-431293109246\", \"strategy\": \"ResearchV5FundingSmoke4h\", \"start\": \"2020-09-01\", \"finish\": \"2020-09-08\", \"n\": 1, \"net\": 378.13556937049367, \"net_pct\": 3.7813556937049366, \"pf\": null, \"pf_no_losses\": true, \"dd\": -0.90424650703127, \"cagr_pct\": 592.6413592538448, \"turnover\": 0.7824621837899999, \"gross\": 372.89301791279917, \"fees\": 3.5210798270549994, \"funding\": 8.763631284749495, \"funding_events\": 16, \"proxy_funding\": 8.763631284749495, \"exact_funding\": 0.0, \"unclassified_funding\": 0.0, \"funding_sources\": {\"markPriceKlines.1h_open_proxy\": {\"n\": 16, \"cashflow\": 8.763631284749495}}, \"holding_seconds\": 475200.0, \"exposure\": 0.7857142857142857, \"directions\": {\"short\": {\"n\": 1, \"gross\": 372.89301791279917, \"fees\": 3.5210798270549994, \"funding\": 8.763631284749495, \"net\": 378.13556937049367}}, \"exit_order_types\": {\"MARKET\": 1}, \"months\": [{\"month\": \"2020-09\", \"return_pct\": 3.7813556937049464, \"end_equity\": 10378.135569370494}], \"years\": [{\"year\": 2020, \"return_pct\": 3.7813556937049464, \"end_equity\": 10378.135569370494, \"full_year\": false}], \"semesters\": [{\"period\": \"2020H2\", \"return_pct\": 3.7813556937049464, \"end_equity\": 10378.135569370494, \"full_semester\": false}], \"replay_nominal_gates\": null, \"replay_nominal_eligible\": null, \"funding_sensitivities\": [{\"kind\": \"proxy_only\", \"multiplier\": 0.5, \"net_usdt\": 373.7537537281189, \"net_pct\": 3.737537537281189, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"proxy_only\", \"multiplier\": 1.5, \"net_usdt\": 382.51738501286843, \"net_pct\": 3.8251738501286843, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 0.5, \"net_usdt\": 373.7537537281189, \"net_pct\": 3.737537537281189, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 1.5, \"net_usdt\": 382.51738501286843, \"net_pct\": 3.8251738501286843, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 378.13556937049367, \"negative_pnl\": 0.0, \"best_trade\": 378.13556937049367, \"worst_trade\": 378.13556937049367, \"adjusted_fills\": 0, \"curve_terminal_delta\": 3.637978807091713e-12, \"sampled_dd_including_terminal_pct\": -0.90424650703127, \"equity_points\": 8, \"equity_evidence\": \"full_daily\", \"max_accounting_error\": 3.637978807091713e-12, \"metric_open_indicator\": 1, \"metric_open_pl\": 372.8930179127992}]\n",
+  "output_lines_returned": 1,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}

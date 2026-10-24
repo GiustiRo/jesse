@@ -1,0 +1,50 @@
+{
+  "cycle": "V5",
+  "fold": "C3",
+  "recorded_at": "2026-10-21T01:31:03.754Z",
+  "train_start": "2020-09-01",
+  "train_finish": "2025-01-01",
+  "eval_start": "2025-01-01",
+  "eval_finish": "2025-07-01",
+  "accounting_job": "51a38cc26f48446fbc7d2baf07895743",
+  "accounting_ref": "V5_C3T_ACCOUNTING_BRANCH.json",
+  "candidates": [
+    {
+      "id": "FUNDING_FP",
+      "strategy": "ResearchV5FundingFP4h",
+      "train_strategy": "ResearchV5FT_FP_C3T",
+      "train_session": "554153ca-048c-4568-9916-6d450f71ab65",
+      "eligible": true,
+      "n": 209,
+      "net": 2938.204476774246,
+      "pf": 1.2649051267712303,
+      "pf_no_losses": false,
+      "dd": -15.723608721413463,
+      "turnover": 211.59786788747064,
+      "oi_count": 0
+    },
+    {
+      "id": "FUNDING_FPOI",
+      "strategy": "ResearchV5FundingFPOi4h",
+      "train_strategy": "ResearchV5FT_OI_C3T",
+      "train_session": "74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+      "eligible": true,
+      "n": 162,
+      "net": 3364.5901792910327,
+      "pf": 1.3747096767709739,
+      "pf_no_losses": false,
+      "dd": -13.022950298425695,
+      "turnover": 164.87931783736533,
+      "oi_count": 1
+    }
+  ],
+  "selected": "ResearchV5FundingFPOi4h",
+  "status": "SELECTED",
+  "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+  "gate": "N>=30/net>0/PF>=1.2/absDD<=25; no annual/CAGR gate",
+  "individual_calendar_eligible": [
+    "ResearchV5FundingFP4h",
+    "ResearchV5FundingFPOi4h"
+  ],
+  "evals_started": false
+}

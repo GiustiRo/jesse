@@ -1,0 +1,206 @@
+{
+  "cycle": "V5",
+  "status": "PASS",
+  "author": "/root/audit",
+  "calendar_ref": "V5_REPLAY_CALENDAR.json",
+  "calendar_sha256": "fd82a1bdba7be9d1ae8769e3eb246e903164fe7debfe20309cb109e3a136e536",
+  "nominal_config_sha256": "8f9e73c52ecf50f01b6f1f3efdfa98e06081151b15820d46588b5874da5f35cb",
+  "start": 1704067200000,
+  "finish": 1767225600000,
+  "run_authorization": false,
+  "wrappers": [
+    {
+      "name": "ResearchV5FundingFPReplay4h",
+      "parent": "ResearchV5FundingFP4h",
+      "kind": "nominal",
+      "attributes": {
+        "START": 1704067200000,
+        "FINISH": 1767225600000,
+        "USE_OI": false,
+        "OI_LAG_BARS": 0,
+        "PRICE_SMA_PERIOD": 120,
+        "RETURN_LAG": 30,
+        "FUNDING_COUNT": 3,
+        "STOP_MULTIPLIER": 3,
+        "ATR_OFFSET_BARS": 0,
+        "MAX_HOLD_BARS": 180,
+        "TARGET_MODE": "none",
+        "ACTIVE_WINDOWS": [
+          [
+            1704067200000,
+            1719792000000
+          ],
+          [
+            1719792000000,
+            1735689600000
+          ],
+          [
+            1735689600000,
+            1751328000000
+          ],
+          [
+            1751328000000,
+            1767225600000
+          ]
+        ],
+        "FORCE_BOUNDARIES": [
+          1719792000000,
+          1735689600000,
+          1751328000000,
+          1767225600000
+        ]
+      },
+      "source": "from strategies.ResearchV5FundingFP4h import ResearchV5FundingFP4h\n\n\nclass ResearchV5FundingFPReplay4h(ResearchV5FundingFP4h):\n    # Frozen individual TRAIN calendar; adjacent semesters deliberately stay separate.\n    START = 1704067200000\n    FINISH = 1767225600000\n    USE_OI = False\n    OI_LAG_BARS = 0\n    PRICE_SMA_PERIOD = 120\n    RETURN_LAG = 30\n    FUNDING_COUNT = 3\n    STOP_MULTIPLIER = 3\n    ATR_OFFSET_BARS = 0\n    MAX_HOLD_BARS = 180\n    TARGET_MODE = \"none\"\n    ACTIVE_WINDOWS = ((1704067200000, 1719792000000), (1719792000000, 1735689600000), (1735689600000, 1751328000000), (1751328000000, 1767225600000),)\n    FORCE_BOUNDARIES = (1719792000000, 1735689600000, 1751328000000, 1767225600000,)\n",
+      "sha256": "4f46c444582008453d969108ff2a5156170e0f934d20c7c8a4c6f28f1886884d",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPReplayR09_4h",
+      "parent": "ResearchV5FundingFPReplay4h",
+      "kind": "risk_neighbor",
+      "attributes": {
+        "STOP_MULTIPLIER": 2.7
+      },
+      "source": "from strategies.ResearchV5FundingFPReplay4h import ResearchV5FundingFPReplay4h\n\n\nclass ResearchV5FundingFPReplayR09_4h(ResearchV5FundingFPReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    STOP_MULTIPLIER = 2.7\n",
+      "sha256": "e09c16890e434f621b292390efd62911e926fc88cec4f9231c3e8b868c971428",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPReplayR11_4h",
+      "parent": "ResearchV5FundingFPReplay4h",
+      "kind": "risk_neighbor",
+      "attributes": {
+        "STOP_MULTIPLIER": 3.3
+      },
+      "source": "from strategies.ResearchV5FundingFPReplay4h import ResearchV5FundingFPReplay4h\n\n\nclass ResearchV5FundingFPReplayR11_4h(ResearchV5FundingFPReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    STOP_MULTIPLIER = 3.3\n",
+      "sha256": "2f80aaddf9e316f5fb3d0a7eb79d840e67ff4d85a39d19ea7721bbc38dcf1de1",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPReplayA09_4h",
+      "parent": "ResearchV5FundingFPReplay4h",
+      "kind": "signal_neighbor",
+      "attributes": {
+        "PRICE_SMA_PERIOD": 108,
+        "RETURN_LAG": 27
+      },
+      "source": "from strategies.ResearchV5FundingFPReplay4h import ResearchV5FundingFPReplay4h\n\n\nclass ResearchV5FundingFPReplayA09_4h(ResearchV5FundingFPReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    PRICE_SMA_PERIOD = 108\n    RETURN_LAG = 27\n",
+      "sha256": "ad62845e26ae95b25a2d52869b8d2efad37cfc3de4de4da4945794ddfeb92758",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPReplayA11_4h",
+      "parent": "ResearchV5FundingFPReplay4h",
+      "kind": "signal_neighbor",
+      "attributes": {
+        "PRICE_SMA_PERIOD": 132,
+        "RETURN_LAG": 33
+      },
+      "source": "from strategies.ResearchV5FundingFPReplay4h import ResearchV5FundingFPReplay4h\n\n\nclass ResearchV5FundingFPReplayA11_4h(ResearchV5FundingFPReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    PRICE_SMA_PERIOD = 132\n    RETURN_LAG = 33\n",
+      "sha256": "94550781cee8a2fb6fa11d7a196a0b1a475f7f417b7688a7e78f5c273e5ed7d0",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPOiReplay4h",
+      "parent": "ResearchV5FundingFPOi4h",
+      "kind": "nominal",
+      "attributes": {
+        "START": 1704067200000,
+        "FINISH": 1767225600000,
+        "USE_OI": true,
+        "OI_LAG_BARS": 0,
+        "PRICE_SMA_PERIOD": 120,
+        "RETURN_LAG": 30,
+        "FUNDING_COUNT": 3,
+        "STOP_MULTIPLIER": 3,
+        "ATR_OFFSET_BARS": 0,
+        "MAX_HOLD_BARS": 180,
+        "TARGET_MODE": "none",
+        "ACTIVE_WINDOWS": [
+          [
+            1704067200000,
+            1719792000000
+          ],
+          [
+            1719792000000,
+            1735689600000
+          ],
+          [
+            1735689600000,
+            1751328000000
+          ],
+          [
+            1751328000000,
+            1767225600000
+          ]
+        ],
+        "FORCE_BOUNDARIES": [
+          1719792000000,
+          1735689600000,
+          1751328000000,
+          1767225600000
+        ]
+      },
+      "source": "from strategies.ResearchV5FundingFPOi4h import ResearchV5FundingFPOi4h\n\n\nclass ResearchV5FundingFPOiReplay4h(ResearchV5FundingFPOi4h):\n    # Frozen individual TRAIN calendar; adjacent semesters deliberately stay separate.\n    START = 1704067200000\n    FINISH = 1767225600000\n    USE_OI = True\n    OI_LAG_BARS = 0\n    PRICE_SMA_PERIOD = 120\n    RETURN_LAG = 30\n    FUNDING_COUNT = 3\n    STOP_MULTIPLIER = 3\n    ATR_OFFSET_BARS = 0\n    MAX_HOLD_BARS = 180\n    TARGET_MODE = \"none\"\n    ACTIVE_WINDOWS = ((1704067200000, 1719792000000), (1719792000000, 1735689600000), (1735689600000, 1751328000000), (1751328000000, 1767225600000),)\n    FORCE_BOUNDARIES = (1719792000000, 1735689600000, 1751328000000, 1767225600000,)\n",
+      "sha256": "6bdb969805f06ac39eed1e0dfd4721d197499bd068ec10a86b42f51258187517",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPOiReplayR09_4h",
+      "parent": "ResearchV5FundingFPOiReplay4h",
+      "kind": "risk_neighbor",
+      "attributes": {
+        "STOP_MULTIPLIER": 2.7
+      },
+      "source": "from strategies.ResearchV5FundingFPOiReplay4h import ResearchV5FundingFPOiReplay4h\n\n\nclass ResearchV5FundingFPOiReplayR09_4h(ResearchV5FundingFPOiReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    STOP_MULTIPLIER = 2.7\n",
+      "sha256": "197b38b4a4890d3f6cec4d12dc73a9d74333a4dfbb91008a0de6b7403bc08c8c",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPOiReplayR11_4h",
+      "parent": "ResearchV5FundingFPOiReplay4h",
+      "kind": "risk_neighbor",
+      "attributes": {
+        "STOP_MULTIPLIER": 3.3
+      },
+      "source": "from strategies.ResearchV5FundingFPOiReplay4h import ResearchV5FundingFPOiReplay4h\n\n\nclass ResearchV5FundingFPOiReplayR11_4h(ResearchV5FundingFPOiReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    STOP_MULTIPLIER = 3.3\n",
+      "sha256": "0152e51cb5342f2acb0918b50026bc66810ecdf8a1408aee054dd8a707acf7a4",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPOiReplayA09_4h",
+      "parent": "ResearchV5FundingFPOiReplay4h",
+      "kind": "signal_neighbor",
+      "attributes": {
+        "PRICE_SMA_PERIOD": 108,
+        "RETURN_LAG": 27
+      },
+      "source": "from strategies.ResearchV5FundingFPOiReplay4h import ResearchV5FundingFPOiReplay4h\n\n\nclass ResearchV5FundingFPOiReplayA09_4h(ResearchV5FundingFPOiReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    PRICE_SMA_PERIOD = 108\n    RETURN_LAG = 27\n",
+      "sha256": "5b048fcda8f4ee239662d54ca38519069a4af42fcdbdb57dda3b33629e88605d",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPOiReplayA11_4h",
+      "parent": "ResearchV5FundingFPOiReplay4h",
+      "kind": "signal_neighbor",
+      "attributes": {
+        "PRICE_SMA_PERIOD": 132,
+        "RETURN_LAG": 33
+      },
+      "source": "from strategies.ResearchV5FundingFPOiReplay4h import ResearchV5FundingFPOiReplay4h\n\n\nclass ResearchV5FundingFPOiReplayA11_4h(ResearchV5FundingFPOiReplay4h):\n    # One frozen scenario only; inheritance preserves the nominal TRAIN calendar.\n    PRICE_SMA_PERIOD = 132\n    RETURN_LAG = 33\n",
+      "sha256": "b1546b2bef88867140562eba5f92d87019371e2a5b74b10bd7c0d2ce3894b791",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV5FundingFPOiReplayLag4h",
+      "parent": "ResearchV5FundingFPOiReplay4h",
+      "kind": "oi_lag",
+      "attributes": {
+        "OI_LAG_BARS": 1
+      },
+      "source": "from strategies.ResearchV5FundingFPOiReplay4h import ResearchV5FundingFPOiReplay4h\n\n\nclass ResearchV5FundingFPOiReplayLag4h(ResearchV5FundingFPOiReplay4h):\n    # One 4h decision of additional OI lag; price and funding keep their own clocks.\n    OI_LAG_BARS = 1\n",
+      "sha256": "8c45d72df968c06cc47af595b88940a5fc28107cd46c80d1e2bb2929c426f6b8",
+      "readback_exact": true
+    }
+  ]
+}

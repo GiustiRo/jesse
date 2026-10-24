@@ -1,0 +1,678 @@
+{
+  "status": "PASS_TECHNICAL_EXECUTION",
+  "session_id": "3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+  "dashboard_url": "http://localhost:9200/#/backtest/3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+  "checks_passed": 35,
+  "checks": [
+    "complete logs",
+    "complete trades",
+    "runtime sector89",
+    "runtime common67",
+    "bounded full log line",
+    "42 decisions",
+    "primary partition 2020-09:all",
+    "feature partition 2020-09:all",
+    "allowed equals entries 2020-09:all",
+    "primary partition 2020-09:long",
+    "feature partition 2020-09:long",
+    "allowed equals entries 2020-09:long",
+    "primary partition 2020-09:none",
+    "feature partition 2020-09:none",
+    "allowed equals entries 2020-09:none",
+    "primary partition 2020-09:short",
+    "feature partition 2020-09:short",
+    "allowed equals entries 2020-09:short",
+    "direction bars sum",
+    "one entry one final trade/close",
+    "strict NR7 ranking",
+    "close breakout short",
+    "window clocks",
+    "ATR current15",
+    "stop distance2A",
+    "actual fill anchoring",
+    "risk fee cap and floor8",
+    "current MARKET no retrofill",
+    "funding entry asof",
+    "OI original exact24h",
+    "per trade identity",
+    "actual final close",
+    "frozen strategy attributes",
+    "exact nominal config",
+    "funding enabled effectivefastfalse"
+  ],
+  "raw_summary": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+    "session_status": "finished",
+    "title": "MCP Backtest: V6 NR7 TECH SMOKE",
+    "description": "Technical seven-day4h smoke only. Frozen NR7 N7,stop2ATR current,TP3R,hold24bars;89sector+67common deterministic checks. No economic selection or tuning.",
+    "description_truncated": false,
+    "created_at": 1792544256000,
+    "updated_at": 1792544310000,
+    "execution_duration": 1.58,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "strategy": "ResearchV6Nr7Smoke4h",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "exchange": "Binance Perpetual Futures"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2020-09-01",
+      "finish_date": "2020-09-08",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": true,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      }
+    },
+    "metrics": {
+      "total": 1,
+      "total_winning_trades": 1,
+      "total_losing_trades": 0,
+      "starting_balance": 10000,
+      "finishing_balance": 10008.758576143002,
+      "win_rate": 1,
+      "win_rate_longs": 0,
+      "win_rate_shorts": 1,
+      "ratio_avg_win_loss": null,
+      "longs_count": 0,
+      "longs_percentage": 0,
+      "shorts_percentage": 100,
+      "shorts_count": 1,
+      "fee": 2.73183387398649,
+      "net_profit": 8.758576143003136,
+      "net_profit_percentage": 0.08758576143003136,
+      "average_win": 8.758576143003136,
+      "average_loss": null,
+      "expectancy": 8.758576143003136,
+      "expectancy_percentage": 0.08758576143003136,
+      "expected_net_profit_every_100_trades": 8.758576143003136,
+      "average_holding_period": 244800,
+      "average_winning_holding_period": 244800,
+      "average_losing_holding_period": null,
+      "gross_profit": 8.758576143003136,
+      "gross_loss": 0,
+      "max_drawdown": -0.651493858518859,
+      "max_underwater_period": 1,
+      "annual_return": 4.67077164750096,
+      "annualization": 365,
+      "sharpe_ratio": 0.6962349455630005,
+      "calmar_ratio": 7.169325675793386,
+      "sortino_ratio": 1.5114216495127548,
+      "omega_ratio": 1.140058505238366,
+      "serenity_index": null,
+      "total_open_trades": 1,
+      "open_pl": 9.102306414599752,
+      "winning_streak": 1,
+      "losing_streak": 0,
+      "largest_losing_trade": 0,
+      "largest_winning_trade": 8.758576143003136,
+      "current_streak": 1,
+      "avg_trades_per_day": 0.14284297192738815,
+      "avg_trades_per_week": 0.9999008034917171,
+      "avg_trades_per_month": 4.348140065469695,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 2.3881036023896054,
+        "rate_kind": "settled",
+        "event_count": 8,
+        "settlements_processed": 21,
+        "mark_price_proxy_count": 8,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "max_age_ms": 600000,
+        "applied": true,
+        "status": "applied",
+        "scope": [
+          "BTC-USDT"
+        ],
+        "data": {
+          "archive_assumptions_acknowledged": true,
+          "archive_catalog": {
+            "first_archive_date": "2020-09-01",
+            "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+            "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+            "point_in_time_certified": false,
+            "source": "binance-usdm-metrics-archive-v1"
+          },
+          "availability_lag_ms": 360000,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "import_source": "auto",
+          "original_publication_known": false,
+          "period_ms": 300000,
+          "rest_range": null,
+          "schema": 1,
+          "source": "binance-usdm-metrics-archive-v1",
+          "start": 1598918400000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "observation_count": 560390,
+          "expected_observation_count": 561024,
+          "missing_observation_count": 634,
+          "coverage_complete": false,
+          "status": "incomplete",
+          "leading_gap_ms": 0,
+          "trailing_gap_ms": 0,
+          "first_observation": 1598918400000,
+          "last_observation": 1767225300000,
+          "first_available_at": 1598918760000,
+          "last_available_at": 1767225660000,
+          "largest_gap_ms": 37800000,
+          "gap_count": 156,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+          "point_in_time_certified": false,
+          "missing_policy": "no interpolation; unavailable or stale values return None",
+          "cashflow": false,
+          "archive_file_count": 1948,
+          "archive_verified_file_count": 1948,
+          "archive_missing_days": [],
+          "archive_missing_day_count": 0,
+          "archive_identical_duplicate_rows": 75255
+        },
+        "allow_missing_observations": true,
+        "observation_count": 560390,
+        "cashflow": false,
+        "availability_lag_ms": 360000,
+        "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+        "current": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "observed_at": 1599522600000,
+          "available_at": 1599522960000,
+          "quantity_base": 34363.148,
+          "value_quote": 356242641.54030424
+        }
+      }
+    },
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 1
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 8
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 5123
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/3dc0cf2e-e35a-4d54-aef0-bd644138c259"
+  },
+  "raw_logs": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+    "session_status": "finished",
+    "section": "logs",
+    "available": true,
+    "items": [
+      "[INFO | 2020-09-01T00:00:00] Saved daily portfolio balance: 10000.0",
+      "[INFO | 2020-09-01T04:00:00] V6_SELF_CHECKS {\"status\":\"passed\",\"assertions\":89}",
+      "[INFO | 2020-09-01T04:00:00] V6_COMMON_CHECKS {\"status\":\"passed\",\"assertions\":67}",
+      "[INFO | 2020-09-02T00:01:00] Saved daily portfolio balance: 10000.0",
+      "[INFO | 2020-09-03T00:01:00] Saved daily portfolio balance: 10000.0",
+      "[INFO | 2020-09-04T00:01:00] Saved daily portfolio balance: 10000.0",
+      "[INFO | 2020-09-05T00:01:00] Saved daily portfolio balance: 10000.0",
+      "[INFO | 2020-09-05T04:00:00] Charged 1.37 as fee. Balance for USDT on Binance Perpetual Futures changed from 10000.0 to 9998.63",
+      "[INFO | 2020-09-05T04:00:00] V6_FEATURES {\"time\":1599278400000,\"line\":\"NR7\",\"valid\":true,\"direction\":-1,\"reason\":\"nr7_breakout\",\"details\":{\"narrow_window\":7,\"first\":1599163200000,\"last\":1599264000000,\"bars\":8,\"sha256\":\"3de6ad03b7190294d7292f43ef5914f2a43418e890ff1432fe94db3f824b4788\",\"setup_time\":1599249600000,\"setup_high\":10635.77,\"setup_low\":10430.49,\"setup_range\":205.28000000000065,\"comparison_min\":235.3700000000008,\"prior_ranges\":[898.8400000000001,291.9899999999998,239.45999999999913,235.3700000000008,621.3500000000004,292.5799999999999,205.28000000000065],\"narrow\":true,\"close\":10409.93}}",
+      "[INFO | 2020-09-05T04:00:00] V6_ENTRY {\"time\":1599278400000,\"direction\":-1,\"decision\":10409.93,\"fill\":10409.93,\"capital\":10000.0,\"qty\":0.29202138,\"distance_pre\":675.2085714285719,\"distance_fill\":675.2085714285719,\"planned_stop_loss\":199.99999763074055,\"risk_budget\":200.0,\"stop\":11085.138571428572,\"target\":8384.304285714285,\"atr\":{\"value\":337.60428571428594,\"first\":1599062400000,\"last\":1599264000000,\"bars\":15,\"offset_bars\":0,\"sha256\":\"628570e389ea9e6095ee8f21e28c27817ec03c7b04242e75418b433d52f516d8\"},\"oi\":{\"quality\":\"valid\",\"passed\":true,\"current\":{\"time\":1599278400000,\"value\":32010.359,\"label\":1599277800000,\"available_at\":1599278160000,\"status\":\"valid\"},\"reference\":{\"time\":1599192000000,\"value\":31824.098,\"label\":1599191400000,\"available_at\":1599191760000,\"status\":\"valid\"},\"rule\":\"rising\",\"decline_fraction\":null,\"ratio\":1.0058528288845767},\"funding\":{\"exchange\":\"Binance Perpetual Futures\",\"symbol\":\"BTC-USDT\",\"settled_at\":1599264000000,\"rate_decimal\":0.0001,\"mark_price\":10448.32785862,\"mark_price_source\":\"markPriceKlines.1h_open_proxy\",\"available_at\":1599264060000}}",
+      "[INFO | 2020-09-06T00:01:00] Saved daily portfolio balance: 10074.39",
+      "[INFO | 2020-09-07T00:01:00] Saved daily portfolio balance: 10046.56",
+      "[INFO | 2020-09-08T00:00:00] Terminating BTC-USDT...",
+      "[INFO | 2020-09-08T00:00:00] V6_EXIT_REQUEST {\"time\":1599523200000,\"reason\":\"fold_end\"}",
+      "[INFO | 2020-09-08T00:00:00] V6_AUDIT {\"key\":\"2020-09:all\",\"bars\":42,\"opportunities\":1,\"entries\":1,\"exits\":0,\"primary\":{\"nr7_not_narrow\":36,\"nr7_no_breakout\":3,\"allowed\":1,\"in_position_or_pending\":1,\"boundary_or_inactive\":1},\"flags\":{},\"feature_reasons\":{\"nr7_not_narrow\":36,\"nr7_no_breakout\":3,\"nr7_breakout\":3}}",
+      "[INFO | 2020-09-08T00:00:00] V6_AUDIT {\"key\":\"2020-09:long\",\"bars\":1,\"opportunities\":0,\"entries\":0,\"exits\":0,\"primary\":{\"boundary_or_inactive\":1},\"flags\":{},\"feature_reasons\":{\"nr7_breakout\":1}}",
+      "[INFO | 2020-09-08T00:00:00] V6_AUDIT {\"key\":\"2020-09:none\",\"bars\":39,\"opportunities\":0,\"entries\":0,\"exits\":0,\"primary\":{\"nr7_not_narrow\":36,\"nr7_no_breakout\":3},\"flags\":{},\"feature_reasons\":{\"nr7_not_narrow\":36,\"nr7_no_breakout\":3}}",
+      "[INFO | 2020-09-08T00:00:00] V6_AUDIT {\"key\":\"2020-09:short\",\"bars\":2,\"opportunities\":1,\"entries\":1,\"exits\":0,\"primary\":{\"allowed\":1,\"in_position_or_pending\":1},\"flags\":{},\"feature_reasons\":{\"nr7_breakout\":2}}",
+      "[INFO | 2020-09-08T00:00:00] V6_PROVENANCE {\"line\":\"NR7\",\"use_oi\":false,\"oi_lag_bars\":0,\"oi_rule\":\"rising\",\"oi_decline_fraction\":0.02,\"stop_multiplier\":2.0,\"bar_ms\":14400000,\"oi_reference_bars\":6,\"atr_offset_bars\":0,\"target_mode\":\"r_multiple\",\"reward_multiple\":3.0,\"max_hold_bars\":24,\"start\":1598918400000,\"finish\":1599523200000,\"active_windows\":null,\"force_boundaries\":[],\"final_exit_may_follow\":true,\"self_checks\":{\"sector\":{\"status\":\"passed\",\"assertions\":89},\"common\":{\"status\":\"passed\",\"assertions\":67}}}",
+      "[INFO | 2020-09-08T00:00:00] Closed open Binance Perpetual Futures-BTC-USDT position at 10378.76 with PNL: 9.1023(0.9%) because we reached the end of the backtest session.",
+      "[INFO | 2020-09-08T00:00:00] Charged 1.36 as fee. Balance for USDT on Binance Perpetual Futures changed from 10001.02 to 9999.66",
+      "[INFO | 2020-09-08T00:00:00] Added realized PNL of 9.1. Balance for USDT on Binance Perpetual Futures changed from 9999.66 to 10008.76",
+      "[INFO | 2020-09-08T00:00:00] 🟢 Trade closed | BTC-USDT | SHORT | Binance Perpetual Futures",
+      "Qty: 0.29202138 | Entry: 10409.93 | Exit: 10378.76",
+      "Net PnL: +8.76 USDT (+0.86%) | Fees: 2.73 USDT",
+      "[INFO | 2020-09-08T00:00:00] cancel all remaining orders of BTC-USDT to prepare for a fresh start...",
+      "[INFO | 2020-09-08T00:00:00] V6_CLOSE {\"time\":1599523200000,\"trade_id\":\"28f8b152-d0e8-483d-ac62-2bc4ae62450d\",\"reason\":\"fold_end\",\"pnl\":8.758576143003136,\"balance\":10008.758576143002,\"gross\":9.10230641460002,\"risk_budget\":200.0,\"realized_loss\":0.0,\"loss_over_budget\":0.0}",
+      "[INFO | 2020-09-08T00:00:00] Saved daily portfolio balance: 10008.76"
+    ],
+    "offset": 0,
+    "limit": 200,
+    "returned": 28,
+    "total": 28,
+    "next_offset": null,
+    "has_more": false,
+    "truncated_by_size": false,
+    "order": "offset counts entries back from the newest; each page is oldest first",
+    "log_size_bytes": 5123,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/3dc0cf2e-e35a-4d54-aef0-bd644138c259"
+  },
+  "raw_trades": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+    "session_status": "finished",
+    "section": "trades",
+    "order": "as stored (chronological)",
+    "items": [
+      {
+        "id": "28f8b152-d0e8-483d-ac62-2bc4ae62450d",
+        "strategy_name": "ResearchV6Nr7Smoke4h",
+        "symbol": "BTC-USDT",
+        "exchange": "Binance Perpetual Futures",
+        "type": "short",
+        "entry_price": 10409.93,
+        "exit_price": 10378.76,
+        "qty": 0.29202138,
+        "opened_at": 1599278400000,
+        "closed_at": 1599523200000,
+        "fee": 2.73183387398649,
+        "size": 3039.9221243034,
+        "PNL": 8.758576143003136,
+        "PNL_percentage": 0.8643553142016922,
+        "holding_period": 244800,
+        "funding": 2.3881036023896054,
+        "orders": [
+          {
+            "id": "9a9d41a7-56c0-4b39-a307-342884b43186",
+            "trade_id": "28f8b152-d0e8-483d-ac62-2bc4ae62450d",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "sell",
+            "type": "MARKET",
+            "qty": -0.29202138,
+            "filled_qty": -0.29202138,
+            "price": 10409.93,
+            "status": "EXECUTED",
+            "created_at": 1599278400000,
+            "canceled_at": null,
+            "executed_at": 1599278400000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": false,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          },
+          {
+            "id": "132f90a7-78f4-40f9-b6bd-18a46666d41d",
+            "trade_id": "28f8b152-d0e8-483d-ac62-2bc4ae62450d",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "buy",
+            "type": "MARKET",
+            "qty": 0.29202138,
+            "filled_qty": 0.29202138,
+            "price": 10378.76,
+            "status": "EXECUTED",
+            "created_at": 1599523200000,
+            "canceled_at": null,
+            "executed_at": 1599523200000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": true,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          }
+        ]
+      }
+    ],
+    "offset": 0,
+    "limit": 200,
+    "returned": 1,
+    "total": 1,
+    "next_offset": null,
+    "has_more": false,
+    "truncated_by_size": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/3dc0cf2e-e35a-4d54-aef0-bd644138c259"
+  },
+  "parsed_events": [
+    {
+      "label": "V6_SELF_CHECKS",
+      "value": {
+        "status": "passed",
+        "assertions": 89
+      }
+    },
+    {
+      "label": "V6_COMMON_CHECKS",
+      "value": {
+        "status": "passed",
+        "assertions": 67
+      }
+    },
+    {
+      "label": "V6_FEATURES",
+      "value": {
+        "time": 1599278400000,
+        "line": "NR7",
+        "valid": true,
+        "direction": -1,
+        "reason": "nr7_breakout",
+        "details": {
+          "narrow_window": 7,
+          "first": 1599163200000,
+          "last": 1599264000000,
+          "bars": 8,
+          "sha256": "3de6ad03b7190294d7292f43ef5914f2a43418e890ff1432fe94db3f824b4788",
+          "setup_time": 1599249600000,
+          "setup_high": 10635.77,
+          "setup_low": 10430.49,
+          "setup_range": 205.28000000000065,
+          "comparison_min": 235.3700000000008,
+          "prior_ranges": [
+            898.8400000000001,
+            291.9899999999998,
+            239.45999999999913,
+            235.3700000000008,
+            621.3500000000004,
+            292.5799999999999,
+            205.28000000000065
+          ],
+          "narrow": true,
+          "close": 10409.93
+        }
+      }
+    },
+    {
+      "label": "V6_ENTRY",
+      "value": {
+        "time": 1599278400000,
+        "direction": -1,
+        "decision": 10409.93,
+        "fill": 10409.93,
+        "capital": 10000,
+        "qty": 0.29202138,
+        "distance_pre": 675.2085714285719,
+        "distance_fill": 675.2085714285719,
+        "planned_stop_loss": 199.99999763074055,
+        "risk_budget": 200,
+        "stop": 11085.138571428572,
+        "target": 8384.304285714285,
+        "atr": {
+          "value": 337.60428571428594,
+          "first": 1599062400000,
+          "last": 1599264000000,
+          "bars": 15,
+          "offset_bars": 0,
+          "sha256": "628570e389ea9e6095ee8f21e28c27817ec03c7b04242e75418b433d52f516d8"
+        },
+        "oi": {
+          "quality": "valid",
+          "passed": true,
+          "current": {
+            "time": 1599278400000,
+            "value": 32010.359,
+            "label": 1599277800000,
+            "available_at": 1599278160000,
+            "status": "valid"
+          },
+          "reference": {
+            "time": 1599192000000,
+            "value": 31824.098,
+            "label": 1599191400000,
+            "available_at": 1599191760000,
+            "status": "valid"
+          },
+          "rule": "rising",
+          "decline_fraction": null,
+          "ratio": 1.0058528288845767
+        },
+        "funding": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "settled_at": 1599264000000,
+          "rate_decimal": 0.0001,
+          "mark_price": 10448.32785862,
+          "mark_price_source": "markPriceKlines.1h_open_proxy",
+          "available_at": 1599264060000
+        }
+      }
+    },
+    {
+      "label": "V6_EXIT_REQUEST",
+      "value": {
+        "time": 1599523200000,
+        "reason": "fold_end"
+      }
+    },
+    {
+      "label": "V6_AUDIT",
+      "value": {
+        "key": "2020-09:all",
+        "bars": 42,
+        "opportunities": 1,
+        "entries": 1,
+        "exits": 0,
+        "primary": {
+          "nr7_not_narrow": 36,
+          "nr7_no_breakout": 3,
+          "allowed": 1,
+          "in_position_or_pending": 1,
+          "boundary_or_inactive": 1
+        },
+        "flags": {},
+        "feature_reasons": {
+          "nr7_not_narrow": 36,
+          "nr7_no_breakout": 3,
+          "nr7_breakout": 3
+        }
+      }
+    },
+    {
+      "label": "V6_AUDIT",
+      "value": {
+        "key": "2020-09:long",
+        "bars": 1,
+        "opportunities": 0,
+        "entries": 0,
+        "exits": 0,
+        "primary": {
+          "boundary_or_inactive": 1
+        },
+        "flags": {},
+        "feature_reasons": {
+          "nr7_breakout": 1
+        }
+      }
+    },
+    {
+      "label": "V6_AUDIT",
+      "value": {
+        "key": "2020-09:none",
+        "bars": 39,
+        "opportunities": 0,
+        "entries": 0,
+        "exits": 0,
+        "primary": {
+          "nr7_not_narrow": 36,
+          "nr7_no_breakout": 3
+        },
+        "flags": {},
+        "feature_reasons": {
+          "nr7_not_narrow": 36,
+          "nr7_no_breakout": 3
+        }
+      }
+    },
+    {
+      "label": "V6_AUDIT",
+      "value": {
+        "key": "2020-09:short",
+        "bars": 2,
+        "opportunities": 1,
+        "entries": 1,
+        "exits": 0,
+        "primary": {
+          "allowed": 1,
+          "in_position_or_pending": 1
+        },
+        "flags": {},
+        "feature_reasons": {
+          "nr7_breakout": 2
+        }
+      }
+    },
+    {
+      "label": "V6_PROVENANCE",
+      "value": {
+        "line": "NR7",
+        "use_oi": false,
+        "oi_lag_bars": 0,
+        "oi_rule": "rising",
+        "oi_decline_fraction": 0.02,
+        "stop_multiplier": 2,
+        "bar_ms": 14400000,
+        "oi_reference_bars": 6,
+        "atr_offset_bars": 0,
+        "target_mode": "r_multiple",
+        "reward_multiple": 3,
+        "max_hold_bars": 24,
+        "start": 1598918400000,
+        "finish": 1599523200000,
+        "active_windows": null,
+        "force_boundaries": [],
+        "final_exit_may_follow": true,
+        "self_checks": {
+          "sector": {
+            "status": "passed",
+            "assertions": 89
+          },
+          "common": {
+            "status": "passed",
+            "assertions": 67
+          }
+        }
+      }
+    },
+    {
+      "label": "V6_CLOSE",
+      "value": {
+        "time": 1599523200000,
+        "trade_id": "28f8b152-d0e8-483d-ac62-2bc4ae62450d",
+        "reason": "fold_end",
+        "pnl": 8.758576143003136,
+        "balance": 10008.758576143002,
+        "gross": 9.10230641460002,
+        "risk_budget": 200,
+        "realized_loss": 0,
+        "loss_over_budget": 0
+      }
+    }
+  ],
+  "max_log_line": 1080,
+  "counts": {
+    "decisions": 42,
+    "sector_assertions": 89,
+    "common_assertions": 67,
+    "entries": 1,
+    "closes_before_audit": 0,
+    "final_forced_closes": 1,
+    "long_entries": 0,
+    "short_entries": 1,
+    "funding_cash_events": 8
+  },
+  "limitations": [
+    "Actual stop/TP and maximum-hold fills unexercised; one short actual entry and final forced close only.",
+    "No long actual entry, OI gate disabled in P smoke; common/sector deterministic checks cover branches explicitly.",
+    "Funding cashflow nonzero, but complete ledger/order/equity financial audit belongs to root.",
+    "Summary total_open_trades/open_pl are pre-final-close metadata; final trade/close/balance include forced liquidation."
+  ]
+}

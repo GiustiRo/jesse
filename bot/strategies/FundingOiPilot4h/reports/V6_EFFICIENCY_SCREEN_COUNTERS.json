@@ -1,0 +1,110 @@
+{
+  "cycle": "V6",
+  "sector": "EFFICIENCY",
+  "status": "EXECUTION_AUDIT_PASS",
+  "variants": [
+    {
+      "label": "P",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "technical_audit": "PASS",
+      "assertions": 3272,
+      "native_metrics": {
+        "trades": 148,
+        "net_pct": 40.016598664024336,
+        "dd_pct": -21.86957331160556,
+        "funding_cashflow": -816.5700106016301,
+        "funding_events": 1590
+      },
+      "totals": {
+        "bars": 7302,
+        "entries": 148,
+        "exits_before_forced": 148,
+        "forced_closes": 0,
+        "opportunities": 148
+      },
+      "feature_reasons": {
+        "efficiency_no_cross": 7005,
+        "efficiency_setup": 297
+      },
+      "primary": {
+        "efficiency_no_cross": 7004,
+        "allowed": 148,
+        "in_position_or_pending": 149,
+        "boundary_or_inactive": 1
+      },
+      "close_reasons": {
+        "stop-loss": 53,
+        "efficiency_neutral": 91,
+        "maximum_hold": 4
+      },
+      "log_pages": 16,
+      "log_lines": 3041,
+      "max_line": 1096,
+      "entry_plans_checked": 148,
+      "months": 40,
+      "entry_price_comparison": {
+        "absolute_tolerance": 1e-8,
+        "max_observed_abs_delta": 7.275957614183426e-12,
+        "quantity_exact": true,
+        "executed_entry_order_price_exact": true,
+        "diagnostic_file": "V6_EFFICIENCY_ENTRY_VWAP_FLOAT_DIAGNOSTIC.json"
+      },
+      "audit_file": "AUDIT_ResearchV6EfficiencyP4h_SCREEN.json"
+    },
+    {
+      "label": "POI",
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "technical_audit": "PASS",
+      "assertions": 2843,
+      "native_metrics": {
+        "trades": 119,
+        "net_pct": 11.339259984024784,
+        "dd_pct": -30.780642380756753,
+        "funding_cashflow": -727.2562925129798,
+        "funding_events": 1196
+      },
+      "totals": {
+        "bars": 7302,
+        "entries": 119,
+        "exits_before_forced": 119,
+        "forced_closes": 0,
+        "opportunities": 189
+      },
+      "feature_reasons": {
+        "efficiency_no_cross": 7005,
+        "efficiency_setup": 297
+      },
+      "primary": {
+        "efficiency_no_cross": 7004,
+        "oi_initialization": 2,
+        "oi_nonrising": 67,
+        "allowed": 119,
+        "in_position_or_pending": 108,
+        "oi_reference_invalid": 1,
+        "boundary_or_inactive": 1
+      },
+      "close_reasons": {
+        "efficiency_neutral": 65,
+        "stop-loss": 51,
+        "maximum_hold": 3
+      },
+      "log_pages": 14,
+      "log_lines": 2698,
+      "max_line": 1095,
+      "entry_plans_checked": 119,
+      "months": 40,
+      "entry_price_comparison": {
+        "absolute_tolerance": 1e-8,
+        "max_observed_abs_delta": 7.275957614183426e-12,
+        "quantity_exact": true,
+        "executed_entry_order_price_exact": true,
+        "diagnostic_file": "V6_EFFICIENCY_ENTRY_VWAP_FLOAT_DIAGNOSTIC.json"
+      },
+      "audit_file": "AUDIT_ResearchV6EfficiencyOi4h_SCREEN.json"
+    }
+  ],
+  "financial_and_selection_owner": "root",
+  "no_new_runs_after_screen": true
+}

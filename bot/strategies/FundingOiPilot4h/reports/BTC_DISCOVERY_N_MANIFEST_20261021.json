@@ -1,0 +1,258 @@
+{
+  "phase": "N_pre_economic",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 19:30:41 UTC",
+  "sources": {
+    "BtcResearchR14CompositeBase1m": "import math\nimport numpy as np\n\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import (\n    BAR, closed_window, breadth_signal, breadth_state, atr14, entry_plan,\n)\nfrom strategies.BtcResearchR12JumpBase1m import closed_hours, jump_state\n\n\ndef select_origin(core_event, impulse_event):\n    \"\"\"One order at most: aligned events coalesce to CORE; disagreement is cash.\"\"\"\n    assert core_event in (-1, 0, 1) and impulse_event in (-1, 0, 1)\n    if core_event and impulse_event:\n        if core_event == impulse_event:\n            return core_event, \"CORE\", \"aligned\"\n        return 0, None, \"conflict\"\n    if core_event:\n        return core_event, \"CORE\", \"core_only\"\n    if impulse_event:\n        return impulse_event, \"IMPULSE\", \"impulse_only\"\n    return 0, None, \"none\"\n\n\ndef management_policy(mode, origin):\n    \"\"\"Preserve parent management, rather than selecting it from later performance.\"\"\"\n    assert mode in (\"FIXED\", \"STATE\") and origin in (\"CORE\", \"IMPULSE\")\n    if mode == \"STATE\" and origin == \"CORE\":\n        return dict(target_r=None, hold_bars=180, exit_opposite=True)\n    return dict(target_r=2, hold_bars=12, exit_opposite=False)\n\n\nclass BtcResearchR14CompositeBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def _ledger(self):\n        return self.vars.setdefault(\"source_ledger\", {\n            \"CORE\": dict(fills=0, closes=0, net=0.0),\n            \"IMPULSE\": dict(fills=0, closes=0, net=0.0),\n        })\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"FIXED\", \"STATE\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 26)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            self.vars[\"jump_state\"] = 0\n            self.vars[\"core_state\"] = 0\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        # CORE state must remain available for B's opposite-state exit even if\n        # hourly history is missing. Shared hourly validity gates new entries only.\n        core_event = breadth_signal(rows)\n        self.vars[\"core_state\"] = breadth_state(rows[-25:, 2])\n        hourly = closed_hours(self.get_candles(self.exchange, self.symbol, \"1h\"), now)\n        if hourly is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            self.vars[\"jump_state\"] = 0\n            return\n        assert math.isclose(float(hourly[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n\n        # Both machines advance before occupancy or arbitration. No old blocked\n        # event can be queued for the next free minute or four-hour close.\n        atr = atr14(rows)\n        current_jump = jump_state(hourly, atr, float(self.price))\n        previous_jump = self.vars.get(\"jump_state\", 0)\n        self.vars[\"jump_state\"] = current_jump\n        impulse_event = current_jump if current_jump and current_jump != previous_jump else 0\n        direction, origin, arbitration = select_origin(core_event, impulse_event)\n\n        if not self.START < now < self.FINISH:\n            return\n        self.vars[\"core_events\"] = self.vars.get(\"core_events\", 0)+int(bool(core_event))\n        self.vars[\"impulse_events\"] = self.vars.get(\"impulse_events\", 0)+int(bool(impulse_event))\n        key = \"arbitration_\"+arbitration\n        self.vars[key] = self.vars.get(key, 0)+1\n        if direction:\n            self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            if core_event or impulse_event:\n                self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n                self.vars[\"core_discarded\"] = self.vars.get(\"core_discarded\", 0)+int(bool(core_event))\n                self.vars[\"impulse_discarded\"] = self.vars.get(\"impulse_discarded\", 0)+int(bool(impulse_event))\n            return\n        if not direction or atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        # B inherits this hypothetical 2R admission guard from R10 even though\n        # its actual position has no take-profit. Preserve that parent boundary.\n        if self.price+direction*2*plan[\"distance\"] <= 0:\n            return\n        policy = management_policy(self.MODE, origin)\n        self.vars[\"plan\"] = dict(plan, origin=origin, policy=policy)\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        origin = plan[\"origin\"]\n        policy = dict(plan[\"policy\"])\n        assert self.vars.get(\"position_origin\") is None\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        if policy[\"target_r\"] is not None:\n            self.take_profit = qty, entry+direction*policy[\"target_r\"]*plan[\"distance\"]\n        self.vars[\"position_origin\"] = origin\n        self.vars[\"position_policy\"] = policy\n        self._ledger()[origin][\"fills\"] += 1\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n        self._log(\"R14_COMPOSITE_OPEN\", dict(\n            time=int(self.time), mode=self.MODE, origin=origin, direction=direction,\n            entry=entry, qty=qty, stop=stop, policy=policy))\n\n    def update_position(self):\n        now = int(self.time)\n        if now % BAR:\n            return\n        policy = self.vars[\"position_policy\"]\n        opened = int(self.position.opened_at)\n        if now-opened >= policy[\"hold_bars\"]*BAR:\n            self.liquidate()\n            return\n        if now <= opened or not policy[\"exit_opposite\"]:\n            return\n        state = self.vars.get(\"core_state\", 0)\n        if (self.is_long and state == -1) or (self.is_short and state == 1):\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        origin = self.vars[\"position_origin\"]\n        ledger = self._ledger()[origin]\n        pnl = float(closed_trade.pnl)\n        assert math.isfinite(pnl)\n        ledger[\"closes\"] += 1\n        ledger[\"net\"] += pnl\n        self.vars[\"position_origin\"] = None\n        self.vars[\"position_policy\"] = None\n        self._log(\"R14_COMPOSITE_CLOSE\", dict(time=int(self.time), origin=origin, net=pnl))\n        # The parent may emit FINAL inside this callback. Its terminal source\n        # ledger must already contain this close, including final fees/funding.\n        super().on_close_position(order, closed_trade)\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        ledger = self._ledger()\n        self._log(\"R14_COMPOSITE_STATS\", dict(\n            stage=stage, mode=self.MODE, sources=ledger,\n            fills=sum(v[\"fills\"] for v in ledger.values()),\n            closes=sum(v[\"closes\"] for v in ledger.values()),\n            net=sum(v[\"net\"] for v in ledger.values()),\n            core_events=self.vars.get(\"core_events\", 0),\n            impulse_events=self.vars.get(\"impulse_events\", 0),\n            aligned=self.vars.get(\"arbitration_aligned\", 0),\n            conflicts=self.vars.get(\"arbitration_conflict\", 0),\n            core_only=self.vars.get(\"arbitration_core_only\", 0),\n            impulse_only=self.vars.get(\"arbitration_impulse_only\", 0),\n            core_discarded=self.vars.get(\"core_discarded\", 0),\n            impulse_discarded=self.vars.get(\"impulse_discarded\", 0)))\n",
+    "BtcResearchR14CompositeFixed1m": "from strategies.BtcResearchR14CompositeBase1m import BtcResearchR14CompositeBase1m\n\n\nclass BtcResearchR14CompositeFixed1m(BtcResearchR14CompositeBase1m):\n    MODE = \"FIXED\"\n",
+    "BtcResearchR14CompositeState1m": "from strategies.BtcResearchR14CompositeBase1m import BtcResearchR14CompositeBase1m\n\n\nclass BtcResearchR14CompositeState1m(BtcResearchR14CompositeBase1m):\n    MODE = \"STATE\"\n"
+  },
+  "check": {
+    "status": "passed",
+    "assertions": 131,
+    "source_sha256": "0e678d3928b8bada8981ae6a2bd5b678c3fb43950701e3d71ef843ba0cdb84d4",
+    "observer_sha256": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+    "core_helper_sha256": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+    "impulse_helper_sha256": "631377b49a213511ca5d08f63e50cf08aa38e18fcec303479b89e3a9fc0b81a6",
+    "core_fixed_wrapper_sha256": "6abc5094fb8099aea2cc02090c6c6ae9280a42e1c4a0d4b2061407fc4afd286c",
+    "core_state_source_sha256": "78d6986644c688834ab847f2bfc735a6e839d8ccad4c9a38db2bc83655a88d3d",
+    "check_scope": "synthetic supplied-source AST/classes with artificial engine fields; no economic backtest, real broker or observed candle data",
+    "checks": "frozen helper causality;9arbitrations;states advance occupied;no queue/sameclose/pyramid;source-fixed management/SL/TP/48h/720h/opposite;gap reset;fee-aware2%;real R11 terminal callback ledger ordering"
+  },
+  "technical_receipt": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_TECHNICAL_CHECK_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "639fa5fe891442bb989d546ce9d358e9",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/639fa5fe891442bb989d546ce9d358e9",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 15021,
+      "exit_code": 0,
+      "started_at": "2026-10-21T19:29:01+00:00",
+      "finished_at": "2026-10-21T19:29:01+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T19:29:01+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "check.json",
+        "size_bytes": 969,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"passed\", \"assertions\": 131, \"source_sha256\": \"0e678d3928b8bada8981ae6a2bd5b678c3fb43950701e3d71ef843ba0cdb84d4\", \"observer_sha256\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"core_helper_sha256\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"impulse_helper_sha256\": \"631377b49a213511ca5d08f63e50cf08aa38e18fcec303479b89e3a9fc0b81a6\", \"core_fixed_wrapper_sha256\": \"6abc5094fb8099aea2cc02090c6c6ae9280a42e1c4a0d4b2061407fc4afd286c\", \"core_state_source_sha256\": \"78d6986644c688834ab847f2bfc735a6e839d8ccad4c9a38db2bc83655a88d3d\", \"check_scope\": \"synthetic supplied-source AST/classes with artificial engine fields; no economic backtest, real broker or observed candle data\", \"checks\": \"frozen helper causality;9arbitrations;states advance occupied;no queue/sameclose/pyramid;source-fixed management/SL/TP/48h/720h/opposite;gap reset;fee-aware2%;real R11 terminal callback ledger ordering\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "independent_review": "btc_next_material confirms finalsource/protocolbothparityfixes, arbitration, originmanagement and terminalledger; noadditionalmaterialdefects. Rootreadbackexactsource/receipt/configverifiedbeforeeconomy.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "372c7574-4df8-472a-8573-83971c3ceb50",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery N | fixed signs + impulse",
+      "description": "Composición BTC de padres congelados con una posición2%, gestión por origen; protocolo N previo. Desarrollo observado, sin estrés ni autorización operativa.",
+      "description_truncated": false,
+      "created_at": 1792610975000,
+      "updated_at": 1792610989000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR14CompositeFixed1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/372c7574-4df8-472a-8573-83971c3ceb50"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "665cb22e-4298-429c-a3f5-3df4bc45eb03",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery N | state signs + impulse",
+      "description": "Composición BTC de padres congelados con una posición2%, gestión por origen; protocolo N previo. Desarrollo observado, sin estrés ni autorización operativa.",
+      "description_truncated": false,
+      "created_at": 1792610975000,
+      "updated_at": 1792610989000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR14CompositeState1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/665cb22e-4298-429c-a3f5-3df4bc45eb03"
+    }
+  ],
+  "timing_diagnostic": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_TIMING_DIAGNOSTIC_20261021.json",
+  "budget": {
+    "economic": 2,
+    "technical_replacement_max": 2
+  },
+  "tooling_notes": [
+    "JS structuredClone unavailable before draft update; corrected with JSON clone.",
+    "update reply uses status success; check corrected before execution. No economic job failures."
+  ],
+  "final_review_at": "2026-10-21 19:31:18 UTC"
+}

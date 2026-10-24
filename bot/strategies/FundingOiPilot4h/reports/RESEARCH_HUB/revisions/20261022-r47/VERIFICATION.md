@@ -1,0 +1,2 @@
+# Verificación r47/R46
+Fuentes/protocolo congelados antes de1observador;88checks/snapshot0PASS, fuentes/formas exactas. Replay independiente deinputs completos, no cadacandleM1.90.989líneas descargadas porAPIpública trasMCP16MiBcap, SHA/bytes/tail500 verificados, no rerun. Revisión cierre documental independiente sinreposición de auditoría de filas.70economías/2observadores separados,0jobs activos. Archivosyrevision.jsonantesdeíndiceúltimo. Objetivoactivo/noalcanzado.

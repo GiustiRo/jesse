@@ -1,0 +1,488 @@
+{
+  "status": "passed_independent_shortlist_C1_audit",
+  "scope": "Read-only MCP plus this audit document. No jobs, motors, strategies or registry changes. Only pre2024 SCREEN summaries queried; no C1 evaluation economic endpoints or metrics consulted.",
+  "checks": {
+    "six_unique_screens": true,
+    "gate_consistency": true,
+    "four_eligible_two_rejected": true,
+    "fixed_ranking_matches": true,
+    "cap_two_exact": true,
+    "selection_exact": true,
+    "C1_reuse": true,
+    "wrappers14": true,
+    "root_AST_job_verified": true,
+    "nominal_sources_unchanged": true,
+    "chronology": true
+  },
+  "screening": [
+    {
+      "strategy": "ResearchV5CrossP4h",
+      "session_id": "50827027-6d6f-4c5d-8c23-5f2f91d7d971",
+      "dashboard_url": "http://localhost:9200/#/backtest/50827027-6d6f-4c5d-8c23-5f2f91d7d971",
+      "n": 77,
+      "net": 9052.918199267087,
+      "pf": 1.7118137087452363,
+      "dd": -17.695540126860376,
+      "turnover": 95.80424896591752,
+      "positive_full_years": 2,
+      "base_gate": true,
+      "annual_gate": true,
+      "recomputed_eligible": true,
+      "stored_eligible": true,
+      "consistent": true
+    },
+    {
+      "strategy": "ResearchV5CrossOi4h",
+      "session_id": "642c5e9e-8705-4a9f-860d-d7ec071ef510",
+      "dashboard_url": "http://localhost:9200/#/backtest/642c5e9e-8705-4a9f-860d-d7ec071ef510",
+      "n": 57,
+      "net": 6007.088154785731,
+      "pf": 1.6187123773594336,
+      "dd": -22.666193621004073,
+      "turnover": 70.53015168978716,
+      "positive_full_years": 2,
+      "base_gate": true,
+      "annual_gate": true,
+      "recomputed_eligible": true,
+      "stored_eligible": true,
+      "consistent": true
+    },
+    {
+      "strategy": "ResearchV5FundingFP4h",
+      "session_id": "2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+      "dashboard_url": "http://localhost:9200/#/backtest/2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+      "n": 171,
+      "net": 3067.8815635824703,
+      "pf": 1.3627035300817534,
+      "dd": -15.723608721413463,
+      "turnover": 170.01331428271297,
+      "positive_full_years": 2,
+      "base_gate": true,
+      "annual_gate": true,
+      "recomputed_eligible": true,
+      "stored_eligible": true,
+      "consistent": true
+    },
+    {
+      "strategy": "ResearchV5FundingFPOi4h",
+      "session_id": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+      "dashboard_url": "http://localhost:9200/#/backtest/e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+      "n": 132,
+      "net": 3403.694835098907,
+      "pf": 1.5058438541634542,
+      "dd": -13.022950298425695,
+      "turnover": 129.82337765243946,
+      "positive_full_years": 3,
+      "base_gate": true,
+      "annual_gate": true,
+      "recomputed_eligible": true,
+      "stored_eligible": true,
+      "consistent": true
+    },
+    {
+      "strategy": "ResearchV5VwapPV1h",
+      "session_id": "46f494e4-aca0-455e-979e-f279d3d87106",
+      "dashboard_url": "http://localhost:9200/#/backtest/46f494e4-aca0-455e-979e-f279d3d87106",
+      "n": 546,
+      "net": -3386.941718237705,
+      "pf": 0.8831134867387275,
+      "dd": -40.95158368707581,
+      "turnover": 724.1948173282339,
+      "positive_full_years": 1,
+      "base_gate": false,
+      "annual_gate": false,
+      "recomputed_eligible": false,
+      "stored_eligible": false,
+      "consistent": true
+    },
+    {
+      "strategy": "ResearchV5VwapPVOi1h",
+      "session_id": "6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+      "dashboard_url": "http://localhost:9200/#/backtest/6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+      "n": 350,
+      "net": -3313.8823503589465,
+      "pf": 0.8459199697111257,
+      "dd": -38.28299595938446,
+      "turnover": 499.9822342740932,
+      "positive_full_years": 0,
+      "base_gate": false,
+      "annual_gate": false,
+      "recomputed_eligible": false,
+      "stored_eligible": false,
+      "consistent": true
+    }
+  ],
+  "ranking": [
+    "ResearchV5FundingFPOi4h",
+    "ResearchV5FundingFP4h",
+    "ResearchV5CrossP4h",
+    "ResearchV5CrossOi4h"
+  ],
+  "finalists": [
+    "ResearchV5FundingFPOi4h",
+    "ResearchV5FundingFP4h"
+  ],
+  "shortlist_saved_at": "2026-10-21T01:10:16+00:00",
+  "selection": {
+    "cycle": "V5",
+    "fold": "C1",
+    "recorded_at": "2026-10-21 01:11:54 UTC",
+    "eval_start": "2024-01-01",
+    "eval_finish": "2024-07-01",
+    "train_start": "2020-09-01",
+    "train_finish": "2024-01-01",
+    "shortlist_file": "FROZEN_SHORTLIST_V5.md",
+    "train_reused": true,
+    "candidates": [
+      {
+        "id": "FUNDING_FPOI",
+        "strategy": "ResearchV5FundingFPOi4h",
+        "train_session": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+        "eligible": true,
+        "n": 132,
+        "net": 3403.694835098907,
+        "pf": 1.5058438541634542,
+        "dd": -13.022950298425695,
+        "turnover": 129.82337765243946
+      },
+      {
+        "id": "FUNDING_FP",
+        "strategy": "ResearchV5FundingFP4h",
+        "train_session": "2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+        "eligible": true,
+        "n": 171,
+        "net": 3067.8815635824703,
+        "pf": 1.3627035300817534,
+        "dd": -15.723608721413463,
+        "turnover": 170.01331428271297
+      }
+    ],
+    "selected": "ResearchV5FundingFPOi4h",
+    "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+    "all_train_eligible": true,
+    "evals_started": false
+  },
+  "selection_saved_at": "2026-10-21T01:11:54+00:00",
+  "reuse_proofs": [
+    {
+      "strategy": "ResearchV5FundingFPOi4h",
+      "session_id": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+      "dashboard_url": "http://localhost:9200/#/backtest/e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+      "status": "finished",
+      "exact_same_screen_id": true,
+      "train_dates_exact": true,
+      "route_strategy_exact": true,
+      "config_exact": true,
+      "selection_metrics_equal_screen": true,
+      "metric_trade_count_equal": true,
+      "updated_at": 1792544655000
+    },
+    {
+      "strategy": "ResearchV5FundingFP4h",
+      "session_id": "2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+      "dashboard_url": "http://localhost:9200/#/backtest/2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+      "status": "finished",
+      "exact_same_screen_id": true,
+      "train_dates_exact": true,
+      "route_strategy_exact": true,
+      "config_exact": true,
+      "selection_metrics_equal_screen": true,
+      "metric_trade_count_equal": true,
+      "updated_at": 1792544636000
+    }
+  ],
+  "nominal_source_proofs": [
+    {
+      "path": "strategies/ResearchV5Base4h/__init__.py",
+      "frozen_sha256": "5e0124dbc86305cccfdbbd857ba158a2e7dc10c9fdf2a905f31cfc1dd59890aa",
+      "current_exact_content_match": true,
+      "manifest_hash_matches_registry": true
+    },
+    {
+      "path": "strategies/ResearchV5Base4h/funding_features.py",
+      "frozen_sha256": "a9e7d666706c41624deebfd19d905331296efd9839f6d28e68a615cec82f12ce",
+      "current_exact_content_match": true,
+      "manifest_hash_matches_registry": true
+    },
+    {
+      "path": "strategies/ResearchV5FundingFP4h/__init__.py",
+      "frozen_sha256": "ef0ea4ff2e9e5444a5ee0da2d0a35d0c8d92a6d939172d24244aff15646edefd",
+      "current_exact_content_match": true,
+      "manifest_hash_matches_registry": true
+    },
+    {
+      "path": "strategies/ResearchV5FundingFPOi4h/__init__.py",
+      "frozen_sha256": "c702e26a6ebd33e76af2861914e4ce9732c98375a12a3df86d3c41d91ac74dee",
+      "current_exact_content_match": true,
+      "manifest_hash_matches_registry": true
+    }
+  ],
+  "wrappers": [
+    {
+      "name": "ResearchV5FT_OI_C1V",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2024-01-01",
+      "finish": "2024-07-01",
+      "START": 1704067200000,
+      "FINISH": 1719792000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "958ac0d30aeae24ebf93774a521e88faaea41878953bf07dbbb0f802e9bdc46d"
+    },
+    {
+      "name": "ResearchV5FT_OI_C2T",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2020-09-01",
+      "finish": "2024-07-01",
+      "START": 1598918400000,
+      "FINISH": 1719792000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "dccbe16901095092605964066098510783357eb18f2158d6755e0209b1a7f0a3"
+    },
+    {
+      "name": "ResearchV5FT_OI_C2V",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2024-07-01",
+      "finish": "2025-01-01",
+      "START": 1719792000000,
+      "FINISH": 1735689600000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "b2449999f87db61bfa033dfa1605c54c6c7d97056770f87ecd933e29c1e093ed"
+    },
+    {
+      "name": "ResearchV5FT_OI_C3T",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2020-09-01",
+      "finish": "2025-01-01",
+      "START": 1598918400000,
+      "FINISH": 1735689600000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "4cacd45bd91a9b3a7c25527725f3e6388d7a31670df00dfc0888a52ee2cd3ee2"
+    },
+    {
+      "name": "ResearchV5FT_OI_C3V",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "START": 1735689600000,
+      "FINISH": 1751328000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "cf6e84e8826bab69ebe2f5b665ab3c57f5a20be80fbd811a6bca8a392c89ad1f"
+    },
+    {
+      "name": "ResearchV5FT_OI_C4T",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2020-09-01",
+      "finish": "2025-07-01",
+      "START": 1598918400000,
+      "FINISH": 1751328000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "b35f9992bf4ebdea6044715e4f299e69de4c2c54746910f0445dd3d347b07081"
+    },
+    {
+      "name": "ResearchV5FT_OI_C4V",
+      "parent": "ResearchV5FundingFPOi4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2025-07-01",
+      "finish": "2026-01-01",
+      "START": 1751328000000,
+      "FINISH": 1767225600000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "0efecf23a21f2e61863fcb104c5070d5b9d17a14196f8fc5539400655ecffcd3"
+    },
+    {
+      "name": "ResearchV5FT_FP_C1V",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2024-01-01",
+      "finish": "2024-07-01",
+      "START": 1704067200000,
+      "FINISH": 1719792000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "8e0eb29c03687a9b6f3379606ef592fdacceaa184fe68397b5c442f3a15fec73"
+    },
+    {
+      "name": "ResearchV5FT_FP_C2T",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2020-09-01",
+      "finish": "2024-07-01",
+      "START": 1598918400000,
+      "FINISH": 1719792000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "19cfc7292e4609a37522ff71ee8522c733940a25c1392f0cddcce52b77d74f13"
+    },
+    {
+      "name": "ResearchV5FT_FP_C2V",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2024-07-01",
+      "finish": "2025-01-01",
+      "START": 1719792000000,
+      "FINISH": 1735689600000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "be073ddc68cc5ee08a25fb25999a7d55d5172ba4056b5947060098fdbf59b986"
+    },
+    {
+      "name": "ResearchV5FT_FP_C3T",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2020-09-01",
+      "finish": "2025-01-01",
+      "START": 1598918400000,
+      "FINISH": 1735689600000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "718e97f8f0c53ccaab6c544e7405a689fc6cf3ca6867619a56f138cca1769f8f"
+    },
+    {
+      "name": "ResearchV5FT_FP_C3V",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "START": 1735689600000,
+      "FINISH": 1751328000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "afdf86515f6d926d21244ada6d1c6cd5ac92ee336feb3d144ceac08a063ed9c6"
+    },
+    {
+      "name": "ResearchV5FT_FP_C4T",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2020-09-01",
+      "finish": "2025-07-01",
+      "START": 1598918400000,
+      "FINISH": 1751328000000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "7e6cfb3f71b63edbb4040d5f0886e8ceb97b76d418e335a5d980f845a3db1289"
+    },
+    {
+      "name": "ResearchV5FT_FP_C4V",
+      "parent": "ResearchV5FundingFP4h",
+      "current_matches_manifest": true,
+      "only_start_finish": true,
+      "start": "2025-07-01",
+      "finish": "2026-01-01",
+      "START": 1751328000000,
+      "FINISH": 1767225600000,
+      "dates_match_UTC": true,
+      "verified_parent_and_attrs": true,
+      "root_verified_sha256": "3fd237361c7cc2404511a2d3ccb5ec21d8af7eae0c5c140a5e76011281604079"
+    }
+  ],
+  "wrapper_AST_hash_job": "16253360af274c78840d8f51f52b9693",
+  "wrapper_verification_saved_at": "2026-10-21T01:11:54+00:00",
+  "chronology": [
+    {
+      "label": "FUNDING_FPOI",
+      "strategy": "ResearchV5FT_OI_C1V",
+      "session_id": "f9c5a6f5-e7f7-45f8-9cd4-c7f51bd977f0",
+      "dashboard_url": "http://localhost:9200/#/backtest/f9c5a6f5-e7f7-45f8-9cd4-c7f51bd977f0",
+      "prerun_session_status": "draft",
+      "prerun_created_at": "2026-10-21T01:11:54.000Z",
+      "prerun_updated_at": "2026-10-21T01:11:55.000Z",
+      "selection_saved_at": "2026-10-21T01:11:54+00:00",
+      "start_requested_at": "2026-10-21T01:12:42.515Z",
+      "start_response_at": "2026-10-21T01:13:01.999Z",
+      "selection_before_start": true,
+      "shortlist_before_start": true,
+      "wrapper_verified_before_start": true,
+      "seconds_selection_to_start": 48.515,
+      "creation_resolution_note": "Same stored second; strict selection-vs-draft-creation order unresolved by these timestamps, and not required by execution gate.",
+      "prerun_dates_exact": true,
+      "prerun_config_exact": true,
+      "raw_run_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"f9c5a6f5-e7f7-45f8-9cd4-c7f51bd977f0\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV5FT_OI_C1V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/f9c5a6f5-e7f7-45f8-9cd4-c7f51bd977f0\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "label": "FUNDING_FP",
+      "strategy": "ResearchV5FT_FP_C1V",
+      "session_id": "b3a5c7e3-99b2-4540-a928-6927af51a602",
+      "dashboard_url": "http://localhost:9200/#/backtest/b3a5c7e3-99b2-4540-a928-6927af51a602",
+      "prerun_session_status": "draft",
+      "prerun_created_at": "2026-10-21T01:11:55.000Z",
+      "prerun_updated_at": "2026-10-21T01:11:55.000Z",
+      "selection_saved_at": "2026-10-21T01:11:54+00:00",
+      "start_requested_at": "2026-10-21T01:13:02.344Z",
+      "start_response_at": "2026-10-21T01:13:26.264Z",
+      "selection_before_start": true,
+      "shortlist_before_start": true,
+      "wrapper_verified_before_start": true,
+      "seconds_selection_to_start": 68.344,
+      "creation_resolution_note": "Creation timestamp later than selection.",
+      "prerun_dates_exact": true,
+      "prerun_config_exact": true,
+      "raw_run_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ],
+  "branch_ref": "V5_C1_BRANCH_PROGRESS.json",
+  "branch_observed": {
+    "modified_at": "2026-10-21T01:14:13+00:00",
+    "size_bytes": 56077
+  },
+  "parameter_invariants": {
+    "parent": "ResearchV5FundingFP4h",
+    "PRICE_SMA_PERIOD": 120,
+    "RETURN_LAG": 30,
+    "FUNDING_COUNT": 3,
+    "STOP_MULTIPLIER": 3,
+    "MAX_HOLD_BARS": 180,
+    "TARGET_MODE": "none",
+    "ATR_OFFSET_BARS": 0,
+    "OI_difference_only": "ResearchV5FundingFPOi4h overrides USE_OI=True"
+  },
+  "limitations": [
+    "Gates recalculated from durable full-snapshot screening metrics; financial ledger reconstruction was root's separate analysis.",
+    "Current full source compared to frozen Markdown code fences allowing only their final fence newline; frozen SHA values checked against registry, not independently recomputed in a new job.",
+    "Existing root AST/hash job verified14wrappers; current texts also equal exact date-only manifest. No AST job launched by this audit.",
+    "Saved chronology is not an immutable log of every historical access. First draft shares selection's stored second; execution order is unambiguous.",
+    "Two selected funding variants are correlated ablative relatives, not two independent mechanisms. CROSS higher return does not override primary DD ranking or cap2.",
+    "V6 remains separately frozen before its development results; no V6 sources/results modified or consulted here."
+  ]
+}

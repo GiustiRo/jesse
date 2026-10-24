@@ -1,0 +1,90 @@
+{
+  "cycle": "V6",
+  "status": "PASS",
+  "author": "/root/audit",
+  "calendar_ref": "V6_REPLAY_CALENDAR.json",
+  "calendar_sha256": "330177d3e6ae5e5adb909b9a3c256ea0881f4aa37d44ffe186aa53409cfb661f",
+  "nominal_config_sha256": "8f9e73c52ecf50f01b6f1f3efdfa98e06081151b15820d46588b5874da5f35cb",
+  "run_authorization": false,
+  "wrappers": [
+    {
+      "name": "ResearchV6EfficiencyPReplay4h",
+      "parent": "ResearchV6EfficiencyP4h",
+      "kind": "nominal",
+      "attributes": {
+        "START": 1704067200000,
+        "FINISH": 1767225600000,
+        "USE_OI": false,
+        "OI_LAG_BARS": 0,
+        "EFFICIENCY_THRESHOLD": 0.35,
+        "STOP_MULTIPLIER": 2.5,
+        "ATR_OFFSET_BARS": 0,
+        "MAX_HOLD_BARS": 60,
+        "TARGET_MODE": "none",
+        "ACTIVE_WINDOWS": [
+          [
+            1704067200000,
+            1719792000000
+          ],
+          [
+            1719792000000,
+            1735689600000
+          ]
+        ],
+        "FORCE_BOUNDARIES": [
+          1719792000000,
+          1735689600000,
+          1751328000000,
+          1767225600000
+        ]
+      },
+      "source": "from strategies.ResearchV6EfficiencyP4h import ResearchV6EfficiencyP4h\n\n\nclass ResearchV6EfficiencyPReplay4h(ResearchV6EfficiencyP4h):\n    # Individual TRAIN eligibility freezes 2024 semesters separately; 2025 stays inactive.\n    START = 1704067200000\n    FINISH = 1767225600000\n    USE_OI = False\n    OI_LAG_BARS = 0\n    EFFICIENCY_THRESHOLD = 0.35\n    STOP_MULTIPLIER = 2.5\n    ATR_OFFSET_BARS = 0\n    MAX_HOLD_BARS = 60\n    TARGET_MODE = \"none\"\n    ACTIVE_WINDOWS = ((1704067200000, 1719792000000), (1719792000000, 1735689600000),)\n    FORCE_BOUNDARIES = (1719792000000, 1735689600000, 1751328000000, 1767225600000,)\n",
+      "sha256": "82a4def22fffb40af0bbbf8bea24560472e5b2cbbe68c3beb4c306635f05d05f",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayR09_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "kind": "risk_neighbor",
+      "attributes": {
+        "STOP_MULTIPLIER": 2.25
+      },
+      "source": "from strategies.ResearchV6EfficiencyPReplay4h import ResearchV6EfficiencyPReplay4h\n\n\nclass ResearchV6EfficiencyPReplayR09_4h(ResearchV6EfficiencyPReplay4h):\n    # One frozen overlay; eligibility calendar and nominal execution remain inherited.\n    STOP_MULTIPLIER = 2.25\n",
+      "sha256": "cab512fd681daa321e742dec5537e6818e846a0cdab091aad9f85305d8ce6849",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayR11_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "kind": "risk_neighbor",
+      "attributes": {
+        "STOP_MULTIPLIER": 2.75
+      },
+      "source": "from strategies.ResearchV6EfficiencyPReplay4h import ResearchV6EfficiencyPReplay4h\n\n\nclass ResearchV6EfficiencyPReplayR11_4h(ResearchV6EfficiencyPReplay4h):\n    # One frozen overlay; eligibility calendar and nominal execution remain inherited.\n    STOP_MULTIPLIER = 2.75\n",
+      "sha256": "dad9ac84c7aced7cf406f37be9b8a111e11c3dd23448e79435605c1ceff49e44",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayA09_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "kind": "signal_neighbor",
+      "attributes": {
+        "EFFICIENCY_THRESHOLD": 0.315
+      },
+      "source": "from strategies.ResearchV6EfficiencyPReplay4h import ResearchV6EfficiencyPReplay4h\n\n\nclass ResearchV6EfficiencyPReplayA09_4h(ResearchV6EfficiencyPReplay4h):\n    # One frozen overlay; eligibility calendar and nominal execution remain inherited.\n    EFFICIENCY_THRESHOLD = 0.315\n",
+      "sha256": "c994bfc526c3ed9fac4064cc31aeb79256996534f26bb5020ef10fdc56899dc5",
+      "readback_exact": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayA11_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "kind": "signal_neighbor",
+      "attributes": {
+        "EFFICIENCY_THRESHOLD": 0.385
+      },
+      "source": "from strategies.ResearchV6EfficiencyPReplay4h import ResearchV6EfficiencyPReplay4h\n\n\nclass ResearchV6EfficiencyPReplayA11_4h(ResearchV6EfficiencyPReplay4h):\n    # One frozen overlay; eligibility calendar and nominal execution remain inherited.\n    EFFICIENCY_THRESHOLD = 0.385\n",
+      "sha256": "1f1f080b96a981063863f3b7b747d694ca427cc7f14cc5d7c9944a9911ccba42",
+      "readback_exact": true
+    }
+  ]
+}

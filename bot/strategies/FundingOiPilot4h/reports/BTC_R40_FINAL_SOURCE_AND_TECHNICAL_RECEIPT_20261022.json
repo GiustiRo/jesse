@@ -1,0 +1,19 @@
+{
+  "sources_unchanged": true,
+  "postrun_form_exact": true,
+  "incident": {
+    "status": "RECOVERED_WITHOUT_RESTART_OR_RERUN",
+    "phase": "Native finalization and result reads",
+    "economic_sessions": 2,
+    "extra_economic_sessions": 0,
+    "analysis_failed": 0,
+    "read_only_orchestration_cells_stopped": 2,
+    "notes": [
+      "Premature summary reads still reported running; no result accepted until finished.",
+      "Terminated two waiting root read-only orchestration cells; no native jobs were cancelled.",
+      "Snapshot analysis had not launched during the interrupted cells; launched once after both finished.",
+      "Docker stats/top and Get-Process eventually returned; measured container8.256GiB/15.3GiB,1.27%instantCPU. This does not establish the cause of delay.",
+      "No Docker/service/database restart, framework edit, new source or economic rerun."
+    ]
+  }
+}

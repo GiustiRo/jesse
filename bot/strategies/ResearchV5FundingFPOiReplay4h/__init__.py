@@ -1,0 +1,18 @@
+from strategies.ResearchV5FundingFPOi4h import ResearchV5FundingFPOi4h
+
+
+class ResearchV5FundingFPOiReplay4h(ResearchV5FundingFPOi4h):
+    # Frozen individual TRAIN calendar; adjacent semesters deliberately stay separate.
+    START = 1704067200000
+    FINISH = 1767225600000
+    USE_OI = True
+    OI_LAG_BARS = 0
+    PRICE_SMA_PERIOD = 120
+    RETURN_LAG = 30
+    FUNDING_COUNT = 3
+    STOP_MULTIPLIER = 3
+    ATR_OFFSET_BARS = 0
+    MAX_HOLD_BARS = 180
+    TARGET_MODE = "none"
+    ACTIVE_WINDOWS = ((1704067200000, 1719792000000), (1719792000000, 1735689600000), (1735689600000, 1751328000000), (1751328000000, 1767225600000),)
+    FORCE_BOUNDARIES = (1719792000000, 1735689600000, 1751328000000, 1767225600000,)

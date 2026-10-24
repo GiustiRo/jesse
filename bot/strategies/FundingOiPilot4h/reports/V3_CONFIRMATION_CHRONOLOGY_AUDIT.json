@@ -1,0 +1,605 @@
+{
+  "schema_version": 1,
+  "status": "passed_for_C1_C2_C3_C4_and_frozen_calendars",
+  "scope": "Independent read-only MCP chronology audit of existing artifacts. No backtests, analysis jobs, source or registry changes.",
+  "observed_progress_modified_at": "2026-10-20T23:45:58+00:00",
+  "shortlist": {
+    "path": "strategies/FundingOiPilot4h/reports/FROZEN_SHORTLIST_V3.md",
+    "file_modified_at": "2026-10-20T23:27:55+00:00",
+    "conservative_registry_ack": "2026-10-20T23:28:15Z",
+    "note": "File save predates acknowledgement. Both precede every C1/C2 evaluation start."
+  },
+  "folds": [
+    {
+      "fold": "C1",
+      "selection": {
+        "fold": "C1",
+        "recorded_at": "2026-10-20 23:28:15 UTC",
+        "train_start": "2020-09-01",
+        "train_finish": "2024-01-01",
+        "eval_start": "2024-01-01",
+        "eval_finish": "2024-07-01",
+        "reused_screen": true,
+        "eligible": [
+          {
+            "id": "ResearchV3ChannelOi4h",
+            "session_id": "eb4ea7d5-dc0c-4f08-9450-1584f49cdfe0",
+            "eligible": true,
+            "n": 127,
+            "net": 5077.991359919874,
+            "pf": 1.337216681523153,
+            "dd": -22.71956960543582,
+            "turnover": 179.78467849514013
+          },
+          {
+            "id": "ResearchV3ChannelP4h",
+            "session_id": "05828944-d350-4852-b13d-af24c2815bc5",
+            "eligible": true,
+            "n": 150,
+            "net": 3677.9141262153207,
+            "pf": 1.2224098064109443,
+            "dd": -23.620115506766194,
+            "turnover": 196.02370655284628
+          }
+        ],
+        "selected": "ResearchV3ChannelOi4h",
+        "reason": "Both pass train gates; POI lower absolute DD. Frozen before C1 eval."
+      },
+      "selection_file_modified_at": "2026-10-20T23:28:15+00:00",
+      "ranked_ids": [
+        "ResearchV3ChannelOi4h",
+        "ResearchV3ChannelP4h"
+      ],
+      "selected_matches_fixed_train_ranking": true,
+      "decisive_metric": "minimum absolute training engine drawdown; subsequent tie-breakers not invoked",
+      "evals": [
+        {
+          "name": "ResearchV3CH_P_C1V",
+          "parent": "ResearchV3ChannelP4h",
+          "session_id": "1ead2e5d-d907-43b2-8e9d-925aea5e3093",
+          "dashboard_url": "http://localhost:9200/#/backtest/1ead2e5d-d907-43b2-8e9d-925aea5e3093",
+          "created_at": "2026-10-20T23:29:35.260Z",
+          "start_requested_at": "2026-10-20T23:29:35.321Z",
+          "status_at_observation": "finished",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "seconds_selection_to_start": 80.321,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"1ead2e5d-d907-43b2-8e9d-925aea5e3093\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C1V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/1ead2e5d-d907-43b2-8e9d-925aea5e3093\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "started",
+          "selection_ref": "SELECTION_V3_C1.json"
+        },
+        {
+          "name": "ResearchV3CH_OI_C1V",
+          "parent": "ResearchV3ChannelOi4h",
+          "session_id": "faeccf79-ea48-4d5a-93bf-8ab77a0c8095",
+          "dashboard_url": "http://localhost:9200/#/backtest/faeccf79-ea48-4d5a-93bf-8ab77a0c8095",
+          "created_at": "2026-10-20T23:29:53.740Z",
+          "start_requested_at": "2026-10-20T23:29:53.811Z",
+          "status_at_observation": "finished",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "seconds_selection_to_start": 98.811,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "error",
+          "selection_ref": "SELECTION_V3_C1.json"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fold": "C2",
+      "selection": {
+        "fold": "C2",
+        "recorded_at": "2026-10-20 23:34:31 UTC",
+        "train_start": "2020-09-01",
+        "train_finish": "2024-07-01",
+        "eval_start": "2024-07-01",
+        "eval_finish": "2025-01-01",
+        "eligible": [
+          {
+            "id": "ResearchV3ChannelP4h",
+            "session_id": "eea52bae-9a68-4d87-959b-208a497c6594",
+            "eligible": true,
+            "n": 175,
+            "net": 5909.414701508691,
+            "pf": 1.290577116966142,
+            "dd": -23.620115506766194,
+            "turnover": 256.9308382512172
+          },
+          {
+            "id": "ResearchV3ChannelOi4h",
+            "session_id": "e9aac0d1-947b-447b-8268-ed7bb3b9d491",
+            "eligible": true,
+            "n": 149,
+            "net": 7194.9920254547515,
+            "pf": 1.3897417388712174,
+            "dd": -22.71956960543582,
+            "turnover": 238.6640931817945
+          }
+        ],
+        "selected": "ResearchV3ChannelOi4h",
+        "reason": "Train-only gates and fixed ranking; frozen before C2 evaluation."
+      },
+      "selection_file_modified_at": "2026-10-20T23:34:31+00:00",
+      "ranked_ids": [
+        "ResearchV3ChannelOi4h",
+        "ResearchV3ChannelP4h"
+      ],
+      "selected_matches_fixed_train_ranking": true,
+      "decisive_metric": "minimum absolute training engine drawdown; subsequent tie-breakers not invoked",
+      "evals": [
+        {
+          "name": "ResearchV3CH_P_C2V",
+          "parent": "ResearchV3ChannelP4h",
+          "session_id": "e670ca1a-26d3-42d3-94de-a4292b6ae972",
+          "dashboard_url": "http://localhost:9200/#/backtest/e670ca1a-26d3-42d3-94de-a4292b6ae972",
+          "created_at": "2026-10-20T23:35:10.833Z",
+          "start_requested_at": "2026-10-20T23:35:10.887Z",
+          "status_at_observation": "start_requested",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "seconds_selection_to_start": 39.887,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"e670ca1a-26d3-42d3-94de-a4292b6ae972\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C2V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/e670ca1a-26d3-42d3-94de-a4292b6ae972\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "started",
+          "selection_ref": "SELECTION_V3_C2.json"
+        },
+        {
+          "name": "ResearchV3CH_OI_C2V",
+          "parent": "ResearchV3ChannelOi4h",
+          "session_id": "0ca32a2d-e9b5-4420-94bd-58113244d560",
+          "dashboard_url": "http://localhost:9200/#/backtest/0ca32a2d-e9b5-4420-94bd-58113244d560",
+          "created_at": "2026-10-20T23:35:29.565Z",
+          "start_requested_at": "2026-10-20T23:35:29.639Z",
+          "status_at_observation": "start_requested",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "seconds_selection_to_start": 58.639,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "error",
+          "selection_ref": "SELECTION_V3_C2.json"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "fold": "C3",
+      "selection": {
+        "fold": "C3",
+        "recorded_at": "2026-10-20 23:39:28 UTC",
+        "train_start": "2020-09-01",
+        "train_finish": "2025-01-01",
+        "eval_start": "2025-01-01",
+        "eval_finish": "2025-07-01",
+        "eligible": [
+          {
+            "id": "ResearchV3ChannelP4h",
+            "session_id": "a9d0824d-4a51-4dc2-86e6-d9035aed7db7",
+            "eligible": true,
+            "n": 196,
+            "net": 8923.430104963538,
+            "pf": 1.392479564966073,
+            "dd": -23.620115506766194,
+            "turnover": 308.3775352947005
+          },
+          {
+            "id": "ResearchV3ChannelOi4h",
+            "session_id": "ad9c1d7a-ab87-4a5a-a536-a44cfb4c200b",
+            "eligible": true,
+            "n": 171,
+            "net": 7334.819164149568,
+            "pf": 1.3378968631793222,
+            "dd": -22.71956960543582,
+            "turnover": 289.04575264420765
+          }
+        ],
+        "selected": "ResearchV3ChannelOi4h",
+        "reason": "Train-only fixed gates and ranking. Frozen before C3 eval."
+      },
+      "selection_file_modified_at": "2026-10-20T23:39:28+00:00",
+      "ranked_ids": [
+        "ResearchV3ChannelOi4h",
+        "ResearchV3ChannelP4h"
+      ],
+      "selected_matches_fixed_train_ranking": true,
+      "decisive_metric": "minimum absolute training engine drawdown; subsequent tie-breakers not invoked",
+      "evals": [
+        {
+          "name": "ResearchV3CH_P_C3V",
+          "parent": "ResearchV3ChannelP4h",
+          "session_id": "03753b45-bdb2-45c9-88ca-015a2bd374c5",
+          "dashboard_url": "http://localhost:9200/#/backtest/03753b45-bdb2-45c9-88ca-015a2bd374c5",
+          "created_at": "2026-10-20T23:39:58.706Z",
+          "start_requested_at": "2026-10-20T23:39:58.762Z",
+          "status_at_observation": "finished",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "seconds_selection_to_start": 30.762,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"03753b45-bdb2-45c9-88ca-015a2bd374c5\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C3V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/03753b45-bdb2-45c9-88ca-015a2bd374c5\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "started",
+          "selection_ref": "SELECTION_V3_C3.json"
+        },
+        {
+          "name": "ResearchV3CH_OI_C3V",
+          "parent": "ResearchV3ChannelOi4h",
+          "session_id": "2004cd16-ad77-4d80-b1bd-0e54809126bf",
+          "dashboard_url": "http://localhost:9200/#/backtest/2004cd16-ad77-4d80-b1bd-0e54809126bf",
+          "created_at": "2026-10-20T23:40:17.371Z",
+          "start_requested_at": "2026-10-20T23:40:17.448Z",
+          "status_at_observation": "start_requested",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "seconds_selection_to_start": 49.448,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "error",
+          "selection_ref": "SELECTION_V3_C3.json"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "selection": {
+        "fold": "C4",
+        "recorded_at": "2026-10-20 23:44:31 UTC",
+        "train_start": "2020-09-01",
+        "train_finish": "2025-07-01",
+        "eval_start": "2025-07-01",
+        "eval_finish": "2026-01-01",
+        "eligible": [
+          {
+            "id": "ResearchV3ChannelP4h",
+            "session_id": "676cdf48-3f7a-475c-8e06-de41f0f39ac1",
+            "eligible": true,
+            "n": 221,
+            "net": 9277.347013446102,
+            "pf": 1.3434788410215248,
+            "dd": -23.620115506766194,
+            "turnover": 389.2976899051855
+          },
+          {
+            "id": "ResearchV3ChannelOi4h",
+            "session_id": "b32e4cec-b7fd-428f-8a71-5440e41071c4",
+            "eligible": true,
+            "n": 193,
+            "net": 7851.52297114585,
+            "pf": 1.3101394532665835,
+            "dd": -22.71956960543582,
+            "turnover": 355.3075373289132
+          }
+        ],
+        "selected": "ResearchV3ChannelOi4h",
+        "reason": "Train-only fixed gates/ranking; before C4 eval."
+      },
+      "selection_file_modified_at": "2026-10-20T23:44:31+00:00",
+      "ranked_ids": [
+        "ResearchV3ChannelOi4h",
+        "ResearchV3ChannelP4h"
+      ],
+      "selected_matches_fixed_train_ranking": true,
+      "decisive_metric": "minimum absolute training engine drawdown; subsequent tie-breakers not invoked",
+      "fold": "C4",
+      "evals": [
+        {
+          "name": "ResearchV3CH_P_C4V",
+          "parent": "ResearchV3ChannelP4h",
+          "session_id": "36b23618-bda4-44b3-b1c1-e9e97fdd23a1",
+          "dashboard_url": "http://localhost:9200/#/backtest/36b23618-bda4-44b3-b1c1-e9e97fdd23a1",
+          "created_at": "2026-10-20T23:45:18.667Z",
+          "start_requested_at": "2026-10-20T23:45:18.729Z",
+          "status_at_observation": "start_requested",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "calendar_before_start": true,
+          "seconds_selection_to_start": 47.729,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"36b23618-bda4-44b3-b1c1-e9e97fdd23a1\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C4V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/36b23618-bda4-44b3-b1c1-e9e97fdd23a1\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "started",
+          "selection_ref": "SELECTION_V3_C4.json"
+        },
+        {
+          "name": "ResearchV3CH_OI_C4V",
+          "parent": "ResearchV3ChannelOi4h",
+          "session_id": "2ebd9039-498f-4bd7-9cc3-dbf36fb77682",
+          "dashboard_url": "http://localhost:9200/#/backtest/2ebd9039-498f-4bd7-9cc3-dbf36fb77682",
+          "created_at": "2026-10-20T23:45:36.277Z",
+          "start_requested_at": "2026-10-20T23:45:36.353Z",
+          "status_at_observation": "start_requested",
+          "selection_before_start": true,
+          "shortlist_before_start": true,
+          "shortlist_ack_before_start": true,
+          "calendar_before_start": true,
+          "seconds_selection_to_start": 65.353,
+          "raw_start_response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+              }
+            ],
+            "isError": false
+          },
+          "raw_start_status": "error",
+          "selection_ref": "SELECTION_V3_C4.json"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "C1_exact_reuse": [
+    {
+      "id": "ResearchV3ChannelOi4h",
+      "session_id": "eb4ea7d5-dc0c-4f08-9450-1584f49cdfe0",
+      "dashboard_url": "http://localhost:9200/#/backtest/eb4ea7d5-dc0c-4f08-9450-1584f49cdfe0",
+      "same_screen_session": true,
+      "train_interval_exact": true,
+      "config_exact": true,
+      "metrics_exact": true,
+      "session_updated_at": 1792538683000,
+      "source_dependencies_expected": [
+        "strategies/ResearchV3Base4h/__init__.py",
+        "strategies/ResearchV2Core4h/__init__.py",
+        "strategies/ResearchV3Base4h/channel_features.py",
+        "strategies/ResearchV3ChannelP4h/__init__.py",
+        "strategies/ResearchV3ChannelOi4h/__init__.py",
+        "strategies/ResearchV3ChannelSmoke4h/__init__.py"
+      ]
+    },
+    {
+      "id": "ResearchV3ChannelP4h",
+      "session_id": "05828944-d350-4852-b13d-af24c2815bc5",
+      "dashboard_url": "http://localhost:9200/#/backtest/05828944-d350-4852-b13d-af24c2815bc5",
+      "same_screen_session": true,
+      "train_interval_exact": true,
+      "config_exact": true,
+      "metrics_exact": true,
+      "session_updated_at": 1792538593000,
+      "source_dependencies_expected": [
+        "strategies/ResearchV3Base4h/__init__.py",
+        "strategies/ResearchV2Core4h/__init__.py",
+        "strategies/ResearchV3Base4h/channel_features.py",
+        "strategies/ResearchV3ChannelP4h/__init__.py",
+        "strategies/ResearchV3ChannelOi4h/__init__.py",
+        "strategies/ResearchV3ChannelSmoke4h/__init__.py"
+      ]
+    }
+  ],
+  "source_content_equality": [
+    {
+      "path": "strategies/ResearchV3Base4h/__init__.py",
+      "sha256": "f5d77eecabb089d7ca719648cd7e8d4aed79e6ac5e3c54722f2c24b9d2f6df1a",
+      "current_matches_frozen_content": true
+    },
+    {
+      "path": "strategies/ResearchV2Core4h/__init__.py",
+      "sha256": "577b84ebd15f27f5f598af5a4d1a3d3ed98313797656206c7691d29ad877564b",
+      "current_matches_frozen_content": true
+    },
+    {
+      "path": "strategies/ResearchV3ChannelP4h/__init__.py",
+      "sha256": "16c4218be8adc458029363da17a3c3b8063bd465a7a9657cc0147f134dc50e56",
+      "current_matches_frozen_content": true
+    },
+    {
+      "path": "strategies/ResearchV3ChannelOi4h/__init__.py",
+      "sha256": "09f11849d30af8f11c37fea43169c8652d6e8d8217760e45c5e1cf486497355e",
+      "current_matches_frozen_content": true
+    },
+    {
+      "path": "strategies/ResearchV3Base4h/channel_features.py",
+      "sha256": "3c49769786b7d6a50a11bfc4e063de54e4ffc92bdf4b08b60e48179469b78590",
+      "current_matches_frozen_content": true
+    }
+  ],
+  "source_hash_note": "Hashes copied from frozen manifest; current complete source text compared to frozen archived text. No new hashing job executed.",
+  "counterfactual_check": {
+    "C1_eval_P_net_percent": 16.314625811804376,
+    "C1_eval_OI_net_percent": 11.991579832819738,
+    "P_greater_than_OI": true,
+    "selected_C1": "ResearchV3ChannelOi4h",
+    "selected_C2": "ResearchV3ChannelOi4h",
+    "interpretation": "C1 selection predates both eval runs and follows training DD, despite P later earning more in C1. C2 ranking independently follows C2 training DD.",
+    "C3_train_P_net": 8923.430104963538,
+    "C3_train_OI_net": 7334.819164149568,
+    "selected_C3": "ResearchV3ChannelOi4h",
+    "C3_interpretation": "P has greater C3 training net and PF, but DD is the first ranking key and OI remains selected. C3 eval returns were not used.",
+    "selected_C4": "ResearchV3ChannelOi4h",
+    "C4_interpretation": "OI lower |DDtrain| remains decisive even though P has greater train net/PF; no C4 evaluation returns used."
+  },
+  "clock_notes": {
+    "funding_diagnostic": "V3_FUNDING_RAW_VS_EFFECTIVE_CLOCK_DIAGNOSTIC.json",
+    "interval_clock": "effective_at",
+    "raw_settled_at": "Preserve raw jitter diagnostic; 11–18ms later raw timestamps around closes do not imply funding outside the economic holding interval.",
+    "exclusive_finish": "Final close/decision clock at Tfinish can use last historical candle ending at Tfinish. Tfinish=2026-01-01 exclusive is not a 2026 market observation."
+  },
+  "limitations": [
+    "Saved provenance timestamps are not an independent immutable server access log; no claim to exhaustively prove absence of every historical result read.",
+    "Draft creation is not execution or result consultation and may precede selection. This audit compares start_requested_at and preserved raw run responses.",
+    "C2 evaluations already start_requested at observation; no additional C2 evaluation results were consulted by this audit.",
+    "C4 incorporated using selection/calendar/progress metadata only; no C4 evaluation economic results consulted. This chronology audit does not validate the root C4 train analysis job f94a1dbe444a412db93274164b909754 independently."
+  ],
+  "references": [
+    "FROZEN_SHORTLIST_V3.md",
+    "SELECTION_V3_C1.json",
+    "SELECTION_V3_C2.json",
+    "V3_CHANNEL_CONFIRMATION_PROGRESS.json",
+    "REGISTRY_V3.json",
+    "V3_IMPLEMENTATION_SOURCE_20261020.md",
+    "V3_FUNDING_RAW_VS_EFFECTIVE_CLOCK_DIAGNOSTIC.json",
+    "SELECTION_V3_C3.json",
+    "SELECTION_V3_C4.json",
+    "V3_REPLAY_CALENDARS_FROZEN.json"
+  ],
+  "replay_calendar_audit": {
+    "source": "V3_REPLAY_CALENDARS_FROZEN.json",
+    "file_modified_at": "2026-10-20T23:44:31+00:00",
+    "frozen_at": "2026-10-20 23:44:31 UTC",
+    "proofs": [
+      {
+        "strategy": "ResearchV3ChannelOi4h",
+        "windows": [
+          {
+            "fold": "C1",
+            "start": "2024-01-01",
+            "finish": "2024-07-01",
+            "start_ms": 1704067200000,
+            "finish_ms": 1719792000000
+          },
+          {
+            "fold": "C2",
+            "start": "2024-07-01",
+            "finish": "2025-01-01",
+            "start_ms": 1719792000000,
+            "finish_ms": 1735689600000
+          },
+          {
+            "fold": "C3",
+            "start": "2025-01-01",
+            "finish": "2025-07-01",
+            "start_ms": 1735689600000,
+            "finish_ms": 1751328000000
+          },
+          {
+            "fold": "C4",
+            "start": "2025-07-01",
+            "finish": "2026-01-01",
+            "start_ms": 1751328000000,
+            "finish_ms": 1767225600000
+          }
+        ],
+        "force_boundaries": [
+          1719792000000,
+          1735689600000,
+          1751328000000,
+          1767225600000
+        ],
+        "eligible_each_train": true,
+        "four_separate_windows": true,
+        "boundaries_exact": true
+      },
+      {
+        "strategy": "ResearchV3ChannelP4h",
+        "windows": [
+          {
+            "fold": "C1",
+            "start": "2024-01-01",
+            "finish": "2024-07-01",
+            "start_ms": 1704067200000,
+            "finish_ms": 1719792000000
+          },
+          {
+            "fold": "C2",
+            "start": "2024-07-01",
+            "finish": "2025-01-01",
+            "start_ms": 1719792000000,
+            "finish_ms": 1735689600000
+          },
+          {
+            "fold": "C3",
+            "start": "2025-01-01",
+            "finish": "2025-07-01",
+            "start_ms": 1735689600000,
+            "finish_ms": 1751328000000
+          },
+          {
+            "fold": "C4",
+            "start": "2025-07-01",
+            "finish": "2026-01-01",
+            "start_ms": 1751328000000,
+            "finish_ms": 1767225600000
+          }
+        ],
+        "force_boundaries": [
+          1719792000000,
+          1735689600000,
+          1751328000000,
+          1767225600000
+        ],
+        "eligible_each_train": true,
+        "four_separate_windows": true,
+        "boundaries_exact": true
+      }
+    ],
+    "global_selector": [
+      {
+        "fold": "C1",
+        "selected": "ResearchV3ChannelOi4h"
+      },
+      {
+        "fold": "C2",
+        "selected": "ResearchV3ChannelOi4h"
+      },
+      {
+        "fold": "C3",
+        "selected": "ResearchV3ChannelOi4h"
+      },
+      {
+        "fold": "C4",
+        "selected": "ResearchV3ChannelOi4h"
+      }
+    ],
+    "global_selector_matches_selections": true,
+    "nominal_config_matches_frozen": true,
+    "passed": true
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "SPY",
+  "title": "SPY: Second/MECH01 y Market/MECH05 revisadas",
+  "asset": "SPY",
+  "family": "apertura / beta",
+  "execution": "revisión intermedia completada",
+  "evidence": "histórica, pequeña y concentrada",
+  "objective": "sin evidencia aislada comparable al perfil fijo",
+  "hypothesis": "Familias apertura y beta lenta investigadas con SPX CFD BID/10; apertura negativa, beta de muestra pequeña.",
+  "origin": "Investigación anterior al Hub; inventarios completos enlazados",
+  "method": "Inventario y lectura de cierres existentes, sin nuevas ejecuciones.",
+  "protocol": null,
+  "budget": "No mezclar con conteos V1–V6",
+  "versions": "Fuentes y configuración en reportes originales; proxies no equivalen a perpetual nativo.",
+  "periods": [
+    "2020–2025 reutilizado"
+  ],
+  "results": {
+    "second_mech01": "Referencia selectiva;12trades en estudio aislado1%/5x. Diagnóstico conjunto posthoc estático positivo no acredita robustez futura.",
+    "market_mech05": "Alternativa de mayor neto histórico; falla castigo conjunto sin3mejores/+10bpsRT. No mezclar pruebas separadas con conjunta.",
+    "existing_2026_C_nominal": {
+      "net_usdt": 1298.98,
+      "trades": 1
+    },
+    "note": "Su contribución supera el beneficio neto de la cartera C. Restarla no simula quitar SPY.",
+    "diversification": "Correlaciones y co-pérdidas medidas enperfil anterior;Cperdió en todas las patasabril2021 pese a correlaciones bajas."
+  },
+  "limitations": [
+    "Sin evaluación de la nueva línea.",
+    "Correlaciones, pérdidas simultáneas y comparación con/sin pieza bajo riesgo comparable: sin evaluar en esta revisión.",
+    "Leer los addenda y registros; no sumar curvas aisladas como cuenta compartida."
+  ],
+  "audit": "Revisión documental r5 por tres revisores con contraste de root; no nueva validación económica. Doce summaries y dos lecturas puntuales de cierre corroborados, sin reauditar todos los fills.",
+  "decision": "Conservar Second y Market por funciones ya investigadas; no elegir variante nueva, rescatar PB/RESET ni declarar Cvalidada por un trade.",
+  "references": [
+    {
+      "label": "Resultados de la validación r5",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md"
+    },
+    {
+      "label": "SPY_INDEPENDENT_RESEARCH_FINAL_20261018.md",
+      "path": "strategies/ResearchSpyReference4h/reports/SPY_INDEPENDENT_RESEARCH_FINAL_20261018.md"
+    },
+    {
+      "label": "Continuación Structural R1 BR",
+      "path": "strategies/ResearchSpyReference4h/reports/SPY_STRUCT_R1_BR_FINAL_REPORT_20261019.md"
+    },
+    {
+      "label": "Última ronda SPY",
+      "path": "strategies/ResearchSpyReference4h/reports/SPY_LAST_RESULTS_20261019.md"
+    },
+    {
+      "label": "Diagnóstico conjunto posthoc",
+      "path": "strategies/ResearchSpyReference4h/reports/SPY_LAST_COMBINED_STRESS_20261019.md"
+    }
+  ],
+  "sessions": []
+}

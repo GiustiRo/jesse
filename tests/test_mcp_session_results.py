@@ -578,6 +578,50 @@ def test_mcp_tools_read_results_through_the_api(tools, stored, live):
     assert (refused['status'], refused['error_type']) == ('error', 'invalid_request')
 
 
+@pytest.mark.parametrize('funding_status', ['applied', 'disabled', 'not_applied'])
+def test_mcp_funding_result_domain_state_is_not_a_transport_error(tools, stored, funding_status, monkeypatch):
+    monkeypatch.setattr(project_files_service.mcp_config, 'DASHBOARD_URL', 'https://dash.example')
+    rows = [{'trade_id': 'trade-1', 'cashflow': -1.0}, {'trade_id': 'trade-2', 'cashflow': .5}]
+    options = {'mode': 'disabled' if funding_status == 'disabled' else 'historical', 'dataset_id': 'a' * 64}
+    financing = {'mode': 'historical', 'status': 'applied', 'applied': True, 'cashflow': -.5, 'ledger': rows}
+    stored['backtest'][BACKTEST_ID] = _backtest_row(
+        status='stopped' if funding_status == 'not_applied' else 'finished',
+        state=json.dumps({'form': {**FORM, 'config': {'funding': options}}}),
+        metrics=json.dumps({'funding': financing}) if funding_status == 'applied' else None,
+    )
+
+    result = tools['get_session_results']('backtest', BACKTEST_ID, 'funding', 0, 1)
+
+    assert result['status'] == 'success'
+    assert result['funding_status'] == funding_status
+    assert result['section'] == 'funding'
+    assert result['items'] == (rows[:1] if funding_status == 'applied' else [])
+    assert result['total'] == (2 if funding_status == 'applied' else 0)
+    assert result['next_offset'] == (1 if funding_status == 'applied' else None)
+    assert result['action'] == 'get_session_results'
+    assert result['dashboard_url'].endswith(f'/#/backtest/{BACKTEST_ID}')
+    assert 'error_type' not in result
+
+
+def test_domain_state_normalization_does_not_accept_errors_or_other_operations(monkeypatch):
+    from jesse.mcp.tools.services.session_analysis import get_session_results_service
+
+    monkeypatch.setattr(project_files_service.mcp_config, 'JESSE_API_URL', 'http://jesse.test')
+    monkeypatch.setattr(project_files_service.mcp_config, 'JESSE_PASSWORD', PASSWORD)
+    payload = {'status': 'applied', 'error_type': 'read_failed', 'message': 'Unavailable'}
+    response = SimpleNamespace(status_code=200, json=lambda: payload, text=json.dumps(payload))
+    monkeypatch.setattr(project_files_service.requests, 'post', lambda *args, **kwargs: response)
+    result = get_session_results_service('backtest', BACKTEST_ID, 'funding')
+    assert result['status'] == 'error' and result['error_type'] == 'read_failed'
+    assert 'dashboard_url' not in result
+
+    payload = {'status': 'applied'}
+    result = project_files_service._call('read_project_file', '/project-files/read', {})
+    assert result['status'] == 'error' and result['error_type'] == 'http_error'
+    result = get_session_results_service('backtest', BACKTEST_ID, 'summary')
+    assert result['status'] == 'error' and result['error_type'] == 'http_error'
+
+
 def test_mcp_result_tools_return_dashboard_links(tools, stored, live, monkeypatch):
     """Summaries, section pages, and the live session list all carry the link the user asks for."""
     monkeypatch.setattr(project_files_service.mcp_config, 'DASHBOARD_URL', 'https://dash.example')

@@ -1,0 +1,42 @@
+{
+  "code": "function r42Math(){\n const sum=a=>a.reduce((s,v)=>s+v,0);\n const normalLog=(x,m,v)=>-.5*(Math.log(2*Math.PI*v)+(x-m)**2/v);\n const assimilate=(q,x,m,rho)=>{const w=m.w,P=[[rho+(1-rho)*w[0],(1-rho)*w[1]],[(1-rho)*w[0],rho+(1-rho)*w[1]]], prior=[q[0]*P[0][0]+q[1]*P[1][0],q[0]*P[0][1]+q[1]*P[1][1]],l=m.mu.map((mu,i)=>normalLog(x,mu,m.var[i])),offset=Math.max(...l),u=l.map((v,i)=>prior[i]*Math.exp(v-offset)),s=sum(u);if(!(s>0))throw Error(\"filter normalization\");return{q:u.map(v=>v/s),ll:offset+Math.log(s),prior};};\n const forward=(xs,m,rho)=>{let q=m.w.slice(),ll=0;const qs=[];for(const x of xs){const a=assimilate(q,x,m,rho);q=a.q;ll+=a.ll;qs.push(q);}return{q,ll,qs};};\n // Generate Gauss-Legendre nodes, then integrate standard normal over bounded\n // unit-sized segments. This is independent of Python's math.erf implementation.\n const nodes=[];for(let i=1;i<=8;i++){let z=Math.cos(Math.PI*(i-.25)/16.5),dp=0;for(let k=0;k<30;k++){let p0=1,p1=z;for(let j=2;j<=16;j++){const p=((2*j-1)*z*p1-(j-1)*p0)/j;p0=p1;p1=p;}dp=16*(z*p1-p0)/(z*z-1);const n=z-p1/dp;if(Math.abs(n-z)<1e-15){z=n;break;}z=n;}let p0=1,p1=z;for(let j=2;j<=16;j++){const p=((2*j-1)*z*p1-(j-1)*p0)/j;p0=p1;p1=p;}dp=16*(z*p1-p0)/(z*z-1);const weight=2/((1-z*z)*dp*dp);nodes.push([-z,weight],[z,weight]);}\n const cdf=x=>{if(x===0)return .5;const top=Math.min(Math.abs(x),10),n=Math.ceil(top);let area=0;for(let j=0;j<n;j++){const a=top*j/n,b=top*(j+1)/n,mid=(a+b)/2,half=(b-a)/2;for(const [node,weight] of nodes)area+=half*weight*Math.exp(-.5*(mid+half*node)**2)/Math.sqrt(2*Math.PI);}return Math.max(0,Math.min(1,.5+Math.sign(x)*area));};\n const forecast=(q,m,rho,H=6)=>{const P=[[rho+(1-rho)*m.w[0],(1-rho)*m.w[1]],[(1-rho)*m.w[0],rho+(1-rho)*m.w[1]]];let states=[{last:0,ones:0,weight:q[0]},{last:1,ones:0,weight:q[1]}];for(let h=0;h<H;h++){const next=[];for(const s of states)for(let k=0;k<2;k++)next.push({last:k,ones:s.ones+k,weight:s.weight*P[s.last][k]});states=next;}const weights=new Array(H+1).fill(0);for(const s of states)weights[s.ones]+=s.weight;let mean=0,positive=0;for(let k=0;k<=H;k++){const mu=(H-k)*m.mu[0]+k*m.mu[1],v=(H-k)*m.var[0]+k*m.var[1];mean+=weights[k]*mu;positive+=weights[k]*cdf(mu/Math.sqrt(v));}return{mean,p_positive:positive,total_weight:sum(weights),weights};};\n const fitEmission=xs=>{const loc=sum(xs)/xs.length,scale=Math.sqrt(sum(xs.map(v=>(v-loc)**2))/xs.length);if(!(scale>0))return null;const z=xs.map(v=>(v-loc)/scale),sorted=[...z].sort((a,b)=>a-b),quantile=p=>{const k=(sorted.length-1)*p,i=Math.floor(k);return sorted[i]+(k-i)*(sorted[Math.ceil(k)]-sorted[i]);};let mu=[quantile(.25),quantile(.75)],va=[1,1],w=[.5,.5];if(mu[0]===mu[1])return null;let occ;\n for(let step=0;step<30;step++){const gam=z.map(v=>{const l=mu.map((u,k)=>normalLog(v,u,va[k])+Math.log(w[k])),a=Math.max(...l),r=l.map(t=>Math.exp(t-a)),s=sum(r);return r.map(t=>t/s);});occ=[sum(gam.map(g=>g[0])),sum(gam.map(g=>g[1]))];if(occ.some(n=>!(n>0)))return null;mu=[0,1].map(k=>sum(z.map((v,i)=>gam[i][k]*v))/occ[k]);va=[0,1].map(k=>Math.max(1e-6,sum(z.map((v,i)=>gam[i][k]*(v-mu[k])**2))/occ[k]));w=occ.map(v=>v/xs.length);}\n const finalGam=z.map(v=>{const l=mu.map((u,k)=>normalLog(v,u,va[k])+Math.log(w[k])),a=Math.max(...l),r=l.map(t=>Math.exp(t-a)),s=sum(r);return r.map(t=>t/s);});occ=[sum(finalGam.map(g=>g[0])),sum(finalGam.map(g=>g[1]))];if(occ.some(v=>v<10))return null;\n const order=[0,1].sort((a,b)=>mu[a]-mu[b]||va[a]-va[b]);return{w:order.map(k=>w[k]),mu:order.map(k=>loc+scale*mu[k]),var:order.map(k=>va[k]*scale*scale),occupancy:order.map(k=>occ[k])};};\n const counts=(xs,m,rho)=>{const P=[[rho+(1-rho)*m.w[0],(1-rho)*m.w[1]],[(1-rho)*m.w[0],rho+(1-rho)*m.w[1]]],B=xs.map(x=>{const l=m.mu.map((mu,k)=>normalLog(x,mu,m.var[k])),a=Math.max(...l);return l.map(v=>Math.exp(v-a));}),alpha=[],scales=[];let q=m.w.slice();\n for(const b of B){const prior=[q[0]*P[0][0]+q[1]*P[1][0],q[0]*P[0][1]+q[1]*P[1][1]],raw=b.map((v,k)=>v*prior[k]),s=sum(raw);q=raw.map(v=>v/s);alpha.push(q);scales.push(s);}\n const beta=new Array(xs.length);beta[xs.length-1]=[1,1];for(let t=xs.length-2;t>=0;t--)beta[t]=[0,1].map(i=>sum([0,1].map(j=>P[i][j]*B[t+1][j]*beta[t+1][j]))/scales[t+1]);\n const C=[[0,0],[0,0]];for(let t=0;t<xs.length-1;t++)for(let i=0;i<2;i++)for(let j=0;j<2;j++)C[i][j]+=alpha[t][i]*P[i][j]*B[t+1][j]*beta[t+1][j]/scales[t+1];return C;};\n const mstep=(C,w)=>{const derivative=r=>{let s=0;for(let i=0;i<2;i++)for(let j=0;j<2;j++){const a=(i===j?1:0)-w[j],p=r*(i===j?1:0)+(1-r)*w[j];s+=C[i][j]*a/p;}return s;};const cap=1-1e-6;if(derivative(0)<=0)return 0;if(derivative(cap)>=0)return cap;let lo=0,hi=cap;for(let k=0;k<40;k++){const mid=(lo+hi)/2;if(derivative(mid)>0)lo=mid;else hi=mid;}return(lo+hi)/2;};\n const fitRho=(xs,m)=>{let rho=.5;for(let k=0;k<20;k++)rho=mstep(counts(xs,m,rho),m.w);return{rho,...forward(xs,m,rho)};};\n return{sum,cdf,forecast,forward,assimilate,fitEmission,fitRho,counts,mstep};\n}",
+  "scope": "Independent JS formulas for later replay of runtime logs; no observed data consumed here.",
+  "normal_cdf_oracles": [
+    {
+      "x": -8,
+      "value": 4.440892098500626e-16
+    },
+    {
+      "x": -4,
+      "value": 0.00003167124183306447
+    },
+    {
+      "x": -1,
+      "value": 0.15865525393145702
+    },
+    {
+      "x": 0,
+      "value": 0.5
+    },
+    {
+      "x": 0.1,
+      "value": 0.539827837277029
+    },
+    {
+      "x": 1,
+      "value": 0.841344746068543
+    },
+    {
+      "x": 2,
+      "value": 0.9772498680518208
+    },
+    {
+      "x": 4,
+      "value": 0.9999683287581669
+    },
+    {
+      "x": 8,
+      "value": 0.9999999999999996
+    }
+  ]
+}

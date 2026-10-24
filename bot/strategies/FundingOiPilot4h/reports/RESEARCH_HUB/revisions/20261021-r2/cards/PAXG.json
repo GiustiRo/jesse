@@ -1,0 +1,59 @@
+{
+  "id": "PAXG",
+  "title": "PAXG: evidencia previa",
+  "asset": "PAXG",
+  "family": "calendario / retest",
+  "execution": "inventariado",
+  "evidence": "histórica; alcance del informe",
+  "objective": "sin evaluar para el nuevo programa",
+  "hypothesis": "PAXG spot permitió explorar fin de semana y retest; shocks negativos. Existe estudio posterior de cuenta compartida, citado por el cierre.",
+  "origin": "Investigación anterior al Hub; inventarios completos enlazados",
+  "method": "Inventario y lectura de cierres existentes, sin nuevas ejecuciones.",
+  "protocol": null,
+  "budget": "No mezclar con conteos V1–V6",
+  "versions": "Fuentes y configuración en reportes originales; proxies no equivalen a perpetual nativo.",
+  "periods": [
+    "2020–2025 reutilizado"
+  ],
+  "results": {
+    "scope": "Cuenta compartida histórica C/T (no riesgo comparable con V1–V6)",
+    "C": {
+      "net_usdt": 24807.07,
+      "cagr_pct": 27.026,
+      "dd_engine_pct": -13.523,
+      "trades": 222
+    },
+    "T": {
+      "net_usdt": 25563.78,
+      "cagr_pct": 27.551,
+      "dd_engine_pct": -12.359,
+      "trades": 247
+    },
+    "regularity": {
+      "positive_active_months": "35/61 ambos",
+      "positive_quarters": "14/21 ambos"
+    },
+    "costs": "Fee .00045 por lado, sin funding. Reserva10bps sólo sizing; estrés contable estático.",
+    "exposure": "BTC/SPY 3%, PAXG1%, riesgo agregado8%, 5x aislado; no comparador equivalente al nuevo programa",
+    "correlation": null,
+    "simultaneous_losses": null
+  },
+  "limitations": [
+    "Sin evaluación de la nueva línea.",
+    "Correlaciones, pérdidas simultáneas y comparación con/sin pieza bajo riesgo comparable: sin evaluar en esta revisión.",
+    "Leer los addenda y registros; no sumar curvas aisladas como cuenta compartida."
+  ],
+  "audit": "Inventario MCP y lectura del informe enlazado; no nueva auditoría económica.",
+  "decision": "Cuenta compartida T mejora modestamente CAGR/DD frente a C, sin mejorar meses/trimestres positivos; no se acepta reemplazo de referencia.",
+  "references": [
+    {
+      "label": "PAXG_RESEARCH_FINAL_20261018.md",
+      "path": "strategies/ResearchPaxgWeekendReturn1h/reports/PAXG_RESEARCH_FINAL_20261018.md"
+    },
+    {
+      "label": "Cuenta compartida: cierre posterior",
+      "path": "strategies/ResearchPortfolioPaxgWeekend075/reports/PAXG_SHARED_ACCOUNT_RESULTS_20261018.md"
+    }
+  ],
+  "sessions": []
+}

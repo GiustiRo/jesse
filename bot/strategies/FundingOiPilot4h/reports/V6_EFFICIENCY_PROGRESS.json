@@ -1,0 +1,1984 @@
+{
+  "cycle": "V6",
+  "sector": "EFFICIENCY",
+  "owner": "/root/v6_efficiency",
+  "status": "SCREEN_FINISHED_EXECUTION_AUDIT_PASS_PENDING_ROOT_ECONOMIC_DECISION",
+  "created_at": "2026-10-21 00:53:33 UTC",
+  "proposal": "V6_EFFICIENCY_PROPOSAL.md",
+  "protocol": "Root-owned V6 protocol; sector obeyed implementation GO, no economic actions",
+  "sources": {
+    "strategies/ResearchV6Base4h/efficiency_features.py": "\"\"\"Finite directional path efficiency; pure algebra, with no engine state or IO.\"\"\"\nimport hashlib\nimport json\nimport math\n\nimport numpy as np\n\nfrom strategies.ResearchV6Base4h import BAR, closed_window\n\n\ndef _digest(rows):\n    return hashlib.sha256(json.dumps(rows[:, :5].tolist(),\n        separators=(\",\", \":\"), allow_nan=False).encode()).hexdigest()\n\n\ndef efficiency24(candles, now):\n    \"\"\"Twenty-four deltas use exactly25closed prices; a flat path is neutral.\"\"\"\n    rows = closed_window(candles, now, 25)\n    if rows is None:\n        return dict(valid=False, value=None, reason=\"efficiency_window_invalid\")\n    closes = [float(value) for value in rows[:, 2]]\n    deltas = [right - left for left, right in zip(closes, closes[1:])]\n    displacement = closes[-1] - closes[0]\n    if not math.isfinite(displacement) or not all(math.isfinite(x) for x in deltas):\n        return dict(valid=False, value=None, reason=\"efficiency_arithmetic_invalid\")\n    scale = max(abs(x) for x in deltas)\n    # Common normalization preserves the ratio while avoiding an overflowing raw sum.\n    if scale == 0:\n        normalized_path = normalized_displacement = value = 0.\n    else:\n        normalized_path = math.fsum(abs(x) / scale for x in deltas)\n        normalized_displacement = displacement / scale\n        if (not math.isfinite(normalized_path) or normalized_path <= 0 or\n                not math.isfinite(normalized_displacement)):\n            return dict(valid=False, value=None, reason=\"efficiency_arithmetic_invalid\")\n        value = normalized_displacement / normalized_path\n    if not math.isfinite(value):\n        return dict(valid=False, value=None, reason=\"efficiency_arithmetic_invalid\")\n    return dict(valid=True, value=float(value),\n        reason=\"efficiency_flat\" if scale == 0 else \"efficiency_valid\",\n        displacement=float(displacement), step_scale=float(scale),\n        normalized_displacement=float(normalized_displacement),\n        normalized_path=float(normalized_path), first=int(rows[0, 0]),\n        last=int(rows[-1, 0]), bars=25, sha256=_digest(rows))\n\n\ndef _cross_direction(current, previous, threshold):\n    if previous <= threshold and current > threshold:\n        return 1\n    if previous >= -threshold and current < -threshold:\n        return -1\n    return 0\n\n\ndef features(candles, now, atr, threshold=.35):\n    if (isinstance(threshold, (bool, str)) or\n            not isinstance(threshold, (int, float, np.integer, np.floating)) or\n            not math.isfinite(threshold) or not 0 < threshold < 1):\n        return dict(valid=False, direction=0, reason=\"efficiency_threshold_invalid\", details={})\n    # A fresh crossing needs two independent25-close windows: their union is26.\n    rows = closed_window(candles, now, 26)\n    if rows is None:\n        return dict(valid=False, direction=0, reason=\"efficiency_window_invalid\", details={})\n    try:\n        atr_valid = (isinstance(atr, dict) and math.isfinite(atr[\"value\"]) and atr[\"value\"] > 0)\n    except (KeyError, TypeError, ValueError):\n        atr_valid = False\n    if not atr_valid:\n        return dict(valid=False, direction=0, reason=\"efficiency_atr_invalid\", details={})\n    current = efficiency24(candles, now)\n    previous = efficiency24(candles, now - BAR)\n    if not current[\"valid\"] or not previous[\"valid\"]:\n        return dict(valid=False, direction=0, reason=\"efficiency_arithmetic_invalid\", details={})\n    direction = _cross_direction(current[\"value\"], previous[\"value\"], float(threshold))\n    reason = \"efficiency_setup\" if direction else \"efficiency_no_cross\"\n    details = dict(threshold=float(threshold), current=current, previous=previous,\n        first=int(rows[0, 0]), last=int(rows[-1, 0]), bars=26, sha256=_digest(rows))\n    return dict(valid=True, direction=int(direction), reason=reason, details=details)\n\n\ndef self_checks():\n    \"\"\"Independent finite-path oracles, boundaries and causal mutation checks.\"\"\"\n    count = 0\n\n    def check(condition):\n        nonlocal count\n        assert bool(condition)\n        count += 1\n\n    def candles(closes, first=0):\n        closes = np.asarray(closes, dtype=float)\n        return np.column_stack((np.arange(len(closes))*BAR + first,\n            closes, closes, closes*1.001, closes*.999, np.ones(len(closes))))\n\n    def oracle(values):\n        # Raw unnormalized arithmetic is independent of the scaled implementation.\n        changes = [float(right - left) for left, right in zip(values, values[1:])]\n        total = math.fsum(abs(x) for x in changes)\n        return 0. if total == 0 else (float(values[-1]) - float(values[0])) / total\n\n    closes = 100. + np.cumsum([0.] + [1., -1.]*12 + [14.])\n    long = candles(closes)\n    now = 26*BAR\n    atr = dict(value=2.)\n    short = long.copy()\n    short[:, 1] = 400. - long[:, 1]\n    short[:, 2] = 400. - long[:, 2]\n    short[:, 3] = 400. - long[:, 4]\n    short[:, 4] = 400. - long[:, 3]\n    for case, expected in ((long, 1), (short, -1)):\n        result = features(case, now, atr)\n        check(result[\"valid\"] and result[\"direction\"] == expected)\n        check(result[\"reason\"] == \"efficiency_setup\")\n        check(result[\"details\"][\"bars\"] == 26)\n        check(result[\"details\"][\"current\"][\"bars\"] == 25)\n        check(result[\"details\"][\"previous\"][\"bars\"] == 25)\n        check(len(\"V6_FEATURES \" + json.dumps(dict(time=now, line=\"EFFICIENCY\", **result),\n              separators=(\",\", \":\"), allow_nan=False)) <= 1900)\n        for offset in (0, 1):\n            state = efficiency24(case, now-offset*BAR)\n            values = case[-25-offset:len(case)-offset if offset else None, 2]\n            check(abs(state[\"value\"] - oracle(values)) < 1e-12)\n            check(state[\"last\"]+BAR == now-offset*BAR)\n            check(state[\"first\"] == now-(25+offset)*BAR)\n            mutated = case.copy()\n            mutated[:len(case)-25-offset, 1:5] *= 1.1\n            check(efficiency24(mutated, now-offset*BAR) == state)\n        check(efficiency24(case[:-1], now-BAR) == efficiency24(case, now-BAR))\n        check(features(case, now, atr, .315)[\"direction\"] == expected)\n        check(features(case, now, atr, .385)[\"direction\"] == 0)\n        check(features(case[-25:], now, atr)[\"valid\"] is False)\n        check(efficiency24(case[-25:], now)[\"valid\"])\n        future = candles([500., 600.], first=now)\n        appended = np.vstack((case, future))\n        check(features(appended, now, atr) == result)\n        appended[-2:, 1:5] = float(\"nan\")\n        check(features(appended, now, atr) == result)\n        older = candles(np.arange(40)+30., first=-40*BAR)\n        extended = np.vstack((older, case))\n        check(features(extended, now, atr) == result)\n        extended[:40, 1:5] *= 2.\n        check(features(extended, now, atr) == result)\n        scaled = case.copy()\n        scaled[:, 1:5] *= 2.\n        check(abs(efficiency24(scaled, now)[\"value\"] - result[\"details\"][\"current\"][\"value\"]) < 1e-12)\n        translated = case.copy()\n        translated[:, 1:5] += 50.\n        check(abs(efficiency24(translated, now)[\"value\"] - result[\"details\"][\"current\"][\"value\"]) < 1e-12)\n        check(features(translated, now, atr)[\"direction\"] == expected)\n    check(abs(efficiency24(long, now)[\"value\"] - 13./37.) < 1e-12)\n    flat = candles([100.]*26)\n    check(efficiency24(flat, now)[\"value\"] == 0.)\n    check(efficiency24(flat, now)[\"reason\"] == \"efficiency_flat\")\n    check(features(flat, now, atr)[\"valid\"])\n    check(features(flat, now, atr)[\"direction\"] == 0)\n    for values, expected in ((np.arange(26)+100., 1.), (200.-np.arange(26), -1.)):\n        case = candles(values)\n        check(efficiency24(case, now)[\"value\"] == expected)\n        check(features(case, now, atr)[\"direction\"] == 0)\n    zigzag = candles([100.] + [110., 100.]*11 + [110., 124.])\n    straight = candles(np.arange(25)+100.)\n    check(zigzag.shape[0] == 25)\n    check(efficiency24(zigzag, 25*BAR)[\"displacement\"] == efficiency24(straight, 25*BAR)[\"displacement\"])\n    check(efficiency24(zigzag, 25*BAR)[\"value\"] < efficiency24(straight, 25*BAR)[\"value\"])\n    for h in (.315, .35, .385):\n        check(_cross_direction(h+.01, h, h) == 1)\n        check(_cross_direction(h, h-.01, h) == 0)\n        check(_cross_direction(h+.01, h+.01, h) == 0)\n        check(_cross_direction(-h-.01, -h, h) == -1)\n        check(_cross_direction(-h, -h+.01, h) == 0)\n        check(_cross_direction(-h-.01, -h-.01, h) == 0)\n    for threshold in (0., 1., -.35, float(\"nan\"), float(\"inf\"), None, True, \"0.35\"):\n        check(features(long, now, atr, threshold)[\"valid\"] is False)\n    for risk in (None, {}, dict(value=0.), dict(value=float(\"nan\")), dict(value=float(\"inf\"))):\n        check(features(long, now, risk)[\"valid\"] is False)\n    for column, value in ((2, float(\"nan\")), (1, 0.), (3, 1.), (4, 1000.), (0, now-2*BAR)):\n        broken = long.copy()\n        broken[-1, column] = value\n        check(features(broken, now, atr)[\"valid\"] is False)\n        check(efficiency24(broken, now)[\"valid\"] is False)\n    check(features(long[:-1], now, atr)[\"valid\"] is False)\n    check(features(long, now+1, atr)[\"valid\"] is False)\n    check(efficiency24(long[-24:], now)[\"valid\"] is False)\n    # The raw path sum would overflow; scaling preserves a finite neutral result.\n    large = candles([1e307 if i%2 == 0 else 9e307 for i in range(25)])\n    large_state = efficiency24(large, 25*BAR)\n    check(large_state[\"valid\"] and large_state[\"value\"] == 0.)\n    check(large_state[\"normalized_path\"] == 24.)\n    check(len(json.dumps(large_state, allow_nan=False)) < 1000)\n    original = long.copy()\n    features(long, now, atr)\n    check(np.array_equal(original, long))\n    return dict(status=\"passed\", assertions=count)\n",
+    "strategies/ResearchV6EfficiencyP4h/__init__.py": "from strategies.ResearchV6Base4h import ResearchV6Base4h\nfrom strategies.ResearchV6Base4h.efficiency_features import features, efficiency24\n\n\nclass ResearchV6EfficiencyP4h(ResearchV6Base4h):\n    LINE = \"EFFICIENCY\"\n    USE_OI = False\n    EFFICIENCY_THRESHOLD = .35\n    STOP_MULTIPLIER = 2.5\n    ATR_OFFSET_BARS = 0\n    MAX_HOLD_BARS = 60\n    TARGET_MODE = \"none\"\n\n    def features(self, candles, now, atr):\n        return features(candles, now, atr, self.EFFICIENCY_THRESHOLD)\n\n    def manage_position(self, atr):\n        # Entry uses26prices; neutral-state exit needs only its own25valid closes.\n        state = efficiency24(self.candles, int(self.time))\n        if state[\"valid\"] and ((self.is_long and state[\"value\"] <= 0.) or\n                               (self.is_short and state[\"value\"] >= 0.)):\n            self._log_json(\"V6_EFFICIENCY_EXIT_STATE\", dict(time=int(self.time),\n                opened_at=int(self.position.opened_at),\n                direction=1 if self.is_long else -1, **state))\n            self.request_exit(\"efficiency_neutral\")\n",
+    "strategies/ResearchV6EfficiencyOi4h/__init__.py": "from strategies.ResearchV6EfficiencyP4h import ResearchV6EfficiencyP4h\n\n\nclass ResearchV6EfficiencyOi4h(ResearchV6EfficiencyP4h):\n    USE_OI = True\n",
+    "strategies/ResearchV6EfficiencySmoke4h/__init__.py": "from strategies.ResearchV6EfficiencyP4h import ResearchV6EfficiencyP4h\nfrom strategies.ResearchV6Base4h.efficiency_features import self_checks\nfrom strategies.ResearchV6Base4h.common_checks import self_checks as common_checks\n\n\nclass ResearchV6EfficiencySmoke4h(ResearchV6EfficiencyP4h):\n    FINISH = 1599523200000  # Seven-day technical window ending2020-09-08UTC.\n\n    def before(self):\n        if not self.vars.get(\"efficiency_smoke_checks_done\"):\n            sector = self_checks()\n            common = common_checks()\n            assert sector[\"status\"] == common[\"status\"] == \"passed\"\n            self.vars[\"self_checks\"] = dict(efficiency=sector, common=common)\n            self._log_json(\"V6_SELF_CHECKS\", sector)\n            self._log_json(\"V6_COMMON_CHECKS\", common)\n            self.vars[\"efficiency_smoke_checks_done\"] = True\n        super().before()\n"
+  },
+  "readback": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "strategies/ResearchV6Base4h/efficiency_features.py",
+        "status": "success",
+        "readback_equal": true,
+        "has_more": false,
+        "characters": 9641
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "strategies/ResearchV6EfficiencyP4h/__init__.py",
+        "status": "success",
+        "readback_equal": true,
+        "has_more": false,
+        "characters": 1056
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "strategies/ResearchV6EfficiencyOi4h/__init__.py",
+        "status": "success",
+        "readback_equal": true,
+        "has_more": false,
+        "characters": 148
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "strategies/ResearchV6EfficiencySmoke4h/__init__.py",
+        "status": "success",
+        "readback_equal": true,
+        "has_more": false,
+        "characters": 863
+      }
+    }
+  ],
+  "parameters": {
+    "BAR": 14400000,
+    "entry_closes": 26,
+    "state_exit_closes": 25,
+    "EFFICIENCY_THRESHOLD": 0.35,
+    "STOP_MULTIPLIER": 2.5,
+    "MAX_HOLD_BARS": 60,
+    "ATR_OFFSET_BARS": 0,
+    "TARGET_MODE": "none",
+    "OI_RULE": "rising",
+    "OI_REFERENCE_BARS": 6
+  },
+  "checks": {
+    "execution_status": "Root static and smoke runtime passed:112sector +67common",
+    "entrypoint": "efficiency_features.self_checks",
+    "coverage": [
+      "independent unscaled24-delta oracle",
+      "E0/E1 own25close windows requiring26 total",
+      "flat neutral and monotonic persistent no fresh cross",
+      "long/short reflection",
+      "fresh threshold inclusive prior and strict current boundaries",
+      "signal neighbors.315/.385",
+      "prefix/future mutation invariance and input nonmutation",
+      "scale/translation invariance",
+      "same displacement different path length",
+      "scaled arithmetic raw-sum overflow surface",
+      "26entry/25exit/invalid24 boundaries",
+      "invalid ATR/threshold/gap/OHLC/nonfinite",
+      "JSON finite bounded full V6_FEATURES payload"
+    ],
+    "common": "Smoke imports root-owned common_checks.self_checks; no execution claim"
+  },
+  "neighbors": {
+    "risk": [
+      2.25,
+      2.75
+    ],
+    "signal": [
+      0.315,
+      0.385
+    ],
+    "created": false
+  },
+  "hashes_status": "Root static PASS14sources338checks; snapshotV6_IMPLEMENTATION_SOURCE_20261020.md",
+  "sessions": [
+    {
+      "kind": "TECHNICAL_SMOKE",
+      "session_id": "4eafad70-21a5-41c0-a300-95eb22f39981",
+      "dashboard_url": "http://localhost:9200/#/backtest/4eafad70-21a5-41c0-a300-95eb22f39981",
+      "status": "finished",
+      "error": null,
+      "audit": "PASS",
+      "audit_file": "AUDIT_ResearchV6EfficiencySmoke4h.json",
+      "report": "V6_EFFICIENCY_SMOKE_REPORT.md",
+      "runtime_checks": {
+        "sector": 112,
+        "common": 67
+      },
+      "bars": 42,
+      "entries": 2,
+      "closes": 2,
+      "coverage": {
+        "actual_entries": 2,
+        "long": 1,
+        "short": 1,
+        "stop_exit": 1,
+        "efficiency_state_exit": 1,
+        "forced_fold_exit": 0,
+        "maximum_hold_exit": 0,
+        "calendar_exit": 0,
+        "funding_cash_events": 15
+      },
+      "structural_assertions": 57
+    }
+  ],
+  "jobs": [],
+  "no_drafts": false,
+  "no_jobs": true,
+  "no_motors": false,
+  "no_core_edits": true,
+  "no_legacy_edits": true,
+  "no_motors_started_by_sector": false,
+  "root_started_smoke": true,
+  "audit_limits": [
+    "Financial ledger/order/equity reconstruction belongs to root full-snapshot audit; this sector checked scheduling, evidence and entry risk plans, not annual economic eligibility.",
+    "60-bar maximum hold, calendar boundary, invalid-after-fill and final forced close were not exercised by actual smoke trades. Static/common checks and provenance do not imply actual-fill coverage.",
+    "One STOP was executed; the other planned protective stop is evidenced by entry log and frozen code, not an executed stop fill.",
+    "MARKET liquidation carries submitted_via=take-profit in the engine record; target_mode remains none and no LIMIT target was executed.",
+    "Indicator exit at2020-09-08T00:00 used the last2020-09-07 closed bar; this is not future data or a fold_end exit.",
+    "Price-window hashes are recorded, not re-derived from unavailable raw candle snapshots in this log-only audit."
+  ],
+  "drafts": [
+    {
+      "id": "EFF_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "status": "draft",
+      "start_authorized": false,
+      "start_requested": false,
+      "verified_nominal": true,
+      "create_raw": {
+        "status": "success",
+        "backtest_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h",
+                "strategy": "ResearchV6EfficiencyP4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2024-01-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": true,
+                "order_cancellation": true,
+                "order_execution": true,
+                "position_opened": true,
+                "position_increased": true,
+                "position_reduced": true,
+                "position_closed": true,
+                "shorter_period_candles": false,
+                "trading_candles": true,
+                "balance_update": true
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 5
+              },
+              "funding": {
+                "mode": "disabled"
+              },
+              "open_interest": {
+                "mode": "disabled"
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV6EfficiencyP4h",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyP4h"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "notes": {
+          "title": "MCP Backtest: V6 SCREEN EFFICIENCY_P 4h",
+          "description": "Frozen V6 directional efficiency screening. Draft prepared only; awaiting root motor token. No tuning.",
+          "strategy_code_keys": [
+            "Binance Perpetual Futures-BTC-USDT"
+          ],
+          "strategy_codes_captured": 1
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "message": "Backtest draft created with ID: 8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1"
+      },
+      "update_raw": {
+        "status": "success",
+        "backtest_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h",
+                "strategy": "ResearchV6EfficiencyP4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2024-01-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": false,
+                "order_cancellation": false,
+                "order_execution": false,
+                "position_opened": false,
+                "position_increased": false,
+                "position_reduced": false,
+                "position_closed": false,
+                "shorter_period_candles": false,
+                "trading_candles": false,
+                "balance_update": false
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 3,
+                "slippage_bps": 0
+              },
+              "funding": {
+                "mode": "historical",
+                "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+              },
+              "open_interest": {
+                "mode": "historical",
+                "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+                "allow_missing_observations": true,
+                "max_age_ms": 600000
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV6EfficiencyP4h",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyP4h"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "message": "Backtest draft updated successfully"
+      },
+      "summary_readback": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_P 4h",
+        "description": "Frozen V6 directional efficiency screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544479000,
+        "updated_at": 1792544489000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyP4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1"
+      }
+    },
+    {
+      "id": "EFF_POI",
+      "strategy": "ResearchV6EfficiencyOi4h",
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "status": "draft",
+      "start_authorized": false,
+      "start_requested": false,
+      "verified_nominal": true,
+      "create_raw": {
+        "status": "success",
+        "backtest_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h",
+                "strategy": "ResearchV6EfficiencyOi4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2024-01-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": true,
+                "order_cancellation": true,
+                "order_execution": true,
+                "position_opened": true,
+                "position_increased": true,
+                "position_reduced": true,
+                "position_closed": true,
+                "shorter_period_candles": false,
+                "trading_candles": true,
+                "balance_update": true
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 5
+              },
+              "funding": {
+                "mode": "disabled"
+              },
+              "open_interest": {
+                "mode": "disabled"
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV6EfficiencyOi4h",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyOi4h"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "notes": {
+          "title": "MCP Backtest: V6 SCREEN EFFICIENCY_POI 4h",
+          "description": "Frozen V6 directional efficiency plus rising OI24h screening. Draft prepared only; awaiting root motor token. No tuning.",
+          "strategy_code_keys": [
+            "Binance Perpetual Futures-BTC-USDT"
+          ],
+          "strategy_codes_captured": 1
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "message": "Backtest draft created with ID: ea02b35f-28ba-480a-a0b5-bac3a5772b3c"
+      },
+      "update_raw": {
+        "status": "success",
+        "backtest_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h",
+                "strategy": "ResearchV6EfficiencyOi4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2024-01-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": false,
+                "order_cancellation": false,
+                "order_execution": false,
+                "position_opened": false,
+                "position_increased": false,
+                "position_reduced": false,
+                "position_closed": false,
+                "shorter_period_candles": false,
+                "trading_candles": false,
+                "balance_update": false
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 3,
+                "slippage_bps": 0
+              },
+              "funding": {
+                "mode": "historical",
+                "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+              },
+              "open_interest": {
+                "mode": "historical",
+                "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+                "allow_missing_observations": true,
+                "max_age_ms": 600000
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV6EfficiencyOi4h",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyOi4h"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "message": "Backtest draft updated successfully"
+      },
+      "summary_readback": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_POI 4h",
+        "description": "Frozen V6 directional efficiency plus rising OI24h screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544489000,
+        "updated_at": 1792544507000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyOi4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c"
+      }
+    }
+  ],
+  "prerun_verified_at": "2026-10-21 01:01:47 UTC",
+  "root_financial_smoke_audit": "Root reported PASS before draft preparation",
+  "no_new_runs": false,
+  "screen_runs": [
+    {
+      "id": "EFF_P",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "start_authorized": true,
+      "start_requested": true,
+      "start_requested_at": "2026-10-21 01:09:08 UTC",
+      "status": "finished",
+      "prestart_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_P 4h",
+        "description": "Frozen V6 directional efficiency screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544479000,
+        "updated_at": 1792544489000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyP4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1"
+      },
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV6EfficiencyP4h\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "first_read_after_start": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "session_status": "running",
+        "status_note": "Still running; results may be missing or partial until it finishes.",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_P 4h",
+        "description": "Frozen V6 directional efficiency screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544479000,
+        "updated_at": 1792544970000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyP4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1"
+      },
+      "finished_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "session_status": "finished",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_P 4h",
+        "description": "Frozen V6 directional efficiency screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544479000,
+        "updated_at": 1792545032000,
+        "execution_duration": 42.51,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyP4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": {
+          "total": 148,
+          "total_winning_trades": 46,
+          "total_losing_trades": 102,
+          "starting_balance": 10000,
+          "finishing_balance": 14001.65986640244,
+          "win_rate": 0.3108108108108108,
+          "win_rate_longs": 0.3466666666666667,
+          "win_rate_shorts": 0.273972602739726,
+          "ratio_avg_win_loss": 2.766789706944598,
+          "longs_count": 75,
+          "longs_percentage": 50.67567567567568,
+          "shorts_percentage": 49.32432432432432,
+          "shorts_count": 73,
+          "fee": 820.9389089841854,
+          "net_profit": 4001.659866402433,
+          "net_profit_percentage": 40.016598664024336,
+          "average_win": 438.09782690698825,
+          "average_loss": 158.34157030704924,
+          "expectancy": 27.038242340557005,
+          "expectancy_percentage": 0.27038242340557006,
+          "expected_net_profit_every_100_trades": 27.038242340557005,
+          "average_holding_period": 311166.08108108107,
+          "average_winning_holding_period": 585704.3478260869,
+          "average_losing_holding_period": 187354.70588235295,
+          "gross_profit": 20152.50003772146,
+          "gross_loss": -16150.840171319023,
+          "max_drawdown": -21.86957331160556,
+          "max_underwater_period": 491,
+          "annual_return": 10.622086472848213,
+          "annualization": 365,
+          "sharpe_ratio": 0.6011902871487419,
+          "calmar_ratio": 0.48570158738357155,
+          "sortino_ratio": 1.0526201305159155,
+          "omega_ratio": 1.1376750537284437,
+          "serenity_index": null,
+          "total_open_trades": 0,
+          "open_pl": 0,
+          "winning_streak": 3,
+          "losing_streak": 11,
+          "largest_losing_trade": -309.0093647804355,
+          "largest_winning_trade": 2753.592686211268,
+          "current_streak": -2,
+          "avg_trades_per_day": 0.12161044827304833,
+          "avg_trades_per_week": 0.8512731379113383,
+          "avg_trades_per_month": 3.7018220454315913,
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "cashflow": -816.5700106016301,
+            "rate_kind": "settled",
+            "event_count": 1590,
+            "settlements_processed": 3651,
+            "mark_price_proxy_count": 1533,
+            "status": "applied",
+            "applied": true,
+            "scope": [
+              "BTC-USDT"
+            ],
+            "excluded_symbols": [],
+            "data": {
+              "allow_mark_price_proxy": true,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "mark_price_proxy_count": 4198,
+              "schema": 1,
+              "source": "binance-usdm-fundingRate-v1",
+              "start": 1577836800000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+              "event_count": 6576,
+              "first_settlement": 1577836800000,
+              "last_settlement": 1767196800001,
+              "largest_gap_ms": 28800047,
+              "status": "ready",
+              "coverage_complete": true,
+              "supported_timestamps": true,
+              "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+              "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+              "publication_delay_ms": 60000,
+              "rate_unit": "decimal_fraction",
+              "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+            },
+            "effective_fast_mode": false,
+            "boundary_policy": "before_strategy_decisions; finish_exclusive",
+            "publication_delay_ms": 60000
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "max_age_ms": 600000,
+            "applied": true,
+            "status": "applied",
+            "scope": [
+              "BTC-USDT"
+            ],
+            "data": {
+              "archive_assumptions_acknowledged": true,
+              "archive_catalog": {
+                "first_archive_date": "2020-09-01",
+                "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+                "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+                "point_in_time_certified": false,
+                "source": "binance-usdm-metrics-archive-v1"
+              },
+              "availability_lag_ms": 360000,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "import_source": "auto",
+              "original_publication_known": false,
+              "period_ms": 300000,
+              "rest_range": null,
+              "schema": 1,
+              "source": "binance-usdm-metrics-archive-v1",
+              "start": 1598918400000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "observation_count": 560390,
+              "expected_observation_count": 561024,
+              "missing_observation_count": 634,
+              "coverage_complete": false,
+              "status": "incomplete",
+              "leading_gap_ms": 0,
+              "trailing_gap_ms": 0,
+              "first_observation": 1598918400000,
+              "last_observation": 1767225300000,
+              "first_available_at": 1598918760000,
+              "last_available_at": 1767225660000,
+              "largest_gap_ms": 37800000,
+              "gap_count": 156,
+              "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+              "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+              "point_in_time_certified": false,
+              "missing_policy": "no interpolation; unavailable or stale values return None",
+              "cashflow": false,
+              "archive_file_count": 1948,
+              "archive_verified_file_count": 1948,
+              "archive_missing_days": [],
+              "archive_missing_day_count": 0,
+              "archive_identical_duplicate_rows": 75255
+            },
+            "allow_missing_observations": true,
+            "observation_count": 560390,
+            "cashflow": false,
+            "availability_lag_ms": 360000,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "current": {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "observed_at": 1704066600000,
+              "available_at": 1704066960000,
+              "quantity_base": 73951.1,
+              "value_quote": 3128205481.1
+            }
+          }
+        },
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": true,
+        "sections": {
+          "trades": {
+            "count": 148
+          },
+          "equity_curve": {
+            "series": [
+              {
+                "name": "Portfolio",
+                "points": 1218
+              }
+            ]
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": 628026
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1"
+      },
+      "execution_audit": "PASS",
+      "audit_file": "AUDIT_ResearchV6EfficiencyP4h_SCREEN.json",
+      "audit_summary": {
+        "label": "P",
+        "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+        "technical_audit": "PASS",
+        "assertions": 3272,
+        "native_metrics": {
+          "trades": 148,
+          "net_pct": 40.016598664024336,
+          "dd_pct": -21.86957331160556,
+          "funding_cashflow": -816.5700106016301,
+          "funding_events": 1590
+        },
+        "totals": {
+          "bars": 7302,
+          "entries": 148,
+          "exits_before_forced": 148,
+          "forced_closes": 0,
+          "opportunities": 148
+        },
+        "feature_reasons": {
+          "efficiency_no_cross": 7005,
+          "efficiency_setup": 297
+        },
+        "primary": {
+          "efficiency_no_cross": 7004,
+          "allowed": 148,
+          "in_position_or_pending": 149,
+          "boundary_or_inactive": 1
+        },
+        "close_reasons": {
+          "stop-loss": 53,
+          "efficiency_neutral": 91,
+          "maximum_hold": 4
+        },
+        "log_pages": 16,
+        "log_lines": 3041,
+        "max_line": 1096,
+        "entry_plans_checked": 148,
+        "months": 40,
+        "entry_price_comparison": {
+          "absolute_tolerance": 1e-8,
+          "max_observed_abs_delta": 7.275957614183426e-12,
+          "quantity_exact": true,
+          "executed_entry_order_price_exact": true,
+          "diagnostic_file": "V6_EFFICIENCY_ENTRY_VWAP_FLOAT_DIAGNOSTIC.json"
+        },
+        "audit_file": "AUDIT_ResearchV6EfficiencyP4h_SCREEN.json"
+      },
+      "raw_manifest": [
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_LOGS_01.json",
+          "section": "logs",
+          "pages": 3,
+          "characters": 139697
+        },
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_LOGS_02.json",
+          "section": "logs",
+          "pages": 3,
+          "characters": 140469
+        },
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_LOGS_03.json",
+          "section": "logs",
+          "pages": 4,
+          "characters": 177961
+        },
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_LOGS_04.json",
+          "section": "logs",
+          "pages": 4,
+          "characters": 169418
+        },
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_LOGS_05.json",
+          "section": "logs",
+          "pages": 2,
+          "characters": 55854
+        },
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_TRADES_01.json",
+          "section": "trades",
+          "pages": 1,
+          "characters": 130310
+        },
+        {
+          "filename": "V6_EFFICIENCY_P_SCREEN_TRADES_02.json",
+          "section": "trades",
+          "pages": 1,
+          "characters": 89069
+        }
+      ]
+    },
+    {
+      "id": "EFF_POI",
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "start_authorized": true,
+      "start_requested": true,
+      "start_requested_at": "2026-10-21 01:09:38 UTC",
+      "status": "finished",
+      "prestart_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_POI 4h",
+        "description": "Frozen V6 directional efficiency plus rising OI24h screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544489000,
+        "updated_at": 1792544507000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyOi4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c"
+      },
+      "start_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "first_read_after_start": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "session_status": "running",
+        "status_note": "Still running; results may be missing or partial until it finishes.",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_POI 4h",
+        "description": "Frozen V6 directional efficiency plus rising OI24h screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544489000,
+        "updated_at": 1792544999000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyOi4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c"
+      },
+      "finished_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "session_status": "finished",
+        "title": "MCP Backtest: V6 SCREEN EFFICIENCY_POI 4h",
+        "description": "Frozen V6 directional efficiency plus rising OI24h screening. Draft prepared only; awaiting root motor token. No tuning.",
+        "description_truncated": false,
+        "created_at": 1792544489000,
+        "updated_at": 1792545057000,
+        "execution_duration": 35.33,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV6EfficiencyOi4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": {
+          "total": 119,
+          "total_winning_trades": 34,
+          "total_losing_trades": 85,
+          "starting_balance": 10000,
+          "finishing_balance": 11133.925998402483,
+          "win_rate": 0.2857142857142857,
+          "win_rate_longs": 0.34375,
+          "win_rate_shorts": 0.21818181818181817,
+          "ratio_avg_win_loss": 2.7036588559986345,
+          "longs_count": 64,
+          "longs_percentage": 53.78151260504202,
+          "shorts_percentage": 46.21848739495798,
+          "shorts_count": 55,
+          "fee": 623.8186933368095,
+          "net_profit": 1133.9259984024784,
+          "net_profit_percentage": 11.339259984024784,
+          "average_win": 442.745736649704,
+          "average_loss": 163.75798879632305,
+          "expectancy": 9.528789902541803,
+          "expectancy_percentage": 0.09528789902541802,
+          "expected_net_profit_every_100_trades": 9.528789902541803,
+          "average_holding_period": 290725.71428571426,
+          "average_winning_holding_period": 585317.6470588235,
+          "average_losing_holding_period": 172888.9411764706,
+          "gross_profit": 15053.355046089935,
+          "gross_loss": -13919.42904768746,
+          "max_drawdown": -30.780642380756753,
+          "max_underwater_period": 1042,
+          "annual_return": 3.2739209727620455,
+          "annualization": 365,
+          "sharpe_ratio": 0.2689404499575097,
+          "calmar_ratio": 0.10636298399051006,
+          "sortino_ratio": 0.4517519473098881,
+          "omega_ratio": 1.066201041037549,
+          "serenity_index": null,
+          "total_open_trades": 0,
+          "open_pl": 0,
+          "winning_streak": 3,
+          "losing_streak": 12,
+          "largest_losing_trade": -342.576774912786,
+          "largest_winning_trade": 1334.6024145721005,
+          "current_streak": -2,
+          "avg_trades_per_day": 0.09778137394927534,
+          "avg_trades_per_week": 0.6844696176449274,
+          "avg_trades_per_month": 2.9764650230159417,
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "cashflow": -727.2562925129798,
+            "rate_kind": "settled",
+            "event_count": 1196,
+            "settlements_processed": 3651,
+            "mark_price_proxy_count": 1150,
+            "status": "applied",
+            "applied": true,
+            "scope": [
+              "BTC-USDT"
+            ],
+            "excluded_symbols": [],
+            "data": {
+              "allow_mark_price_proxy": true,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "mark_price_proxy_count": 4198,
+              "schema": 1,
+              "source": "binance-usdm-fundingRate-v1",
+              "start": 1577836800000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+              "event_count": 6576,
+              "first_settlement": 1577836800000,
+              "last_settlement": 1767196800001,
+              "largest_gap_ms": 28800047,
+              "status": "ready",
+              "coverage_complete": true,
+              "supported_timestamps": true,
+              "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+              "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+              "publication_delay_ms": 60000,
+              "rate_unit": "decimal_fraction",
+              "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+            },
+            "effective_fast_mode": false,
+            "boundary_policy": "before_strategy_decisions; finish_exclusive",
+            "publication_delay_ms": 60000
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "max_age_ms": 600000,
+            "applied": true,
+            "status": "applied",
+            "scope": [
+              "BTC-USDT"
+            ],
+            "data": {
+              "archive_assumptions_acknowledged": true,
+              "archive_catalog": {
+                "first_archive_date": "2020-09-01",
+                "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+                "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+                "point_in_time_certified": false,
+                "source": "binance-usdm-metrics-archive-v1"
+              },
+              "availability_lag_ms": 360000,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "import_source": "auto",
+              "original_publication_known": false,
+              "period_ms": 300000,
+              "rest_range": null,
+              "schema": 1,
+              "source": "binance-usdm-metrics-archive-v1",
+              "start": 1598918400000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "observation_count": 560390,
+              "expected_observation_count": 561024,
+              "missing_observation_count": 634,
+              "coverage_complete": false,
+              "status": "incomplete",
+              "leading_gap_ms": 0,
+              "trailing_gap_ms": 0,
+              "first_observation": 1598918400000,
+              "last_observation": 1767225300000,
+              "first_available_at": 1598918760000,
+              "last_available_at": 1767225660000,
+              "largest_gap_ms": 37800000,
+              "gap_count": 156,
+              "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+              "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+              "point_in_time_certified": false,
+              "missing_policy": "no interpolation; unavailable or stale values return None",
+              "cashflow": false,
+              "archive_file_count": 1948,
+              "archive_verified_file_count": 1948,
+              "archive_missing_days": [],
+              "archive_missing_day_count": 0,
+              "archive_identical_duplicate_rows": 75255
+            },
+            "allow_missing_observations": true,
+            "observation_count": 560390,
+            "cashflow": false,
+            "availability_lag_ms": 360000,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "current": {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "observed_at": 1704066600000,
+              "available_at": 1704066960000,
+              "quantity_base": 73951.1,
+              "value_quote": 3128205481.1
+            }
+          }
+        },
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": true,
+        "sections": {
+          "trades": {
+            "count": 119
+          },
+          "equity_curve": {
+            "series": [
+              {
+                "name": "Portfolio",
+                "points": 1218
+              }
+            ]
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": 524719
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c"
+      },
+      "execution_audit": "PASS",
+      "audit_file": "AUDIT_ResearchV6EfficiencyOi4h_SCREEN.json",
+      "audit_summary": {
+        "label": "POI",
+        "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+        "technical_audit": "PASS",
+        "assertions": 2843,
+        "native_metrics": {
+          "trades": 119,
+          "net_pct": 11.339259984024784,
+          "dd_pct": -30.780642380756753,
+          "funding_cashflow": -727.2562925129798,
+          "funding_events": 1196
+        },
+        "totals": {
+          "bars": 7302,
+          "entries": 119,
+          "exits_before_forced": 119,
+          "forced_closes": 0,
+          "opportunities": 189
+        },
+        "feature_reasons": {
+          "efficiency_no_cross": 7005,
+          "efficiency_setup": 297
+        },
+        "primary": {
+          "efficiency_no_cross": 7004,
+          "oi_initialization": 2,
+          "oi_nonrising": 67,
+          "allowed": 119,
+          "in_position_or_pending": 108,
+          "oi_reference_invalid": 1,
+          "boundary_or_inactive": 1
+        },
+        "close_reasons": {
+          "efficiency_neutral": 65,
+          "stop-loss": 51,
+          "maximum_hold": 3
+        },
+        "log_pages": 14,
+        "log_lines": 2698,
+        "max_line": 1095,
+        "entry_plans_checked": 119,
+        "months": 40,
+        "entry_price_comparison": {
+          "absolute_tolerance": 1e-8,
+          "max_observed_abs_delta": 7.275957614183426e-12,
+          "quantity_exact": true,
+          "executed_entry_order_price_exact": true,
+          "diagnostic_file": "V6_EFFICIENCY_ENTRY_VWAP_FLOAT_DIAGNOSTIC.json"
+        },
+        "audit_file": "AUDIT_ResearchV6EfficiencyOi4h_SCREEN.json"
+      },
+      "raw_manifest": [
+        {
+          "filename": "V6_EFFICIENCY_POI_SCREEN_LOGS_01.json",
+          "section": "logs",
+          "pages": 4,
+          "characters": 177382
+        },
+        {
+          "filename": "V6_EFFICIENCY_POI_SCREEN_LOGS_02.json",
+          "section": "logs",
+          "pages": 4,
+          "characters": 171620
+        },
+        {
+          "filename": "V6_EFFICIENCY_POI_SCREEN_LOGS_03.json",
+          "section": "logs",
+          "pages": 4,
+          "characters": 165459
+        },
+        {
+          "filename": "V6_EFFICIENCY_POI_SCREEN_LOGS_04.json",
+          "section": "logs",
+          "pages": 2,
+          "characters": 56563
+        },
+        {
+          "filename": "V6_EFFICIENCY_POI_SCREEN_TRADES_01.json",
+          "section": "trades",
+          "pages": 2,
+          "characters": 176733
+        }
+      ]
+    }
+  ],
+  "active_owned_motors": 0,
+  "economic_runs_started_by_sector": 2,
+  "audit_summary": [
+    {
+      "label": "P",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "technical_audit": "PASS",
+      "assertions": 3272,
+      "native_metrics": {
+        "trades": 148,
+        "net_pct": 40.016598664024336,
+        "dd_pct": -21.86957331160556,
+        "funding_cashflow": -816.5700106016301,
+        "funding_events": 1590
+      },
+      "totals": {
+        "bars": 7302,
+        "entries": 148,
+        "exits_before_forced": 148,
+        "forced_closes": 0,
+        "opportunities": 148
+      },
+      "feature_reasons": {
+        "efficiency_no_cross": 7005,
+        "efficiency_setup": 297
+      },
+      "primary": {
+        "efficiency_no_cross": 7004,
+        "allowed": 148,
+        "in_position_or_pending": 149,
+        "boundary_or_inactive": 1
+      },
+      "close_reasons": {
+        "stop-loss": 53,
+        "efficiency_neutral": 91,
+        "maximum_hold": 4
+      },
+      "log_pages": 16,
+      "log_lines": 3041,
+      "max_line": 1096,
+      "entry_plans_checked": 148,
+      "months": 40,
+      "entry_price_comparison": {
+        "absolute_tolerance": 1e-8,
+        "max_observed_abs_delta": 7.275957614183426e-12,
+        "quantity_exact": true,
+        "executed_entry_order_price_exact": true,
+        "diagnostic_file": "V6_EFFICIENCY_ENTRY_VWAP_FLOAT_DIAGNOSTIC.json"
+      },
+      "audit_file": "AUDIT_ResearchV6EfficiencyP4h_SCREEN.json"
+    },
+    {
+      "label": "POI",
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "technical_audit": "PASS",
+      "assertions": 2843,
+      "native_metrics": {
+        "trades": 119,
+        "net_pct": 11.339259984024784,
+        "dd_pct": -30.780642380756753,
+        "funding_cashflow": -727.2562925129798,
+        "funding_events": 1196
+      },
+      "totals": {
+        "bars": 7302,
+        "entries": 119,
+        "exits_before_forced": 119,
+        "forced_closes": 0,
+        "opportunities": 189
+      },
+      "feature_reasons": {
+        "efficiency_no_cross": 7005,
+        "efficiency_setup": 297
+      },
+      "primary": {
+        "efficiency_no_cross": 7004,
+        "oi_initialization": 2,
+        "oi_nonrising": 67,
+        "allowed": 119,
+        "in_position_or_pending": 108,
+        "oi_reference_invalid": 1,
+        "boundary_or_inactive": 1
+      },
+      "close_reasons": {
+        "efficiency_neutral": 65,
+        "stop-loss": 51,
+        "maximum_hold": 3
+      },
+      "log_pages": 14,
+      "log_lines": 2698,
+      "max_line": 1095,
+      "entry_plans_checked": 119,
+      "months": 40,
+      "entry_price_comparison": {
+        "absolute_tolerance": 1e-8,
+        "max_observed_abs_delta": 7.275957614183426e-12,
+        "quantity_exact": true,
+        "executed_entry_order_price_exact": true,
+        "diagnostic_file": "V6_EFFICIENCY_ENTRY_VWAP_FLOAT_DIAGNOSTIC.json"
+      },
+      "audit_file": "AUDIT_ResearchV6EfficiencyOi4h_SCREEN.json"
+    }
+  ],
+  "evidence_note": "Native metrics are recorded summaries. Root owns full-snapshot monetary reconciliation, PF/year gates, shortlist and future phase authorization.",
+  "audit_incidents": [
+    {
+      "kind": "audit_harness_only",
+      "details": "Loaded registry after cross-turn store missing; accepted absent feature_reasons only on zero-bar exit-only direction buckets, matching source semantics. No strategy change or run retry."
+    },
+    {
+      "kind": "audit_precision",
+      "details": "Strict fill==reconstructed trade VWAP failed only <=7.28e-12 price units; executed entry order and quantities exact. Adopted1e-8 evidence tolerance, no signal threshold change; diagnostic preserves strict failures."
+    }
+  ]
+}

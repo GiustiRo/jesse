@@ -1,0 +1,68 @@
+{
+  "id": "V3",
+  "title": "Ciclo V3",
+  "asset": "BTC",
+  "family": "tendencia / canal",
+  "execution": "cerrado",
+  "evidence": "histórica adaptativa",
+  "objective": "no alcanzado",
+  "hypothesis": "Rupturas de canal frente a pullback y reversión, con y sin OI.",
+  "origin": "Protocolos históricos V1–V6; no son propuestas nuevas.",
+  "method": "Screening y selección cronológica según protocolo original. Pruebas técnicas separadas de resultados económicos.",
+  "protocol": null,
+  "budget": {
+    "cycle": "V3",
+    "economic_unique": 33,
+    "nominal_slots": 36,
+    "technical_attempts": 3
+  },
+  "versions": "Fuentes/config/datasets congelados en registry original; consultar referencias. No se afirman hashes nuevos.",
+  "periods": [
+    "screen 2020–2023",
+    "confirmación adaptativa 2024–2025"
+  ],
+  "results": {
+    "scope": "CHANNEL_P individual, no selector global",
+    "period": "2024-01-01 → 2026-01-01 exclusivo",
+    "cagr_pct": 17.5435,
+    "net_pct": 38.22586,
+    "drawdown_engine_pct": -18.41396,
+    "pf": 1.34851,
+    "trades": 95,
+    "annual_pct": {
+      "2024": 38.3503,
+      "2025": -0.0899
+    },
+    "positive_half_years": "3/4",
+    "costs": "fee 0.00045; funding histórico; estrés y vecinos en evidencia original",
+    "exposure": null,
+    "stress": "Sobrevive gates S1/S3 y vecinos; vecino riesgo 0.9 reduce CAGR a ~4.31%. N95 < N100 original."
+  },
+  "limitations": [
+    "2020–2025 ya examinados; no son OOS virgen.",
+    "Los gates originales se conservan, no se reemplazan por la nueva meta.",
+    "Sin conclusión prospectiva ni autorización de trading."
+  ],
+  "audit": "Decisiones finales originales y cierre consolidado leídos por MCP. Conteos contrastados con RESEARCH_COUNTS_V1_V6_20261020.json.",
+  "decision": "CHANNEL_P es avance parcial individual. Selector global escogió POI; no sustituirlo retrospectivamente.",
+  "references": [
+    {
+      "label": "FINAL_DECISION_V3.md",
+      "path": "strategies/FundingOiPilot4h/reports/FINAL_DECISION_V3.md"
+    },
+    {
+      "label": "RESEARCH_PROTOCOL_V3_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_PROTOCOL_V3_20261020.md"
+    },
+    {
+      "label": "REGISTRY_V3.json",
+      "path": "strategies/FundingOiPilot4h/reports/REGISTRY_V3.json"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "CHANNEL_P",
+      "url": "http://localhost:9200/#/backtest/16da36e2-2807-4a9b-85e3-51cf8fa67c75"
+    }
+  ]
+}

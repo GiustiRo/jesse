@@ -1,0 +1,340 @@
+{
+  "format_version": 1,
+  "id": "20261021-r5",
+  "updated_at_utc": "2026-10-21T14:36:53Z",
+  "objective": "Evaluar 20–30% anual por operativa y cartera; una pieza inferior puede ser candidata si mejora el conjunto dentro del riesgo. CAGR no promete el resultado cada año.",
+  "latest": "Acuerdo del usuario: etapa intermedia de revisión de evidencia existente. Perfil fijo2%poroperación/6%agregado/3xaislado; sin nuevas exploraciones o backtests.",
+  "next": "Reconciliar y comparar la evidencia existente del perfil fijo. Preparar definiciones de referencia, fortalezas, debilidades y preguntas pendientes para decidir con el usuario.",
+  "blockers": "No se inicia otra fase experimental hasta presentar las definiciones y acordar cómo continuar. Comparaciones históricas incompatibles se declaran como limitación; no se generan reruns para corregirlas.",
+  "counts": {
+    "status": "COMPLETE_PASS_FINAL_AUDIT",
+    "cycles": [
+      {
+        "cycle": "V1",
+        "economic_unique": 96,
+        "nominal_slots": 96,
+        "technical_attempts": 7
+      },
+      {
+        "cycle": "V2",
+        "economic_unique": 16,
+        "nominal_slots": 32,
+        "technical_attempts": 4
+      },
+      {
+        "cycle": "V3",
+        "economic_unique": 33,
+        "nominal_slots": 36,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V4",
+        "economic_unique": 6,
+        "nominal_slots": 6,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V5",
+        "economic_unique": 37,
+        "nominal_slots": 40,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V6",
+        "economic_unique": 21,
+        "nominal_slots": 23,
+        "technical_attempts": 3
+      }
+    ],
+    "new_V5_V6": {
+      "economic_unique": 58,
+      "technical_unique": 6,
+      "total_unique_engine_sessions": 64,
+      "nominal_slots": 63,
+      "reused_slots": 5,
+      "all_sessions_finished": true,
+      "accounting_unique_full_rows": 58
+    },
+    "totals": {
+      "economic_unique": 209,
+      "nominal_slots": 233,
+      "reused_slots": 24,
+      "technical_attempts": 23
+    },
+    "no_independent_sample_count_claim": true,
+    "prior_counts_source": "RESEARCH_CONSOLIDATED_DECISION_20261020.md pre-V5/V6 snapshot",
+    "new_inventory_sources": [
+      "V5_FINAL_SESSION_INVENTORY.json",
+      "V6_FINAL_SESSION_INVENTORY.json"
+    ],
+    "economic_target_reached": false,
+    "closed_at_utc": "2026-10-21 02:14:44 UTC"
+  },
+  "decisions": [
+    "Horizonte BTC–PAXG–SPY y cartera; no se cambia operativa vigente BTC-only.",
+    "2020–2025 son históricos ya examinados. 2026 cerrado para esta línea; excepción K1001 preservada sin ampliación.",
+    "Separar ejecución, suficiencia de evidencia y cumplimiento económico. No aprobar ni invalidar automáticamente por muestra pequeña.",
+    "Meta 20–30% anual no sustituye gates históricos. Informar años y períodos adversos.",
+    "Hipótesis ML/HMM/revisión visual por IA condicionadas a necesidad demostrable; sin promoción automática.",
+    "Sin nuevos backtests, estrategias, importaciones, live/paper, Pi, instalaciones ni reinicios en esta entrega.",
+    "Antes de otra prueba, comparar contra historial ejecutado: pregunta, receta, datos, reloj, riesgo, costos y ventana. Reutilizar resultados equivalentes; no reiniciar por nombre nuevo ni por handoff antiguo.",
+    "2026 también tuvo una comparación ampliada autorizada deN204/N503/P604/C504/K1005 posterior aK1001; no tratarla como no ejecutada ni ampliar esa autorización a nuevas reglas.",
+    "Etapa vigente: revisión y validación intermedia de evidencia existente. Sin nuevos backtests, optimizaciones, Monte Carlo, exploraciones de estrategia o riesgo.",
+    "Perfil fijo de investigación:2%portrade/6%agregado/3xaislado. No explorar combinaciones de riesgo/leverage/capital; no cambia sesiones históricas ni configuración operativa.",
+    "Después del informe de definiciones se decide con el usuario cómo seguir. Las preguntas pendientes no autorizan automáticamente experimentos."
+  ],
+  "lines": [
+    "BTC: trayectoriaX03→N204/N503/P604→Y902→K1001/K1005, R14yV1–V6; conservar controles, equivalencias y veredictos por etapa.",
+    "PAXG: shocks/calendario/retest, atribuciónMARKETvsLIMIT, R20/R40/R60 y cuenta compartida existentes.",
+    "SPY: apertura/beta, R20/R40/R60, atribución y12estructurales+12RESET/MECH; MECH01/05 alimentaron candidatas de desarrollo.",
+    "Cartera: atribución/capacidad/roles, B/C, riesgo/margen/leverageR11–R13, K1001ycomparación ampliada2026. No empezar desde cero."
+  ],
+  "methodology": [
+    "1. Hipótesis económica, persistencia esperada y falsación.",
+    "2. Prerregistro: reglas, referencias, datos, costos, riesgo, ventanas, selección, presupuesto, criterios numéricos y cierre.",
+    "3. Verificación técnica: causalidad, as-of, costos, ejecución y ledger.",
+    "4. Exploración acotada: registrar variantes, errores, descartes y resultados desfavorables.",
+    "5. Validación y estrés previstos; cambios posteriores generan revisión nueva.",
+    "6. Revisión crítica de explicaciones alternativas y referencias.",
+    "7. Decisión razonada: continuar, descartar, insuficiente o proponer validación prospectiva; nunca autorización para operar."
+  ],
+  "supersedes": [
+    {
+      "reference": "DOCS.md: solo BTC-USDT",
+      "scope": "Amplía horizonte de investigación a BTC–PAXG–SPY; no cambia el alcance live."
+    },
+    {
+      "reference": "bot/docs/multi-asset-pivot-handoff.md",
+      "scope": "Histórico: metas previas y afirmación de descorrelación no gobiernan el nuevo programa. Conservar cifras como reportadas, no como validación nueva."
+    },
+    {
+      "reference": "RESEARCH_WALK_FORWARD_HANDOFF_FINAL_V6_20261020.md",
+      "scope": "Conserva cierre V1–V6; el nuevo instructivo rige continuidad del Hub. No reabrir protocolos cerrados."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r1/revision.json",
+      "scope": "Amplía transcripción de métricas existentes V1–V6: años, semestres, costes, exposición y estrés. No cambia veredictos ni inicia experimentos."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r2/revision.json",
+      "scope": "Clarifica fichas V5/V6: elimina campos agregados vacíos cuya información ya figura por variante nominal. No cambia cifras, reglas, pruebas ni decisiones."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r3/revision.json",
+      "scope": "Corrige inventario inicial y prioridadBTCprematura: incluye exploraciones posteriores, comparaciones de capital/cartera y exposición2026ampliada. Preserva originales y veredictos; no cambia resultados económicos."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r4/revision.json",
+      "scope": "Fija etapa sin experimentación y perfil2%/6%/3x por acuerdo explícito del usuario. Sustituye autorización implícita de pasos experimentales condicionales; conserva historia y resultados."
+    }
+  ],
+  "roadmap": [
+    {
+      "order": 1,
+      "title": "Fijar alcance y perfil de riesgo",
+      "state": "acordado",
+      "depends": "ninguna",
+      "gate": "2%poroperación/6%agregado/3xaislado; sin nuevas exploraciones ni backtests. No modificar históricos o configuración operativa."
+    },
+    {
+      "order": 2,
+      "title": "Reconciliar evidencia ya existente",
+      "state": "etapa actual",
+      "depends": "etapa1",
+      "gate": "Revisar protocolos,matrices,costes,períodos y comparabilidad. Usar antecedentesr4. Registrar huecos sin completar mediante nuevas corridas."
+    },
+    {
+      "order": 3,
+      "title": "Definir referencia y diagnóstico",
+      "state": "pendiente de revisión",
+      "depends": "etapa2",
+      "gate": "Entregar qué conservar,qué falla,qué es insuficiente y qué preguntas siguen abiertas. No declarar aprobada una candidata por esta revisión."
+    },
+    {
+      "order": 4,
+      "title": "Acordar cómo seguir con el usuario",
+      "state": "punto de decisión",
+      "depends": "etapa3",
+      "gate": "Presentar definiciones primero. Ningún backtest, exploración o validación prospectiva posterior se inicia automáticamente."
+    }
+  ],
+  "explorations": [
+    {
+      "id": "V1",
+      "title": "Ciclo V1",
+      "asset": "BTC",
+      "family": "precio / funding / OI",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V1.json"
+    },
+    {
+      "id": "V2",
+      "title": "Ciclo V2",
+      "asset": "BTC",
+      "family": "ATR / funding / OI",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V2.json"
+    },
+    {
+      "id": "V3",
+      "title": "Ciclo V3",
+      "asset": "BTC",
+      "family": "tendencia / canal",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V3.json"
+    },
+    {
+      "id": "V4",
+      "title": "Ciclo V4",
+      "asset": "BTC",
+      "family": "oscilador / shock / funding",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V4.json"
+    },
+    {
+      "id": "V5",
+      "title": "Ciclo V5",
+      "asset": "BTC",
+      "family": "funding / cruce / VWAP",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r3/cards/V5.json"
+    },
+    {
+      "id": "V6",
+      "title": "Ciclo V6",
+      "asset": "BTC",
+      "family": "eficiencia / deleveraging / NR7",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r3/cards/V6.json"
+    },
+    {
+      "id": "CROSS_P",
+      "title": "Cruce de tendencia: screening elegible",
+      "asset": "BTC",
+      "family": "tendencia / cruce",
+      "execution": "sin confirmación",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/CROSS_P.json"
+    },
+    {
+      "id": "LEGACY",
+      "title": "Causalidad y contabilidad legacy",
+      "asset": "BTC",
+      "family": "legacy",
+      "execution": "auditado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/LEGACY.json"
+    },
+    {
+      "id": "PAXG",
+      "title": "PAXG: evidencia previa",
+      "asset": "PAXG",
+      "family": "calendario / retest",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/PAXG.json"
+    },
+    {
+      "id": "SPY",
+      "title": "SPY: evidencia previa",
+      "asset": "SPY",
+      "family": "apertura / beta",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/SPY.json"
+    },
+    {
+      "id": "CARTERA",
+      "title": "K1001 y cartera histórica",
+      "asset": "Cartera",
+      "family": "multi-activo / K1001",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/CARTERA.json"
+    },
+    {
+      "id": "BTC_R14",
+      "title": "BTC_R14: evidencia previa",
+      "asset": "BTC",
+      "family": "ablación / tendencia",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/BTC_R14.json"
+    }
+  ],
+  "documents": [
+    {
+      "label": "Acuerdo vigente: etapa intermedia y riesgo fijo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r5/INTERMEDIATE_VALIDATION.md"
+    },
+    {
+      "label": "Alcance estructurado de la etapa",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r5/STAGE.json"
+    },
+    {
+      "label": "Exploraciones posteriores: mapa para evitar repeticiones",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/EXPLORATION_HISTORY.md"
+    },
+    {
+      "label": "Historial estructurado por familias",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/EXPLORATION_HISTORY.json"
+    },
+    {
+      "label": "Continuidad actualizada: revisar antecedentes antes de probar",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/HANDOFF.md"
+    },
+    {
+      "label": "Verificación de la entrega y cambios r2",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/VERIFICATION.md"
+    },
+    {
+      "label": "Evaluación e integración del plan",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/EVALUATION.md"
+    },
+    {
+      "label": "Metodología y formato",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/METHODOLOGY.md"
+    },
+    {
+      "label": "Continuidad para agentes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/HANDOFF.md"
+    },
+    {
+      "label": "Inventario de evidencia multi-activo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/INVENTORY.json"
+    },
+    {
+      "label": "RESEARCH_CONSOLIDATED_DECISION_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_CONSOLIDATED_DECISION_20261020.md"
+    },
+    {
+      "label": "RESEARCH_COUNTS_V1_V6_20261020.json",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_COUNTS_V1_V6_20261020.json"
+    },
+    {
+      "label": "V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md",
+      "path": "strategies/FundingOiPilot4h/reports/V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "validacion_intermedia_de_evidencia_existente",
+    "decided_at_utc": "2026-10-21T14:36:53Z",
+    "risk_profile": {
+      "per_trade_target_pct": 2,
+      "aggregate_admission_limit_pct": 6,
+      "isolated_leverage": 3,
+      "scope": "Referencia fija de investigación; no modifica configuraciones globales, fuentes o sesiones históricas ni live/paper.",
+      "capital": "Conservar el saldo inicial de cada estudio; no se elige ni cambia capital en este acuerdo."
+    },
+    "permitted": [
+      "Leer protocolos, matrices, configuraciones y resultados ya guardados.",
+      "Reconciliar comparadores, costes, riesgo y ventanas de los estudios existentes.",
+      "Documentar candidatas/referencias, fortalezas, debilidades, incertidumbres y diferencias de comparabilidad.",
+      "Actualizar el registro y preparar conclusiones para decidir con el usuario."
+    ],
+    "excluded": [
+      "Nuevos backtests o replays.",
+      "Optimizaciones, Monte Carlo y nuevas exploraciones de señales o estrategias.",
+      "Nuevas pruebas de riesgo, leverage, asignación o capital.",
+      "Modificar estrategias, fuentes de datos o configuración de sesiones.",
+      "Nuevas consultas de datos 2026 o ejecuciones con ese año.",
+      "Live/paper o acceso a la Pi."
+    ],
+    "comparison_rule": "Usar comparaciones existentes del mismo perfil. Cuando falten, registrar la limitación; no rerun ni escalar curvas para fabricar comparabilidad.",
+    "exit_gate": "Entregar definiciones y conclusiones de la evidencia existente. Revisarlas con el usuario y acordar cómo seguir; ninguna ejecución experimental posterior queda autorizada automáticamente."
+  }
+}

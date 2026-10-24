@@ -1,0 +1,681 @@
+{
+  "status": "PASS",
+  "author": "independent /root/audit",
+  "scope": "Documentary independent selection/chronology and frozen-source readback; no new jobs, engines, financial eval summaries, production edits or registry edits.",
+  "checks": {
+    "v6_six_gates_reproduce": true,
+    "v6_only_efficiency_p": true,
+    "v6_selection_metrics_exact": true,
+    "v6_reuse_exact": true,
+    "v6_eval_nominal": true,
+    "v5_selection_metrics_and_gates": true,
+    "v5_oi_primary_dd": true,
+    "v5_eval_chronology": true,
+    "source_readbacks_30": true,
+    "wrappers_21": true
+  },
+  "v6": {
+    "screening": [
+      {
+        "strategy": "ResearchV6EfficiencyP4h",
+        "n": 148,
+        "net": 4001.659866402432,
+        "pf": 1.2477679070534458,
+        "dd": -21.86957331160556,
+        "full_positive_years": 2,
+        "gates": {
+          "n": true,
+          "net": true,
+          "pf": true,
+          "dd": true,
+          "years": true
+        },
+        "eligible": true,
+        "matches_stored": true
+      },
+      {
+        "strategy": "ResearchV6EfficiencyOi4h",
+        "n": 119,
+        "net": 1133.9259984024784,
+        "pf": 1.081463542399454,
+        "dd": -30.780642380756753,
+        "full_positive_years": 1,
+        "gates": {
+          "n": true,
+          "net": true,
+          "pf": false,
+          "dd": false,
+          "years": false
+        },
+        "eligible": false,
+        "matches_stored": true
+      },
+      {
+        "strategy": "ResearchV6DeleverageP4h",
+        "n": 236,
+        "net": -1743.0154719343893,
+        "pf": 0.88534836190845,
+        "dd": -35.99195110216294,
+        "full_positive_years": 2,
+        "gates": {
+          "n": true,
+          "net": false,
+          "pf": false,
+          "dd": false,
+          "years": true
+        },
+        "eligible": false,
+        "matches_stored": true
+      },
+      {
+        "strategy": "ResearchV6DeleverageOi4h",
+        "n": 86,
+        "net": -2889.680546496358,
+        "pf": 0.5459785372458154,
+        "dd": -32.061812944205414,
+        "full_positive_years": 0,
+        "gates": {
+          "n": true,
+          "net": false,
+          "pf": false,
+          "dd": false,
+          "years": false
+        },
+        "eligible": false,
+        "matches_stored": true
+      },
+      {
+        "strategy": "ResearchV6Nr7P4h",
+        "n": 269,
+        "net": 5620.578399624041,
+        "pf": 1.1776787714350028,
+        "dd": -35.07657157077833,
+        "full_positive_years": 2,
+        "gates": {
+          "n": true,
+          "net": true,
+          "pf": false,
+          "dd": false,
+          "years": true
+        },
+        "eligible": false,
+        "matches_stored": true
+      },
+      {
+        "strategy": "ResearchV6Nr7Oi4h",
+        "n": 203,
+        "net": 1388.6487592275626,
+        "pf": 1.0591134914513776,
+        "dd": -30.318212899038976,
+        "full_positive_years": 2,
+        "gates": {
+          "n": true,
+          "net": true,
+          "pf": false,
+          "dd": false,
+          "years": true
+        },
+        "eligible": false,
+        "matches_stored": true
+      }
+    ],
+    "shortlist_modified_at": "2026-10-21T01:25:19+00:00",
+    "selection": {
+      "cycle": "V6",
+      "fold": "C1",
+      "recorded_at": "2026-10-21 01:26:14 UTC",
+      "eval_start": "2024-01-01",
+      "eval_finish": "2024-07-01",
+      "train_start": "2020-09-01",
+      "train_finish": "2024-01-01",
+      "shortlist_file": "FROZEN_SHORTLIST_V6.md",
+      "train_reused": true,
+      "candidates": [
+        {
+          "id": "EFFICIENCY_P",
+          "strategy": "ResearchV6EfficiencyP4h",
+          "train_session": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+          "eligible": true,
+          "n": 148,
+          "net": 4001.659866402432,
+          "pf": 1.2477679070534458,
+          "dd": -21.86957331160556,
+          "turnover": 182.4308686631523
+        }
+      ],
+      "selected": "ResearchV6EfficiencyP4h",
+      "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+      "all_train_eligible": true,
+      "evals_started": false
+    },
+    "reuse_config_exact": true,
+    "eval_start_record": {
+      "recorded_at": "2026-10-21 01:26:25 UTC",
+      "session_id": "33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+      "dashboard_url": "http://localhost:9200/#/backtest/33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+      "decision_margin_seconds": 11,
+      "config_exact": true
+    },
+    "c2_train_start": {
+      "recorded_at": "2026-10-21 01:27:56 UTC",
+      "session_id": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "dashboard_url": "http://localhost:9200/#/backtest/f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "classification": "TRAIN; no C2 eval selection required to start this training"
+    }
+  },
+  "v5": {
+    "selection": {
+      "cycle": "V5",
+      "fold": "C2",
+      "recorded_at": "2026-10-21 01:21:57 UTC",
+      "eval_start": "2024-07-01",
+      "eval_finish": "2025-01-01",
+      "train_start": "2020-09-01",
+      "train_finish": "2024-07-01",
+      "shortlist_file": "FROZEN_SHORTLIST_V5.md",
+      "train_reused": false,
+      "candidates": [
+        {
+          "id": "FUNDING_FPOI",
+          "strategy": "ResearchV5FundingFPOi4h",
+          "train_session": "628fd490-2e32-46a6-bc37-78f2ec87f641",
+          "eligible": true,
+          "n": 146,
+          "net": 2972.4526705052353,
+          "pf": 1.367147181793541,
+          "dd": -13.022950298425695,
+          "turnover": 144.79414994661042
+        },
+        {
+          "id": "FUNDING_FP",
+          "strategy": "ResearchV5FundingFP4h",
+          "train_session": "ffdac79c-c8e2-4edd-a360-e68147b011ab",
+          "eligible": true,
+          "n": 188,
+          "net": 2671.240583908045,
+          "pf": 1.267816513400982,
+          "dd": -15.723608721413463,
+          "turnover": 187.41727737108215
+        }
+      ],
+      "selected": "ResearchV5FundingFPOi4h",
+      "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+      "all_train_eligible": true,
+      "evals_started": false
+    },
+    "candidate_checks": [
+      {
+        "id": "FUNDING_FPOI",
+        "strategy": "ResearchV5FundingFPOi4h",
+        "train_session": "628fd490-2e32-46a6-bc37-78f2ec87f641",
+        "eligible": true,
+        "n": 146,
+        "net": 2972.4526705052353,
+        "pf": 1.367147181793541,
+        "dd": -13.022950298425695,
+        "turnover": 144.79414994661042,
+        "metrics_exact": true,
+        "window_exact": true,
+        "gate": true
+      },
+      {
+        "id": "FUNDING_FP",
+        "strategy": "ResearchV5FundingFP4h",
+        "train_session": "ffdac79c-c8e2-4edd-a360-e68147b011ab",
+        "eligible": true,
+        "n": 188,
+        "net": 2671.240583908045,
+        "pf": 1.267816513400982,
+        "dd": -15.723608721413463,
+        "turnover": 187.41727737108215,
+        "metrics_exact": true,
+        "window_exact": true,
+        "gate": true
+      }
+    ],
+    "train_analysis_job": {
+      "id": "3ba4eb6de583476cb01e06f5af34cbe3",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/3ba4eb6de583476cb01e06f5af34cbe3",
+      "inputs": [
+        {
+          "name": "s0",
+          "file": "inputs/s0.json",
+          "session_type": "backtest",
+          "session_id": "628fd490-2e32-46a6-bc37-78f2ec87f641",
+          "session_status": "finished",
+          "title": "MCP Backtest: V5 WF C2 TRAIN FUNDING_FPOI",
+          "size_bytes": 647722
+        },
+        {
+          "name": "s1",
+          "file": "inputs/s1.json",
+          "session_type": "backtest",
+          "session_id": "ffdac79c-c8e2-4edd-a360-e68147b011ab",
+          "session_status": "finished",
+          "title": "MCP Backtest: V5 WF C2 TRAIN FUNDING_FP",
+          "size_bytes": 768879
+        }
+      ],
+      "status": "succeeded",
+      "pid": 9651,
+      "exit_code": 0,
+      "started_at": "2026-10-21T01:21:34+00:00",
+      "finished_at": "2026-10-21T01:21:34+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T01:21:34+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "accounting_file_modified_at": "2026-10-21T01:21:58+00:00",
+    "evaluation_chronology": [
+      {
+        "strategy": "ResearchV5FT_OI_C2V",
+        "session_id": "6b6726e1-aea7-4b64-824d-a1cd2234fab9",
+        "dashboard_url": "http://localhost:9200/#/backtest/6b6726e1-aea7-4b64-824d-a1cd2234fab9",
+        "decision_at": "2026-10-21T01:21:57Z",
+        "start_requested_at": "2026-10-21T01:23:44.620Z",
+        "start_response_at": "2026-10-21T01:24:01.226Z",
+        "margin_seconds": 107.62,
+        "config_exact": true,
+        "window_exact": true,
+        "duplicate_record_exact": true
+      },
+      {
+        "strategy": "ResearchV5FT_FP_C2V",
+        "session_id": "b9581488-fa1a-4fb0-ad8a-925aaa434c80",
+        "dashboard_url": "http://localhost:9200/#/backtest/b9581488-fa1a-4fb0-ad8a-925aaa434c80",
+        "decision_at": "2026-10-21T01:21:57Z",
+        "start_requested_at": "2026-10-21T01:24:01.524Z",
+        "start_response_at": "2026-10-21T01:24:21.392Z",
+        "margin_seconds": 124.524,
+        "config_exact": true,
+        "window_exact": true,
+        "duplicate_record_exact": true
+      }
+    ]
+  },
+  "sources": {
+    "readbacks": [
+      {
+        "path": "strategies/ResearchV5Base1h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "e3c79b915fe881d50f902456844217977f6885e28fb4191e080e89458e5b929b",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5Base1h/common_checks.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "c8a7ae4f1c373bdc78892bcb210ac2d534f4fc58b63ef3b3a1c52a6a74a4d2a7",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5Base4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "5e0124dbc86305cccfdbbd857ba158a2e7dc10c9fdf2a905f31cfc1dd59890aa",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5Base4h/common_checks.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "f8293f146665d1c28acef67ec4a44734a6f111b4334b17cbaa15e7808a1ebdcc",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5Base4h/cross_features.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "5df66fdb107fe3f16484ee5cd1ca91c121c4c8bea0095e3fd95799a354f5e1e0",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5CrossP4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "6e102adcf255761c49599d9aa7c37c39db5396d9eeb18f063927c88e174d6574",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5CrossOi4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "d998f560279cefcc705abd7d14b013f5edc51758b2f7c07ce8d6d6af041326be",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5CrossSmoke4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "32d50a92cdb834fb35d2021fb4950d46e0cd9884177a9a21973ab6c86d996c77",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5Base1h/vwap_features.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "d6652607f3a667bcadaf10d2d64eed2af42864784f05c00123f1f429d5345bde",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5VwapPV1h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "8e887d48edda62c227a949705710e4d5ea7eb7a2ea128dd6fa97d3886288fe4d",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5VwapPVOi1h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "b298c52ac035df8290601d9902fb86373babb30a5d3b97f944e3104510499ee3",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5VwapSmoke1h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "b656e7f2dee140f4e4e9ab1a88522bda6be64c7688ae5b9cf032a6b2a1ecdf02",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5Base4h/funding_features.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "a9e7d666706c41624deebfd19d905331296efd9839f6d28e68a615cec82f12ce",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5FundingFP4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "ef0ea4ff2e9e5444a5ee0da2d0a35d0c8d92a6d939172d24244aff15646edefd",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5FundingFPOi4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "c702e26a6ebd33e76af2861914e4ce9732c98375a12a3df86d3c41d91ac74dee",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV5FundingSmoke4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "7ba60e6fe0e61c9af52a313f2d92a08cff2f35d5d2ac61e1cacedb396acf1847",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Base4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "fdcd1eaffbcc7845dc5701bb04d8f2bda6317dbd2e780bfa737c8b6e770776e6",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Base4h/common_checks.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "eef5e609c1fad91fd995a51cf26bfe67d5f9f143f0eac87e7740055b697c8ff6",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Base4h/efficiency_features.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "ecfcc5fe4b77a2faee9edcdaea1bd391e33ec7fe73112e48718a2a8b90790bcf",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6EfficiencyP4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "315e3a0d3edf8f6e0f7ef3665556000e98159c7286706695c3d6892c8720a3a3",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6EfficiencyOi4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "e7ac140fe486446cc07bdf7029f1bae3404ae8030304542f48e17980eb4e012f",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6EfficiencySmoke4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "7b2c28b0de8d3f1e5a81550f3dcec45e9a58bdfee7407f77cf159294f4e1347a",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Base4h/deleverage_features.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "c26a24ae275ad2c314f0177ae00cf25e6d95695294f0e5960cb5ac30d8fe011c",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6DeleverageP4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "f6073c531e4ad42488d0c7335a3b02af9a91aa8e1f4bb983222d0a70eaeae8d1",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6DeleverageOi4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "bac06e94c6ebfe500d2c990cb41e582fd1792e330bf89964fb72062d903e7d26",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6DeleverageSmoke4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "9a77ecb9fce9687fc3d2b8cda179ba192d54805750af8b703f3b30d84f613d2e",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Base4h/nr7_features.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "7eb379f9934be3d544736c68a1ae4c73864f907212c0b9ad9efcffe91afea512",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Nr7P4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "bf4a9993c706a34218249b7e90608108734ed2392686060fc76ee7703605fbb5",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Nr7Oi4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "75dfd4b2faf89eb1a87c02d85a7d636c93ad6bbb0143df6d6e0f74937c77c4bf",
+        "registry_sha256_equal": true
+      },
+      {
+        "path": "strategies/ResearchV6Nr7Smoke4h/__init__.py",
+        "current_text_equal_frozen": true,
+        "frozen_sha256": "e8a32b2075d052e866f082197e01f8abafa6fcc1633b05b7639d22d07a25f56d",
+        "registry_sha256_equal": true
+      }
+    ],
+    "wrappers": [
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C1V",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "958ac0d30aeae24ebf93774a521e88faaea41878953bf07dbbb0f802e9bdc46d"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C2T",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "dccbe16901095092605964066098510783357eb18f2158d6755e0209b1a7f0a3"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C2V",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "b2449999f87db61bfa033dfa1605c54c6c7d97056770f87ecd933e29c1e093ed"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C3T",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "4cacd45bd91a9b3a7c25527725f3e6388d7a31670df00dfc0888a52ee2cd3ee2"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C3V",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "cf6e84e8826bab69ebe2f5b665ab3c57f5a20be80fbd811a6bca8a392c89ad1f"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C4T",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "b35f9992bf4ebdea6044715e4f299e69de4c2c54746910f0445dd3d347b07081"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_OI_C4V",
+        "parent": "ResearchV5FundingFPOi4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "0efecf23a21f2e61863fcb104c5070d5b9d17a14196f8fc5539400655ecffcd3"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C1V",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "8e0eb29c03687a9b6f3379606ef592fdacceaa184fe68397b5c442f3a15fec73"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C2T",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "19cfc7292e4609a37522ff71ee8522c733940a25c1392f0cddcce52b77d74f13"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C2V",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "be073ddc68cc5ee08a25fb25999a7d55d5172ba4056b5947060098fdbf59b986"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C3T",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "718e97f8f0c53ccaab6c544e7405a689fc6cf3ca6867619a56f138cca1769f8f"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C3V",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "afdf86515f6d926d21244ada6d1c6cd5ac92ee336feb3d144ceac08a063ed9c6"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C4T",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "7e6cfb3f71b63edbb4040d5f0886e8ceb97b76d418e335a5d980f845a3db1289"
+      },
+      {
+        "cycle": "V5",
+        "name": "ResearchV5FT_FP_C4V",
+        "parent": "ResearchV5FundingFP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "3fd237361c7cc2404511a2d3ccb5ec21d8af7eae0c5c140a5e76011281604079"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C1V",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "a9b087c4da9a6c79ba3948fce587a93d0f6df390ec61ca3d07ee108254bb15f4"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C2T",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "b247fea29d0247f1e63c64f73b9e2408c9a56d1b96b9fd2f519ad78df421619e"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C2V",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "50d6a416a5950dd5d22afa430b3fd6a466cc44d3ca72141aff80d6157e5ae600"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C3T",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "ecaa4a43c69ebee3ab93fc6e7a7ea8f91aff24ffa8119649f06f5f9b712a71f4"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C3V",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "15866d15d76496699354fd79a362e31439fc3d58a695f074b4ba70a7d0249383"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C4T",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "65c8f0a6e820ac1baa5e1e3becd502ff658ab1b0ad029158091f7b658042eafb"
+      },
+      {
+        "cycle": "V6",
+        "name": "ResearchV6EF_P_C4V",
+        "parent": "ResearchV6EfficiencyP4h",
+        "current_text_equal_manifest": true,
+        "date_only_shape": true,
+        "verified_attrs_equal": true,
+        "root_verified_sha256": "edbfe7213c5fa05e6be24b2b6469b4b2db1f2005ab396ccc20425bfe33dd6b96"
+      }
+    ],
+    "method": "Exact current text against frozen source/manifest; frozen hashes match registry. Existing AST verification records used; no compile, hash job or static checks rerun."
+  },
+  "limitations": [
+    "V6 start record has associated recorded_at and start_requested boolean, not independent fractional motor start_requested_at. 11 s is documentary margin, not independently measured engine start.",
+    "V5 C2 accounting JSON persisted one second after selection; existing succeeded job finished 01:21:34 UTC, 23 s before selection, and selection metrics match exactly.",
+    "Full snapshot accounting does not establish included logs; owner log/counter audits remain separate evidence. No evaluation economics used to decide eligibility or ranking.",
+    "No independent rehash of V2 external dependency outside V5/V6 frozen source manifests. No C3/C4 eligibility inferred."
+  ],
+  "replay_design_clarification": "V5_REPLAY_DESIGN.md check8 clarified: motor funding cashflow precedes calendar decision; calendar priority applies over holding and adverse-funding INDICATOR/price exits only."
+}

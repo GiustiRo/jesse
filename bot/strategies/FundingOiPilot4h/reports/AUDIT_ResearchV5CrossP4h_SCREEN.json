@@ -1,0 +1,3292 @@
+{
+  "status": "passed_owner_execution_audit",
+  "side": "P",
+  "session_id": "50827027-6d6f-4c5d-8c23-5f2f91d7d971",
+  "dashboard_url": "http://localhost:9200/#/backtest/50827027-6d6f-4c5d-8c23-5f2f91d7d971",
+  "summary_raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"action\": \"get_session_results\",\n  \"status\": \"success\",\n  \"session_type\": \"backtest\",\n  \"session_id\": \"50827027-6d6f-4c5d-8c23-5f2f91d7d971\",\n  \"session_status\": \"finished\",\n  \"title\": \"MCP Backtest: V5 SCREEN CROSS_P\",\n  \"description\": \"Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.\",\n  \"description_truncated\": false,\n  \"created_at\": 1792544275000,\n  \"updated_at\": 1792544467000,\n  \"execution_duration\": 37.49,\n  \"form\": {\n    \"exchange\": \"Binance Perpetual Futures\",\n    \"routes\": [\n      {\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"4h\",\n        \"strategy\": \"ResearchV5CrossP4h\"\n      }\n    ],\n    \"data_routes\": [],\n    \"start_date\": \"2020-09-01\",\n    \"finish_date\": \"2024-01-01\",\n    \"debug_mode\": true,\n    \"export_csv\": false,\n    \"export_json\": false,\n    \"export_chart\": false,\n    \"fast_mode\": true,\n    \"benchmark\": false,\n    \"config\": {\n      \"logging\": {\n        \"order_submission\": false,\n        \"order_cancellation\": false,\n        \"order_execution\": false,\n        \"position_opened\": false,\n        \"position_increased\": false,\n        \"position_reduced\": false,\n        \"position_closed\": false,\n        \"shorter_period_candles\": false,\n        \"trading_candles\": false,\n        \"balance_update\": false\n      },\n      \"warm_up_candles\": 240,\n      \"exchange\": {\n        \"name\": \"Binance Perpetual Futures\",\n        \"type\": \"futures\",\n        \"balance\": 10000,\n        \"fee\": 0.00045,\n        \"futures_leverage_mode\": \"isolated\",\n        \"futures_leverage\": 3,\n        \"slippage_bps\": 0.0\n      },\n      \"funding\": {\n        \"mode\": \"historical\",\n        \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n      },\n      \"open_interest\": {\n        \"mode\": \"historical\",\n        \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n        \"allow_missing_observations\": true,\n        \"max_age_ms\": 600000\n      }\n    }\n  },\n  \"metrics\": {\n    \"total\": 77,\n    \"total_winning_trades\": 22,\n    \"total_losing_trades\": 55,\n    \"starting_balance\": 10000.0,\n    \"finishing_balance\": 19052.918199267067,\n    \"win_rate\": 0.2857142857142857,\n    \"win_rate_longs\": 0.23529411764705882,\n    \"win_rate_shorts\": 0.32558139534883723,\n    \"ratio_avg_win_loss\": 4.279534271863092,\n    \"longs_count\": 34,\n    \"longs_percentage\": 44.15584415584416,\n    \"shorts_percentage\": 55.84415584415584,\n    \"shorts_count\": 43,\n    \"fee\": 431.11912034662885,\n    \"net_profit\": 9052.918199267087,\n    \"net_profit_percentage\": 90.52918199267087,\n    \"average_win\": 989.5917535765547,\n    \"average_loss\": 231.23818871667467,\n    \"expectancy\": 117.57036622424795,\n    \"expectancy_percentage\": 1.1757036622424795,\n    \"expected_net_profit_every_100_trades\": 117.57036622424795,\n    \"average_holding_period\": 804642.077922078,\n    \"average_winning_holding_period\": 1684145.4545454546,\n    \"average_losing_holding_period\": 452840.7272727273,\n    \"gross_profit\": 21771.0185786842,\n    \"gross_loss\": -12718.100379417107,\n    \"max_drawdown\": -17.695540126860376,\n    \"max_underwater_period\": 523.0,\n    \"annual_return\": 21.329231458266907,\n    \"annualization\": 365,\n    \"sharpe_ratio\": 1.0386898252303687,\n    \"calmar_ratio\": 1.2053450363965372,\n    \"sortino_ratio\": 1.738723018832068,\n    \"omega_ratio\": 1.2383869149752904,\n    \"serenity_index\": null,\n    \"total_open_trades\": 1,\n    \"open_pl\": 63.88712848900104,\n    \"winning_streak\": 3,\n    \"losing_streak\": 7,\n    \"largest_losing_trade\": -398.7765502430101,\n    \"largest_winning_trade\": 5032.155430745771,\n    \"current_streak\": 1,\n    \"avg_trades_per_day\": 0.06327030079070757,\n    \"avg_trades_per_week\": 0.442892105534953,\n    \"avg_trades_per_month\": 1.9259479560691386,\n    \"funding\": {\n      \"mode\": \"historical\",\n      \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\",\n      \"cashflow\": -759.7452673639507,\n      \"rate_kind\": \"settled\",\n      \"event_count\": 2140,\n      \"settlements_processed\": 3651,\n      \"mark_price_proxy_count\": 2061,\n      \"status\": \"applied\",\n      \"applied\": true,\n      \"scope\": [\n        \"BTC-USDT\"\n      ],\n      \"excluded_symbols\": [],\n      \"data\": {\n        \"allow_mark_price_proxy\": true,\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"finish\": 1767225600000,\n        \"mark_price_proxy_count\": 4198,\n        \"schema\": 1,\n        \"source\": \"binance-usdm-fundingRate-v1\",\n        \"start\": 1577836800000,\n        \"symbol\": \"BTC-USDT\",\n        \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\",\n        \"event_count\": 6576,\n        \"first_settlement\": 1577836800000,\n        \"last_settlement\": 1767196800001,\n        \"largest_gap_ms\": 28800047,\n        \"status\": \"ready\",\n        \"coverage_complete\": true,\n        \"supported_timestamps\": true,\n        \"coverage_policy\": \"vendor_response; BTC maximum eight-hour gap with one-second boundary jitter\",\n        \"timestamp_policy\": \"minute boundary; vendor jitter <=1000ms retained in raw settled_at\",\n        \"publication_delay_ms\": 60000,\n        \"rate_unit\": \"decimal_fraction\",\n        \"mark_price_source\": \"mixed; settlement marks + explicit markPriceKlines.1h_open_proxy\"\n      },\n      \"effective_fast_mode\": false,\n      \"boundary_policy\": \"before_strategy_decisions; finish_exclusive\",\n      \"publication_delay_ms\": 60000\n    },\n    \"open_interest\": {\n      \"mode\": \"historical\",\n      \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n      \"max_age_ms\": 600000,\n      \"applied\": true,\n      \"status\": \"applied\",\n      \"scope\": [\n        \"BTC-USDT\"\n      ],\n      \"data\": {\n        \"archive_assumptions_acknowledged\": true,\n        \"archive_catalog\": {\n          \"first_archive_date\": \"2020-09-01\",\n          \"first_archive_last_modified\": \"2026-03-18T12:30:27.000Z\",\n          \"first_archive_url\": \"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip\",\n          \"point_in_time_certified\": false,\n          \"source\": \"binance-usdm-metrics-archive-v1\"\n        },\n        \"availability_lag_ms\": 360000,\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"finish\": 1767225600000,\n        \"import_source\": \"auto\",\n        \"original_publication_known\": false,\n        \"period_ms\": 300000,\n        \"rest_range\": null,\n        \"schema\": 1,\n        \"source\": \"binance-usdm-metrics-archive-v1\",\n        \"start\": 1598918400000,\n        \"symbol\": \"BTC-USDT\",\n        \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n        \"observation_count\": 560390,\n        \"expected_observation_count\": 561024,\n        \"missing_observation_count\": 634,\n        \"coverage_complete\": false,\n        \"status\": \"incomplete\",\n        \"leading_gap_ms\": 0,\n        \"trailing_gap_ms\": 0,\n        \"first_observation\": 1598918400000,\n        \"last_observation\": 1767225300000,\n        \"first_available_at\": 1598918760000,\n        \"last_available_at\": 1767225660000,\n        \"largest_gap_ms\": 37800000,\n        \"gap_count\": 156,\n        \"availability_policy\": \"retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown\",\n        \"history_limit\": \"Official daily metrics archive; earliest verified listing 2020-09-01\",\n        \"point_in_time_certified\": false,\n        \"missing_policy\": \"no interpolation; unavailable or stale values return None\",\n        \"cashflow\": false,\n        \"archive_file_count\": 1948,\n        \"archive_verified_file_count\": 1948,\n        \"archive_missing_days\": [],\n        \"archive_missing_day_count\": 0,\n        \"archive_identical_duplicate_rows\": 75255\n      },\n      \"allow_missing_observations\": true,\n      \"observation_count\": 560390,\n      \"cashflow\": false,\n      \"availability_lag_ms\": 360000,\n      \"availability_policy\": \"retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown\",\n      \"current\": {\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"symbol\": \"BTC-USDT\",\n        \"observed_at\": 1704066600000,\n        \"available_at\": 1704066960000,\n        \"quantity_base\": 73951.1,\n        \"value_quote\": 3128205481.1\n      }\n    }\n  },\n  \"error\": null,\n  \"has_chart_data\": false,\n  \"has_charts_image\": true,\n  \"sections\": {\n    \"trades\": {\n      \"count\": 77\n    },\n    \"equity_curve\": {\n      \"series\": [\n        {\n          \"name\": \"Portfolio\",\n          \"points\": 1218\n        }\n      ]\n    },\n    \"hyperparameters\": {\n      \"count\": 0\n    },\n    \"logs\": {\n      \"log_size_bytes\": 321898\n    }\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\",\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/50827027-6d6f-4c5d-8c23-5f2f91d7d971\"\n}"
+      }
+    ],
+    "isError": false
+  },
+  "source_readback": [
+    {
+      "path": "strategies/ResearchV5Base4h/cross_features.py",
+      "exact_equal": true
+    },
+    {
+      "path": "strategies/ResearchV5CrossP4h/__init__.py",
+      "exact_equal": true
+    },
+    {
+      "path": "strategies/ResearchV5CrossOi4h/__init__.py",
+      "exact_equal": true
+    },
+    {
+      "path": "strategies/ResearchV5CrossSmoke4h/__init__.py",
+      "exact_equal": true
+    }
+  ],
+  "months": 40,
+  "bars": 7302,
+  "monthly_buckets": [
+    {
+      "key": "2020-09:all",
+      "bars": 180,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "no_setup": 175,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_initialization": 1,
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 5,
+        "no_setup": 175
+      }
+    },
+    {
+      "key": "2020-09:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_initialization": 1,
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "key": "2020-09:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 175
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 175
+      }
+    },
+    {
+      "key": "2020-09:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2020-10:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2020-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-10:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2020-10:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-11:all",
+      "bars": 180,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 179,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 179,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-11:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2020-11:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 179
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 179
+      }
+    },
+    {
+      "key": "2020-11:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-12:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2020-12:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2020-12:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2020-12:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-01:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup": 182,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-01:long",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-01:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2021-01:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-02:all",
+      "bars": 168,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "no_setup": 167,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 167,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-02:none",
+      "bars": 167,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 167
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 167
+      }
+    },
+    {
+      "key": "2021-02:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-03:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "in_position_or_pending": 2,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2021-03:long",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-03:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2021-03:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-04:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 176,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-04:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-04:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2021-04:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-05:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-05:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2021-05:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-06:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup": 175,
+        "in_position_or_pending": 3,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 175,
+        "setup": 5
+      }
+    },
+    {
+      "key": "2021-06:long",
+      "bars": 3,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "key": "2021-06:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 175
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 175
+      }
+    },
+    {
+      "key": "2021-06:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-07:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-07:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-07:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2021-07:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-08:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2021-08:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-08:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2021-08:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-09:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 176,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-09:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-09:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2021-09:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-10:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-10:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2021-10:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-11:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-11:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-11:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2021-11:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-12:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 182,
+        "in_position_or_pending": 2,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-12:long",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-12:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2021-12:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-01:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "in_position_or_pending": 1,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-01:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-01:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2022-01:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-02:all",
+      "bars": 168,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 167,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 167,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-02:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-02:none",
+      "bars": 167,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 167
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 167
+      }
+    },
+    {
+      "key": "2022-02:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-03:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 3
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-03:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-03:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2022-03:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-04:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 177,
+        "in_position_or_pending": 1,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-04:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-04:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 177
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177
+      }
+    },
+    {
+      "key": "2022-04:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-05:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-05:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-05:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2022-05:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-06:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 177,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 177,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-06:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-06:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 177
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177
+      }
+    },
+    {
+      "key": "2022-06:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-07:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "no_setup": 181,
+        "allowed": 4,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 181,
+        "setup": 5
+      }
+    },
+    {
+      "key": "2022-07:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "allowed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-07:none",
+      "bars": 181,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 181
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 181
+      }
+    },
+    {
+      "key": "2022-07:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-08:all",
+      "bars": 186,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-08:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-08:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2022-08:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-09:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 177,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-09:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-09:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 177
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177
+      }
+    },
+    {
+      "key": "2022-09:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-10:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 182,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2022-10:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-10:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2022-10:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-11:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 176,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2022-11:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-11:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2022-11:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-12:all",
+      "bars": 186,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-12:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-12:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2022-12:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-01:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-01:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-01:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2023-02:all",
+      "bars": 168,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 165,
+        "allowed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 165,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-02:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-02:none",
+      "bars": 165,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 165
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 165
+      }
+    },
+    {
+      "key": "2023-02:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-03:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-03:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-03:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2023-03:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-04:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 176,
+        "in_position_or_pending": 1,
+        "allowed": 3
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2023-04:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-04:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2023-04:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-05:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup": 182,
+        "in_position_or_pending": 2,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2023-05:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-05:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2023-05:short",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-06:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 178,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 178,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-06:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-06:none",
+      "bars": 178,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 178
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 178
+      }
+    },
+    {
+      "key": "2023-06:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-07:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "in_position_or_pending": 1,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-07:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-07:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2023-07:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-08:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "in_position_or_pending": 2,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-08:long",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-08:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2023-08:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-09:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2023-09:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-09:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2023-09:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-10:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 184,
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-10:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2023-10:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-11:all",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 180
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 180
+      }
+    },
+    {
+      "key": "2023-11:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-11:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 180
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 180
+      }
+    },
+    {
+      "key": "2023-12:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 182,
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-12:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-12:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182,
+        "boundary_or_inactive": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2023-12:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    }
+  ],
+  "bucket_count": 156,
+  "exit_only_buckets_without_feature_reasons": [
+    {
+      "key": "2020-11:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-02:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-08:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-12:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-03:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-11:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    }
+  ],
+  "entries": 77,
+  "trades": 77,
+  "pretermination_exits": 76,
+  "forced_after_audit": [
+    {
+      "time": 1704067200000,
+      "trade_id": "8fbaf20f-6376-4a10-8f2e-a2f9a7493f79",
+      "reason": "fold_end",
+      "pnl": 84.38833073109726,
+      "balance": 19052.918199267067,
+      "gross": 63.88712848899967,
+      "risk_budget": 379.3705973707195,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    }
+  ],
+  "plans": [
+    {
+      "time": 1598932800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1599177600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1600848000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1601323200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1601712000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1602201600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1606536000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1606809600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1607616000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1607990400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1610611200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1610942400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1614240000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1616486400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1617926400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1618099200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1618790400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1620864000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1622980800000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1624190400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1625760000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1629417600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1630454400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1630670400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1631174400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1632211200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1633132800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1635912000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1636344000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1637078400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1638561600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1640880000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1642579200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1643673600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1645200000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1646121600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1646625600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1647504000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1650556800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1650758400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1653436800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1653969600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1654848000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1656576000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1657224000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1657728000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1658001600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1659096000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1662811200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1663329600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1665374400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1666209600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1666627200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1667952000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1669608000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1669838400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1672862400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1675728000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1676563200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1677355200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1678809600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1681171200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1682020800000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1682712000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1684886400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1685332800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1685995200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1687118400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1689264000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1689580800000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1692216000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1693713600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1695614400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1696046400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1697544000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1702526400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1703808000000,
+      "direction": -1,
+      "passed": true
+    }
+  ],
+  "exit_proofs": [
+    {
+      "trade_id": "102996b8-cdd8-405f-83d5-b6aefa5a989f",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "24c3b875-84cd-4bc4-8541-f1378d2b94bc",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "7b98485b-0840-4505-bca2-7cb1fe8bbf74",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "f00e24c4-bc97-4354-b822-90ed73c32338",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "0854c58f-9633-479b-9f60-2761cb24e346",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "61dd10fc-0739-43d5-9d80-77b4a971f5d0",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "6dd38c4e-89c5-4204-8049-f2f2df36f4c9",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "97b9dcc0-66f2-483b-8ef4-e95e858c2523",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "234cdf5c-edcb-4c36-b725-80ee4941fc23",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "94b6cae3-ab8b-4b1f-9443-bcda0f63badf",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "2f135848-9602-4099-bf52-1df681dff4ac",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "0c2a9626-f468-4daf-89f0-7568c84e97b9",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "de4f5e43-1f5c-4721-a8b3-056f80a915f7",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "eba310d1-6e9c-498d-8d3a-8acf43d0db80",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "6ea6735f-3314-4776-a8ca-cac0849a10b0",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "055d23d8-ebf9-4327-9f43-0770273d3f8c",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "1d9d1f4b-07e0-444c-bf54-c666b6fe63db",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "30ae40b6-fb26-4101-b948-ba52e8f4e296",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "d8d92b3f-f409-43c9-b030-02641bb7bfcf",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "1f7a7269-b3ae-4219-9c4c-f9ceecf827d8",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "45703c29-1df0-4bd4-a04d-b6a5bf4a907a",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "28948178-5360-4e66-8d5a-0cb611de777a",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "325a987c-3d53-4185-a01c-5e3550535c5d",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "344f64e0-39f6-49c4-a2f6-eae2d3414461",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "cb60bf5c-1e3e-421a-a3fb-ec507fdcad46",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "b9a99ae3-f2d3-4a4c-b586-27df0fa95fe6",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "140fdc4b-5a8f-43b6-b567-2e075d9ef79f",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "1eac2f2b-182d-4e87-a6b7-e043d1a0a0f7",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "e3bf4041-970f-4a49-9e4c-3a3fe8b69b69",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "d7511163-66e1-48cb-bc77-5a3a29410565",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "248f4d23-9989-48ee-8b6d-051d18c312d2",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "7692d716-c36b-46bc-ba75-608825cc5e98",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "22a69845-2aee-4907-aa6e-3de913e264cc",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "f521c4cf-c626-48bc-bac4-2c7bc99b9008",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "b4eaacb1-39db-49c8-a56e-13ae4fb69670",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "e950fa7d-835a-443d-ad0a-20b5629a20b0",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "f7bd1be7-172a-48e6-a680-985314141f2c",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "bf5d850d-01a6-489b-b842-2f3598ce2aa0",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "bda5173c-45be-420c-9921-d110141c81de",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "b786f3e1-6e0b-4c84-9cd8-162d418b1370",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "ee92e2cc-6bbb-4264-9f4d-37410e83f978",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "f8bf1534-7a8d-495b-a41d-a7bb682ace93",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "2cde19e4-ec41-408c-89f4-12ae02cdb461",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "9615a3cf-b438-42e4-a898-d66f44cebf7d",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "0c5223e2-eed4-4537-bd0e-7c04d7ef9f31",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "eb3891a3-2161-49ca-a94c-dc8fcbd91be6",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "b8c65d91-b70c-464f-bb45-23219e696bde",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "ce2e6676-22e3-4c9d-95f0-f5b282ac5099",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "145b579e-f6f5-4305-8a9d-c0db01d8a62b",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "6161abc7-6755-4432-a6b0-19aa345b2f88",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "8a447f2b-db79-4549-bf44-5c58897da60a",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "54cc621e-40d9-4ed4-8065-5ea91cc2a731",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "b2c170ec-d22b-413c-973c-ee71f988678a",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "b48dbe24-5c3f-432c-838a-e3a7b7ad4efe",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "96925a9c-cd03-4a78-8839-049f48568afd",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "ef6dc2fd-fbec-43ac-a49b-d12cf04741a5",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "db527425-c1a8-40fc-8629-cb7749746f77",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "5ff3df61-dc2c-4913-943d-aa370fb6fb28",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "7870e8bf-24f6-4fcc-be98-b4e58cd9f26c",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "557e7d30-4493-419f-b0c1-b877ec44e9a7",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "c466284a-77af-41ec-b14d-7a1775fb87a2",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "1d46ea87-07bd-4785-b8b3-d445842a8a5f",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "49a536f3-9296-4236-9ebf-4c4d7acb7d8e",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "9b76405c-f0ec-46bf-a38f-18a7a8e6e28e",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "741c8231-17a0-4cdd-9228-8632e3b58347",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "61db49ca-49aa-4636-9129-baca77a00449",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "644c0ac6-8aae-46b9-91a8-ef2c7690cb2e",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "1428d655-21aa-4432-883b-b791dacfd5f9",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "cb5f4456-4c20-4690-92dd-8ac1abbfca67",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "2c831ebb-74a3-4969-8345-789ce6a5309d",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "117e6887-8500-4bd3-9577-5606a21ed807",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "bbb9ced6-d638-40e7-a55f-ebce23cb8989",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "26c0065b-6e4a-4f70-96de-702d9a2fe063",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "3852467a-b9ba-4692-8418-b611c0ad67bb",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "fc6367db-af42-472d-8ba5-67f8e7a4c8ea",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "aaae9469-3e6d-4b09-9105-2d3a0938a196",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "8fbaf20f-6376-4a10-8f2e-a2f9a7493f79",
+      "reason": "fold_end",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "exit_reasons": {
+    "stop-loss": 36,
+    "opposite_cross": 35,
+    "maximum_hold": 5,
+    "fold_end": 1
+  },
+  "max_structured_line_length": 1027,
+  "provenance": {
+    "line": "CROSS",
+    "use_oi": false,
+    "oi_lag_bars": 0,
+    "stop_multiplier": 3,
+    "bar_ms": 14400000,
+    "oi_reference_bars": 6,
+    "atr_offset_bars": 0,
+    "target_mode": "none",
+    "reward_multiple": 1,
+    "max_hold_bars": 180,
+    "start": 1598918400000,
+    "finish": 1704067200000,
+    "active_windows": null,
+    "force_boundaries": [],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "metric_open_note": {
+    "total_open_trades": 1,
+    "open_pl": 63.88712848900104,
+    "meaning": "Capture before forced final close; final trades/balance include fold_end, not residual active position."
+  },
+  "limitations": [
+    "Financial/PF/year gates delegated to root complete-snapshot run_analysis.",
+    "SMA inequality/window metadata audited; market-candle hashes not independently recalculated from absent candle snapshots.",
+    "Zero-bar exit-only buckets legitimately omit feature_reasons; absence treated as empty only when bars0."
+  ],
+  "complete_logs_ref": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV5CrossP4h_SCREEN_LOGS.json",
+  "complete_trades_ref": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV5CrossP4h_SCREEN_TRADES.json",
+  "complete_log_lines": 2223
+}

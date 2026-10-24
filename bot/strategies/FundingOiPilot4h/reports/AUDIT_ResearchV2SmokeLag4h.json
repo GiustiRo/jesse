@@ -1,0 +1,169 @@
+{
+  "session_id": "4a87382f-5d48-487e-9cb1-46d1b812449c",
+  "dashboard_url": "http://localhost:9200/#/backtest/4a87382f-5d48-487e-9cb1-46d1b812449c",
+  "complete_logs": true,
+  "log_entries": 27,
+  "markers": [
+    {
+      "kind": "V2_SELF_CHECKS",
+      "status": "passed",
+      "assertions": 55
+    },
+    {
+      "kind": "V2_ENTRY",
+      "time": 1599148800000,
+      "direction": -1,
+      "decision": 10683.59,
+      "fill": 10683.59,
+      "capital": 10000,
+      "qty": 0.38752702,
+      "distance_pre": 506.2499999999995,
+      "distance_fill": 506.2499999999995,
+      "planned_stop_loss": 199.99999919028517,
+      "risk_budget": 200,
+      "stop": 11189.84,
+      "target": 9671.090000000002,
+      "atr": {
+        "value": 253.12499999999974,
+        "first": 1598932800000,
+        "last": 1599134400000,
+        "bars": 15,
+        "sha256": "cc5da736377d48fe91c1051313209cd48aecaa6e0f5a939d245c1deb65b2fe77"
+      },
+      "oi": {
+        "quality": "valid",
+        "passed": true,
+        "current": {
+          "time": 1599134400000,
+          "value": 38166.275,
+          "label": 1599133800000,
+          "available_at": 1599134160000,
+          "status": "valid"
+        },
+        "reference": {
+          "time": 1599048000000,
+          "value": 35109.969,
+          "label": 1599047400000,
+          "available_at": 1599047760000,
+          "status": "valid"
+        }
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1599120000004,
+        "rate_decimal": 0.00016828,
+        "mark_price": 11408.71,
+        "mark_price_source": "markPriceKlines.1h_open_proxy",
+        "available_at": 1599120060000
+      }
+    },
+    {
+      "kind": "V2_EXIT_REQUEST",
+      "time": 1599235200000,
+      "reason": "holding_24h"
+    },
+    {
+      "kind": "V2_CLOSE",
+      "time": 1599235200000,
+      "trade_id": "d87658f6-09a4-4503-955f-5652118e7d34",
+      "reason": "holding_24h",
+      "pnl": 96.85720091375602,
+      "balance": 10096.857200913757,
+      "gross": 99.34255157700014,
+      "risk_budget": 200,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V2_AUDIT",
+      "key": "2020-09:all",
+      "bars": 54,
+      "opportunities": 8,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_price": 44,
+        "oi_initialization": 4,
+        "oi_nonrising": 3,
+        "allowed": 1,
+        "in_position_or_pending": 1,
+        "boundary": 1
+      },
+      "flags": {
+        "oi_initialization": 4,
+        "oi_nonrising": 3
+      }
+    },
+    {
+      "kind": "V2_AUDIT",
+      "key": "2020-09:long",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_initialization": 4
+      },
+      "flags": {
+        "oi_initialization": 4
+      }
+    },
+    {
+      "kind": "V2_AUDIT",
+      "key": "2020-09:none",
+      "bars": 45,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_price": 44,
+        "boundary": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V2_AUDIT",
+      "key": "2020-09:short",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      }
+    },
+    {
+      "kind": "V2_PROVENANCE",
+      "atr": true,
+      "period": 14,
+      "multiplier": 2,
+      "fixed_stop": 0.02,
+      "oi": true,
+      "oi_lag_bars": 1,
+      "hold_ms": 86400000,
+      "start": 1598918400000,
+      "finish": 1599696000000,
+      "final_exit_may_follow": true,
+      "self_checks": {
+        "status": "passed",
+        "assertions": 55
+      }
+    }
+  ],
+  "validation": {
+    "bars": 54,
+    "entries": 1,
+    "exits": 1,
+    "source": "MCP bounded full logs",
+    "size_and_distances": true,
+    "atr_prefix": true,
+    "oi_timestamps": true,
+    "max_line_length": 985
+  }
+}

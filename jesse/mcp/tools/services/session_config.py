@@ -5,6 +5,7 @@ from multiprocessing import cpu_count
 from typing import Optional
 
 from jesse.info import exchange_info
+from jesse.services.backtest_slippage import validate_slippage_bps
 
 
 _BASE_LOGGING = {
@@ -74,6 +75,9 @@ def _exchange_config(exchange_name: str, value: object, default_leverage: int) -
             requested_mode if requested_mode in supported_modes else supported_modes[0]
         )
         config['futures_leverage'] = supplied.get('futures_leverage', default_leverage)
+
+    if 'slippage_bps' in supplied:
+        config['slippage_bps'] = validate_slippage_bps(supplied['slippage_bps'])
 
     return config
 
@@ -157,6 +161,10 @@ def resolve_session_run_config(
         resolved.get('exchange'),
         default_leverage,
     )
+    if resolved['exchange'].get('slippage_bps', 0) and (
+        mode != 'backtest' or resolved['exchange']['type'] != 'futures'
+    ):
+        raise ValueError('slippage_bps is supported only in futures backtests')
     if mode == 'backtest':
         logging = resolved.get('logging') if isinstance(resolved.get('logging'), dict) else {}
         resolved['logging'] = {

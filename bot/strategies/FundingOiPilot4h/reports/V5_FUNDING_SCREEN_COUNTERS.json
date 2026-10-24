@@ -1,0 +1,156 @@
+{
+  "sector": "FUNDING_TREND",
+  "status": "SCREEN_FINISHED_AUDITED_ROOT_ANNUAL_GATE_AND_SELECTION_PENDING",
+  "window": [
+    "2020-09-01",
+    "2024-01-01"
+  ],
+  "config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "variants": [
+    {
+      "label": "FUNDING_FP",
+      "id": "2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+      "dashboard_url": "http://localhost:9200/#/backtest/2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+      "N": 171,
+      "net": 30.6788156358247,
+      "PF": 1.3627035300817534,
+      "DD": -15.723608721413463,
+      "CAGR": 8.355761455040266,
+      "balance": 13067.881563582467,
+      "fees": 765.0599142722085,
+      "funding": 338.08160870337804,
+      "audit": "passed",
+      "publications": 3651,
+      "hashes": 3651,
+      "totals": {
+        "bars": 7302,
+        "entries": 171,
+        "exits": 170,
+        "opportunities": 171
+      },
+      "primary": {
+        "carry_sign_reject": 2677,
+        "allowed": 171,
+        "in_position_or_pending": 1577,
+        "no_setup_price": 1686,
+        "funding_mixed": 1181,
+        "daily_limit": 9,
+        "boundary_or_inactive": 1
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 2677,
+        "setup": 1758,
+        "no_setup_price": 1686,
+        "funding_mixed": 1181
+      },
+      "flags": {
+        "oi_nonrising": 86,
+        "oi_reference_invalid": 1
+      },
+      "close_reasons": {
+        "funding_adverse": 100,
+        "stop-loss": 12,
+        "trend_adverse": 58,
+        "fold_end": 1
+      },
+      "final_forced": 1,
+      "entry_evidence_files": [
+        "V5_FUNDING_FP_ENTRY_EVIDENCE_01.json",
+        "V5_FUNDING_FP_ENTRY_EVIDENCE_02.json",
+        "V5_FUNDING_FP_ENTRY_EVIDENCE_03.json",
+        "V5_FUNDING_FP_ENTRY_EVIDENCE_04.json",
+        "V5_FUNDING_FP_ENTRY_EVIDENCE_05.json"
+      ]
+    },
+    {
+      "label": "FUNDING_FPOI",
+      "id": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+      "dashboard_url": "http://localhost:9200/#/backtest/e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+      "N": 132,
+      "net": 34.03694835098907,
+      "PF": 1.505843854163454,
+      "DD": -13.022950298425695,
+      "CAGR": 9.183473235680717,
+      "balance": 13403.694835098915,
+      "fees": 584.2051994359779,
+      "funding": 288.98410416471376,
+      "audit": "passed",
+      "publications": 3651,
+      "hashes": 3651,
+      "totals": {
+        "bars": 7302,
+        "entries": 132,
+        "exits": 131,
+        "opportunities": 368
+      },
+      "primary": {
+        "carry_sign_reject": 2677,
+        "oi_nonrising": 234,
+        "allowed": 132,
+        "in_position_or_pending": 1380,
+        "no_setup_price": 1686,
+        "funding_mixed": 1181,
+        "daily_limit": 9,
+        "oi_reference_invalid": 2,
+        "boundary_or_inactive": 1
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 2677,
+        "setup": 1758,
+        "no_setup_price": 1686,
+        "funding_mixed": 1181
+      },
+      "flags": {
+        "oi_nonrising": 234,
+        "oi_reference_invalid": 2
+      },
+      "close_reasons": {
+        "funding_adverse": 78,
+        "stop-loss": 8,
+        "trend_adverse": 45,
+        "fold_end": 1
+      },
+      "final_forced": 1,
+      "entry_evidence_files": [
+        "V5_FUNDING_FPOI_ENTRY_EVIDENCE_01.json",
+        "V5_FUNDING_FPOI_ENTRY_EVIDENCE_02.json",
+        "V5_FUNDING_FPOI_ENTRY_EVIDENCE_03.json",
+        "V5_FUNDING_FPOI_ENTRY_EVIDENCE_04.json"
+      ]
+    }
+  ],
+  "no_future_v5_runs": true
+}

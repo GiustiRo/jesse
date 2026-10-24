@@ -1,0 +1,199 @@
+{
+  "registered_at_utc": "2026-10-21 18:08:09 UTC",
+  "source_hash": "26440c3d83c60fcc96bd7066740dffcd7024778814e1be2f224af71e2ef6cdf5",
+  "source": "import math\n\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\nDAY = 86400000\n\n\ndef clock_signal(rows, state, volume_clock):\n    \"\"\"Whole4h bars form activity buckets; no split or invented intra-bar fill.\"\"\"\n    row = rows[-1]\n    if not np.all(np.isfinite(rows[:, 5])) or np.any(rows[:, 5] < 0):\n        return 0, {}\n    previous = list(state.get(\"closed\", []))\n    active = dict(state[\"active\"]) if state.get(\"active\") else None\n    if active is None:\n        # Calendar comparator uses whole UTC days even after an invalid-data reset.\n        if not volume_clock and int(row[0]) % DAY != 0:\n            return 0, dict(active=None, closed=previous)\n        threshold = 6 * float(np.mean(rows[-25:-1, 5]))\n        if volume_clock and (not math.isfinite(threshold) or threshold <= 0):\n            return 0, {}\n        active = dict(volume=0.0, bars=0, high=float(row[3]), low=float(row[4]),\n                      threshold=threshold, start=int(row[0]))\n    active[\"volume\"] += float(row[5])\n    active[\"bars\"] += 1\n    active[\"high\"] = max(active[\"high\"], float(row[3]))\n    active[\"low\"] = min(active[\"low\"], float(row[4]))\n    completed = active[\"volume\"] >= active[\"threshold\"] if volume_clock else active[\"bars\"] == 6\n    if not completed:\n        return 0, dict(active=active, closed=previous)\n    direction = 0\n    if len(previous) == 3:\n        if row[2] > max(p[\"high\"] for p in previous):\n            direction = 1\n        elif row[2] < min(p[\"low\"] for p in previous):\n            direction = -1\n    # Consume the full overshoot and the event, including when a trade is occupied.\n    previous.append(dict(high=active[\"high\"], low=active[\"low\"],\n                         start=active[\"start\"], finish=int(row[0]) + BAR))\n    return direction, dict(active=None, closed=previous[-3:])\n\n\nclass BtcResearchR11ClockBase1m(BtcResearchR11Base1m):\n    \"\"\"Compare activity sampling against a fixed-calendar channel.\"\"\"\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - 0.00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # This is signal alignment, not a market-session/calendar filter.\n        if now % BAR != 0:\n            return\n        count = 25\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, count)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self.vars[\"bucket_state\"] = {}\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"VOLUME_CLOCK\", \"FIXED_CLOCK\")\n        direction, state = clock_signal(rows, self.vars.get(\"bucket_state\", {}),\n                                        self.MODE == \"VOLUME_CLOCK\")\n        self.vars[\"bucket_state\"] = state\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        # Flat BTC account: wallet equals equity. Reuse the frozen2% fee-aware\n        # plan, eight-decimal research precision and90% margin ceiling.\n        capital = max(0.0, float(self.balance))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or self.price + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n\n",
+  "frozen_parent_hash": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+  "wrappers": [
+    {
+      "name": "BtcResearchR11VolumeClock1m",
+      "source": "from strategies.BtcResearchR11ClockBase1m import BtcResearchR11ClockBase1m\n\n\nclass BtcResearchR11VolumeClock1m(BtcResearchR11ClockBase1m):\n    MODE = \"VOLUME_CLOCK\"\n"
+    },
+    {
+      "name": "BtcResearchR11CalendarClock1m",
+      "source": "from strategies.BtcResearchR11ClockBase1m import BtcResearchR11ClockBase1m\n\n\nclass BtcResearchR11CalendarClock1m(BtcResearchR11ClockBase1m):\n    MODE = \"FIXED_CLOCK\"\n"
+    }
+  ],
+  "check_job": "ac5d441caf7147dea73ae21a84ab9725",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "72326aa5-947f-410b-b7d7-f2ccadaf3c57",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery D | BtcResearchR11VolumeClock1m",
+      "description": "Pregunta única: canal de3bloques poractividad vsdíasUTC6×4h. Protección/costos/riesgocomunes. Fee.00045+funding,slippage0,desarrolloreutilizado,noOOS. ProtocoloDprevio.",
+      "description_truncated": false,
+      "created_at": 1792606074000,
+      "updated_at": 1792606074000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "BtcResearchR11VolumeClock1m",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/72326aa5-947f-410b-b7d7-f2ccadaf3c57"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "696277c8-e897-4528-8327-dc1b5b621a2e",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery D | BtcResearchR11CalendarClock1m",
+      "description": "Pregunta única: canal de3bloques poractividad vsdíasUTC6×4h. Protección/costos/riesgocomunes. Fee.00045+funding,slippage0,desarrolloreutilizado,noOOS. ProtocoloDprevio.",
+      "description_truncated": false,
+      "created_at": 1792606074000,
+      "updated_at": 1792606074000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "BtcResearchR11CalendarClock1m",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/696277c8-e897-4528-8327-dc1b5b621a2e"
+    }
+  ]
+}

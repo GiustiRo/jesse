@@ -1,0 +1,9 @@
+# Continuidad r21
+
+U cerrada NO_CUMPLE: BTC_CLOCK536/CAGR3.859745/PF1.031535/DDM144.502762/M31de62/Q11de20/median−.098729%; ETH_CLOCK537/CAGR6.274067/PF1.052468/DDM142.658798/M33de62/Q10de20/median+.146945%. Sinbest2 negativo ambas. Ninguna candidata, no vecinos/aislar ramas o lados/operar sólo desacuerdos.40económicas desde r9;209legacy aparte, no independencia ni censo global.
+
+U snapshots audit b8962441b3fd486e89b177a8ecd8af98 succeeded. Ambas FINAL tras terminal, rawopen1 previo no residual. Ledger3ramas fills=closes=N, suma net=metric/equity.11423M1ventanas comunes válidas,645cortes iguales/151setups distintos; contadores comunes iguales, selectedlatch/ocupación pueden diferir.2741760M1marks/62meses/20Q. Check172PASS después fuenteformato corregido antes jobs y2fallos deharness conservados. Código/receipt/accountingfull y reportes guardados+readback.
+
+V protocolo anterior resultadoU: VAR1 conjunto BTCETH centradoOLS240pares/242closes vsAR1Gexacto,6steps ETHpredicho,rank2 NumPydefault y validez común, sin regularización/clipping/filtrosestabilidad. R10sizing2%/6%/3x10k,SL2ATRsimple/noTP24h,R11,fee.00045+fundingBTC. Warmup3004h, BTCroute1m/dataBTC4hETH4h. Agent geometry_implementation fuentesR22JointBase/Var/Ar creadas,checks en preparación, NO drafts/economía autorizados. Root debe leer3fuentes completas y revisarcheck/recibos/hash antes preflight/manifiesto2econ. Slotanalysis liberadoU;coordinar máximo2econ+1analysis. Todos motoresrootterminales.
+
+MCP recuperado sinrestart. Usuario condiciona Dockerlocal restart siMCP vuelve fallar, inspeccionarinstancias/sesionesantes. Goaltoolquedóblockedoutageprevio,noAPIresume,usuarioexplicitoreanudó;seguirmanual,nocompleteniGoalduplicado. Objetivo pendiente,continuarautónomo. Noestrés/riesgovariants/2026/imports/live/paper/Pi.

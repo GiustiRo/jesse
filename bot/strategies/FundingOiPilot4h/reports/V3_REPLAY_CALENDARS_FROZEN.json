@@ -1,0 +1,137 @@
+{
+  "frozen_at": "2026-10-20 23:44:31 UTC",
+  "source": "four train-only selections",
+  "calendars": [
+    {
+      "strategy": "ResearchV3ChannelOi4h",
+      "windows": [
+        {
+          "fold": "C1",
+          "start": "2024-01-01",
+          "finish": "2024-07-01",
+          "start_ms": 1704067200000,
+          "finish_ms": 1719792000000
+        },
+        {
+          "fold": "C2",
+          "start": "2024-07-01",
+          "finish": "2025-01-01",
+          "start_ms": 1719792000000,
+          "finish_ms": 1735689600000
+        },
+        {
+          "fold": "C3",
+          "start": "2025-01-01",
+          "finish": "2025-07-01",
+          "start_ms": 1735689600000,
+          "finish_ms": 1751328000000
+        },
+        {
+          "fold": "C4",
+          "start": "2025-07-01",
+          "finish": "2026-01-01",
+          "start_ms": 1751328000000,
+          "finish_ms": 1767225600000
+        }
+      ],
+      "force_boundaries": [
+        1719792000000,
+        1735689600000,
+        1751328000000,
+        1767225600000
+      ]
+    },
+    {
+      "strategy": "ResearchV3ChannelP4h",
+      "windows": [
+        {
+          "fold": "C1",
+          "start": "2024-01-01",
+          "finish": "2024-07-01",
+          "start_ms": 1704067200000,
+          "finish_ms": 1719792000000
+        },
+        {
+          "fold": "C2",
+          "start": "2024-07-01",
+          "finish": "2025-01-01",
+          "start_ms": 1719792000000,
+          "finish_ms": 1735689600000
+        },
+        {
+          "fold": "C3",
+          "start": "2025-01-01",
+          "finish": "2025-07-01",
+          "start_ms": 1735689600000,
+          "finish_ms": 1751328000000
+        },
+        {
+          "fold": "C4",
+          "start": "2025-07-01",
+          "finish": "2026-01-01",
+          "start_ms": 1751328000000,
+          "finish_ms": 1767225600000
+        }
+      ],
+      "force_boundaries": [
+        1719792000000,
+        1735689600000,
+        1751328000000,
+        1767225600000
+      ]
+    }
+  ],
+  "global_selector": [
+    {
+      "fold": "C1",
+      "selected": "ResearchV3ChannelOi4h"
+    },
+    {
+      "fold": "C2",
+      "selected": "ResearchV3ChannelOi4h"
+    },
+    {
+      "fold": "C3",
+      "selected": "ResearchV3ChannelOi4h"
+    },
+    {
+      "fold": "C4",
+      "selected": "ResearchV3ChannelOi4h"
+    }
+  ],
+  "config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "warning": "Keep adjacent half-years separate; no exposure changes from future eval/stress."
+}

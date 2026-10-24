@@ -4,6 +4,7 @@ import jesse.helpers as jh
 from jesse.modes.utils import get_exchange_type
 from jesse.enums import exchanges
 from jesse.info import exchange_info
+from jesse.services.backtest_slippage import validate_slippage_bps
 from jesse.services.simulation_assumptions import (
     Annualization,
     legacy_type_from_simulation_model,
@@ -182,11 +183,15 @@ def set_config(conf: dict) -> None:
                 simulation_model = resolve_simulation_model(e, default_type)
                 annualization = resolve_annualization(e)
             exchange_type = legacy_type_from_simulation_model(simulation_model)
+            slippage_bps = validate_slippage_bps(e.get('slippage_bps', 0))
+            if slippage_bps and (not jh.is_backtesting() or exchange_type != 'futures'):
+                raise ValueError('slippage_bps is supported only in futures backtests')
             if selected_annualization is not None and selected_annualization != annualization:
                 raise ValueError('All exchanges in one run must use the same annualization assumption')
             selected_annualization = annualization
             config['env']['exchanges'][name] = {
                 'fee': float(e['fee']),
+                'slippage_bps': slippage_bps,
                 'type': exchange_type,
                 'simulation_model': simulation_model.value,
                 'annualization': int(annualization),

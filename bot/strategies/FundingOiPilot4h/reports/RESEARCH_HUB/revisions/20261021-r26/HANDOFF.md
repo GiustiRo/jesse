@@ -1,0 +1,13 @@
+# Continuidad r26
+
+Usuario pide comprenderK1001 primero, después investigaciones/pruebas, con bloquecreativo siempre yautonomía hasta objetivo. Diagnóstico completado yrevisiónindependienteconforme;48IDs económicos previos desde r9, cero motores nuevos por este diagnóstico. No confundir3analysis de registros con3backtests. V1–V6separado209económicos233slots24reusos23técnicos,no censo. VcontrolARreplicaG1481tradesexactos, no independencias.
+
+NUEVO riesgo BTC total2%: doscomponentes1%cada o tres2/3%cada, mismaequitytotal, noidletransfer. Global6%,aislado3x. OriginalKhistórico2%portrade permanececontrolintacto; no2%cadaderivada. SóloBTCUSDT, USDCdiferido;fee.00045/fundinghistóricoaplicado/proxies,slippage0;sin2026nuevo/estrés/carteraPAXGSPY/live/paper/Pi/imports/install/configglobal/framework.
+
+FINDINGS yRESULT/MTM/RECEIPTguardados/readbacks íntegros.192matchesúnicos,1151payments/27fundmissingzeroVERIFICADO,53flatboundarieserr5.82e−11;contribucionesMTMno standalone. Campo dashboard_url no está ensummaryinterna deanalysis: V1fallómetadata, V2sucedióperolector64Ktruncóparts64, V3sixparts32sucedióycompleto. No rerun de estrategia. MARKETsubmitted_viaTP/SLno acredita barrera:liquidateetiquetasegúnPnL;JOINv3typefirst,shorttimeoutdeadlinesexactos,long1MARKETconetiquetaSLconservador. Todasversionespreservadas.
+
+Respondido:3orígenespositivos, peorRbruto/neto2024–25sinmenosfills;longconcentrado3tradesy2025neutro;corePF1.25target0.54–1.48R;supPF2.99pero24timeouts/45. Shortcontrib40/58Mpositivosvsbook37/58NOcontrafactualsinlong. Libroexpone20.53%tiempo;noinferirsetupsperdidos ni82−45comotradescensurados.
+
+Siguiente pregunta material: quécandidatosoriginalesaparecenmientrasotraoperativaocupa/pending ysi son episodiosrepetidos. Agentgeometrydiseñapropuestainstrumental, todavía NO fuentes/drafts/engine. Conservar originales ydemostrar réplica192tradesnuméricos para medidornotrading. No producirMFE/MAEintraminutosindatos; opcionalextremosdeM1+fillsclaramentelimitadossilogransinterferir. Primero revisarprotocolo yfuentes/checkssintéticos, luego1mediciónpresupuestada. No buscarTP/filtroganador porPnLdiagnóstico.
+
+MCPsano,ningúnDockerrestart. Erroresmetadata/truncationnosonoutage. Retriesconpausabreveyconsultaestadoantesrepetir. AutorizacióndecontingenciaDockerlocalpreviaexigeverificarinstancia/sesiones;no tocarPi. Goaltoolblockedresiduoantiguooutage,noAPIresume;humanoreanudóseguirmanualmente,noduplicargoal,nofalsecomplete.

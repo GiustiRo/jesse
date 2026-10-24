@@ -1,0 +1,114 @@
+{
+  "id": "V6",
+  "title": "Ciclo V6",
+  "asset": "BTC",
+  "family": "eficiencia / deleveraging / NR7",
+  "execution": "cerrado",
+  "evidence": "histórica adaptativa",
+  "objective": "no alcanzado",
+  "hypothesis": "Eficiencia de precio, deleveraging y NR7 con reglas y presupuesto congelados.",
+  "origin": "Protocolos históricos V1–V6; no son propuestas nuevas.",
+  "method": "Screening y selección cronológica según protocolo original. Pruebas técnicas separadas de resultados económicos.",
+  "protocol": null,
+  "budget": {
+    "cycle": "V6",
+    "economic_unique": 21,
+    "nominal_slots": 23,
+    "technical_attempts": 3
+  },
+  "versions": "Fuentes/config/datasets congelados en registry original; consultar referencias. No se afirman hashes nuevos.",
+  "periods": [
+    "screen 2020–2023",
+    "confirmación adaptativa 2024–2025"
+  ],
+  "results": {
+    "scope": "Replay continuo 2024–2025, calendario ON/ON/OFF/OFF",
+    "nominal": {
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "period": "2024-01-01 → 2026-01-01 exclusivo",
+      "cagr_pct": 0.13900958325969714,
+      "net_pct": 0.27859404642975605,
+      "drawdown_engine_pct": -17.55356873541206,
+      "pf": 1.006228564773718,
+      "trades": 44,
+      "annual": [
+        {
+          "year": 2024,
+          "return_pct": 0.27859404642984753,
+          "full_year": true
+        },
+        {
+          "year": 2025,
+          "return_pct": -8.881784197001252e-14,
+          "full_year": true
+        }
+      ],
+      "half_years": [
+        {
+          "period": "2024H1",
+          "return_pct": 9.207449591655692,
+          "full_semester": true
+        },
+        {
+          "period": "2024H2",
+          "return_pct": -8.176049874447466,
+          "full_semester": true
+        },
+        {
+          "period": "2025H1",
+          "return_pct": 0,
+          "full_semester": true
+        },
+        {
+          "period": "2025H2",
+          "return_pct": -8.881784197001252e-14,
+          "full_semester": true
+        }
+      ],
+      "costs": {
+        "fees_usdt": 235.33824012537755,
+        "funding_usdt": -244.93951717264983,
+        "proxy_funding_usdt": 0
+      },
+      "exposure_pct": 24.533173734610124
+    },
+    "stress": {
+      "S1_net_pct": -1.9203,
+      "S3_net_pct": -7.8957,
+      "A09_net_pct": 10.3288,
+      "note": "A09 no sustituye nominal"
+    },
+    "note": "2025 sin exposición. Residuos numéricos próximos a cero no son actividad económica."
+  },
+  "limitations": [
+    "2020–2025 ya examinados; no son OOS virgen.",
+    "Los gates originales se conservan, no se reemplazan por la nueva meta.",
+    "Sin conclusión prospectiva ni autorización de trading."
+  ],
+  "audit": "Decisiones finales originales y cierre consolidado leídos por MCP. Conteos contrastados con RESEARCH_COUNTS_V1_V6_20261020.json.",
+  "decision": "Efficiency P rechazada tras confirmación y robustez. No promover el vecino A09.",
+  "references": [
+    {
+      "label": "FINAL_DECISION_V6.md",
+      "path": "strategies/FundingOiPilot4h/reports/FINAL_DECISION_V6.md"
+    },
+    {
+      "label": "RESEARCH_PROTOCOL_V6_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_PROTOCOL_V6_20261020.md"
+    },
+    {
+      "label": "REGISTRY_V6.json",
+      "path": "strategies/FundingOiPilot4h/reports/REGISTRY_V6.json"
+    },
+    {
+      "label": "Métricas y escenarios V6",
+      "path": "strategies/FundingOiPilot4h/reports/V6_REPLAY_STRESS_ROWS.json"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "Efficiency P",
+      "url": "http://localhost:9200/#/backtest/f6f075f2-e7da-4f7b-ba2b-937456d5d127"
+    }
+  ]
+}

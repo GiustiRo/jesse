@@ -1,0 +1,53 @@
+{
+  "job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "45525d32900d41f3bc1f554e27773d77",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/45525d32900d41f3bc1f554e27773d77",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 2107,
+      "exit_code": 0,
+      "started_at": "2026-10-22T12:16:59+00:00",
+      "finished_at": "2026-10-22T12:17:00+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-23T12:17:00+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "base_check.json",
+        "size_bytes": 1600,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"PASS\", \"check_count\": 38, \"checks\": [\"one closed4h event\", \"one percent same total wallet\", \"reserve sizing only\", \"lot floor\", \"simple ATR14 geometry\", \"fee reserve budget\", \"source plan capital unchanged\", \"market direction assigned\", \"long native submission intent\", \"long fill stop\", \"long fill target\", \"open counters\", \"no same clock time exit\", \"no early exit\", \"48h exit\", \"close ledger\", \"close disables stale direction\", \"last exit clock\", \"short submission\", \"short stop\", \"short target\", \"short counter\", \"no TP branch\", \"24h exit\", \"M1 observer outside decision\", \"consume while occupied\", \"pending guard\", \"exit clock guard\", \"start exclusive\", \"missing closed boundary invalidates\", \"gap invalidates\", \"nonfinite rejects\", \"no free margin no plan\", \"guard_leverage\", \"guard_fee_rate\", \"guard_balance\", \"unexpected actual fill fails loudly\", \"compact terminal\"], \"source_sha256\": {\"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"BtcResearchR16LegacyBase1m\": \"56f5d56aa004f24db450797cee8b11febd84a5804a2a5d70bcd2cd4ed73e6542\", \"BtcResearchR32SpecialistBase1m\": \"205407530bc40ea95131a0e6f2ed3e997b7bb5616bb5c573f170a772317307e3\"}, \"scope\": \"Supplied-source synthetic logic, fake Strategy surfaces. Not native execution, data or statistical evidence.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "artifact": {
+    "action": "get_analysis_artifact",
+    "status": "success",
+    "job_id": "45525d32900d41f3bc1f554e27773d77",
+    "path": "base_check.json",
+    "size_bytes": 1600,
+    "modified_at": "2026-10-22T12:17:00+00:00",
+    "kind": "text",
+    "content": "{\n  \"status\": \"PASS\",\n  \"check_count\": 38,\n  \"checks\": [\n    \"one closed4h event\",\n    \"one percent same total wallet\",\n    \"reserve sizing only\",\n    \"lot floor\",\n    \"simple ATR14 geometry\",\n    \"fee reserve budget\",\n    \"source plan capital unchanged\",\n    \"market direction assigned\",\n    \"long native submission intent\",\n    \"long fill stop\",\n    \"long fill target\",\n    \"open counters\",\n    \"no same clock time exit\",\n    \"no early exit\",\n    \"48h exit\",\n    \"close ledger\",\n    \"close disables stale direction\",\n    \"last exit clock\",\n    \"short submission\",\n    \"short stop\",\n    \"short target\",\n    \"short counter\",\n    \"no TP branch\",\n    \"24h exit\",\n    \"M1 observer outside decision\",\n    \"consume while occupied\",\n    \"pending guard\",\n    \"exit clock guard\",\n    \"start exclusive\",\n    \"missing closed boundary invalidates\",\n    \"gap invalidates\",\n    \"nonfinite rejects\",\n    \"no free margin no plan\",\n    \"guard_leverage\",\n    \"guard_fee_rate\",\n    \"guard_balance\",\n    \"unexpected actual fill fails loudly\",\n    \"compact terminal\"\n  ],\n  \"source_sha256\": {\n    \"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\",\n    \"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\",\n    \"BtcResearchR16LegacyBase1m\": \"56f5d56aa004f24db450797cee8b11febd84a5804a2a5d70bcd2cd4ed73e6542\",\n    \"BtcResearchR32SpecialistBase1m\": \"205407530bc40ea95131a0e6f2ed3e997b7bb5616bb5c573f170a772317307e3\"\n  },\n  \"scope\": \"Supplied-source synthetic logic, fake Strategy surfaces. Not native execution, data or statistical evidence.\"\n}",
+    "truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "source_readbacks_exact": true,
+  "source_names": [
+    "BtcResearchR11Base1m",
+    "BtcResearchR10Base4h",
+    "BtcResearchR16LegacyBase1m",
+    "BtcResearchR32SpecialistBase1m"
+  ]
+}

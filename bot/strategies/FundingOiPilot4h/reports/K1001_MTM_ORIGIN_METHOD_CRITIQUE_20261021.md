@@ -1,0 +1,22 @@
+# K1001: revisión crítica previa de atribución MTM por origen
+
+Estado: viabilidad metodológica condicionada, antes de aritmética sobre resultados. Esta nota no ejecuta análisis, motores, estrategias, importaciones ni consultas de velas.
+
+Corrige explícitamente el límite de K1001_DEEP_DIAGNOSTIC_DATA_FEASIBILITY_20261021.md sin borrar ni reescribir aquel informe. Con las fronteras de equity R11, el ledger completo y una única posición, sí puede reconstruirse la contribución MTM mensual de cada origen del libro ejecutado sin precios nuevos. La limitación permanece para desempeño standalone, señales censuradas, MFE/MAE y trayectorias intramensuales no registradas.
+
+## Condiciones necesarias
+
+1. Una sola posición BTC a la vez durante toda la sesión; identidad de origen acreditada por unión única de trades y R16_LEGACY_OPEN/CLOSE. La exclusividad debe verificarse en intervalos de trades, no suponerse a partir del nombre de la estrategia.
+2. Root confirmó que ningún fill de apertura/cierre coincide con un corte mensual interno a las 00:00 UTC. Conservar esa comprobación en el protocolo ejecutable. El terminal es una excepción explícita: FINISH debe usar la marca FINAL postfee, no PRETERMINAL.
+3. Reconstruir cash por origen con comisiones reales: menos fee de apertura al fill; gross menos fee de cierre al cierre; más funding asentado. La fórmula .00045*qty*(entry+exit) sólo puede repartir el fee agregado porque ya fue contrastada con las comisiones de esta sesión; no reemplazar un fee discrepante mediante la fórmula. Usar timestamps de ejecución y fase real del ledger. Para funding a las 00:00, effective_at<=corte sólo es válido si el motor efectivamente lo asienta antes del stage pre de R11; documentar la revisión del orden del framework, incluidos posibles pagos atrasados. Root indicó haber acreditado esa fase; esta nota no presenta una nueva verificación del framework.
+4. No restar margen, available_margin, riesgo reservado ni RESERVE=.001 del wallet. RESERVE afecta sizing y no es cargo. Para cada corte, wallet=10000+suma cash_origen y residual=equity_R11-wallet. Si flat, abs(residual)<1e-6 es condición obligatoria; si hay posición, asignar todo residual exclusivamente a su origen conocido. Exigir suma de contribuciones=equity_R11-10000 en cada corte, y al terminal flat reconciliar cada origen con su ledger neto. Estas identidades contables no constituyen una estimación independiente del precio abierto.
+5. Contribución acumulada de origen=cash_origen+residual asignado. PnL mensual es la diferencia entre cortes. Su porcentaje se divide por equity GLOBAL al inicio del intervalo, de modo que las contribuciones porcentuales sumen el retorno global. No denominarlo retorno de una cuenta independiente, no calcular CAGR standalone ni trasladar la curva a una futura asignación 1%/1% o 2/3% por línea.
+6. Mantener todos los meses del calendario acordado, incluidos meses con contribución cero. Cero contribución no prueba inactividad: puede haber exposición o flujos compensados. No inventar actividad del componente desde signo o PnL; si se describe actividad por origen, derivarla explícitamente de sus intervalos de exposición/fills y su convención temporal. La regla vigente de 65% de meses positivos se evalúa sobre la actividad GLOBAL acordada del libro, no sustituyendo su denominador por meses favorables del componente ni promoviendo componentes por esa atribución.
+
+## Fase del observador y alcance
+
+Se leyó completa la fuente BtcResearchR11Base1m vía MCP. _observe calcula equity=balance+position.pnl, sin multiplicar por leverage; stage pre guarda la frontera mensual. FINISH puede sobrescribirse por callback terminal postfee. START arranca en10000 y exige ausencia de posición/flujos previos del período. Los intervalos parciales de inicio y los meses completos deben permanecer distinguidos conforme R11.
+
+El método identifica quién contribuyó al resultado realizado del libro y quién sostuvo PnL abierto en cada corte. No identifica oportunidades descartadas por prioridad/ocupación, ni qué habría hecho cada receta con capital separado. La suma contable exacta no demuestra independencia, robustez o rentabilidad de una futura división. Si falla una condición de fase, exclusividad, identidad o reconciliación, detener la atribución y declarar la brecha; no repartir residuales por pesos o resultados.
+
+Referencia de datos: sesión K1001 y mapa existente K1001_EXISTING_LOG_IDENTITY_MAP_20261021.json. No se copiaron ni procesaron arrays de resultados en esta revisión.

@@ -1,0 +1,3101 @@
+{
+  "status": "passed_owner_execution_audit",
+  "side": "OI",
+  "session_id": "642c5e9e-8705-4a9f-860d-d7ec071ef510",
+  "dashboard_url": "http://localhost:9200/#/backtest/642c5e9e-8705-4a9f-860d-d7ec071ef510",
+  "summary_raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"action\": \"get_session_results\",\n  \"status\": \"success\",\n  \"session_type\": \"backtest\",\n  \"session_id\": \"642c5e9e-8705-4a9f-860d-d7ec071ef510\",\n  \"session_status\": \"finished\",\n  \"title\": \"MCP Backtest: V5 SCREEN CROSS_POI\",\n  \"description\": \"Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.\",\n  \"description_truncated\": false,\n  \"created_at\": 1792544276000,\n  \"updated_at\": 1792544495000,\n  \"execution_duration\": 50.1,\n  \"form\": {\n    \"exchange\": \"Binance Perpetual Futures\",\n    \"routes\": [\n      {\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"4h\",\n        \"strategy\": \"ResearchV5CrossOi4h\"\n      }\n    ],\n    \"data_routes\": [],\n    \"start_date\": \"2020-09-01\",\n    \"finish_date\": \"2024-01-01\",\n    \"debug_mode\": true,\n    \"export_csv\": false,\n    \"export_json\": false,\n    \"export_chart\": false,\n    \"fast_mode\": true,\n    \"benchmark\": false,\n    \"config\": {\n      \"logging\": {\n        \"order_submission\": false,\n        \"order_cancellation\": false,\n        \"order_execution\": false,\n        \"position_opened\": false,\n        \"position_increased\": false,\n        \"position_reduced\": false,\n        \"position_closed\": false,\n        \"shorter_period_candles\": false,\n        \"trading_candles\": false,\n        \"balance_update\": false\n      },\n      \"warm_up_candles\": 240,\n      \"exchange\": {\n        \"name\": \"Binance Perpetual Futures\",\n        \"type\": \"futures\",\n        \"balance\": 10000,\n        \"fee\": 0.00045,\n        \"futures_leverage_mode\": \"isolated\",\n        \"futures_leverage\": 3,\n        \"slippage_bps\": 0.0\n      },\n      \"funding\": {\n        \"mode\": \"historical\",\n        \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n      },\n      \"open_interest\": {\n        \"mode\": \"historical\",\n        \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n        \"allow_missing_observations\": true,\n        \"max_age_ms\": 600000\n      }\n    }\n  },\n  \"metrics\": {\n    \"total\": 57,\n    \"total_winning_trades\": 17,\n    \"total_losing_trades\": 40,\n    \"starting_balance\": 10000.0,\n    \"finishing_balance\": 16007.088154785743,\n    \"win_rate\": 0.2982456140350877,\n    \"win_rate_longs\": 0.25,\n    \"win_rate_shorts\": 0.36,\n    \"ratio_avg_win_loss\": 3.8087350055516094,\n    \"longs_count\": 32,\n    \"longs_percentage\": 56.14035087719298,\n    \"shorts_percentage\": 43.85964912280702,\n    \"shorts_count\": 25,\n    \"fee\": 317.38568260404213,\n    \"net_profit\": 6007.088154785731,\n    \"net_profit_percentage\": 60.070881547857304,\n    \"average_win\": 924.4766944138289,\n    \"average_loss\": 242.725391256234,\n    \"expectancy\": 105.38751148746897,\n    \"expectancy_percentage\": 1.0538751148746897,\n    \"expected_net_profit_every_100_trades\": 105.38751148746897,\n    \"average_holding_period\": 857673.6842105263,\n    \"average_winning_holding_period\": 1765270.5882352942,\n    \"average_losing_holding_period\": 471945.0,\n    \"gross_profit\": 15716.10380503509,\n    \"gross_loss\": -9709.01565024936,\n    \"max_drawdown\": -22.666193621004073,\n    \"max_underwater_period\": 560.0,\n    \"annual_return\": 15.153439088919685,\n    \"annualization\": 365,\n    \"sharpe_ratio\": 0.8982698882886916,\n    \"calmar_ratio\": 0.6685480298234748,\n    \"sortino_ratio\": 1.5095101929998997,\n    \"omega_ratio\": 1.2288165293154716,\n    \"serenity_index\": null,\n    \"total_open_trades\": 0,\n    \"open_pl\": 0.0,\n    \"winning_streak\": 3,\n    \"losing_streak\": 6,\n    \"largest_losing_trade\": -456.24078768531797,\n    \"largest_winning_trade\": 4300.891434173253,\n    \"current_streak\": -3,\n    \"avg_trades_per_day\": 0.04683645642948483,\n    \"avg_trades_per_week\": 0.3278551950063938,\n    \"avg_trades_per_month\": 1.4257017337135183,\n    \"funding\": {\n      \"mode\": \"historical\",\n      \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\",\n      \"cashflow\": -1169.5973723232746,\n      \"rate_kind\": \"settled\",\n      \"event_count\": 1689,\n      \"settlements_processed\": 3651,\n      \"mark_price_proxy_count\": 1673,\n      \"status\": \"applied\",\n      \"applied\": true,\n      \"scope\": [\n        \"BTC-USDT\"\n      ],\n      \"excluded_symbols\": [],\n      \"data\": {\n        \"allow_mark_price_proxy\": true,\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"finish\": 1767225600000,\n        \"mark_price_proxy_count\": 4198,\n        \"schema\": 1,\n        \"source\": \"binance-usdm-fundingRate-v1\",\n        \"start\": 1577836800000,\n        \"symbol\": \"BTC-USDT\",\n        \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\",\n        \"event_count\": 6576,\n        \"first_settlement\": 1577836800000,\n        \"last_settlement\": 1767196800001,\n        \"largest_gap_ms\": 28800047,\n        \"status\": \"ready\",\n        \"coverage_complete\": true,\n        \"supported_timestamps\": true,\n        \"coverage_policy\": \"vendor_response; BTC maximum eight-hour gap with one-second boundary jitter\",\n        \"timestamp_policy\": \"minute boundary; vendor jitter <=1000ms retained in raw settled_at\",\n        \"publication_delay_ms\": 60000,\n        \"rate_unit\": \"decimal_fraction\",\n        \"mark_price_source\": \"mixed; settlement marks + explicit markPriceKlines.1h_open_proxy\"\n      },\n      \"effective_fast_mode\": false,\n      \"boundary_policy\": \"before_strategy_decisions; finish_exclusive\",\n      \"publication_delay_ms\": 60000\n    },\n    \"open_interest\": {\n      \"mode\": \"historical\",\n      \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n      \"max_age_ms\": 600000,\n      \"applied\": true,\n      \"status\": \"applied\",\n      \"scope\": [\n        \"BTC-USDT\"\n      ],\n      \"data\": {\n        \"archive_assumptions_acknowledged\": true,\n        \"archive_catalog\": {\n          \"first_archive_date\": \"2020-09-01\",\n          \"first_archive_last_modified\": \"2026-03-18T12:30:27.000Z\",\n          \"first_archive_url\": \"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip\",\n          \"point_in_time_certified\": false,\n          \"source\": \"binance-usdm-metrics-archive-v1\"\n        },\n        \"availability_lag_ms\": 360000,\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"finish\": 1767225600000,\n        \"import_source\": \"auto\",\n        \"original_publication_known\": false,\n        \"period_ms\": 300000,\n        \"rest_range\": null,\n        \"schema\": 1,\n        \"source\": \"binance-usdm-metrics-archive-v1\",\n        \"start\": 1598918400000,\n        \"symbol\": \"BTC-USDT\",\n        \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n        \"observation_count\": 560390,\n        \"expected_observation_count\": 561024,\n        \"missing_observation_count\": 634,\n        \"coverage_complete\": false,\n        \"status\": \"incomplete\",\n        \"leading_gap_ms\": 0,\n        \"trailing_gap_ms\": 0,\n        \"first_observation\": 1598918400000,\n        \"last_observation\": 1767225300000,\n        \"first_available_at\": 1598918760000,\n        \"last_available_at\": 1767225660000,\n        \"largest_gap_ms\": 37800000,\n        \"gap_count\": 156,\n        \"availability_policy\": \"retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown\",\n        \"history_limit\": \"Official daily metrics archive; earliest verified listing 2020-09-01\",\n        \"point_in_time_certified\": false,\n        \"missing_policy\": \"no interpolation; unavailable or stale values return None\",\n        \"cashflow\": false,\n        \"archive_file_count\": 1948,\n        \"archive_verified_file_count\": 1948,\n        \"archive_missing_days\": [],\n        \"archive_missing_day_count\": 0,\n        \"archive_identical_duplicate_rows\": 75255\n      },\n      \"allow_missing_observations\": true,\n      \"observation_count\": 560390,\n      \"cashflow\": false,\n      \"availability_lag_ms\": 360000,\n      \"availability_policy\": \"retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown\",\n      \"current\": {\n        \"exchange\": \"Binance Perpetual Futures\",\n        \"symbol\": \"BTC-USDT\",\n        \"observed_at\": 1704066600000,\n        \"available_at\": 1704066960000,\n        \"quantity_base\": 73951.1,\n        \"value_quote\": 3128205481.1\n      }\n    }\n  },\n  \"error\": null,\n  \"has_chart_data\": false,\n  \"has_charts_image\": true,\n  \"sections\": {\n    \"trades\": {\n      \"count\": 57\n    },\n    \"equity_curve\": {\n      \"series\": [\n        {\n          \"name\": \"Portfolio\",\n          \"points\": 1218\n        }\n      ]\n    },\n    \"hyperparameters\": {\n      \"count\": 0\n    },\n    \"logs\": {\n      \"log_size_bytes\": 269432\n    }\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\",\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/642c5e9e-8705-4a9f-860d-d7ec071ef510\"\n}"
+      }
+    ],
+    "isError": false
+  },
+  "source_readback": [
+    {
+      "path": "strategies/ResearchV5Base4h/cross_features.py",
+      "exact_equal": true
+    },
+    {
+      "path": "strategies/ResearchV5CrossP4h/__init__.py",
+      "exact_equal": true
+    },
+    {
+      "path": "strategies/ResearchV5CrossOi4h/__init__.py",
+      "exact_equal": true
+    },
+    {
+      "path": "strategies/ResearchV5CrossSmoke4h/__init__.py",
+      "exact_equal": true
+    }
+  ],
+  "months": 40,
+  "bars": 7302,
+  "monthly_buckets": [
+    {
+      "key": "2020-09:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_initialization": 1,
+        "no_setup": 175,
+        "oi_nonrising": 3,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_initialization": 1,
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 5,
+        "no_setup": 175
+      }
+    },
+    {
+      "key": "2020-09:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_initialization": 1,
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_initialization": 1,
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "key": "2020-09:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 175
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 175
+      }
+    },
+    {
+      "key": "2020-09:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2020-10:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2020-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-10:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2020-10:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-11:all",
+      "bars": 180,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 179,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 179,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-11:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2020-11:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 179
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 179
+      }
+    },
+    {
+      "key": "2020-11:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2020-12:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2020-12:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2020-12:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2020-12:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-01:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 182,
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-01:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-01:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2021-01:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-02:all",
+      "bars": 168,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 167,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 167,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-02:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2021-02:none",
+      "bars": 167,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 167
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 167
+      }
+    },
+    {
+      "key": "2021-02:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-03:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2021-03:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-03:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2021-03:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-04:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "in_position_or_pending": 1,
+        "allowed": 2,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-04:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-04:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2021-04:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-05:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-05:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2021-05:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2021-05:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-06:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup": 175,
+        "in_position_or_pending": 3,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 175,
+        "setup": 5
+      }
+    },
+    {
+      "key": "2021-06:long",
+      "bars": 3,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "key": "2021-06:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 175
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 175
+      }
+    },
+    {
+      "key": "2021-06:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-07:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-07:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-07:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2021-07:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-08:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2021-08:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-08:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2021-08:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-09:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "oi_nonrising": 2,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-09:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-09:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2021-09:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-10:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-10:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2021-10:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2021-11:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-11:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-11:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2021-11:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-12:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 182,
+        "in_position_or_pending": 2,
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2021-12:long",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2021-12:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2021-12:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-01:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-01:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-01:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2022-01:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-02:all",
+      "bars": 168,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 167,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 167,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-02:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-02:none",
+      "bars": 167,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 167
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 167
+      }
+    },
+    {
+      "key": "2022-02:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-03:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-03:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-03:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2022-03:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-04:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 177,
+        "in_position_or_pending": 1,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-04:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-04:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 177
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177
+      }
+    },
+    {
+      "key": "2022-04:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-05:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-05:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-05:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2022-05:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-06:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 177,
+        "allowed": 1,
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 177,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-06:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-06:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 177
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177
+      }
+    },
+    {
+      "key": "2022-06:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-07:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 181,
+        "allowed": 3,
+        "oi_nonrising": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 181,
+        "setup": 5
+      }
+    },
+    {
+      "key": "2022-07:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "allowed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-07:none",
+      "bars": 181,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 181
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 181
+      }
+    },
+    {
+      "key": "2022-07:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-08:all",
+      "bars": 186,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-08:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-08:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2022-08:short",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-09:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 177,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2022-09:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-09:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 177
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 177
+      }
+    },
+    {
+      "key": "2022-09:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-10:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 182,
+        "oi_nonrising": 3,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2022-10:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-10:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2022-10:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-11:all",
+      "bars": 180,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 176,
+        "oi_nonrising": 3,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2022-11:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-11:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2022-11:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2022-12:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2022-12:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2022-12:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-01:all",
+      "bars": 186,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-01:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-01:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2023-01:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-02:all",
+      "bars": 168,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 165,
+        "allowed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 165,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-02:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-02:none",
+      "bars": 165,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 165
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 165
+      }
+    },
+    {
+      "key": "2023-02:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-03:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 185,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185,
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-03:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-03:none",
+      "bars": 185,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 185
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 185
+      }
+    },
+    {
+      "key": "2023-03:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-04:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "in_position_or_pending": 1,
+        "allowed": 2,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2023-04:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-04:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2023-04:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-05:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup": 182,
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 182,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2023-05:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-05:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 182
+      }
+    },
+    {
+      "key": "2023-05:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-06:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 178,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 178,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-06:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-06:none",
+      "bars": 178,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 178
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 178
+      }
+    },
+    {
+      "key": "2023-06:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-07:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 183,
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-07:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-07:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2023-07:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-08:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup": 183,
+        "in_position_or_pending": 2,
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-08:long",
+      "bars": 2,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-08:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 183
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2023-08:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-09:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 176,
+        "oi_nonrising": 2,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup": 176,
+        "setup": 4
+      }
+    },
+    {
+      "key": "2023-09:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-09:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 176
+      }
+    },
+    {
+      "key": "2023-09:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-10:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 184,
+        "allowed": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "no_setup": 184,
+        "setup": 2
+      }
+    },
+    {
+      "key": "2023-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-10:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 184
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 184
+      }
+    },
+    {
+      "key": "2023-10:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-11:all",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 180
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 180
+      }
+    },
+    {
+      "key": "2023-11:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 180
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 180
+      }
+    },
+    {
+      "key": "2023-12:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 182,
+        "oi_nonrising": 2,
+        "allowed": 1,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup": 183,
+        "setup": 3
+      }
+    },
+    {
+      "key": "2023-12:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "key": "2023-12:none",
+      "bars": 183,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 182,
+        "boundary_or_inactive": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup": 183
+      }
+    },
+    {
+      "key": "2023-12:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    }
+  ],
+  "bucket_count": 157,
+  "exit_only_buckets_without_feature_reasons": [
+    {
+      "key": "2020-11:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2021-02:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2021-05:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-02:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2022-08:long",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-01:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "key": "2023-03:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    }
+  ],
+  "entries": 57,
+  "trades": 57,
+  "pretermination_exits": 57,
+  "forced_after_audit": [],
+  "plans": [
+    {
+      "time": 1600156800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1601712000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1602201600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1606536000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1606809600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1607616000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1607990400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1610611200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1612065600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1615132800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1617091200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1618099200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1619740800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1620864000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1622980800000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1624190400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1625760000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1629417600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1630454400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1631174400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1633132800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1635912000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1636344000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1637078400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1638561600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1642449600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1643673600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1646121600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1647504000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1650556800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1650758400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1653436800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1653969600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1654848000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1657224000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1658001600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1659096000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1662811200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1663329600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1666324800000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1669435200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1671336000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1675728000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1676563200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1677355200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1678809600000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1681171200000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1682712000000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1684929600000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1685332800000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1685995200000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1687118400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1689580800000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1692216000000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1694678400000,
+      "direction": 1,
+      "passed": true
+    },
+    {
+      "time": 1697054400000,
+      "direction": -1,
+      "passed": true
+    },
+    {
+      "time": 1703145600000,
+      "direction": 1,
+      "passed": true
+    }
+  ],
+  "exit_proofs": [
+    {
+      "trade_id": "efd561df-edfd-41db-9bc2-7256bc83b25e",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "2ed80614-d2de-4f24-8500-6bef67accdbd",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "a8d08b7c-b681-4766-a61e-ff0f2970b17a",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "eb399543-d64d-42ad-91e6-8fe02e957ae9",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "4245afb8-fb7d-4523-9e1f-40d963b9c8bf",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "5ca0d401-21ec-4fdb-9e27-b70d7b2d8806",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "89025a21-7fee-4c4b-a9d6-cac177a2e644",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "db1bdcf0-bbc8-47fa-a0ab-18eae55d2a5b",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "0024c971-4c5d-4dff-9d15-9fada94d56f3",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "84cb324e-318a-43db-8462-62ad9984db81",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "e130e1bd-75ea-4bdd-a0c5-66d448649b05",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "9162d25c-7d5c-4093-930e-be3071078d08",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "c0af5403-4532-4963-8e49-9c5819f6feb9",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "eac1f150-58b3-49e9-bd12-ad6175437349",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "ac73fb9e-7f0b-45d6-8787-f727d8aeb9ff",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "ac0f9c69-765d-4449-8407-807c71ee4e48",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "3e1ee57d-7333-4962-b3bc-ea18a59ba47e",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "2f467d20-ab12-44ed-9a9c-ca80c8193228",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "9f25d4a9-8a22-43a6-8663-dc25afea9fd7",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "57a1d7f9-4530-4a9d-80ef-e2a855af3c9f",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "1165ad3d-6fc5-4c85-95e0-e82cea7da519",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "735c3bf1-92bd-46b8-94df-d0cd48b72712",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "a730e6ef-4aba-45b8-9098-d0f795603570",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "8e14c142-d906-4b28-88d8-ae9e41672bd9",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "2b5ab0b0-7f01-4235-9ecc-8724bdc1ecdf",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "c976b813-ae14-4856-8fd3-c72d5fda767f",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "d90ea13f-55ff-470e-ba0c-41e3a556c6e1",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "981176df-4982-4490-8b7d-3c173c6cd9af",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "14f03209-4edc-403c-990e-f2147b5b39e9",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "dcbec6a0-f359-4d51-b199-d9bc0a4033d0",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "b0d9a4c5-4449-48ec-8f6c-c7d28168a69d",
+      "reason": "maximum_hold",
+      "passed": true
+    },
+    {
+      "trade_id": "fd38909d-79fb-4137-8ae3-418d96f2efc5",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "7b0db553-caa3-49c4-ae78-e9e0bcd232ea",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "b972f964-e88f-41e6-a5b3-6d184e688cce",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "eaf8ba91-93d5-44b7-8264-d1dfa66ec355",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "e753ab17-21b6-4ea3-a3c0-381dc22a6b46",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "750b8572-975d-4e90-83f5-78b951d93b1f",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "9535d280-a5f9-41b1-ab96-aa393aabc93c",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "4dce2301-c297-496c-be99-82c544c3fd29",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "2eeb08fd-2c18-4b3d-aa72-21d329a4be6b",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "e6e867b6-673c-4731-8c5f-b1eb419de1ba",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "471571c8-df64-4b3c-8e58-f8ae71b3d413",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "b9452ecd-1ce7-4831-b6ad-05633f2efb71",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "aca67e1c-3fef-4b4a-9c1f-f236724e4e3c",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "f0b7422e-32fb-4148-a800-e909f253e271",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "db27c9a3-1215-4500-b7b8-675ad3790a53",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "dc7fac78-9000-47df-9e51-7d52400ff139",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "2bdd671b-4882-42ae-bba2-8fa3e177ff67",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "620d5c94-41f6-44fd-872b-d49591239e49",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "83a4cce5-1d52-4867-99c9-61f242220aea",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "ac8c405f-6671-467b-923b-def8d1a6675d",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "2596a46e-f23a-44d3-aa0a-e621533e703f",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "dc74c467-2100-44c1-9fb8-81c6f98ce9a4",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "df42e202-2339-4bf6-b359-9bead2643e4e",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "290428aa-b8cc-4cdc-8351-a54797deae00",
+      "reason": "opposite_cross",
+      "passed": true
+    },
+    {
+      "trade_id": "a47d2704-9f1f-4075-8879-9daa6606f7c7",
+      "reason": "stop-loss",
+      "passed": true
+    },
+    {
+      "trade_id": "72e1e780-bfaf-401a-9471-e3866e2692f1",
+      "reason": "stop-loss",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "exit_reasons": {
+    "stop-loss": 26,
+    "maximum_hold": 3,
+    "opposite_cross": 28
+  },
+  "max_structured_line_length": 1027,
+  "provenance": {
+    "line": "CROSS",
+    "use_oi": true,
+    "oi_lag_bars": 0,
+    "stop_multiplier": 3,
+    "bar_ms": 14400000,
+    "oi_reference_bars": 6,
+    "atr_offset_bars": 0,
+    "target_mode": "none",
+    "reward_multiple": 1,
+    "max_hold_bars": 180,
+    "start": 1598918400000,
+    "finish": 1704067200000,
+    "active_windows": null,
+    "force_boundaries": [],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "metric_open_note": {
+    "total_open_trades": 0,
+    "open_pl": 0,
+    "meaning": "No forced final close; every entry has a complete trade."
+  },
+  "limitations": [
+    "Financial/PF/year gates delegated to root complete-snapshot run_analysis.",
+    "SMA inequality/window metadata audited; market-candle hashes not independently recalculated from absent candle snapshots.",
+    "Zero-bar exit-only buckets legitimately omit feature_reasons; absence treated as empty only when bars0."
+  ],
+  "complete_logs_ref": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV5CrossOi4h_SCREEN_LOGS.json",
+  "complete_trades_ref": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV5CrossOi4h_SCREEN_TRADES.json",
+  "complete_log_lines": 2006
+}

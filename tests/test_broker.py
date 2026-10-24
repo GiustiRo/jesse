@@ -271,3 +271,55 @@ def test_oversized_reduce_only_order_uses_actual_filled_qty():
     # this test closes a position, so clean up the shared store to avoid leaking the
     # closed trade into tests that assume an empty store at their start
     store.reset()
+
+
+@pytest.mark.parametrize('side', ['long', 'short'])
+def test_adverse_slippage_updates_fills_fees_wallet_and_releases_margin(side):
+    set_up_with_fee(is_futures_trading=True)
+    # Deliberately large 100bps makes fill direction and accounting visible;
+    # it is a synthetic engine test, not an estimate of BTC execution costs.
+    config['env']['exchanges'][exchanges.SANDBOX]['slippage_bps'] = 100
+    starting_balance = exchange.wallet_balance
+    entry = broker.buy_at_market(1) if side == 'long' else broker.sell_at_market(1)
+    order_service.execute_order(entry)
+    store.orders.to_execute = []
+    expected_entry = 50.5 if side == 'long' else 49.5
+    assert entry.price == expected_entry
+    assert position.entry_price == expected_entry
+    assert entry.to_dict['slippage'] == {'bps': 100, 'reference_price': 50}
+    assert len(exchange.buy_orders['BTC']) == len(exchange.sell_orders['BTC']) == 0
+    # Re-executing a completed order must never compound the haircut.
+    order_service.execute_order(entry)
+    assert entry.price == expected_entry
+    stop = broker.reduce_position_at(2, 40 if side == 'long' else 60, 50)
+    assert stop.type == order_types.STOP
+    order_service.execute_order(stop)
+    expected_exit = 39.6 if side == 'long' else 60.6
+    assert stop.price == expected_exit
+    assert abs(stop.filled_qty) == 1  # oversized protective order stays capped
+    trade = store.closed_trades.trades[-1]
+    expected_fee = (expected_entry + expected_exit) * .002
+    assert trade.fee == pytest.approx(expected_fee)
+    assert trade.pnl == pytest.approx(exchange.wallet_balance - starting_balance)
+    assert exchange.available_margin == pytest.approx(exchange.wallet_balance)
+    store.reset()
+
+
+def test_adverse_slippage_preserves_limit_price_and_gap_provenance():
+    set_up_without_fee(is_futures_trading=True)
+    config['env']['exchanges'][exchanges.SANDBOX]['slippage_bps'] = 100
+    entry = broker.buy_at(1, 40)
+    assert entry.type == order_types.LIMIT
+    order_service.execute_order(entry)
+    assert entry.price == 40
+    assert 'slippage' not in entry.to_dict
+    stop = broker.reduce_position_at(1, 30, 40)
+    # The existing OHLC gap handler has already moved the trigger price to
+    # the opening price. Slippage must compound from that fill reference.
+    stop.vars = {'submitted_price': 30}
+    stop.price = 25
+    order_service.execute_order(stop)
+    assert stop.price == 24.75
+    assert stop.vars['submitted_price'] == 30
+    assert stop.to_dict['slippage']['reference_price'] == 25
+    store.reset()

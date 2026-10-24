@@ -1,0 +1,260 @@
+{
+  "cross": {
+    "status": "success",
+    "backtest_id": "73f4d93a-8302-4ccb-b204-2a57dd61c1cb",
+    "draft_state": {
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV5CrossSmoke4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2020-09-08",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "results": {
+        "showResults": false,
+        "executing": false,
+        "logsModal": false,
+        "progressbar": {
+          "current": 0,
+          "estimated_remaining_seconds": 0
+        },
+        "routes_info": [
+          [
+            {
+              "value": "BTC-USDT",
+              "style": ""
+            },
+            {
+              "value": "4h",
+              "style": ""
+            },
+            {
+              "value": "ResearchV5CrossSmoke4h",
+              "style": ""
+            }
+          ]
+        ],
+        "metrics": {},
+        "hyperparameters": [],
+        "generalInfo": {
+          "title": null,
+          "description": null
+        },
+        "infoLogs": "",
+        "exception": {
+          "error": "",
+          "traceback": ""
+        },
+        "charts": {
+          "equity_curve": []
+        },
+        "selectedRoute": {
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "ResearchV5CrossSmoke4h"
+        },
+        "alert": {
+          "message": "",
+          "type": ""
+        },
+        "info": [],
+        "trades": []
+      }
+    },
+    "notes": {
+      "title": "MCP Backtest: V5 TECH CROSS 4h",
+      "description": "Seven-day technical smoke. Frozen V5 sources and deterministic checks; no economic tuning.",
+      "strategy_code_keys": [
+        "Binance Perpetual Futures-BTC-USDT"
+      ],
+      "strategy_codes_captured": 1
+    },
+    "dashboard_url": "http://localhost:9200/#/backtest/73f4d93a-8302-4ccb-b204-2a57dd61c1cb",
+    "message": "Backtest draft created with ID: 73f4d93a-8302-4ccb-b204-2a57dd61c1cb"
+  },
+  "vwap": {
+    "status": "success",
+    "backtest_id": "996568bc-0c12-4db0-9f7e-4235556b57ab",
+    "draft_state": {
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h",
+            "strategy": "ResearchV5VwapSmoke1h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2020-09-08",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "results": {
+        "showResults": false,
+        "executing": false,
+        "logsModal": false,
+        "progressbar": {
+          "current": 0,
+          "estimated_remaining_seconds": 0
+        },
+        "routes_info": [
+          [
+            {
+              "value": "BTC-USDT",
+              "style": ""
+            },
+            {
+              "value": "1h",
+              "style": ""
+            },
+            {
+              "value": "ResearchV5VwapSmoke1h",
+              "style": ""
+            }
+          ]
+        ],
+        "metrics": {},
+        "hyperparameters": [],
+        "generalInfo": {
+          "title": null,
+          "description": null
+        },
+        "infoLogs": "",
+        "exception": {
+          "error": "",
+          "traceback": ""
+        },
+        "charts": {
+          "equity_curve": []
+        },
+        "selectedRoute": {
+          "symbol": "BTC-USDT",
+          "timeframe": "1h",
+          "strategy": "ResearchV5VwapSmoke1h"
+        },
+        "alert": {
+          "message": "",
+          "type": ""
+        },
+        "info": [],
+        "trades": []
+      }
+    },
+    "notes": {
+      "title": "MCP Backtest: V5 TECH VWAP 1h",
+      "description": "Seven-day technical smoke; no economic tuning.",
+      "strategy_code_keys": [
+        "Binance Perpetual Futures-BTC-USDT"
+      ],
+      "strategy_codes_captured": 1
+    },
+    "dashboard_url": "http://localhost:9200/#/backtest/996568bc-0c12-4db0-9f7e-4235556b57ab",
+    "message": "Backtest draft created with ID: 996568bc-0c12-4db0-9f7e-4235556b57ab"
+  },
+  "raw_cross": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+      }
+    ],
+    "isError": false
+  },
+  "raw_vwap": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+      }
+    ],
+    "isError": false
+  }
+}

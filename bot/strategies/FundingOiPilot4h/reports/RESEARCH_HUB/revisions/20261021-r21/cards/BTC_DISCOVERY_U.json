@@ -1,0 +1,781 @@
+{
+  "id": "BTC_DISCOVERY_U",
+  "title": "BTC: reloj de volumen propio frente a ETH",
+  "asset": "BTC",
+  "family": "información externa / partición temporal",
+  "execution": "cerrado",
+  "promoted": false,
+  "common_counter_audit": {
+    "fields": [
+      "btc4h_valid",
+      "input_valid",
+      "same_cut",
+      "cut_distance_sum",
+      "btc_cut_sum",
+      "eth_cut_sum",
+      "btc_first_fraction_sum",
+      "eth_first_fraction_sum",
+      "base",
+      "btc_setup",
+      "eth_setup",
+      "disagreement"
+    ],
+    "equal": true,
+    "valid_windows": 11423,
+    "same_cut": 645,
+    "setup_disagreements": 151,
+    "scope": "Common observation counters; selected transitions and occupancy may differ by history and endogenous account."
+  },
+  "results": [
+    {
+      "name": "BTC_CLOCK",
+      "strategy": "BtcResearchR21BtcClock1m",
+      "id": "3cd02a5c-4275-49fa-8a0c-fa7e9528d604",
+      "url": "http://localhost:9200/#/backtest/3cd02a5c-4275-49fa-8a0c-fa7e9528d604",
+      "financial": {
+        "N": 536,
+        "net": 2184.1737300548198,
+        "return_pct": 21.841737300548196,
+        "cagr_pct": 3.859745312869056,
+        "pf": 1.0315345912865004,
+        "dd_daily_pct": -43.578327783957015,
+        "fee": 5706.126775729788,
+        "funding": 675.6934126488663,
+        "funding_applied": true,
+        "proxy_payments": 1366,
+        "errors": {
+          "gross_fee_funding_pnl": -3.637978807091713e-12,
+          "pnl_metrics": 5.002220859751105e-12,
+          "terminal_vs_net": 3.774403012357652e-11,
+          "funding_vs_metric": 7.958078640513122e-13
+        },
+        "gross": 7214.607093135738,
+        "finish": 12184.173730054858,
+        "raw_open_counter": 1,
+        "long_pnl": 7925.40886030179,
+        "short_pnl": -5741.235130246975
+      },
+      "descriptive_calendar": {
+        "annual": {
+          "2021": 60.107586045176696,
+          "2022": -13.056408133610697,
+          "2023": 21.158885223012458,
+          "2024": -9.72762906976542,
+          "2025": -14.330024120352036
+        },
+        "rolling_12m": [
+          {
+            "start": "2020-11",
+            "finish": "2021-10",
+            "return_pct": 47.27494568422648
+          },
+          {
+            "start": "2020-12",
+            "finish": "2021-11",
+            "return_pct": 74.43843811006272
+          },
+          {
+            "start": "2021-01",
+            "finish": "2021-12",
+            "return_pct": 60.107586045176696
+          },
+          {
+            "start": "2021-02",
+            "finish": "2022-01",
+            "return_pct": 59.780114510595595
+          },
+          {
+            "start": "2021-03",
+            "finish": "2022-02",
+            "return_pct": 49.45187210835969
+          },
+          {
+            "start": "2021-04",
+            "finish": "2022-03",
+            "return_pct": 54.658061647100745
+          },
+          {
+            "start": "2021-05",
+            "finish": "2022-04",
+            "return_pct": 58.204016511017834
+          },
+          {
+            "start": "2021-06",
+            "finish": "2022-05",
+            "return_pct": 56.85814360200665
+          },
+          {
+            "start": "2021-07",
+            "finish": "2022-06",
+            "return_pct": 46.24928496407799
+          },
+          {
+            "start": "2021-08",
+            "finish": "2022-07",
+            "return_pct": 2.641247240594513
+          },
+          {
+            "start": "2021-09",
+            "finish": "2022-08",
+            "return_pct": 9.056398014754553
+          },
+          {
+            "start": "2021-10",
+            "finish": "2022-09",
+            "return_pct": 10.809356640129097
+          },
+          {
+            "start": "2021-11",
+            "finish": "2022-10",
+            "return_pct": 0.5585363541740662
+          },
+          {
+            "start": "2021-12",
+            "finish": "2022-11",
+            "return_pct": -6.554466104496814
+          },
+          {
+            "start": "2022-01",
+            "finish": "2022-12",
+            "return_pct": -13.056408133610697
+          },
+          {
+            "start": "2022-02",
+            "finish": "2023-01",
+            "return_pct": -0.9854391543738905
+          },
+          {
+            "start": "2022-03",
+            "finish": "2023-02",
+            "return_pct": 3.1168219994547774
+          },
+          {
+            "start": "2022-04",
+            "finish": "2023-03",
+            "return_pct": -2.305719599586631
+          },
+          {
+            "start": "2022-05",
+            "finish": "2023-04",
+            "return_pct": 1.9869888568040839
+          },
+          {
+            "start": "2022-06",
+            "finish": "2023-05",
+            "return_pct": 12.466731996393566
+          },
+          {
+            "start": "2022-07",
+            "finish": "2023-06",
+            "return_pct": 19.112635886223607
+          },
+          {
+            "start": "2022-08",
+            "finish": "2023-07",
+            "return_pct": 44.02390255803954
+          },
+          {
+            "start": "2022-09",
+            "finish": "2023-08",
+            "return_pct": 50.724191609553905
+          },
+          {
+            "start": "2022-10",
+            "finish": "2023-09",
+            "return_pct": 43.57133593543565
+          },
+          {
+            "start": "2022-11",
+            "finish": "2023-10",
+            "return_pct": 31.39900059928098
+          },
+          {
+            "start": "2022-12",
+            "finish": "2023-11",
+            "return_pct": 24.755270093804338
+          },
+          {
+            "start": "2023-01",
+            "finish": "2023-12",
+            "return_pct": 21.158885223012458
+          },
+          {
+            "start": "2023-02",
+            "finish": "2024-01",
+            "return_pct": 5.562956529988972
+          },
+          {
+            "start": "2023-03",
+            "finish": "2024-02",
+            "return_pct": -10.17807260961936
+          },
+          {
+            "start": "2023-04",
+            "finish": "2024-03",
+            "return_pct": -3.7794777090379483
+          },
+          {
+            "start": "2023-05",
+            "finish": "2024-04",
+            "return_pct": 4.647271467757097
+          },
+          {
+            "start": "2023-06",
+            "finish": "2024-05",
+            "return_pct": -6.2978976622891985
+          },
+          {
+            "start": "2023-07",
+            "finish": "2024-06",
+            "return_pct": -13.314468165389359
+          },
+          {
+            "start": "2023-08",
+            "finish": "2024-07",
+            "return_pct": -20.72369500772592
+          },
+          {
+            "start": "2023-09",
+            "finish": "2024-08",
+            "return_pct": -22.74477655494609
+          },
+          {
+            "start": "2023-10",
+            "finish": "2024-09",
+            "return_pct": -21.069502370366735
+          },
+          {
+            "start": "2023-11",
+            "finish": "2024-10",
+            "return_pct": -22.897217506063605
+          },
+          {
+            "start": "2023-12",
+            "finish": "2024-11",
+            "return_pct": -14.039219517684753
+          },
+          {
+            "start": "2024-01",
+            "finish": "2024-12",
+            "return_pct": -9.72762906976542
+          },
+          {
+            "start": "2024-02",
+            "finish": "2025-01",
+            "return_pct": -18.42899558586667
+          },
+          {
+            "start": "2024-03",
+            "finish": "2025-02",
+            "return_pct": -2.1333703191841358
+          },
+          {
+            "start": "2024-04",
+            "finish": "2025-03",
+            "return_pct": -5.480538249123413
+          },
+          {
+            "start": "2024-05",
+            "finish": "2025-04",
+            "return_pct": -24.441176779606977
+          },
+          {
+            "start": "2024-06",
+            "finish": "2025-05",
+            "return_pct": -17.037636766029053
+          },
+          {
+            "start": "2024-07",
+            "finish": "2025-06",
+            "return_pct": -13.911304558004867
+          },
+          {
+            "start": "2024-08",
+            "finish": "2025-07",
+            "return_pct": -12.33904261468629
+          },
+          {
+            "start": "2024-09",
+            "finish": "2025-08",
+            "return_pct": -9.629849982957905
+          },
+          {
+            "start": "2024-10",
+            "finish": "2025-09",
+            "return_pct": -19.05979514650269
+          },
+          {
+            "start": "2024-11",
+            "finish": "2025-10",
+            "return_pct": -11.506933715941036
+          },
+          {
+            "start": "2024-12",
+            "finish": "2025-11",
+            "return_pct": -18.873687663538586
+          },
+          {
+            "start": "2025-01",
+            "finish": "2025-12",
+            "return_pct": -14.330024120352036
+          }
+        ],
+        "basis": "Arithmetic on complete MCP monthly telemetry. 51 overlapping windows; development only, not independent."
+      },
+      "gates": {
+        "cagr30": false,
+        "pf1_2": false,
+        "dd25": false,
+        "months65": false,
+        "quarters80": false,
+        "medianPositive": false,
+        "withoutBestTwoPositive": false,
+        "n100": true
+      },
+      "promoted": false,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 31,
+        "positive_calendar": 31,
+        "median_return": -0.000987290098607263,
+        "complete_quarters": 20,
+        "positive_quarters": 11,
+        "pnl_without_best_two": -2429.751038275208,
+        "stage": "FINAL",
+        "equity": 12184.173730054858,
+        "dd_m1_events": -0.4450276160154446,
+        "minute_marks": 2741760,
+        "sequence": 2742833,
+        "signals": 615,
+        "entries": 536,
+        "invalid_windows": 0
+      },
+      "ledger": {
+        "stage": "FINAL",
+        "mode": "BTC_CLOCK",
+        "sources": {
+          "LONG_RUNNER": {
+            "fills": 30,
+            "closes": 30,
+            "net": 7925.40886030179
+          },
+          "CORE_SHORT": {
+            "fills": 86,
+            "closes": 86,
+            "net": 3174.040000436401
+          },
+          "SUPPLEMENT": {
+            "fills": 420,
+            "closes": 420,
+            "net": -8915.275130683383
+          }
+        },
+        "fills": 536,
+        "closes": 536,
+        "net": 2184.1737300548066,
+        "supplement_events": 666,
+        "cancellations": 79,
+        "history_min": 241,
+        "history_max": 11664
+      },
+      "clock": {
+        "stage": "FINAL",
+        "mode": "BTC_CLOCK",
+        "counts": {
+          "btc4h_valid": 11423,
+          "input_valid": 11423,
+          "same_cut": 645,
+          "cut_distance_sum": 150794,
+          "btc_cut_sum": 1317274,
+          "eth_cut_sum": 1311424,
+          "btc_first_fraction_sum": 5778.589414802471,
+          "eth_first_fraction_sum": 5779.937129519782,
+          "base": 3027,
+          "btc_setup": 1146,
+          "eth_setup": 1161,
+          "disagreement": 151,
+          "selected_transition": 1007,
+          "event": 666,
+          "occupied_disagreement": 62,
+          "geometry_or_physical_rejection": 341
+        }
+      }
+    },
+    {
+      "name": "ETH_CLOCK",
+      "strategy": "BtcResearchR21EthClock1m",
+      "id": "81bf2f14-98ad-48f2-a6c2-2151c11512c8",
+      "url": "http://localhost:9200/#/backtest/81bf2f14-98ad-48f2-a6c2-2151c11512c8",
+      "financial": {
+        "N": 537,
+        "net": 3735.8768439885503,
+        "return_pct": 37.3587684398855,
+        "cagr_pct": 6.274067103250358,
+        "pf": 1.052467615186107,
+        "dd_daily_pct": -42.03177976223515,
+        "fee": 5892.35354673626,
+        "funding": 739.4950400590908,
+        "funding_applied": true,
+        "proxy_payments": 1377,
+        "errors": {
+          "gross_fee_funding_pnl": 1.864464138634503e-11,
+          "pnl_metrics": 1.3642420526593924e-12,
+          "terminal_vs_net": -2.0463630789890885e-11,
+          "funding_vs_metric": 1.5916157281026244e-12
+        },
+        "gross": 8888.735350665738,
+        "finish": 13735.87684398853,
+        "raw_open_counter": 1,
+        "long_pnl": 8195.35949730576,
+        "short_pnl": -4459.482653317205
+      },
+      "descriptive_calendar": {
+        "annual": {
+          "2021": 54.34736488070793,
+          "2022": -4.11018065601546,
+          "2023": 20.35491800104039,
+          "2024": -10.151180083909884,
+          "2025": -8.124309285975285
+        },
+        "rolling_12m": [
+          {
+            "start": "2020-11",
+            "finish": "2021-10",
+            "return_pct": 46.682017454006974
+          },
+          {
+            "start": "2020-12",
+            "finish": "2021-11",
+            "return_pct": 68.15060462447178
+          },
+          {
+            "start": "2021-01",
+            "finish": "2021-12",
+            "return_pct": 54.34736488070793
+          },
+          {
+            "start": "2021-02",
+            "finish": "2022-01",
+            "return_pct": 54.02407102331519
+          },
+          {
+            "start": "2021-03",
+            "finish": "2022-02",
+            "return_pct": 42.80262347825654
+          },
+          {
+            "start": "2021-04",
+            "finish": "2022-03",
+            "return_pct": 48.10067464168046
+          },
+          {
+            "start": "2021-05",
+            "finish": "2022-04",
+            "return_pct": 56.665757474328935
+          },
+          {
+            "start": "2021-06",
+            "finish": "2022-05",
+            "return_pct": 55.349191213932805
+          },
+          {
+            "start": "2021-07",
+            "finish": "2022-06",
+            "return_pct": 44.91146770549375
+          },
+          {
+            "start": "2021-08",
+            "finish": "2022-07",
+            "return_pct": 2.758194695898397
+          },
+          {
+            "start": "2021-09",
+            "finish": "2022-08",
+            "return_pct": 9.184511341187873
+          },
+          {
+            "start": "2021-10",
+            "finish": "2022-09",
+            "return_pct": 10.883705838420244
+          },
+          {
+            "start": "2021-11",
+            "finish": "2022-10",
+            "return_pct": 3.883574815277746
+          },
+          {
+            "start": "2021-12",
+            "finish": "2022-11",
+            "return_pct": -0.254322497984949
+          },
+          {
+            "start": "2022-01",
+            "finish": "2022-12",
+            "return_pct": -4.11018065601546
+          },
+          {
+            "start": "2022-02",
+            "finish": "2023-01",
+            "return_pct": 9.602380200923877
+          },
+          {
+            "start": "2022-03",
+            "finish": "2023-02",
+            "return_pct": 11.74485476289977
+          },
+          {
+            "start": "2022-04",
+            "finish": "2023-03",
+            "return_pct": 8.125425731248948
+          },
+          {
+            "start": "2022-05",
+            "finish": "2023-04",
+            "return_pct": 8.344032657406242
+          },
+          {
+            "start": "2022-06",
+            "finish": "2023-05",
+            "return_pct": 19.461742517423318
+          },
+          {
+            "start": "2022-07",
+            "finish": "2023-06",
+            "return_pct": 26.55565308659762
+          },
+          {
+            "start": "2022-08",
+            "finish": "2023-07",
+            "return_pct": 53.02527387677374
+          },
+          {
+            "start": "2022-09",
+            "finish": "2023-08",
+            "return_pct": 60.16078451698594
+          },
+          {
+            "start": "2022-10",
+            "finish": "2023-09",
+            "return_pct": 52.62439089866247
+          },
+          {
+            "start": "2022-11",
+            "finish": "2023-10",
+            "return_pct": 35.249117446108926
+          },
+          {
+            "start": "2022-12",
+            "finish": "2023-11",
+            "return_pct": 25.743893371842663
+          },
+          {
+            "start": "2023-01",
+            "finish": "2023-12",
+            "return_pct": 20.35491800104039
+          },
+          {
+            "start": "2023-02",
+            "finish": "2024-01",
+            "return_pct": 2.606658611100565
+          },
+          {
+            "start": "2023-03",
+            "finish": "2024-02",
+            "return_pct": -10.509277914566105
+          },
+          {
+            "start": "2023-04",
+            "finish": "2024-03",
+            "return_pct": -6.121117750359617
+          },
+          {
+            "start": "2023-05",
+            "finish": "2024-04",
+            "return_pct": 0.6017186904805127
+          },
+          {
+            "start": "2023-06",
+            "finish": "2024-05",
+            "return_pct": -9.929581815046372
+          },
+          {
+            "start": "2023-07",
+            "finish": "2024-06",
+            "return_pct": -16.709804123136294
+          },
+          {
+            "start": "2023-08",
+            "finish": "2024-07",
+            "return_pct": -23.94493858933908
+          },
+          {
+            "start": "2023-09",
+            "finish": "2024-08",
+            "return_pct": -24.823456692167913
+          },
+          {
+            "start": "2023-10",
+            "finish": "2024-09",
+            "return_pct": -23.188557465949323
+          },
+          {
+            "start": "2023-11",
+            "finish": "2024-10",
+            "return_pct": -23.54814968149792
+          },
+          {
+            "start": "2023-12",
+            "finish": "2024-11",
+            "return_pct": -12.900146308573312
+          },
+          {
+            "start": "2024-01",
+            "finish": "2024-12",
+            "return_pct": -10.151180083909884
+          },
+          {
+            "start": "2024-02",
+            "finish": "2025-01",
+            "return_pct": -18.92808656060311
+          },
+          {
+            "start": "2024-03",
+            "finish": "2025-02",
+            "return_pct": -5.422683319862431
+          },
+          {
+            "start": "2024-04",
+            "finish": "2025-03",
+            "return_pct": -7.7904850032818995
+          },
+          {
+            "start": "2024-05",
+            "finish": "2025-04",
+            "return_pct": -23.288257343679398
+          },
+          {
+            "start": "2024-06",
+            "finish": "2025-05",
+            "return_pct": -15.781789916270661
+          },
+          {
+            "start": "2024-07",
+            "finish": "2025-06",
+            "return_pct": -13.420948640518283
+          },
+          {
+            "start": "2024-08",
+            "finish": "2025-07",
+            "return_pct": -10.616421719333523
+          },
+          {
+            "start": "2024-09",
+            "finish": "2025-08",
+            "return_pct": -6.25949178583557
+          },
+          {
+            "start": "2024-10",
+            "finish": "2025-09",
+            "return_pct": -14.49304139866574
+          },
+          {
+            "start": "2024-11",
+            "finish": "2025-10",
+            "return_pct": -6.390405337545002
+          },
+          {
+            "start": "2024-12",
+            "finish": "2025-11",
+            "return_pct": -12.608174546550565
+          },
+          {
+            "start": "2025-01",
+            "finish": "2025-12",
+            "return_pct": -8.124309285975285
+          }
+        ],
+        "basis": "Arithmetic on complete MCP monthly telemetry. 51 overlapping windows; development only, not independent."
+      },
+      "gates": {
+        "cagr30": false,
+        "pf1_2": false,
+        "dd25": false,
+        "months65": false,
+        "quarters80": false,
+        "medianPositive": true,
+        "withoutBestTwoPositive": false,
+        "n100": true
+      },
+      "promoted": false,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 33,
+        "positive_calendar": 33,
+        "median_return": 0.0014694520693693258,
+        "complete_quarters": 20,
+        "positive_quarters": 10,
+        "pnl_without_best_two": -963.9701615958165,
+        "stage": "FINAL",
+        "equity": 13735.87684398853,
+        "dd_m1_events": -0.4265879839732981,
+        "minute_marks": 2741760,
+        "sequence": 2742835,
+        "signals": 620,
+        "entries": 537,
+        "invalid_windows": 0
+      },
+      "ledger": {
+        "stage": "FINAL",
+        "mode": "ETH_CLOCK",
+        "sources": {
+          "LONG_RUNNER": {
+            "fills": 30,
+            "closes": 30,
+            "net": 8195.35949730576
+          },
+          "CORE_SHORT": {
+            "fills": 86,
+            "closes": 86,
+            "net": 2567.8023146166006
+          },
+          "SUPPLEMENT": {
+            "fills": 421,
+            "closes": 421,
+            "net": -7027.284967933809
+          }
+        },
+        "fills": 537,
+        "closes": 537,
+        "net": 3735.8768439885516,
+        "supplement_events": 670,
+        "cancellations": 83,
+        "history_min": 241,
+        "history_max": 11664
+      },
+      "clock": {
+        "stage": "FINAL",
+        "mode": "ETH_CLOCK",
+        "counts": {
+          "btc4h_valid": 11423,
+          "input_valid": 11423,
+          "same_cut": 645,
+          "cut_distance_sum": 150794,
+          "btc_cut_sum": 1317274,
+          "eth_cut_sum": 1311424,
+          "btc_first_fraction_sum": 5778.589414802471,
+          "eth_first_fraction_sum": 5779.937129519782,
+          "base": 3027,
+          "btc_setup": 1146,
+          "eth_setup": 1161,
+          "disagreement": 151,
+          "selected_transition": 1022,
+          "event": 670,
+          "occupied_disagreement": 59,
+          "geometry_or_physical_rejection": 352
+        }
+      }
+    }
+  ]
+}

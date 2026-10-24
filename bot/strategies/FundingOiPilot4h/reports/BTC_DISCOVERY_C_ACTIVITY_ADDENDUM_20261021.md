@@ -1,0 +1,3 @@
+# Precisión de actividad mensual C, antes de ejecución
+2026-10-21 18:01:17 UTC.
+La revisión independiente detectó que un cierre MARKET decidido a las00:00 puede devengar fee después del corte y dejar el mes de esa fee excluido del denominador. Se fija una definición conservadora: en cierres a frontera marcar tanto el mes del intervalo mantenido (T−1ms) como el de la ejecución T; el cierre terminal no activa enero2026 porque pertenece a liquidación del último intervalo. No cambiaequity,fronteras,señales ni costos. Evita excluir meses de actividad/fee aunque no haya exposiciónposterior. Fuente se vuelve a verificar y hashear antes de correr.

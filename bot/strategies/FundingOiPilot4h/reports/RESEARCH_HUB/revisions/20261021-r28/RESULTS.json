@@ -1,0 +1,311 @@
+{
+  "status": "TWO_SCENARIOS_CLOSED_NO_CANDIDATE",
+  "sessions": [
+    {
+      "name": "LONG_ONLY",
+      "session_id": "5c29961d-419a-4207-ae3c-58ad6ccb318c",
+      "dashboard_url": "http://localhost:9200/#/backtest/5c29961d-419a-4207-ae3c-58ad6ccb318c",
+      "N": 31,
+      "cagr": 6.7078977328173695,
+      "pf": 3.5519634173087797,
+      "dd_m1_pct": 8.473004460787381,
+      "monthly_positive": 13,
+      "active_months": 28,
+      "quarterly_positive": 8,
+      "complete_quarters": 20,
+      "median_month_pct": 0,
+      "net": 4030.903490447631,
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": true,
+        "DD25": true,
+        "M65": false,
+        "Q80": false,
+        "median_positive": false,
+        "without_best_two_positive": true,
+        "N100": false
+      },
+      "raw_own_stats_partial": false
+    },
+    {
+      "name": "SHORT_BOOK",
+      "session_id": "aa79608f-70fd-42aa-8047-ed6bc31133c2",
+      "dashboard_url": "http://localhost:9200/#/backtest/aa79608f-70fd-42aa-8047-ed6bc31133c2",
+      "N": 172,
+      "cagr": 5.924719839289616,
+      "pf": 1.527703450563465,
+      "dd_m1_pct": 8.607994984497335,
+      "monthly_positive": 38,
+      "active_months": 58,
+      "quarterly_positive": 16,
+      "complete_quarters": 20,
+      "median_month_pct": 0.5191054427786335,
+      "net": 3501.965680359739,
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": true,
+        "DD25": true,
+        "M65": true,
+        "Q80": true,
+        "median_positive": true,
+        "without_best_two_positive": true,
+        "N100": true
+      },
+      "raw_own_stats_partial": true
+    }
+  ],
+  "counts": {
+    "new_economic_backtests": 2,
+    "failed_or_replacement_backtests": 0,
+    "technical_backtests": 0,
+    "synthetic_jobs": 1,
+    "synthetic_pass_first_attempt": true,
+    "snapshot_audit_jobs": 1,
+    "snapshot_audit_succeeded": true,
+    "mechanical_join_attempts": 2,
+    "mechanical_join_parse_failure": 1,
+    "partial_telemetry_reconciled": true,
+    "not_independent_samples": true
+  },
+  "identity_comparisons": {
+    "LONG_ONLY": {
+      "N": 31,
+      "reference_relevant_N": 31,
+      "matched_entry_identity": 31,
+      "new_entry_identity": 0,
+      "reference_entries_absent": 0,
+      "matched_with_equal_exit_time_and_price": 31,
+      "max_common_net_R_difference": 1.4210854715202004e-13,
+      "new_trades_by_origin": {
+        "LONG_RUNNER": {
+          "N": 0,
+          "net_at_this_scenario_size": 0,
+          "mean_net_R": null
+        },
+        "CORE_SHORT": {
+          "N": 0,
+          "net_at_this_scenario_size": 0,
+          "mean_net_R": null
+        },
+        "SUPPLEMENT": {
+          "N": 0,
+          "net_at_this_scenario_size": 0,
+          "mean_net_R": null
+        }
+      },
+      "added_keys": [],
+      "absent_keys": [],
+      "interpretation": "Entry identity is origin+signal_at+opened_at, not outcome or nearest time. Dollars depend on each scenario's path/quota; new-trade sum is descriptive and not causal incremental book gain."
+    },
+    "SHORT_BOOK": {
+      "N": 172,
+      "reference_relevant_N": 161,
+      "matched_entry_identity": 158,
+      "new_entry_identity": 14,
+      "reference_entries_absent": 3,
+      "matched_with_equal_exit_time_and_price": 158,
+      "max_common_net_R_difference": 2.864375403532904e-14,
+      "new_trades_by_origin": {
+        "LONG_RUNNER": {
+          "N": 0,
+          "net_at_this_scenario_size": 0,
+          "mean_net_R": null
+        },
+        "CORE_SHORT": {
+          "N": 11,
+          "net_at_this_scenario_size": -174.65480121661446,
+          "mean_net_R": -0.14145575235615324
+        },
+        "SUPPLEMENT": {
+          "N": 3,
+          "net_at_this_scenario_size": 62.2407530052039,
+          "mean_net_R": 0.29299596463297356
+        }
+      },
+      "added_keys": [
+        "CORE_SHORT|1608552000000|1608552720000",
+        "CORE_SHORT|1627862400000|1627866120000",
+        "CORE_SHORT|1628006400000|1628014140000",
+        "CORE_SHORT|1628164800000|1628166600000",
+        "CORE_SHORT|1648742400000|1648742880000",
+        "CORE_SHORT|1658577600000|1658588160000",
+        "CORE_SHORT|1695297600000|1695299760000",
+        "SUPPLEMENT|1696838400000|1696840500000",
+        "CORE_SHORT|1716480000000|1716487260000",
+        "CORE_SHORT|1721865600000|1721869680000",
+        "CORE_SHORT|1727683200000|1727684520000",
+        "CORE_SHORT|1746403200000|1746408660000",
+        "SUPPLEMENT|1747051200000|1747060020000",
+        "SUPPLEMENT|1757937600000|1757941320000"
+      ],
+      "absent_keys": [
+        "CORE_SHORT|1627934400000|1627934820000",
+        "CORE_SHORT|1716494400000|1716494460000",
+        "CORE_SHORT|1721880000000|1721880540000"
+      ],
+      "interpretation": "Entry identity is origin+signal_at+opened_at, not outcome or nearest time. Dollars depend on each scenario's path/quota; new-trade sum is descriptive and not causal incremental book gain."
+    }
+  },
+  "descriptives": {
+    "period_groups": {
+      "LONG_ONLY": {
+        "LONG_RUNNER": {
+          "2021_2023": {
+            "N": 13,
+            "mean_net_R": 2.3759096999802134,
+            "median_net_R": -0.030891515477543013,
+            "median_observed_max_R": 2.6251451104632597,
+            "median_price_exit_R": 0.2690577006520016,
+            "median_giveback_R": 1.76723199593763,
+            "median_hold_hours": 186.4
+          },
+          "2024_2025": {
+            "N": 14,
+            "mean_net_R": 0.24216641649385948,
+            "median_net_R": -0.635758293920532,
+            "median_observed_max_R": 1.3271439736167778,
+            "median_price_exit_R": -0.5964649578920826,
+            "median_giveback_R": 1.5488178822805447,
+            "median_hold_hours": 86.26666666666667
+          }
+        }
+      },
+      "SHORT_BOOK": {
+        "CORE_SHORT": {
+          "2021_2023": {
+            "N": 73,
+            "mean_net_R": 0.09494809546780518,
+            "median_net_R": 0.6281570651507421,
+            "median_observed_max_R": 0.7081699040958013,
+            "median_price_exit_R": 0.6521780235688847,
+            "median_giveback_R": 3.219646771412954e-15,
+            "median_hold_hours": 14.466666666666667
+          },
+          "2024_2025": {
+            "N": 43,
+            "mean_net_R": 0.14080153628389408,
+            "median_net_R": 0.6970423658521362,
+            "median_observed_max_R": 0.7295873736159396,
+            "median_price_exit_R": 0.7207854468455627,
+            "median_giveback_R": 0,
+            "median_hold_hours": 12.983333333333333
+          }
+        },
+        "SUPPLEMENT": {
+          "2021_2023": {
+            "N": 24,
+            "mean_net_R": 0.8043645612012328,
+            "median_net_R": 0.6809684825186679,
+            "median_observed_max_R": 1.4190862198977734,
+            "median_price_exit_R": 0.6867688424429357,
+            "median_giveback_R": 0.19157706320793289,
+            "median_hold_hours": 48.675
+          },
+          "2024_2025": {
+            "N": 23,
+            "mean_net_R": 0.26409448352121506,
+            "median_net_R": 0.056781476048480196,
+            "median_observed_max_R": 0.5829764121961776,
+            "median_price_exit_R": 0.06228104061702328,
+            "median_giveback_R": 0.47707858675499315,
+            "median_hold_hours": 48.733333333333334
+          }
+        }
+      }
+    },
+    "long_admitted_funnel": {
+      "plans": 45,
+      "fills": 31,
+      "cancellations": 14,
+      "cancelled_plan_utc": [
+        "2020-11-05T12:00:00.000Z",
+        "2020-11-13T00:00:00.000Z",
+        "2020-12-26T20:00:00.000Z",
+        "2020-12-27T00:00:00.000Z",
+        "2021-08-23T04:00:00.000Z",
+        "2022-03-24T16:00:00.000Z",
+        "2022-11-05T04:00:00.000Z",
+        "2023-11-02T00:00:00.000Z",
+        "2023-12-04T00:00:00.000Z",
+        "2024-01-29T20:00:00.000Z",
+        "2024-04-08T08:00:00.000Z",
+        "2024-07-15T00:00:00.000Z",
+        "2024-09-19T04:00:00.000Z",
+        "2025-01-06T04:00:00.000Z"
+      ],
+      "adjacent_4h_cancelled_display_groups": [
+        {
+          "start": "2020-11-05T12:00:00.000Z",
+          "finish": "2020-11-05T12:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2020-11-13T00:00:00.000Z",
+          "finish": "2020-11-13T00:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2020-12-26T20:00:00.000Z",
+          "finish": "2020-12-27T00:00:00.000Z",
+          "plans": 2
+        },
+        {
+          "start": "2021-08-23T04:00:00.000Z",
+          "finish": "2021-08-23T04:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2022-03-24T16:00:00.000Z",
+          "finish": "2022-03-24T16:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2022-11-05T04:00:00.000Z",
+          "finish": "2022-11-05T04:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2023-11-02T00:00:00.000Z",
+          "finish": "2023-11-02T00:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2023-12-04T00:00:00.000Z",
+          "finish": "2023-12-04T00:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2024-01-29T20:00:00.000Z",
+          "finish": "2024-01-29T20:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2024-04-08T08:00:00.000Z",
+          "finish": "2024-04-08T08:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2024-07-15T00:00:00.000Z",
+          "finish": "2024-07-15T00:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2024-09-19T04:00:00.000Z",
+          "finish": "2024-09-19T04:00:00.000Z",
+          "plans": 1
+        },
+        {
+          "start": "2025-01-06T04:00:00.000Z",
+          "finish": "2025-01-06T04:00:00.000Z",
+          "plans": 1
+        }
+      ],
+      "limits": "Admitted orders only. Consecutive TTL-separated plans are a display grouping, not statistically independent episodes or all raw signals. Changing entry policy can change later occupancy, so45 is not an upper bound on every alternative's trades."
+    },
+    "source_field_definitions": {
+      "sources.*.observed_max_R": "Median of per-trade observed maximum R, not global maximum."
+    },
+    "method": "Entry-year descriptive cohorts2021–2023 vs2024–2025,2020excluded. Linear quantiles index=(N-1)*p. Original exit-censored M1+fill observations; no new rules, causal attribution or independent sample claim."
+  },
+  "not_joint_simulation": true
+}

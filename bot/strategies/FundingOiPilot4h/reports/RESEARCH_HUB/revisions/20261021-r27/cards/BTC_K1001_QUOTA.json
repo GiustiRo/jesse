@@ -1,0 +1,47 @@
+{
+  "id": "BTC_K1001_QUOTA",
+  "title": "K1001: long original y libro short con cuota individual del1%",
+  "asset": "BTC",
+  "family": "Contrafactuales de selección y cuota derivados del diagnóstico",
+  "execution": "protocolo revisado; fuentes y motores pendientes",
+  "evidence": "desarrollo histórico observado",
+  "objective": "sin evaluar; objetivo pendiente",
+  "hypothesis": "Medir separadamente las reglas long y core→suplemento, con cuota1% sobre capital BTC total propio por escenario.",
+  "method": "Dos escenarios alternativos nativos, continuo2020–2025. Reglas/gestión originales; sólo allowlist y sizing.5/.5. Rprecio observado M1+fills común.",
+  "budget": {
+    "new_economic_planned": 2,
+    "new_economic_executed": 0,
+    "technical_backtests": 0
+  },
+  "results": null,
+  "decision": "Implementar y verificar antes de motores. Ocupación HOLD. No prueba conjunta ni promoción.",
+  "limitations": [
+    "Selección adaptativa posterior al diagnóstico.",
+    "Cada trayectoria posee equity propia: no sumar curvas ni resultados.",
+    "Original K2% sirve como referencia, no control causal de ocupación.",
+    "Rprecio M1+fills no registra extremos intraminuto."
+  ],
+  "references": [
+    {
+      "label": "Diagnóstico previo",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_DEEP_DIAGNOSTIC_FINDINGS_20261021.md"
+    },
+    {
+      "label": "Protocolo cuota",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_QUOTA_SCENARIOS_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Fuentes de referencia",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_QUOTA_SCENARIOS_SOURCES_20261021.md"
+    },
+    {
+      "label": "Revisión independiente",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_QUOTA_SCENARIOS_INDEPENDENT_PROTOCOL_REVIEW_20261021.md"
+    },
+    {
+      "label": "Valor de información",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_NEXT_EXPERIMENT_VALUE_OF_INFORMATION_DECISION_20261021.md"
+    }
+  ],
+  "sessions": []
+}

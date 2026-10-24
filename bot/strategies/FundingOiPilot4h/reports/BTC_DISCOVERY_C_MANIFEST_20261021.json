@@ -1,0 +1,201 @@
+{
+  "registered_at_utc": "2026-10-21 18:01:31 UTC",
+  "source_hash": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+  "source": "import json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\nfrom jesse.strategies import Strategy\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef cusum_step(rows, accumulators):\n    \"\"\"Transfer the R40 design:60 past log returns, drift0.25, boundary4.\"\"\"\n    returns = np.diff(np.log(rows[-62:, 2]))\n    sigma = float(np.std(returns[:-1], ddof=1))\n    if not math.isfinite(sigma) or sigma <= 0:\n        return 0, (0.0, 0.0)\n    z = float((returns[-1] - np.mean(returns[:-1])) / sigma)\n    if not math.isfinite(z):\n        return 0, (0.0, 0.0)\n    up = max(0.0, accumulators[0] + z - 0.25)\n    down = max(0.0, accumulators[1] - z - 0.25)\n    if up >= 4 or down >= 4:\n        direction = 0 if up >= 4 and down >= 4 else 1 if up >= 4 else -1\n        return direction, (0.0, 0.0)\n    return 0, (up, down)\n\n\ndef absorption_signal(rows):\n    \"\"\"Large volume but small body, followed by escape of that closed bar.\"\"\"\n    window, setup, confirmation = rows[-26:-2], rows[-2], rows[-1]\n    if not np.all(np.isfinite(rows[-26:, 5])) or np.any(rows[-26:, 5] < 0):\n        return 0\n    average_volume = float(np.mean(window[:, 5]))\n    prior_atr = atr14(window)\n    if not math.isfinite(average_volume) or average_volume <= 0 or prior_atr is None:\n        return 0\n    if setup[5] < 2 * average_volume or abs(setup[2] - setup[1]) > 0.25 * prior_atr:\n        return 0\n    if confirmation[2] > setup[3]:\n        return 1\n    if confirmation[2] < setup[4]:\n        return -1\n    return 0\n\n\ndef month_name(timestamp):\n    return datetime.fromtimestamp(timestamp / 1000, timezone.utc).strftime(\"%Y-%m\")\n\n\ndef monthly_summary(boundaries, active_months):\n    \"\"\"Declared post-settlement/pre-decision UTC cuts; no00:01 approximation.\"\"\"\n    points = sorted(boundaries.items())\n    months = []\n    for (start, before), (finish, after) in zip(points, points[1:]):\n        stamp = datetime.fromtimestamp(start / 1000, timezone.utc)\n        month = stamp.strftime(\"%Y-%m\")\n        complete = stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0\n        if before <= 0:\n            continue\n        months.append(dict(month=month, start=start, finish=finish,\n                           complete=complete, active=month in active_months,\n                           pnl=after-before, return_fraction=after/before-1))\n    complete = [m for m in months if m[\"complete\"]]\n    active = [m for m in complete if m[\"active\"]]\n    quarter_groups = {}\n    for m in months:\n        quarter = m[\"month\"][:4] + \"Q\" + str((int(m[\"month\"][5:])-1)//3+1)\n        quarter_groups.setdefault(quarter, []).append(m)\n    quarters = [q for q in quarter_groups.values()\n                if len(q) == 3 and all(m[\"complete\"] for m in q)]\n    returns = [m[\"return_fraction\"] for m in complete]\n    contributions = sorted([m[\"pnl\"] for m in months], reverse=True)\n    return dict(months=months, complete_months=len(complete), active_months=len(active),\n                positive_active=sum(m[\"pnl\"] > 0 for m in active),\n                positive_calendar=sum(m[\"pnl\"] > 0 for m in complete),\n                median_return=float(np.median(returns)) if returns else None,\n                complete_quarters=len(quarters),\n                positive_quarters=sum(sum(m[\"pnl\"] for m in q) > 0 for q in quarters),\n                pnl_without_best_two=sum(m[\"pnl\"] for m in months)-sum(contributions[:2]))\n\n\nclass BtcResearchR11Base1m(Strategy):\n    \"\"\"M1 accounting observer; signal and management decisions remain4h.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, payload):\n        # Event logs stay small; monthly history is emitted as separate rows.\n        self.log(label + \" \" + json.dumps(payload, separators=(\",\", \":\"), allow_nan=False))\n\n    def _observe(self, stage):\n        now = int(self.time)\n        # BTC-only futures equity. portfolio_value multiplies open PnL by\n        # leverage in this checkout, so it is deliberately not used here.\n        equity = float(self.balance) + (float(self.position.pnl) if self.is_open else 0.0)\n        assert math.isfinite(equity)\n        self.vars[\"peak\"] = max(self.vars.get(\"peak\", 10000.0), equity)\n        drawdown = equity / self.vars[\"peak\"] - 1\n        self.vars[\"dd\"] = min(self.vars.get(\"dd\", 0.0), drawdown)\n        self.vars[\"sequence\"] = self.vars.get(\"sequence\", 0) + 1\n        self.vars[\"last_equity\"] = equity\n        active = self.vars.setdefault(\"active_months\", set())\n        if self.is_open:\n            # Pre marks describe exposure during the minute that just closed;\n            # an opening fill at T instead belongs to the new interval.\n            active.add(month_name(now if stage == \"open\" else now-1))\n        boundaries = self.vars.setdefault(\"boundaries\", {self.START: 10000.0})\n        if stage == \"pre\":\n            self.vars[\"minute_marks\"] = self.vars.get(\"minute_marks\", 0) + 1\n            stamp = datetime.fromtimestamp(now / 1000, timezone.utc)\n            if stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0:\n                boundaries[now] = equity\n        if now >= self.FINISH:\n            # A later terminal close callback replaces the mark with post-fee equity.\n            boundaries[self.FINISH] = equity\n        return equity\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - 0.00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # This is signal alignment, not a market-session/calendar filter.\n        if now % BAR != 0:\n            return\n        count = 62 if self.MODE == \"CUSUM\" else 26\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, count)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self.vars[\"cusum\"] = (0.0, 0.0)\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        if self.MODE == \"CUSUM\":\n            direction, state = cusum_step(rows, self.vars.get(\"cusum\", (0.0, 0.0)))\n            self.vars[\"cusum\"] = state\n        else:\n            assert self.MODE == \"ABSORPTION\"\n            direction = absorption_signal(rows)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        # Flat BTC account: wallet equals equity. Reuse the frozen2% fee-aware\n        # plan, eight-decimal research precision and90% margin ceiling.\n        capital = max(0.0, float(self.balance))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or self.price + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        self.buy = self.vars[\"plan\"][\"qty\"], self.price\n\n    def go_short(self):\n        self.sell = self.vars[\"plan\"][\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        stop = entry - direction * plan[\"distance\"]\n        target = entry + direction * 2 * plan[\"distance\"]\n        assert qty * (plan[\"distance\"] + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._observe(\"open\")\n\n    def update_position(self):\n        # Preserve the four-hour management clock despite the M1 observer.\n        if int(self.time) % BAR == 0 and int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        now = int(self.time)\n        active = self.vars.setdefault(\"active_months\", set())\n        active.add(month_name(now-1))\n        # At a month boundary, retain both the held interval and any fee-only\n        # execution month. Terminal liquidation belongs to the final interval.\n        if now < self.FINISH:\n            active.add(month_name(now))\n        self.vars[\"last_exit_at\"] = now\n        self._observe(\"close\")\n        if now >= self.FINISH and self.vars.get(\"emitted\"):\n            self._emit(\"FINAL\")\n\n    def _emit(self, stage):\n        summary = monthly_summary(self.vars[\"boundaries\"], self.vars.get(\"active_months\", set()))\n        # Emit rows at the end, so one bounded log page can retrieve all months.\n        for item in summary.pop(\"months\"):\n            self._log(\"R11_MONTH\", dict(stage=stage, **item))\n        summary.update(stage=stage, equity=self.vars[\"last_equity\"],\n                       dd_m1_events=self.vars.get(\"dd\", 0),\n                       minute_marks=self.vars.get(\"minute_marks\", 0),\n                       sequence=self.vars.get(\"sequence\", 0),\n                       signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n                       invalid_windows=self.vars.get(\"invalid_windows\", 0))\n        self._log(\"R11_SUMMARY\", summary)\n\n    def before_terminate(self):\n        self._observe(\"terminal\")\n        self.vars[\"emitted\"] = True\n        self._emit(\"PRETERMINAL\")\n",
+  "wrappers": [
+    {
+      "name": "BtcResearchR11Cusum1m",
+      "source": "from strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\n\n\nclass BtcResearchR11Cusum1m(BtcResearchR11Base1m):\n    MODE = \"CUSUM\"\n"
+    },
+    {
+      "name": "BtcResearchR11Absorption1m",
+      "source": "from strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\n\n\nclass BtcResearchR11Absorption1m(BtcResearchR11Base1m):\n    MODE = \"ABSORPTION\"\n"
+    }
+  ],
+  "imported_frozen_base_hash": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+  "check_job": "ef92712c0b064c31847627f0a2827a48",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "2664ba2b-b192-47ae-95aa-18fd2e6a4d9e",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery C | BtcResearchR11Cusum1m",
+      "description": "Señal/gestión4h,observadorM1. ProtocoloCprevio:2hipótesis,sinrejilla. Fee.00045+funding,riesgo2/6/3,slippage0. Desarrolloobservado2020–25,noOOS.",
+      "description_truncated": false,
+      "created_at": 1792605641000,
+      "updated_at": 1792605641000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "BtcResearchR11Cusum1m",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/2664ba2b-b192-47ae-95aa-18fd2e6a4d9e"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "e8af10d8-200f-4d21-b5dd-b59daa7b116b",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery C | BtcResearchR11Absorption1m",
+      "description": "Señal/gestión4h,observadorM1. ProtocoloCprevio:2hipótesis,sinrejilla. Fee.00045+funding,riesgo2/6/3,slippage0. Desarrolloobservado2020–25,noOOS.",
+      "description_truncated": false,
+      "created_at": 1792605641000,
+      "updated_at": 1792605641000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "BtcResearchR11Absorption1m",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/e8af10d8-200f-4d21-b5dd-b59daa7b116b"
+    }
+  ],
+  "superseded_check_job": "e8c9f57ba4a34cb58cbf08d0e9bc5f43",
+  "activity_definition": "both months at boundary close; terminal prior month"
+}

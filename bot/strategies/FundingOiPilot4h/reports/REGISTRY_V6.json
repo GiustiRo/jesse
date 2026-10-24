@@ -1,0 +1,2315 @@
+{
+  "schema": 1,
+  "cycle": "V6",
+  "status": "COMPLETE_SIN_CANDIDATA",
+  "created_at": "2026-10-21 00:50:43 UTC",
+  "protocol": "RESEARCH_PROTOCOL_V6_20261020.md",
+  "previous": "RESEARCH_PROTOCOL_V5_20261020.md",
+  "nominal_config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "economic_limit": 40,
+  "technical_limit": 6,
+  "parallel": {
+    "global_motors": 2,
+    "per_agent_max": 2,
+    "analysis_jobs": 2
+  },
+  "planned_configurations": [
+    {
+      "id": "EFFICIENCY_P",
+      "sector": "EFFICIENCY",
+      "name": "ResearchV6EfficiencyP4h",
+      "oi": false,
+      "oi_rule": "rising",
+      "stop_multiplier": 2.5,
+      "max_hold_bars": 60,
+      "target_mode": "none",
+      "efficiency_threshold": 0.35,
+      "efficiency_deltas": 24,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified"
+    },
+    {
+      "id": "EFFICIENCY_POI",
+      "sector": "EFFICIENCY",
+      "name": "ResearchV6EfficiencyOi4h",
+      "oi": true,
+      "oi_rule": "rising",
+      "stop_multiplier": 2.5,
+      "max_hold_bars": 60,
+      "target_mode": "none",
+      "efficiency_threshold": 0.35,
+      "efficiency_deltas": 24,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified"
+    },
+    {
+      "id": "DELEVERAGING_P",
+      "sector": "DELEVERAGING",
+      "name": "ResearchV6DeleverageP4h",
+      "oi": false,
+      "oi_rule": "declining",
+      "stop_multiplier": 2,
+      "max_hold_bars": 12,
+      "target_mode": "r_multiple",
+      "reward_multiple": 2,
+      "displacement_multiplier": 2,
+      "oi_decline_fraction": 0.02,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified"
+    },
+    {
+      "id": "DELEVERAGING_POI",
+      "sector": "DELEVERAGING",
+      "name": "ResearchV6DeleverageOi4h",
+      "oi": true,
+      "oi_rule": "declining",
+      "stop_multiplier": 2,
+      "max_hold_bars": 12,
+      "target_mode": "r_multiple",
+      "reward_multiple": 2,
+      "displacement_multiplier": 2,
+      "oi_decline_fraction": 0.02,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified"
+    },
+    {
+      "id": "NR7_P",
+      "sector": "NR7",
+      "name": "ResearchV6Nr7P4h",
+      "oi": false,
+      "oi_rule": "rising",
+      "stop_multiplier": 2,
+      "max_hold_bars": 24,
+      "target_mode": "r_multiple",
+      "reward_multiple": 3,
+      "narrow_window": 7,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified"
+    },
+    {
+      "id": "NR7_POI",
+      "sector": "NR7",
+      "name": "ResearchV6Nr7Oi4h",
+      "oi": true,
+      "oi_rule": "rising",
+      "stop_multiplier": 2,
+      "max_hold_bars": 24,
+      "target_mode": "r_multiple",
+      "reward_multiple": 3,
+      "narrow_window": 7,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified"
+    }
+  ],
+  "sources": {},
+  "hashes": {
+    "strategies/ResearchV6Base4h/__init__.py": "fdcd1eaffbcc7845dc5701bb04d8f2bda6317dbd2e780bfa737c8b6e770776e6",
+    "strategies/ResearchV6Base4h/common_checks.py": "eef5e609c1fad91fd995a51cf26bfe67d5f9f143f0eac87e7740055b697c8ff6",
+    "strategies/ResearchV6Base4h/efficiency_features.py": "ecfcc5fe4b77a2faee9edcdaea1bd391e33ec7fe73112e48718a2a8b90790bcf",
+    "strategies/ResearchV6EfficiencyP4h/__init__.py": "315e3a0d3edf8f6e0f7ef3665556000e98159c7286706695c3d6892c8720a3a3",
+    "strategies/ResearchV6EfficiencyOi4h/__init__.py": "e7ac140fe486446cc07bdf7029f1bae3404ae8030304542f48e17980eb4e012f",
+    "strategies/ResearchV6EfficiencySmoke4h/__init__.py": "7b2c28b0de8d3f1e5a81550f3dcec45e9a58bdfee7407f77cf159294f4e1347a",
+    "strategies/ResearchV6Base4h/deleverage_features.py": "c26a24ae275ad2c314f0177ae00cf25e6d95695294f0e5960cb5ac30d8fe011c",
+    "strategies/ResearchV6DeleverageP4h/__init__.py": "f6073c531e4ad42488d0c7335a3b02af9a91aa8e1f4bb983222d0a70eaeae8d1",
+    "strategies/ResearchV6DeleverageOi4h/__init__.py": "bac06e94c6ebfe500d2c990cb41e582fd1792e330bf89964fb72062d903e7d26",
+    "strategies/ResearchV6DeleverageSmoke4h/__init__.py": "9a77ecb9fce9687fc3d2b8cda179ba192d54805750af8b703f3b30d84f613d2e",
+    "strategies/ResearchV6Base4h/nr7_features.py": "7eb379f9934be3d544736c68a1ae4c73864f907212c0b9ad9efcffe91afea512",
+    "strategies/ResearchV6Nr7P4h/__init__.py": "bf4a9993c706a34218249b7e90608108734ed2392686060fc76ee7703605fbb5",
+    "strategies/ResearchV6Nr7Oi4h/__init__.py": "75dfd4b2faf89eb1a87c02d85a7d636c93ad6bbb0143df6d6e0f74937c77c4bf",
+    "strategies/ResearchV6Nr7Smoke4h/__init__.py": "e8a32b2075d052e866f082197e01f8abafa6fcc1633b05b7639d22d07a25f56d"
+  },
+  "technical_runs": [
+    {
+      "sector": "EFFICIENCY",
+      "session_id": "4eafad70-21a5-41c0-a300-95eb22f39981",
+      "dashboard_url": "http://localhost:9200/#/backtest/4eafad70-21a5-41c0-a300-95eb22f39981",
+      "status": "finished",
+      "audit": "PASS"
+    },
+    {
+      "sector": "DELEVERAGING",
+      "session_id": "a4264bf1-b86f-42f8-b356-f7d1a9cf17cf",
+      "dashboard_url": "http://localhost:9200/#/backtest/a4264bf1-b86f-42f8-b356-f7d1a9cf17cf",
+      "status": "finished",
+      "audit": "PASS"
+    },
+    {
+      "sector": "NR7",
+      "session_id": "3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+      "dashboard_url": "http://localhost:9200/#/backtest/3dc0cf2e-e35a-4d54-aef0-bd644138c259",
+      "status": "finished",
+      "audit": "PASS"
+    }
+  ],
+  "economic_runs": [
+    {
+      "id": "NR7_P",
+      "sector": "NR7",
+      "session_id": "2a536f25-acd0-41fc-9cf4-00204fa87f23",
+      "dashboard_url": "http://localhost:9200/#/backtest/2a536f25-acd0-41fc-9cf4-00204fa87f23",
+      "status": "finished",
+      "stage": "SCREEN",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV6Nr7P4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "screen_eligible": false,
+      "accounting": "PASS"
+    },
+    {
+      "id": "NR7_POI",
+      "sector": "NR7",
+      "session_id": "b97711e0-f25d-49a1-8803-8b5b48e3eec2",
+      "dashboard_url": "http://localhost:9200/#/backtest/b97711e0-f25d-49a1-8803-8b5b48e3eec2",
+      "status": "finished",
+      "stage": "SCREEN",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV6Nr7Oi4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "screen_eligible": false,
+      "accounting": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "sector": "EFFICIENCY",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "stage": "SCREEN",
+      "status": "finished",
+      "dashboard_url": "http://localhost:9200/#/backtest/8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "prerun": "V6_EFFICIENCY_PROGRESS.json",
+      "accounting": "PASS",
+      "screen_eligible": true
+    },
+    {
+      "id": "EFFICIENCY_POI",
+      "sector": "EFFICIENCY",
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "stage": "SCREEN",
+      "status": "finished",
+      "dashboard_url": "http://localhost:9200/#/backtest/ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "prerun": "V6_EFFICIENCY_PROGRESS.json",
+      "accounting": "PASS",
+      "screen_eligible": false
+    },
+    {
+      "id": "DELEVERAGING_P",
+      "sector": "DELEVERAGING",
+      "session_id": "2baa85a1-e673-4c84-bce9-38640f7b4e44",
+      "stage": "SCREEN",
+      "status": "finished",
+      "dashboard_url": "http://localhost:9200/#/backtest/2baa85a1-e673-4c84-bce9-38640f7b4e44",
+      "prerun": "V6_DELEVERAGING_PROGRESS.json",
+      "start_requested_at": "2026-10-21 01:15:31 UTC",
+      "accounting": "PASS",
+      "screen_eligible": false
+    },
+    {
+      "id": "DELEVERAGING_POI",
+      "sector": "DELEVERAGING",
+      "session_id": "3421d437-5eb7-4c74-8c44-9942162b7892",
+      "stage": "SCREEN",
+      "status": "finished",
+      "dashboard_url": "http://localhost:9200/#/backtest/3421d437-5eb7-4c74-8c44-9942162b7892",
+      "prerun": "V6_DELEVERAGING_PROGRESS.json",
+      "start_requested_at": "2026-10-21 01:15:52 UTC",
+      "accounting": "PASS",
+      "screen_eligible": false
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C1",
+      "stage": "EVAL",
+      "strategy": "ResearchV6EF_P_C1V",
+      "timeframe": "4h",
+      "session_id": "33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+      "dashboard_url": "http://localhost:9200/#/backtest/33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+      "status": "finished",
+      "start": "2024-01-01",
+      "finish": "2024-07-01",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV6EF_P_C1V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2024-01-01",
+        "finish_date": "2024-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      }
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C2",
+      "stage": "TRAIN",
+      "strategy": "ResearchV6EF_P_C2T",
+      "timeframe": "4h",
+      "session_id": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "dashboard_url": "http://localhost:9200/#/backtest/f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "status": "finished",
+      "start": "2020-09-01",
+      "finish": "2024-07-01",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV6EF_P_C2T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      }
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C3",
+      "stage": "TRAIN",
+      "strategy": "ResearchV6EF_P_C3T",
+      "timeframe": "4h",
+      "session_id": "520c9356-883e-48bb-970f-c1ff39345bef",
+      "dashboard_url": "http://localhost:9200/#/backtest/520c9356-883e-48bb-970f-c1ff39345bef",
+      "status": "finished",
+      "start": "2020-09-01",
+      "finish": "2025-01-01",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV6EF_P_C3T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      }
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C4",
+      "stage": "TRAIN",
+      "strategy": "ResearchV6EF_P_C4T",
+      "timeframe": "4h",
+      "session_id": "294e9945-66ee-458c-ac06-8c167ee22373",
+      "dashboard_url": "http://localhost:9200/#/backtest/294e9945-66ee-458c-ac06-8c167ee22373",
+      "status": "finished",
+      "start": "2020-09-01",
+      "finish": "2025-07-01",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV6EF_P_C4T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      }
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C2",
+      "stage": "EVAL",
+      "strategy": "ResearchV6EF_P_C2V",
+      "timeframe": "4h",
+      "session_id": "2f500b89-0097-463f-b7c2-b3e1df4deca9",
+      "dashboard_url": "http://localhost:9200/#/backtest/2f500b89-0097-463f-b7c2-b3e1df4deca9",
+      "status": "finished",
+      "start": "2024-07-01",
+      "finish": "2025-01-01"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C3",
+      "stage": "EVAL",
+      "strategy": "ResearchV6EF_P_C3V",
+      "timeframe": "4h",
+      "session_id": "b8adb512-e1ab-4433-94dd-ad7e2893fd33",
+      "dashboard_url": "http://localhost:9200/#/backtest/b8adb512-e1ab-4433-94dd-ad7e2893fd33",
+      "status": "finished",
+      "start": "2025-01-01",
+      "finish": "2025-07-01"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "fold": "C4",
+      "stage": "EVAL",
+      "strategy": "ResearchV6EF_P_C4V",
+      "timeframe": "4h",
+      "session_id": "8071ac98-42a0-474b-ab62-dab0b913def6",
+      "dashboard_url": "http://localhost:9200/#/backtest/8071ac98-42a0-474b-ab62-dab0b913def6",
+      "status": "finished",
+      "start": "2025-07-01",
+      "finish": "2026-01-01"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "REPLAY",
+      "scenario": "NOMINAL",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "timeframe": "4h",
+      "session_id": "f6f075f2-e7da-4f7b-ba2b-937456d5d127",
+      "dashboard_url": "http://localhost:9200/#/backtest/f6f075f2-e7da-4f7b-ba2b-937456d5d127",
+      "status": "finished",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "detail": "V6_REPLAY_NOMINAL_ACCOUNTING.json",
+      "accounting": "V6_REPLAY_NOMINAL_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_NOMINAL_LOG_AUDIT.json",
+      "metrics": {
+        "n": 44,
+        "net_pct": 0.27859404642975605,
+        "pf": 1.006228564773718,
+        "dd": -17.55356873541206,
+        "cagr_pct": 0.13900958325969714,
+        "replay_nominal_eligible": false,
+        "replay_nominal_gates": {
+          "net_positive": true,
+          "pf_ge_1_2": false,
+          "dd_le_25": true,
+          "trades_ge_100": false,
+          "positive_semesters_ge_3": false,
+          "cagr_ge_15": false
+        }
+      },
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "COST",
+      "scenario": "S1",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "timeframe": "4h",
+      "session_id": "f10942a7-0c80-4824-a972-7d3b284b05cf",
+      "dashboard_url": "http://localhost:9200/#/backtest/f10942a7-0c80-4824-a972-7d3b284b05cf",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "detail": "V6_REPLAY_S1_ACCOUNTING.json",
+      "accounting": "V6_REPLAY_S1_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_S1_LOG_AUDIT.json",
+      "metrics": {
+        "n": 44,
+        "net_pct": -1.9203476670482502,
+        "pf": 0.9570023848093571,
+        "dd": -18.62756126396805,
+        "cagr_pct": -0.9635148063543042,
+        "robustness_pass": false
+      },
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "COST",
+      "scenario": "S2",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "timeframe": "4h",
+      "session_id": "445894c0-a830-45f8-8214-fe1454fc56ce",
+      "dashboard_url": "http://localhost:9200/#/backtest/445894c0-a830-45f8-8214-fe1454fc56ce",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "detail": "V6_REPLAY_S2_ACCOUNTING.json",
+      "accounting": "V6_REPLAY_S2_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_S2_LOG_AUDIT.json",
+      "metrics": {
+        "n": 45,
+        "net_pct": -4.027645459893945,
+        "pf": 0.9153355089018727,
+        "dd": -20.875286995645624,
+        "cagr_pct": -2.031764336959596,
+        "robustness_pass": false
+      },
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "COST",
+      "scenario": "S3",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "timeframe": "4h",
+      "session_id": "b7019ab0-8ade-4606-997f-1ccbfd618cc6",
+      "dashboard_url": "http://localhost:9200/#/backtest/b7019ab0-8ade-4606-997f-1ccbfd618cc6",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "detail": "V6_REPLAY_S3_ACCOUNTING.json",
+      "accounting": "V6_REPLAY_S3_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_S3_LOG_AUDIT.json",
+      "metrics": {
+        "n": 45,
+        "net_pct": -7.895715460164187,
+        "pf": 0.8360467505720427,
+        "dd": -23.17131007218468,
+        "cagr_pct": -4.023623599875858,
+        "robustness_pass": false
+      },
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "NEIGHBOR",
+      "scenario": "R09",
+      "strategy": "ResearchV6EfficiencyPReplayR09_4h",
+      "timeframe": "4h",
+      "session_id": "22d643fb-40aa-4425-b2b6-34c4e7df062c",
+      "dashboard_url": "http://localhost:9200/#/backtest/22d643fb-40aa-4425-b2b6-34c4e7df062c",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "metrics": {
+        "n": 45,
+        "net_pct": -0.4546469379647299,
+        "pf": 0.9909729746903084,
+        "dd": -20.223539970855185,
+        "cagr_pct": -0.2272714615790261,
+        "robustness_pass": false
+      },
+      "accounting": "V6_REPLAY_R09_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_R09_LOG_AUDIT.json",
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "NEIGHBOR",
+      "scenario": "R11",
+      "strategy": "ResearchV6EfficiencyPReplayR11_4h",
+      "timeframe": "4h",
+      "session_id": "f140ce43-60a0-49d1-a390-2e89f722b78a",
+      "dashboard_url": "http://localhost:9200/#/backtest/f140ce43-60a0-49d1-a390-2e89f722b78a",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "metrics": {
+        "n": 44,
+        "net_pct": -0.505926481995519,
+        "pf": 0.9876997238286519,
+        "dd": -16.435890636016826,
+        "cagr_pct": -0.2529379537589249,
+        "robustness_pass": false
+      },
+      "accounting": "V6_REPLAY_R11_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_R11_LOG_AUDIT.json",
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "NEIGHBOR",
+      "scenario": "A09",
+      "strategy": "ResearchV6EfficiencyPReplayA09_4h",
+      "timeframe": "4h",
+      "session_id": "90239e02-4fc6-420a-80f5-b9a57d843138",
+      "dashboard_url": "http://localhost:9200/#/backtest/90239e02-4fc6-420a-80f5-b9a57d843138",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "metrics": {
+        "n": 50,
+        "net_pct": 10.32875759712943,
+        "pf": 1.219031789580852,
+        "dd": -14.885491515577199,
+        "cagr_pct": 5.0304351893806665,
+        "robustness_pass": true
+      },
+      "accounting": "V6_REPLAY_A09_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_A09_LOG_AUDIT.json",
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "stage": "NEIGHBOR",
+      "scenario": "A11",
+      "strategy": "ResearchV6EfficiencyPReplayA11_4h",
+      "timeframe": "4h",
+      "session_id": "67851216-8941-4fbe-a0ea-ee8ff6bf5e63",
+      "dashboard_url": "http://localhost:9200/#/backtest/67851216-8941-4fbe-a0ea-ee8ff6bf5e63",
+      "start": "2024-01-01",
+      "finish": "2026-01-01",
+      "status": "finished",
+      "metrics": {
+        "n": 41,
+        "net_pct": -2.5714332669021265,
+        "pf": 0.9370917392075132,
+        "dd": -19.858271602340615,
+        "cagr_pct": -1.292331165584193,
+        "robustness_pass": false
+      },
+      "accounting": "V6_REPLAY_A11_ACCOUNTING.json",
+      "execution_audit": "V6_REPLAY_A11_LOG_AUDIT.json",
+      "financial_status": "PASS",
+      "execution_status": "PASS"
+    }
+  ],
+  "screening": [
+    {
+      "timeframe": "4h",
+      "sharpe": 0.6011902871487419,
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "n": 148,
+      "net": 4001.659866402432,
+      "net_pct": 40.016598664024315,
+      "pf": 1.2477679070534458,
+      "pf_no_losses": false,
+      "dd": -21.86957331160556,
+      "cagr_pct": 10.622086472848169,
+      "turnover": 182.4308686631523,
+      "gross": 5639.168785988242,
+      "fees": 820.9389089841852,
+      "funding": -816.5700106016291,
+      "funding_events": 1590,
+      "proxy_funding": -765.1413650056031,
+      "exact_funding": -51.42864559602593,
+      "unclassified_funding": 0,
+      "funding_sources": {
+        "fundingRate.settlement_mark": {
+          "n": 57,
+          "cashflow": -51.42864559602593
+        },
+        "markPriceKlines.1h_open_proxy": {
+          "n": 1533,
+          "cashflow": -765.1413650056031
+        }
+      },
+      "holding_seconds": 46052580,
+      "exposure": 0.4379753263945951,
+      "directions": {
+        "long": {
+          "n": 75,
+          "gross": 7531.861806987129,
+          "fees": 428.01979595421346,
+          "funding": -1005.4317134468182,
+          "net": 6098.410297586096
+        },
+        "short": {
+          "n": 73,
+          "gross": -1892.693020998884,
+          "fees": 392.91911302997215,
+          "funding": 188.86170284518917,
+          "net": -2096.750431183668
+        }
+      },
+      "exit_order_types": {
+        "STOP": 53,
+        "MARKET": 95
+      },
+      "months": [
+        {
+          "month": "2020-09",
+          "return_pct": -3.031079709897333,
+          "end_equity": 9696.892029010267
+        },
+        {
+          "month": "2020-10",
+          "return_pct": 4.418106318957915,
+          "end_equity": 10125.311028486496
+        },
+        {
+          "month": "2020-11",
+          "return_pct": 2.5708705536040766,
+          "end_equity": 10385.619668178682
+        },
+        {
+          "month": "2020-12",
+          "return_pct": 6.625266226567494,
+          "end_equity": 11073.694620474276
+        },
+        {
+          "month": "2021-01",
+          "return_pct": 3.3303135358227154,
+          "end_equity": 11442.483371335604
+        },
+        {
+          "month": "2021-02",
+          "return_pct": 3.8202857174705285,
+          "end_equity": 11879.618929294678
+        },
+        {
+          "month": "2021-03",
+          "return_pct": 1.100801043723254,
+          "end_equity": 12010.3898984587
+        },
+        {
+          "month": "2021-04",
+          "return_pct": -0.7510725662588036,
+          "end_equity": 11920.183154830658
+        },
+        {
+          "month": "2021-05",
+          "return_pct": 1.941566153394647,
+          "end_equity": 12151.621396387502
+        },
+        {
+          "month": "2021-06",
+          "return_pct": -2.690469690884678,
+          "end_equity": 11824.685705766638
+        },
+        {
+          "month": "2021-07",
+          "return_pct": 6.029789929636964,
+          "end_equity": 12537.689413664177
+        },
+        {
+          "month": "2021-08",
+          "return_pct": -5.482865035826078,
+          "end_equity": 11850.264824501915
+        },
+        {
+          "month": "2021-09",
+          "return_pct": -0.8447920414749066,
+          "end_equity": 11750.154730370823
+        },
+        {
+          "month": "2021-10",
+          "return_pct": 1.8412384476685473,
+          "end_equity": 11966.503096926956
+        },
+        {
+          "month": "2021-11",
+          "return_pct": -4.627152051690187,
+          "end_equity": 11412.79480336193
+        },
+        {
+          "month": "2021-12",
+          "return_pct": -0.3905068666944955,
+          "end_equity": 11368.22705597305
+        },
+        {
+          "month": "2022-01",
+          "return_pct": -1.1908030974039807,
+          "end_equity": 11232.853856070606
+        },
+        {
+          "month": "2022-02",
+          "return_pct": 2.9689317714530317,
+          "end_equity": 11566.349623044372
+        },
+        {
+          "month": "2022-03",
+          "return_pct": -1.9808613165405276,
+          "end_equity": 11337.236277625656
+        },
+        {
+          "month": "2022-04",
+          "return_pct": -3.3931028512960926,
+          "end_equity": 10952.552190231365
+        },
+        {
+          "month": "2022-05",
+          "return_pct": 7.73449679426963,
+          "end_equity": 11799.676988275518
+        },
+        {
+          "month": "2022-06",
+          "return_pct": 7.485826825576791,
+          "end_equity": 12682.980373595257
+        },
+        {
+          "month": "2022-07",
+          "return_pct": -4.4987028590637195,
+          "end_equity": 12112.410772913838
+        },
+        {
+          "month": "2022-08",
+          "return_pct": 2.0887269337731107,
+          "end_equity": 12365.405959056925
+        },
+        {
+          "month": "2022-09",
+          "return_pct": -4.399875289424404,
+          "end_equity": 11821.343517827367
+        },
+        {
+          "month": "2022-10",
+          "return_pct": -2.80081927311171,
+          "end_equity": 11490.249050239316
+        },
+        {
+          "month": "2022-11",
+          "return_pct": -7.390709056111433,
+          "end_equity": 10641.03817311352
+        },
+        {
+          "month": "2022-12",
+          "return_pct": -4.777784917728345,
+          "end_equity": 10132.632256188786
+        },
+        {
+          "month": "2023-01",
+          "return_pct": 9.372740280051328,
+          "end_equity": 11082.337561094067
+        },
+        {
+          "month": "2023-02",
+          "return_pct": 6.426296095750406,
+          "end_equity": 11794.521387100536
+        },
+        {
+          "month": "2023-03",
+          "return_pct": 1.3674424762886606,
+          "end_equity": 11955.8046824227
+        },
+        {
+          "month": "2023-04",
+          "return_pct": -0.6834509004607026,
+          "end_equity": 11874.09262766336
+        },
+        {
+          "month": "2023-05",
+          "return_pct": -9.093146047478696,
+          "end_equity": 10794.36404321703
+        },
+        {
+          "month": "2023-06",
+          "return_pct": 5.848289731379963,
+          "end_equity": 11425.649727124264
+        },
+        {
+          "month": "2023-07",
+          "return_pct": -3.6140858929048836,
+          "end_equity": 11012.716932163541
+        },
+        {
+          "month": "2023-08",
+          "return_pct": 3.6217376623109754,
+          "end_equity": 11411.568648939405
+        },
+        {
+          "month": "2023-09",
+          "return_pct": -1.6407213698082845,
+          "end_equity": 11224.336603485914
+        },
+        {
+          "month": "2023-10",
+          "return_pct": 25.723679875654092,
+          "end_equity": 14111.649019532497
+        },
+        {
+          "month": "2023-11",
+          "return_pct": -7.253464717195335,
+          "end_equity": 13088.065536886266
+        },
+        {
+          "month": "2023-12",
+          "return_pct": 6.980361818493108,
+          "end_equity": 14001.659866402431
+        }
+      ],
+      "years": [
+        {
+          "year": 2020,
+          "return_pct": 10.73694620474277,
+          "end_equity": 11073.694620474276,
+          "full_year": false
+        },
+        {
+          "year": 2021,
+          "return_pct": 2.659748580696908,
+          "end_equity": 11368.22705597305,
+          "full_year": true
+        },
+        {
+          "year": 2022,
+          "return_pct": -10.86884343267107,
+          "end_equity": 10132.632256188786,
+          "full_year": true
+        },
+        {
+          "year": 2023,
+          "return_pct": 38.18383527982603,
+          "end_equity": 14001.659866402431,
+          "full_year": true
+        }
+      ],
+      "semesters": [
+        {
+          "period": "2020H2",
+          "return_pct": 10.73694620474277,
+          "end_equity": 11073.694620474276,
+          "full_semester": false
+        },
+        {
+          "period": "2021H1",
+          "return_pct": 6.7817572276541505,
+          "end_equity": 11824.685705766638,
+          "full_semester": true
+        },
+        {
+          "period": "2021H2",
+          "return_pct": -3.860218031596252,
+          "end_equity": 11368.22705597305,
+          "full_semester": true
+        },
+        {
+          "period": "2022H1",
+          "return_pct": 11.565157092208288,
+          "end_equity": 12682.980373595257,
+          "full_semester": true
+        },
+        {
+          "period": "2022H2",
+          "return_pct": -20.10842910958097,
+          "end_equity": 10132.632256188786,
+          "full_semester": true
+        },
+        {
+          "period": "2023H1",
+          "return_pct": 12.760923699226634,
+          "end_equity": 11425.649727124264,
+          "full_semester": true
+        },
+        {
+          "period": "2023H2",
+          "return_pct": 22.545852540558542,
+          "end_equity": 14001.659866402431,
+          "full_semester": true
+        }
+      ],
+      "replay_nominal_gates": null,
+      "replay_nominal_eligible": null,
+      "funding_sensitivities": [
+        {
+          "kind": "proxy_only",
+          "multiplier": 0.5,
+          "net_usdt": 4384.230548905233,
+          "net_pct": 43.842305489052336,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "proxy_only",
+          "multiplier": 1.5,
+          "net_usdt": 3619.0891838996304,
+          "net_pct": 36.1908918389963,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 0.5,
+          "net_usdt": 4409.9448717032465,
+          "net_pct": 44.099448717032466,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 1.5,
+          "net_usdt": 3593.374861101617,
+          "net_pct": 35.93374861101617,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        }
+      ],
+      "screen_year_gate": true,
+      "base_eligible": true,
+      "screen_eligible": true,
+      "positive_pnl": 20152.500037721456,
+      "negative_pnl": -16150.840171319025,
+      "best_trade": 2753.592686211268,
+      "worst_trade": -309.0093647804355,
+      "adjusted_fills": 0,
+      "curve_terminal_delta": 9.094947017729282e-12,
+      "sampled_dd_including_terminal_pct": -21.86957331160547,
+      "equity_points": 1218,
+      "equity_evidence": "full_daily",
+      "max_accounting_error": 9.094947017729282e-12,
+      "metric_open_indicator": 0,
+      "metric_open_pl": 0
+    },
+    {
+      "timeframe": "4h",
+      "sharpe": 0.2689404499575097,
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "strategy": "ResearchV6EfficiencyOi4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "n": 119,
+      "net": 1133.9259984024784,
+      "net_pct": 11.339259984024784,
+      "pf": 1.081463542399454,
+      "pf_no_losses": false,
+      "dd": -30.780642380756753,
+      "cagr_pct": 3.273920972762001,
+      "turnover": 138.62637629706876,
+      "gross": 2485.000984252267,
+      "fees": 623.8186933368095,
+      "funding": -727.2562925129787,
+      "funding_events": 1196,
+      "proxy_funding": -685.7539624891745,
+      "exact_funding": -41.5023300238043,
+      "unclassified_funding": 0,
+      "funding_sources": {
+        "fundingRate.settlement_mark": {
+          "n": 46,
+          "cashflow": -41.5023300238043
+        },
+        "markPriceKlines.1h_open_proxy": {
+          "n": 1150,
+          "cashflow": -685.7539624891745
+        }
+      },
+      "holding_seconds": 34596360,
+      "exposure": 0.329022870446453,
+      "directions": {
+        "long": {
+          "n": 64,
+          "gross": 4290.411395649738,
+          "fees": 345.3048021254407,
+          "funding": -870.1542017669397,
+          "net": 3074.952391757358
+        },
+        "short": {
+          "n": 55,
+          "gross": -1805.410411397471,
+          "fees": 278.5138912113686,
+          "funding": 142.897909253961,
+          "net": -1941.026393354879
+        }
+      },
+      "exit_order_types": {
+        "MARKET": 68,
+        "STOP": 51
+      },
+      "months": [
+        {
+          "month": "2020-09",
+          "return_pct": 0.4601883895350545,
+          "end_equity": 10046.018838953505
+        },
+        {
+          "month": "2020-10",
+          "return_pct": 4.715787917631853,
+          "end_equity": 10519.767781563894
+        },
+        {
+          "month": "2020-11",
+          "return_pct": 4.6462514763169205,
+          "end_equity": 11008.54264741992
+        },
+        {
+          "month": "2020-12",
+          "return_pct": 4.459558155946497,
+          "end_equity": 11499.475008903783
+        },
+        {
+          "month": "2021-01",
+          "return_pct": 10.795443098961721,
+          "end_equity": 12740.894290169314
+        },
+        {
+          "month": "2021-02",
+          "return_pct": 3.3686634675084592,
+          "end_equity": 13170.092141556119
+        },
+        {
+          "month": "2021-03",
+          "return_pct": 1.1008010996799822,
+          "end_equity": 13315.068660679237
+        },
+        {
+          "month": "2021-04",
+          "return_pct": -4.791659122251424,
+          "end_equity": 12677.05595856576
+        },
+        {
+          "month": "2021-05",
+          "return_pct": 2.022213691863506,
+          "end_equity": 12933.413119885074
+        },
+        {
+          "month": "2021-06",
+          "return_pct": -5.34406972653202,
+          "end_equity": 12242.242504737975
+        },
+        {
+          "month": "2021-07",
+          "return_pct": -1.4167888520208782,
+          "end_equity": 12068.795777693485
+        },
+        {
+          "month": "2021-08",
+          "return_pct": -5.7852487481557695,
+          "end_equity": 11370.585921046997
+        },
+        {
+          "month": "2021-09",
+          "return_pct": -1.7015004758994312,
+          "end_equity": 11177.115347487828
+        },
+        {
+          "month": "2021-10",
+          "return_pct": 0.0998990938184896,
+          "end_equity": 11188.281184435016
+        },
+        {
+          "month": "2021-11",
+          "return_pct": -4.627152177710636,
+          "end_equity": 10670.582387961042
+        },
+        {
+          "month": "2021-12",
+          "return_pct": 0.7467172700313052,
+          "end_equity": 10750.261469464866
+        },
+        {
+          "month": "2022-01",
+          "return_pct": -2.6293545677027907,
+          "end_equity": 10467.598978477497
+        },
+        {
+          "month": "2022-02",
+          "return_pct": 1.4774296396514508,
+          "end_equity": 10622.250388345377
+        },
+        {
+          "month": "2022-03",
+          "return_pct": -1.98086127828776,
+          "end_equity": 10411.838343519872
+        },
+        {
+          "month": "2022-04",
+          "return_pct": -3.39310302593403,
+          "end_equity": 10058.55394163054
+        },
+        {
+          "month": "2022-05",
+          "return_pct": 7.734496775498245,
+          "end_equity": 10836.532471907705
+        },
+        {
+          "month": "2022-06",
+          "return_pct": 7.19908421182911,
+          "end_equity": 11616.663570202549
+        },
+        {
+          "month": "2022-07",
+          "return_pct": -5.353527630232213,
+          "end_equity": 10994.762276260635
+        },
+        {
+          "month": "2022-08",
+          "return_pct": 2.088726951065212,
+          "end_equity": 11224.412839130442
+        },
+        {
+          "month": "2022-09",
+          "return_pct": -4.3998752206356855,
+          "end_equity": 10730.552679959692
+        },
+        {
+          "month": "2022-10",
+          "return_pct": -2.785402609711962,
+          "end_equity": 10431.663585575578
+        },
+        {
+          "month": "2022-11",
+          "return_pct": -4.036156543730474,
+          "end_equity": 10010.62531314642
+        },
+        {
+          "month": "2022-12",
+          "return_pct": -3.13252785987318,
+          "end_equity": 9697.039686264592
+        },
+        {
+          "month": "2023-01",
+          "return_pct": 9.569714569116794,
+          "end_equity": 10625.018705894092
+        },
+        {
+          "month": "2023-02",
+          "return_pct": 6.4262962143175395,
+          "end_equity": 11307.813880761494
+        },
+        {
+          "month": "2023-03",
+          "return_pct": 1.810094893624803,
+          "end_equity": 11512.496042397755
+        },
+        {
+          "month": "2023-04",
+          "return_pct": -2.817874762155592,
+          "end_equity": 11188.088321924868
+        },
+        {
+          "month": "2023-05",
+          "return_pct": -7.582825051629305,
+          "end_equity": 10339.715157851537
+        },
+        {
+          "month": "2023-06",
+          "return_pct": 5.848289621311231,
+          "end_equity": 10944.411646301312
+        },
+        {
+          "month": "2023-07",
+          "return_pct": -3.6140858538491583,
+          "end_equity": 10548.871213205317
+        },
+        {
+          "month": "2023-08",
+          "return_pct": 4.793241961753614,
+          "end_equity": 11054.50413468802
+        },
+        {
+          "month": "2023-09",
+          "return_pct": -2.8174029661091504,
+          "end_equity": 10743.054207308662
+        },
+        {
+          "month": "2023-10",
+          "return_pct": 1.1913374783879105,
+          "end_equity": 10871.040238403859
+        },
+        {
+          "month": "2023-11",
+          "return_pct": -4.248669779595082,
+          "end_equity": 10409.165637067174
+        },
+        {
+          "month": "2023-12",
+          "return_pct": 6.96271331060796,
+          "end_equity": 11133.92599840248
+        }
+      ],
+      "years": [
+        {
+          "year": 2020,
+          "return_pct": 14.994750089037833,
+          "end_equity": 11499.475008903783,
+          "full_year": false
+        },
+        {
+          "year": 2021,
+          "return_pct": -6.5151977708444715,
+          "end_equity": 10750.261469464866,
+          "full_year": true
+        },
+        {
+          "year": 2022,
+          "return_pct": -9.797173642630497,
+          "end_equity": 9697.039686264592,
+          "full_year": true
+        },
+        {
+          "year": 2023,
+          "return_pct": 14.817783144408182,
+          "end_equity": 11133.92599840248,
+          "full_year": true
+        }
+      ],
+      "semesters": [
+        {
+          "period": "2020H2",
+          "return_pct": 14.994750089037833,
+          "end_equity": 11499.475008903783,
+          "full_semester": false
+        },
+        {
+          "period": "2021H1",
+          "return_pct": 6.459142658765593,
+          "end_equity": 12242.242504737975,
+          "full_semester": true
+        },
+        {
+          "period": "2021H2",
+          "return_pct": -12.187154720188598,
+          "end_equity": 10750.261469464866,
+          "full_semester": true
+        },
+        {
+          "period": "2022H1",
+          "return_pct": 8.059358399780493,
+          "end_equity": 11616.663570202549,
+          "full_semester": true
+        },
+        {
+          "period": "2022H2",
+          "return_pct": -16.52474372126872,
+          "end_equity": 9697.039686264592,
+          "full_semester": true
+        },
+        {
+          "period": "2023H1",
+          "return_pct": 12.863430494190563,
+          "end_equity": 10944.411646301312,
+          "full_semester": true
+        },
+        {
+          "period": "2023H2",
+          "return_pct": 1.7316084064255222,
+          "end_equity": 11133.92599840248,
+          "full_semester": true
+        }
+      ],
+      "replay_nominal_gates": null,
+      "replay_nominal_eligible": null,
+      "funding_sensitivities": [
+        {
+          "kind": "proxy_only",
+          "multiplier": 0.5,
+          "net_usdt": 1476.8029796470655,
+          "net_pct": 14.768029796470655,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "proxy_only",
+          "multiplier": 1.5,
+          "net_usdt": 791.0490171578912,
+          "net_pct": 7.910490171578911,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 0.5,
+          "net_usdt": 1497.5541446589677,
+          "net_pct": 14.975541446589677,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 1.5,
+          "net_usdt": 770.297852145989,
+          "net_pct": 7.70297852145989,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        }
+      ],
+      "screen_year_gate": false,
+      "base_eligible": false,
+      "screen_eligible": false,
+      "positive_pnl": 15053.355046089937,
+      "negative_pnl": -13919.429047687458,
+      "best_trade": 1334.6024145721005,
+      "worst_trade": -342.576774912786,
+      "adjusted_fills": 0,
+      "curve_terminal_delta": 3.637978807091713e-12,
+      "sampled_dd_including_terminal_pct": -30.780642380756806,
+      "equity_points": 1218,
+      "equity_evidence": "full_daily",
+      "max_accounting_error": 3.637978807091713e-12,
+      "metric_open_indicator": 0,
+      "metric_open_pl": 0
+    }
+  ],
+  "finalists": [
+    {
+      "id": "EFFICIENCY_P",
+      "sector": "EFFICIENCY",
+      "name": "ResearchV6EfficiencyP4h",
+      "oi": false,
+      "oi_rule": "rising",
+      "stop_multiplier": 2.5,
+      "max_hold_bars": 60,
+      "target_mode": "none",
+      "efficiency_threshold": 0.35,
+      "efficiency_deltas": 24,
+      "timeframe": "4h",
+      "start": "2020-09-01",
+      "finish": "2024-01-01",
+      "stage": "SCREEN",
+      "status": "specified",
+      "rank": 1,
+      "screen_session": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "screen_metrics": {
+        "n": 148,
+        "net": 4001.659866402432,
+        "pf": 1.2477679070534458,
+        "dd": -21.86957331160556,
+        "turnover": 182.4308686631523
+      }
+    }
+  ],
+  "selections": [
+    {
+      "cycle": "V6",
+      "fold": "C1",
+      "recorded_at": "2026-10-21 01:26:14 UTC",
+      "eval_start": "2024-01-01",
+      "eval_finish": "2024-07-01",
+      "train_start": "2020-09-01",
+      "train_finish": "2024-01-01",
+      "shortlist_file": "FROZEN_SHORTLIST_V6.md",
+      "train_reused": true,
+      "candidates": [
+        {
+          "id": "EFFICIENCY_P",
+          "strategy": "ResearchV6EfficiencyP4h",
+          "train_session": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+          "eligible": true,
+          "n": 148,
+          "net": 4001.659866402432,
+          "pf": 1.2477679070534458,
+          "dd": -21.86957331160556,
+          "turnover": 182.4308686631523
+        }
+      ],
+      "selected": "ResearchV6EfficiencyP4h",
+      "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+      "all_train_eligible": true,
+      "evals_started": false
+    },
+    {
+      "cycle": "V6",
+      "fold": "C2",
+      "recorded_at": "2026-10-21 01:32:12 UTC",
+      "eval_start": "2024-07-01",
+      "eval_finish": "2025-01-01",
+      "train_start": "2020-09-01",
+      "train_finish": "2024-07-01",
+      "shortlist_file": "FROZEN_SHORTLIST_V6.md",
+      "train_reused": false,
+      "candidates": [
+        {
+          "id": "EFFICIENCY_P",
+          "strategy": "ResearchV6EfficiencyP4h",
+          "train_strategy": "ResearchV6EF_P_C2T",
+          "train_session": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+          "eligible": true,
+          "n": 167,
+          "net": 5290.85564201333,
+          "pf": 1.2884309918012082,
+          "dd": -21.86957331160556,
+          "turnover": 214.4015201159211
+        }
+      ],
+      "selected": "ResearchV6EfficiencyP4h",
+      "status": "SELECTED",
+      "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+      "all_train_eligible": true,
+      "evals_started": false,
+      "evals_created": false,
+      "train_gates": {
+        "n_ge_30": true,
+        "net_positive": true,
+        "pf_ge_1_2": true,
+        "dd_le_25": true
+      },
+      "annual_or_CAGR_gate_applied": false,
+      "financial_audit": "V6_C2_TRAIN_ACCOUNTING.json",
+      "log_audit": "V6_C2_TRAIN_LOG_AUDIT.json"
+    },
+    {
+      "cycle": "V6",
+      "fold": "C3",
+      "recorded_at": "2026-10-21 01:37:37 UTC",
+      "eval_start": "2025-01-01",
+      "eval_finish": "2025-07-01",
+      "train_start": "2020-09-01",
+      "train_finish": "2025-01-01",
+      "shortlist_file": "FROZEN_SHORTLIST_V6.md",
+      "train_reused": false,
+      "candidates": [
+        {
+          "id": "EFFICIENCY_P",
+          "strategy": "ResearchV6EfficiencyP4h",
+          "train_strategy": "ResearchV6EF_P_C3T",
+          "train_session": "520c9356-883e-48bb-970f-c1ff39345bef",
+          "eligible": false,
+          "n": 192,
+          "net": 4040.667703195422,
+          "pf": 1.180277772196678,
+          "dd": -21.86957331160556,
+          "turnover": 255.65589220964642
+        }
+      ],
+      "selected": null,
+      "status": "SIN_CANDIDATA",
+      "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+      "all_train_eligible": false,
+      "evals_started": false,
+      "evals_created": false,
+      "train_gates": {
+        "n_ge_30": true,
+        "net_positive": true,
+        "pf_ge_1_2": false,
+        "dd_le_25": true
+      },
+      "annual_or_CAGR_gate_applied": false,
+      "financial_audit": "V6_C3_TRAIN_ACCOUNTING.json",
+      "log_audit": "V6_C3_TRAIN_LOG_AUDIT.json"
+    },
+    {
+      "cycle": "V6",
+      "fold": "C4",
+      "recorded_at": "2026-10-21 01:40:46 UTC",
+      "eval_start": "2025-07-01",
+      "eval_finish": "2026-01-01",
+      "train_start": "2020-09-01",
+      "train_finish": "2025-07-01",
+      "shortlist_file": "FROZEN_SHORTLIST_V6.md",
+      "train_reused": false,
+      "candidates": [
+        {
+          "id": "EFFICIENCY_P",
+          "strategy": "ResearchV6EfficiencyP4h",
+          "train_strategy": "ResearchV6EF_P_C4T",
+          "train_session": "294e9945-66ee-458c-ac06-8c167ee22373",
+          "eligible": false,
+          "n": 216,
+          "net": 1701.1308409600956,
+          "pf": 1.0649276437487547,
+          "dd": -31.494457900852357,
+          "turnover": 295.8491646399135
+        }
+      ],
+      "selected": null,
+      "status": "SIN_CANDIDATA",
+      "ranking_rule": "absDD asc,PF desc,turnover asc,OI count asc,ID lex",
+      "all_train_eligible": false,
+      "evals_started": false,
+      "evals_created": false,
+      "train_gates": {
+        "n_ge_30": true,
+        "net_positive": true,
+        "pf_ge_1_2": false,
+        "dd_le_25": false
+      },
+      "annual_or_CAGR_gate_applied": false,
+      "financial_audit": "V6_C4_TRAIN_ACCOUNTING.json",
+      "log_audit": "V6_C4_TRAIN_LOG_AUDIT.json"
+    }
+  ],
+  "incidents": [],
+  "dependency": {
+    "name": "ResearchV2Core4h",
+    "sha256": "577b84ebd15f27f5f598af5a4d1a3d3ed98313797656206c7691d29ad877564b",
+    "scope": "_bucket,_log_json,should_long/short,_enter,go_long/short,on_close_position,should_cancel_entry; all clock-coupled hooks overridden",
+    "final_readback_equal": true
+  },
+  "static_validation": {
+    "job": "8fb7450db3a34c28a5241d1226a11722",
+    "checks": {
+      "common_checks.py": {
+        "status": "passed",
+        "assertions": 67
+      },
+      "efficiency_features.py": {
+        "status": "passed",
+        "assertions": 112
+      },
+      "deleverage_features.py": {
+        "status": "passed",
+        "assertions": 70
+      },
+      "nr7_features.py": {
+        "status": "passed",
+        "assertions": 89
+      }
+    },
+    "compiled_files": 14
+  },
+  "source_snapshot": "V6_IMPLEMENTATION_SOURCE_20261020.md",
+  "technical_unique_count": 3,
+  "motor_owner": "none; all V5/V6 research sessions finished",
+  "shortlist_frozen_at": "2026-10-21 01:25:19 UTC",
+  "screening_ranking": [
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "n": 148,
+      "net_pct": 40.016598664024315,
+      "pf": 1.2477679070534458,
+      "dd": -21.86957331160556,
+      "cagr_pct": 10.622086472848169,
+      "turnover": 182.4308686631523,
+      "year_gate": true,
+      "eligible": true
+    },
+    {
+      "id": "EFFICIENCY_POI",
+      "strategy": "ResearchV6EfficiencyOi4h",
+      "session_id": "ea02b35f-28ba-480a-a0b5-bac3a5772b3c",
+      "n": 119,
+      "net_pct": 11.339259984024784,
+      "pf": 1.081463542399454,
+      "dd": -30.780642380756753,
+      "cagr_pct": 3.273920972762001,
+      "turnover": 138.62637629706876,
+      "year_gate": false,
+      "eligible": false
+    },
+    {
+      "id": "DELEVERAGING_P",
+      "strategy": "ResearchV6DeleverageP4h",
+      "session_id": "2baa85a1-e673-4c84-bce9-38640f7b4e44",
+      "n": 236,
+      "net_pct": -17.430154719343893,
+      "pf": 0.88534836190845,
+      "dd": -35.99195110216294,
+      "cagr_pct": -5.58233063594521,
+      "turnover": 207.09999236574,
+      "year_gate": true,
+      "eligible": false
+    },
+    {
+      "id": "DELEVERAGING_POI",
+      "strategy": "ResearchV6DeleverageOi4h",
+      "session_id": "3421d437-5eb7-4c74-8c44-9942162b7892",
+      "n": 86,
+      "net_pct": -28.89680546496358,
+      "pf": 0.5459785372458154,
+      "dd": -32.061812944205414,
+      "cagr_pct": -9.722628836821222,
+      "turnover": 69.19966385308935,
+      "year_gate": false,
+      "eligible": false
+    },
+    {
+      "id": "NR7_P",
+      "strategy": "ResearchV6Nr7P4h",
+      "session_id": "2a536f25-acd0-41fc-9cf4-00204fa87f23",
+      "n": 269,
+      "net_pct": 56.205783996240406,
+      "pf": 1.1776787714350028,
+      "dd": -35.07657157077833,
+      "cagr_pct": 14.31236694662481,
+      "turnover": 371.2608452394075,
+      "year_gate": true,
+      "eligible": false
+    },
+    {
+      "id": "NR7_POI",
+      "strategy": "ResearchV6Nr7Oi4h",
+      "session_id": "b97711e0-f25d-49a1-8803-8b5b48e3eec2",
+      "n": 203,
+      "net_pct": 13.886487592275625,
+      "pf": 1.0591134914513776,
+      "dd": -30.318212899038976,
+      "cagr_pct": 3.976936943599796,
+      "turnover": 256.9750292899799,
+      "year_gate": true,
+      "eligible": false
+    }
+  ],
+  "confirmation_wrapper_verification": "V6_CONFIRMATION_WRAPPERS_VERIFIED.json",
+  "confirmation_trains": [
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_session": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "eligible": true,
+      "n": 148,
+      "net": 4001.659866402432,
+      "pf": 1.2477679070534458,
+      "dd": -21.86957331160556,
+      "turnover": 182.4308686631523,
+      "fold": "C1"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_strategy": "ResearchV6EF_P_C2T",
+      "train_session": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "eligible": true,
+      "n": 167,
+      "net": 5290.85564201333,
+      "pf": 1.2884309918012082,
+      "dd": -21.86957331160556,
+      "turnover": 214.4015201159211,
+      "fold": "C2"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_strategy": "ResearchV6EF_P_C3T",
+      "train_session": "520c9356-883e-48bb-970f-c1ff39345bef",
+      "eligible": false,
+      "n": 192,
+      "net": 4040.667703195422,
+      "pf": 1.180277772196678,
+      "dd": -21.86957331160556,
+      "turnover": 255.65589220964642,
+      "fold": "C3"
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_strategy": "ResearchV6EF_P_C4T",
+      "train_session": "294e9945-66ee-458c-ac06-8c167ee22373",
+      "eligible": false,
+      "n": 216,
+      "net": 1701.1308409600956,
+      "pf": 1.0649276437487547,
+      "dd": -31.494457900852357,
+      "turnover": 295.8491646399135,
+      "fold": "C4"
+    }
+  ],
+  "confirmation_slots": [
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_session": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "eligible": true,
+      "n": 148,
+      "net": 4001.659866402432,
+      "pf": 1.2477679070534458,
+      "dd": -21.86957331160556,
+      "turnover": 182.4308686631523,
+      "fold": "C1",
+      "stage": "TRAIN",
+      "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+      "reused": true
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_strategy": "ResearchV6EF_P_C2T",
+      "train_session": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "eligible": true,
+      "n": 167,
+      "net": 5290.85564201333,
+      "pf": 1.2884309918012082,
+      "dd": -21.86957331160556,
+      "turnover": 214.4015201159211,
+      "fold": "C2",
+      "stage": "TRAIN",
+      "session_id": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+      "reused": false
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_strategy": "ResearchV6EF_P_C3T",
+      "train_session": "520c9356-883e-48bb-970f-c1ff39345bef",
+      "eligible": false,
+      "n": 192,
+      "net": 4040.667703195422,
+      "pf": 1.180277772196678,
+      "dd": -21.86957331160556,
+      "turnover": 255.65589220964642,
+      "fold": "C3",
+      "stage": "TRAIN",
+      "session_id": "520c9356-883e-48bb-970f-c1ff39345bef",
+      "reused": false
+    },
+    {
+      "id": "EFFICIENCY_P",
+      "strategy": "ResearchV6EfficiencyP4h",
+      "train_strategy": "ResearchV6EF_P_C4T",
+      "train_session": "294e9945-66ee-458c-ac06-8c167ee22373",
+      "eligible": false,
+      "n": 216,
+      "net": 1701.1308409600956,
+      "pf": 1.0649276437487547,
+      "dd": -31.494457900852357,
+      "turnover": 295.8491646399135,
+      "fold": "C4",
+      "stage": "TRAIN",
+      "session_id": "294e9945-66ee-458c-ac06-8c167ee22373",
+      "reused": false
+    },
+    {
+      "fold": "C1",
+      "stage": "EVAL",
+      "session_id": "33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+      "reused": false,
+      "active": true
+    },
+    {
+      "fold": "C2",
+      "stage": "EVAL",
+      "session_id": "2f500b89-0097-463f-b7c2-b3e1df4deca9",
+      "reused": false,
+      "active": true
+    },
+    {
+      "fold": "C3",
+      "stage": "EVAL",
+      "session_id": "b8adb512-e1ab-4433-94dd-ad7e2893fd33",
+      "reused": false,
+      "active": false
+    },
+    {
+      "fold": "C4",
+      "stage": "EVAL",
+      "session_id": "8071ac98-42a0-474b-ab62-dab0b913def6",
+      "reused": false,
+      "active": false
+    }
+  ],
+  "confirmation_evaluations": [
+    {
+      "fold": "C1",
+      "session_id": "33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+      "strategy": "ResearchV6EF_P_C1V",
+      "n": 19,
+      "net_pct": 9.207449591655546,
+      "pf": 1.587939563327644,
+      "dd": -11.898303545129796,
+      "active": true,
+      "detail": "V6_C1_EVAL_ACCOUNTING.json"
+    },
+    {
+      "fold": "C2",
+      "session_id": "2f500b89-0097-463f-b7c2-b3e1df4deca9",
+      "strategy": "ResearchV6EF_P_C2V",
+      "n": 25,
+      "net_pct": -8.176050110714733,
+      "pf": 0.692827761076191,
+      "dd": -15.32899707252552,
+      "active": true,
+      "detail": "V6_C2_EVAL_ACCOUNTING.json"
+    },
+    {
+      "fold": "C3",
+      "session_id": "b8adb512-e1ab-4433-94dd-ad7e2893fd33",
+      "strategy": "ResearchV6EF_P_C3V",
+      "n": 24,
+      "net_pct": -16.662573661691937,
+      "pf": 0.3821934493647918,
+      "dd": -19.368134031307026,
+      "active": false,
+      "detail": "V6_C3_EVAL_ACCOUNTING.json"
+    },
+    {
+      "fold": "C4",
+      "session_id": "8071ac98-42a0-474b-ab62-dab0b913def6",
+      "strategy": "ResearchV6EF_P_C4V",
+      "n": 22,
+      "net_pct": 7.732447311853807,
+      "pf": 1.4474802523131112,
+      "dd": -8.080065271055526,
+      "active": false,
+      "detail": "V6_C4_EVAL_ACCOUNTING.json"
+    }
+  ],
+  "replay_calendar": "V6_REPLAY_CALENDAR.json",
+  "replay_source_verification": "V6_REPLAY_SOURCE_VERIFICATION.json",
+  "replay_sources": "V6_REPLAY_IMPLEMENTATION_SOURCE_20261020.md",
+  "replay_static_checks": 606,
+  "replay_nominal": [
+    {
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "session_id": "f6f075f2-e7da-4f7b-ba2b-937456d5d127",
+      "n": 44,
+      "net_pct": 0.27859404642975605,
+      "cagr_pct": 0.13900958325969714,
+      "pf": 1.006228564773718,
+      "dd": -17.55356873541206,
+      "gates": {
+        "net_positive": true,
+        "pf_ge_1_2": false,
+        "dd_le_25": true,
+        "trades_ge_100": false,
+        "positive_semesters_ge_3": false,
+        "cagr_ge_15": false
+      },
+      "eligible": false,
+      "accounting": "V6_REPLAY_NOMINAL_ACCOUNTING.json"
+    }
+  ],
+  "stress_progress": "V6_REPLAY_STRESS_BRANCH_PROGRESS.json",
+  "independent_wf_audit": "V5_V6_WF_CALENDAR_FINAL_INDEPENDENT_AUDIT.md",
+  "counts": {
+    "economic_unique": 21,
+    "nominal_slots": 23,
+    "reused_nominal_slots": 2,
+    "technical_unique": 3,
+    "total_new_engine_runs": 24,
+    "unused_economic_slots": 17,
+    "phase_slots": {
+      "SCREEN": 6,
+      "TRAIN": 4,
+      "EVAL": 4,
+      "REPLAY": 1,
+      "COST": 3,
+      "NEIGHBOR": 4,
+      "LAG": 1
+    },
+    "reuses": [
+      {
+        "slot": "C1 TRAIN",
+        "session_id": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1"
+      },
+      {
+        "slot": "LAG_NO_OI",
+        "session_id": "f6f075f2-e7da-4f7b-ba2b-937456d5d127"
+      }
+    ],
+    "max_accounting_error": 2.9103830456733704e-11
+  },
+  "stress_matrix": [
+    {
+      "scenario": "NOMINAL",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "session_id": "f6f075f2-e7da-4f7b-ba2b-937456d5d127",
+      "dashboard_url": "http://localhost:9200/#/backtest/f6f075f2-e7da-4f7b-ba2b-937456d5d127",
+      "n": 44,
+      "net_pct": 0.27859404642975605,
+      "pf": 1.006228564773718,
+      "dd": -17.55356873541206,
+      "cagr_pct": 0.13900958325969714,
+      "replay_nominal_eligible": false,
+      "replay_nominal_gates": {
+        "net_positive": true,
+        "pf_ge_1_2": false,
+        "dd_le_25": true,
+        "trades_ge_100": false,
+        "positive_semesters_ge_3": false,
+        "cagr_ge_15": false
+      },
+      "accounting": "V6_REPLAY_NOMINAL_ACCOUNTING.json",
+      "execution": "V6_REPLAY_NOMINAL_LOG_AUDIT.json",
+      "required": false
+    },
+    {
+      "scenario": "S1",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "session_id": "f10942a7-0c80-4824-a972-7d3b284b05cf",
+      "dashboard_url": "http://localhost:9200/#/backtest/f10942a7-0c80-4824-a972-7d3b284b05cf",
+      "n": 44,
+      "net_pct": -1.9203476670482502,
+      "pf": 0.9570023848093571,
+      "dd": -18.62756126396805,
+      "cagr_pct": -0.9635148063543042,
+      "robustness_pass": false,
+      "accounting": "V6_REPLAY_S1_ACCOUNTING.json",
+      "execution": "V6_REPLAY_S1_LOG_AUDIT.json",
+      "required": true
+    },
+    {
+      "scenario": "S2",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "session_id": "445894c0-a830-45f8-8214-fe1454fc56ce",
+      "dashboard_url": "http://localhost:9200/#/backtest/445894c0-a830-45f8-8214-fe1454fc56ce",
+      "n": 45,
+      "net_pct": -4.027645459893945,
+      "pf": 0.9153355089018727,
+      "dd": -20.875286995645624,
+      "cagr_pct": -2.031764336959596,
+      "robustness_pass": false,
+      "accounting": "V6_REPLAY_S2_ACCOUNTING.json",
+      "execution": "V6_REPLAY_S2_LOG_AUDIT.json",
+      "required": false
+    },
+    {
+      "scenario": "S3",
+      "strategy": "ResearchV6EfficiencyPReplay4h",
+      "session_id": "b7019ab0-8ade-4606-997f-1ccbfd618cc6",
+      "dashboard_url": "http://localhost:9200/#/backtest/b7019ab0-8ade-4606-997f-1ccbfd618cc6",
+      "n": 45,
+      "net_pct": -7.895715460164187,
+      "pf": 0.8360467505720427,
+      "dd": -23.17131007218468,
+      "cagr_pct": -4.023623599875858,
+      "robustness_pass": false,
+      "accounting": "V6_REPLAY_S3_ACCOUNTING.json",
+      "execution": "V6_REPLAY_S3_LOG_AUDIT.json",
+      "required": true
+    },
+    {
+      "scenario": "R09",
+      "strategy": "ResearchV6EfficiencyPReplayR09_4h",
+      "session_id": "22d643fb-40aa-4425-b2b6-34c4e7df062c",
+      "dashboard_url": "http://localhost:9200/#/backtest/22d643fb-40aa-4425-b2b6-34c4e7df062c",
+      "n": 45,
+      "net_pct": -0.4546469379647299,
+      "pf": 0.9909729746903084,
+      "dd": -20.223539970855185,
+      "cagr_pct": -0.2272714615790261,
+      "robustness_pass": false,
+      "accounting": "V6_REPLAY_R09_ACCOUNTING.json",
+      "execution": "V6_REPLAY_R09_LOG_AUDIT.json",
+      "required": true
+    },
+    {
+      "scenario": "R11",
+      "strategy": "ResearchV6EfficiencyPReplayR11_4h",
+      "session_id": "f140ce43-60a0-49d1-a390-2e89f722b78a",
+      "dashboard_url": "http://localhost:9200/#/backtest/f140ce43-60a0-49d1-a390-2e89f722b78a",
+      "n": 44,
+      "net_pct": -0.505926481995519,
+      "pf": 0.9876997238286519,
+      "dd": -16.435890636016826,
+      "cagr_pct": -0.2529379537589249,
+      "robustness_pass": false,
+      "accounting": "V6_REPLAY_R11_ACCOUNTING.json",
+      "execution": "V6_REPLAY_R11_LOG_AUDIT.json",
+      "required": true
+    },
+    {
+      "scenario": "A09",
+      "strategy": "ResearchV6EfficiencyPReplayA09_4h",
+      "session_id": "90239e02-4fc6-420a-80f5-b9a57d843138",
+      "dashboard_url": "http://localhost:9200/#/backtest/90239e02-4fc6-420a-80f5-b9a57d843138",
+      "n": 50,
+      "net_pct": 10.32875759712943,
+      "pf": 1.219031789580852,
+      "dd": -14.885491515577199,
+      "cagr_pct": 5.0304351893806665,
+      "robustness_pass": true,
+      "accounting": "V6_REPLAY_A09_ACCOUNTING.json",
+      "execution": "V6_REPLAY_A09_LOG_AUDIT.json",
+      "required": true
+    },
+    {
+      "scenario": "A11",
+      "strategy": "ResearchV6EfficiencyPReplayA11_4h",
+      "session_id": "67851216-8941-4fbe-a0ea-ee8ff6bf5e63",
+      "dashboard_url": "http://localhost:9200/#/backtest/67851216-8941-4fbe-a0ea-ee8ff6bf5e63",
+      "n": 41,
+      "net_pct": -2.5714332669021265,
+      "pf": 0.9370917392075132,
+      "dd": -19.858271602340615,
+      "cagr_pct": -1.292331165584193,
+      "robustness_pass": false,
+      "accounting": "V6_REPLAY_A11_ACCOUNTING.json",
+      "execution": "V6_REPLAY_A11_LOG_AUDIT.json",
+      "required": true
+    }
+  ],
+  "robustness_joint_pass": false,
+  "no_2026": true,
+  "final_decision": "FINAL_DECISION_V6.md",
+  "objective_outcome": "Performance target not reached; protocol and all required V6 tests complete.",
+  "closed_at_utc": "2026-10-21 02:14:44 UTC",
+  "independent_audit": {
+    "status": "PASS_FINAL",
+    "report": "V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md",
+    "json": "V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.json",
+    "no_material_discrepancies": true
+  },
+  "consolidated_decision": "RESEARCH_CONSOLIDATED_DECISION_20261020.md",
+  "handoff": "RESEARCH_WALK_FORWARD_HANDOFF_FINAL_V6_20261020.md"
+}

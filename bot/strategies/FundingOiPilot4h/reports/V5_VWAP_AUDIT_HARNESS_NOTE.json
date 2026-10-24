@@ -1,0 +1,11 @@
+[
+  {
+    "initial_false_checks": [
+      "actualfills exact floating equality",
+      "asof demanded published OI on PV missing record"
+    ],
+    "fix": "Compare stored weighted mean entry_price with logged broker fill within1e-8; allow explicit absent/stale null provenance in PV while retaining strict required-OI validation on PVOI.",
+    "scope": "audit only, no productive sources/jobs/reruns",
+    "final": "all checks passed both"
+  }
+]

@@ -1,0 +1,202 @@
+{
+  "cycle": "V6",
+  "status": "PASS",
+  "author": "/root/audit",
+  "job": "6250322c5af84459bc71dbff1a5c5c68",
+  "job_status": "succeeded",
+  "assertions": 606,
+  "readback_exact": 5,
+  "passed": 5,
+  "wrappers": [
+    {
+      "name": "ResearchV6EfficiencyPReplay4h",
+      "parent": "ResearchV6EfficiencyP4h",
+      "attributes": {
+        "START": 1704067200000,
+        "FINISH": 1767225600000,
+        "USE_OI": false,
+        "OI_LAG_BARS": 0,
+        "EFFICIENCY_THRESHOLD": 0.35,
+        "STOP_MULTIPLIER": 2.5,
+        "ATR_OFFSET_BARS": 0,
+        "MAX_HOLD_BARS": 60,
+        "TARGET_MODE": "none",
+        "ACTIVE_WINDOWS": [
+          [
+            1704067200000,
+            1719792000000
+          ],
+          [
+            1719792000000,
+            1735689600000
+          ]
+        ],
+        "FORCE_BOUNDARIES": [
+          1719792000000,
+          1735689600000,
+          1751328000000,
+          1767225600000
+        ]
+      },
+      "sha256": "82a4def22fffb40af0bbbf8bea24560472e5b2cbbe68c3beb4c306635f05d05f",
+      "passed": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayR09_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "attributes": {
+        "STOP_MULTIPLIER": 2.25
+      },
+      "sha256": "cab512fd681daa321e742dec5537e6818e846a0cdab091aad9f85305d8ce6849",
+      "passed": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayR11_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "attributes": {
+        "STOP_MULTIPLIER": 2.75
+      },
+      "sha256": "dad9ac84c7aced7cf406f37be9b8a111e11c3dd23448e79435605c1ceff49e44",
+      "passed": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayA09_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "attributes": {
+        "EFFICIENCY_THRESHOLD": 0.315
+      },
+      "sha256": "c994bfc526c3ed9fac4064cc31aeb79256996534f26bb5020ef10fdc56899dc5",
+      "passed": true
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayA11_4h",
+      "parent": "ResearchV6EfficiencyPReplay4h",
+      "attributes": {
+        "EFFICIENCY_THRESHOLD": 0.385
+      },
+      "sha256": "1f1f080b96a981063863f3b7b747d694ca427cc7f14cc5d7c9944a9911ccba42",
+      "passed": true
+    }
+  ],
+  "captured_hashes": {
+    "ResearchV2Core4h": "577b84ebd15f27f5f598af5a4d1a3d3ed98313797656206c7691d29ad877564b",
+    "ResearchV6Base4h": "fdcd1eaffbcc7845dc5701bb04d8f2bda6317dbd2e780bfa737c8b6e770776e6",
+    "efficiency_features": "ecfcc5fe4b77a2faee9edcdaea1bd391e33ec7fe73112e48718a2a8b90790bcf",
+    "ResearchV6EfficiencyP4h": "315e3a0d3edf8f6e0f7ef3665556000e98159c7286706695c3d6892c8720a3a3"
+  },
+  "captured_frozen_matches": [
+    {
+      "key": "ResearchV6Base4h",
+      "path": "strategies/ResearchV6Base4h/__init__.py",
+      "sha256": "fdcd1eaffbcc7845dc5701bb04d8f2bda6317dbd2e780bfa737c8b6e770776e6",
+      "matches_frozen": true,
+      "matches_registry": true
+    },
+    {
+      "key": "efficiency_features",
+      "path": "strategies/ResearchV6Base4h/efficiency_features.py",
+      "sha256": "ecfcc5fe4b77a2faee9edcdaea1bd391e33ec7fe73112e48718a2a8b90790bcf",
+      "matches_frozen": true,
+      "matches_registry": true
+    },
+    {
+      "key": "ResearchV6EfficiencyP4h",
+      "path": "strategies/ResearchV6EfficiencyP4h/__init__.py",
+      "sha256": "315e3a0d3edf8f6e0f7ef3665556000e98159c7286706695c3d6892c8720a3a3",
+      "matches_frozen": true,
+      "matches_registry": true
+    }
+  ],
+  "calendar_ref": "V6_REPLAY_CALENDAR.json",
+  "calendar_sha256": "330177d3e6ae5e5adb909b9a3c256ea0881f4aa37d44ffe186aa53409cfb661f",
+  "nominal_config_sha256": "8f9e73c52ecf50f01b6f1f3efdfa98e06081151b15820d46588b5874da5f35cb",
+  "creation_raw_refs": [
+    {
+      "name": "ResearchV6EfficiencyPReplay4h",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_created_and_populated\",\n  \"strategy_name\": \"ResearchV6EfficiencyPReplay4h\",\n  \"message\": \"Strategy 'ResearchV6EfficiencyPReplay4h' created and populated successfully\",\n  \"path\": \"strategies/ResearchV6EfficiencyPReplay4h\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayR09_4h",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_created_and_populated\",\n  \"strategy_name\": \"ResearchV6EfficiencyPReplayR09_4h\",\n  \"message\": \"Strategy 'ResearchV6EfficiencyPReplayR09_4h' created and populated successfully\",\n  \"path\": \"strategies/ResearchV6EfficiencyPReplayR09_4h\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayR11_4h",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_created_and_populated\",\n  \"strategy_name\": \"ResearchV6EfficiencyPReplayR11_4h\",\n  \"message\": \"Strategy 'ResearchV6EfficiencyPReplayR11_4h' created and populated successfully\",\n  \"path\": \"strategies/ResearchV6EfficiencyPReplayR11_4h\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayA09_4h",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_created_and_populated\",\n  \"strategy_name\": \"ResearchV6EfficiencyPReplayA09_4h\",\n  \"message\": \"Strategy 'ResearchV6EfficiencyPReplayA09_4h' created and populated successfully\",\n  \"path\": \"strategies/ResearchV6EfficiencyPReplayA09_4h\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "name": "ResearchV6EfficiencyPReplayA11_4h",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_created_and_populated\",\n  \"strategy_name\": \"ResearchV6EfficiencyPReplayA11_4h\",\n  \"message\": \"Strategy 'ResearchV6EfficiencyPReplayA11_4h' created and populated successfully\",\n  \"path\": \"strategies/ResearchV6EfficiencyPReplayA11_4h\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ],
+  "job_raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"6250322c5af84459bc71dbff1a5c5c68\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/6250322c5af84459bc71dbff1a5c5c68\",\n    \"inputs\": [],\n    \"status\": \"running\",\n    \"pid\": 10697,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:43:02+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 2,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+      }
+    ],
+    "isError": false
+  },
+  "job_status_raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"action\": \"get_analysis_job\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"6250322c5af84459bc71dbff1a5c5c68\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/6250322c5af84459bc71dbff1a5c5c68\",\n    \"inputs\": [],\n    \"status\": \"succeeded\",\n    \"pid\": 10697,\n    \"exit_code\": 0,\n    \"started_at\": \"2026-10-21T01:43:02+00:00\",\n    \"finished_at\": \"2026-10-21T01:43:02+00:00\",\n    \"timeout_minutes\": 2,\n    \"output_truncated\": false,\n    \"expires_at\": \"2026-10-22T01:43:02+00:00\",\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"artifacts\": [\n    {\n      \"path\": \"V6_REPLAY_TEST_RESULTS.json\",\n      \"size_bytes\": 38506,\n      \"kind\": \"text\"\n    }\n  ],\n  \"artifacts_truncated\": false,\n  \"output\": \"{\\\"status\\\": \\\"passed\\\", \\\"assertions\\\": 606, \\\"captured_hashes\\\": {\\\"ResearchV2Core4h\\\": \\\"577b84ebd15f27f5f598af5a4d1a3d3ed98313797656206c7691d29ad877564b\\\", \\\"ResearchV6Base4h\\\": \\\"fdcd1eaffbcc7845dc5701bb04d8f2bda6317dbd2e780bfa737c8b6e770776e6\\\", \\\"efficiency_features\\\": \\\"ecfcc5fe4b77a2faee9edcdaea1bd391e33ec7fe73112e48718a2a8b90790bcf\\\", \\\"ResearchV6EfficiencyP4h\\\": \\\"315e3a0d3edf8f6e0f7ef3665556000e98159c7286706695c3d6892c8720a3a3\\\"}, \\\"calendar_sha256\\\": \\\"330177d3e6ae5e5adb909b9a3c256ea0881f4aa37d44ffe186aa53409cfb661f\\\", \\\"nominal_config_sha256\\\": \\\"8f9e73c52ecf50f01b6f1f3efdfa98e06081151b15820d46588b5874da5f35cb\\\"}\\n\",\n  \"output_lines_returned\": 1,\n  \"earlier_output_omitted\": false,\n  \"output_truncated\": false,\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+      }
+    ],
+    "isError": false
+  },
+  "source_ref": "V6_REPLAY_IMPLEMENTATION_SOURCE_20261020.md",
+  "results_ref": "V6_REPLAY_TEST_RESULTS.json",
+  "code_ref": "V6_REPLAY_TEST_CODE.json",
+  "limitations": [
+    "Pure captured-class harness proves control and parameters, not broker fills or engine cashflow timing.",
+    "Funding motor cashflow precedes internal-boundary calendar decision by prior accounting contract; no engine run here.",
+    "Final closure may follow before_terminate; future replay ledger/logs must confirm actual fills.",
+    "C3/C4 remain inactive regardless of diagnostic eval performance; lag slot reuses nominal because OI is unused."
+  ]
+}

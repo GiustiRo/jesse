@@ -1,0 +1,17 @@
+# Tanda L: alineación de barreras nominales BTC
+
+Pregunta: ¿rechazos de niveles1000n producen una ventaja distinta de1000n+500, con la misma densidad y protección? Dos políticas, dos corridas económicas, hasta dos reemplazos exclusivamente técnicos documentados. Sin vecinos ni búsqueda de espaciado/offset. Máximo2motoresglobales y1análisispropio.
+
+Antecedente R20PaxgRoundBarrier1h usó spacing50,stopATRprevio/TP2ATR/12h;766trades ynegativo, noresultadoBTC. R20excluyóBTC. ORCHFailedRange usa canal20endógeno/ER/targetcentro; R40RepeatedBarrierPressure usa extremos10bloques2h yrepetidos tests; no equivalen a estas barrerasnominales. No sehalló duplicadoBTC de grillas.1000y500sonambosredondos: el control no representa ausencia de psicología yelcontrastesólo responde a esas dos alineaciones.1000esporcentajevariable delprecio según año: informarhistoriaextensa, noescogerelmejoraño.
+
+Cada cierre1h,26OHLCBTCcerrados/consecutivos. ATR14simple de historia antes de la barra actual (Wilderoriginal→simpleBTC adaptación explícita). Grilla nivel=1000*n+offset,offset0o500 fijo porpolítica. Enumerar TODOS los niveles en[Lactual,Hactual] inclusivo; si nohayexactamenteuno,noevento. No seleccionar nivel favorable de unabarraamplia.
+
+Conun nivel: prevClose<nivel,Highactual>=nivel+.25ATRprev yCloseactual<nivel=>short. Espejo prevClose>nivel,Lowactual<=nivel−.25ATRprev yCloseactual>nivel=>long. No ordenintrabar supuesto: sólo rechazo confirmado alclose. Consumir nivel aldisparar,aunocupado. En cada barra liberar nivelesconsumidos siabs(Cactual−nivel)>ATRprev; un nivel liberado enesa barra no puede disparar hasta otra. IgualdadATRno libera. Ventanainválidaresetestadoconsumido,sinpuentearhuecos. MARKETalclose,sincola ni reentradaenmismocierre de salida.
+
+Stop1ATRprevio congelado yTP2ATRprevio=2R, vencimiento12h desde fill en cierres1h. Es protecciónintrínseca deesta receta, no variante de riesgopararescatar resultados. SizingR10feeaware objetivo2%portrade, margen90%,floor8,3xaislado, una posiciónBTCsinpirámides; gaps/funding pueden exceder riesgoprevisto.
+
+Contrato:BTC-USDT Binance Perpetual Futures ruta1m ydatos1h,warmup2401h;[2020-10-15,2026-01-01),desarrolloreutilizado,noOOS.10k,2%/6%/3x,fee.00045porlado,fundinghistóricoBTC ON/aplicado/verificado snapshot9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571 conproxydeclarado,slippage0. Sinestres/variantesriesgo/2026nuevo/importaciones/ML/live/paper/Pi/configglobal.
+
+ObservadorR11wallet+PnLabiertoM1yfills,fronterasUTCporfasepostfunding/predecisión,noagrupaciónestricta deeventosporfecha;DDM1noextremointraminuto. Gatesr9:CAGR30,PF1.2,DD<=25%(objetivo20%),M65activos,Q80completos,medianacalendario>0incluyendoinactivos,netosinmejores2>0,N100preliminarsinconfianzaporelconteo. Aspiraciones40–50%+/M70. Ganaralcontrolno basta;cadapolíticaporseparado. NO_CUMPLEsifallaeconomía,INCONCLUSAsieconomíafavorable peroinsuficiencia. Base noautoriza operar niestresautomático.
+
+ChecksAST/sintéticos:enumeraciónincluyeextremos,rechazoespejo,offset500,ambigüedadmultinivel,consumoocupado,rearmeestrictoynorearmmismabar,ATRprevioasof/sizing. Revisiónseparada,readback/hashes/configenmanifiesto antes de economía. Auditoríadespuéssnapshotcompleto bruto−fees+funding=PNLsum=equityfinal−10k a1e−6,marcasM1/fronteras/mesesreconciliados. Guardartodoslosresultados/reportesMCP/Hubíndiceúltimo. Cerrar ambasrecetas sin barrerespaciado/offset/.25/gestión trasfallo;continuarotra pregunta material autónomamente.

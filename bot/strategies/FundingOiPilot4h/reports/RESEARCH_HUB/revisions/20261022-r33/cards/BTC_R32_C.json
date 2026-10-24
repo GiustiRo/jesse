@@ -1,0 +1,47 @@
+{
+  "id": "BTC_R32_C",
+  "title": "Contención completa frente a sólo cierre dentro",
+  "asset": "BTC",
+  "status": "cerrado",
+  "execution": "2 motores terminados; auditoría completa PASS",
+  "family": "R32 especialistas por comportamiento",
+  "question": "Contención completa frente a sólo cierre dentro",
+  "verdict": "NO_CUMPLE: ambos netos negativos y múltiples objetivos pendientes; ninguna candidata.",
+  "sessions": [
+    {
+      "name": "C_INSIDE",
+      "session_id": "6510739f-6c8d-45b4-904f-67395c95cca0",
+      "dashboard_url": "http://localhost:9200/#/backtest/6510739f-6c8d-45b4-904f-67395c95cca0",
+      "cagr": -4.048785004695721,
+      "pf": 0.8782159855084107,
+      "dd_m1_pct": 28.27699882262885,
+      "N": 523,
+      "positive_active": 25,
+      "active_months": 62,
+      "positive_quarters": 8
+    },
+    {
+      "name": "C_CLOSE_ONLY",
+      "session_id": "175b17fe-58e2-456d-ad0c-44f8cd799755",
+      "dashboard_url": "http://localhost:9200/#/backtest/175b17fe-58e2-456d-ad0c-44f8cd799755",
+      "cagr": -5.165010006205839,
+      "pf": 0.9337052240778138,
+      "dd_m1_pct": 40.93347669793578,
+      "N": 1265,
+      "positive_active": 34,
+      "active_months": 62,
+      "positive_quarters": 9
+    }
+  ],
+  "sources": [
+    {
+      "label": "Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R32_C_FINAL_20261022.md"
+    },
+    {
+      "label": "Resultados yrecibos",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R32_C_RESULTS_20261022.json"
+    }
+  ],
+  "not_independent_samples": true
+}

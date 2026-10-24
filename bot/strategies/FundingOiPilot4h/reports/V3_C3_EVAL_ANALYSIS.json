@@ -1,0 +1,51 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "07e4c8946d4e46bbae6afd785acb3124",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/07e4c8946d4e46bbae6afd785acb3124",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "03753b45-bdb2-45c9-88ca-015a2bd374c5",
+        "session_status": "finished",
+        "title": "MCP Backtest: V3 CONFIRM CHANNEL_P C3V",
+        "size_bytes": 113253
+      },
+      {
+        "name": "s1",
+        "file": "inputs/s1.json",
+        "session_type": "backtest",
+        "session_id": "2004cd16-ad77-4d80-b1bd-0e54809126bf",
+        "session_status": "finished",
+        "title": "MCP Backtest: V3 CONFIRM CHANNEL_POI C3V",
+        "size_bytes": 102278
+      }
+    ],
+    "status": "succeeded",
+    "pid": 7112,
+    "exit_code": 0,
+    "started_at": "2026-10-20T23:41:19+00:00",
+    "finished_at": "2026-10-20T23:41:19+00:00",
+    "timeout_minutes": 5,
+    "output_truncated": false,
+    "expires_at": "2026-10-21T23:41:19+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 5563,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"session_id\": \"03753b45-bdb2-45c9-88ca-015a2bd374c5\", \"strategy\": \"ResearchV3CH_P_C3V\", \"start\": \"2025-01-01\", \"finish\": \"2025-07-01\", \"n\": 25, \"net\": 187.02588568722496, \"net_pct\": 1.8702588568722496, \"pf\": 1.0828086618893322, \"pf_no_losses\": false, \"dd\": -12.378332202589137, \"cagr_pct\": 3.807373289366378, \"turnover\": 42.76188413742892, \"gross\": 378.717436824214, \"fees\": 192.42847861843015, \"funding\": 0.7369274814405897, \"funding_events\": 167, \"proxy_funding\": 0.0, \"exact_funding\": 0.7369274814405941, \"unclassified_funding\": 0.0, \"funding_sources\": {\"fundingRate.settlement_mark\": {\"n\": 167, \"cashflow\": 0.7369274814405941}}, \"holding_seconds\": 5004480.0, \"exposure\": 0.320012277470841, \"directions\": {\"short\": {\"n\": 12, \"gross\": 266.73229273256834, \"fees\": 88.20385122025414, \"funding\": 25.011173560322842, \"net\": 203.5396150726369}, \"long\": {\"n\": 13, \"gross\": 111.98514409164602, \"fees\": 104.22462739817594, \"funding\": -24.274246078882246, \"net\": -16.513729385412034}}, \"exit_order_types\": {\"MARKET\": 1, \"STOP\": 24}, \"months\": [{\"month\": \"2025-01\", \"return_pct\": -2.04874326772968, \"end_equity\": 9795.125673227032}, {\"month\": \"2025-02\", \"return_pct\": 9.759860953900713, \"end_equity\": 10751.116319193821}, {\"month\": \"2025-03\", \"return_pct\": -3.0546989279141457, \"end_equity\": 10422.702084252605}, {\"month\": \"2025-04\", \"return_pct\": 4.871062070410348, \"end_equity\": 10930.398372190502}, {\"month\": \"2025-05\", \"return_pct\": -0.9985182207355114, \"end_equity\": 10821.256352845203}, {\"month\": \"2025-06\", \"return_pct\": -5.860968879008421, \"end_equity\": 10187.025885687224}], \"years\": [{\"year\": 2025, \"return_pct\": 1.8702588568722422, \"end_equity\": 10187.025885687224, \"full_year\": false}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 2445.55635122199, \"negative_pnl\": -2258.5304655347654, \"best_trade\": 900.4436572698971, \"worst_trade\": -224.03126475262766, \"adjusted_fills\": 0, \"curve_terminal_delta\": -3.637978807091713e-12, \"sampled_dd_including_terminal_pct\": -12.378332202589126, \"equity_points\": 182, \"max_accounting_error\": 3.637978807091713e-12, \"metric_open_indicator\": 0, \"metric_open_pl\": 0.0}, {\"session_id\": \"2004cd16-ad77-4d80-b1bd-0e54809126bf\", \"strategy\": \"ResearchV3CH_OI_C3V\", \"start\": \"2025-01-01\", \"finish\": \"2025-07-01\", \"n\": 22, \"net\": 298.07282440017406, \"net_pct\": 2.9807282440017406, \"pf\": 1.1431775516196487, \"pf_no_losses\": false, \"dd\": -12.415806454100553, \"cagr_pct\": 6.1019442382445055, \"turnover\": 38.224675168097, \"gross\": 474.3514708279293, \"fees\": 172.01103825643648, \"funding\": -4.267608171318909, \"funding_events\": 146, \"proxy_funding\": 0.0, \"exact_funding\": -4.267608171318907, \"unclassified_funding\": 0.0, \"funding_sources\": {\"fundingRate.settlement_mark\": {\"n\": 146, \"cashflow\": -4.267608171318907}}, \"holding_seconds\": 4370280.0, \"exposure\": 0.2794582565991406, \"directions\": {\"short\": {\"n\": 10, \"gross\": 164.43216163099777, \"fees\": 70.44295208850855, \"funding\": 19.763205464801604, \"net\": 113.75241500729081}, \"long\": {\"n\": 12, \"gross\": 309.91930919693186, \"fees\": 101.56808616792792, \"funding\": -24.030813636120513, \"net\": 184.32040939288333}}, \"exit_order_types\": {\"MARKET\": 1, \"STOP\": 21}, \"months\": [{\"month\": \"2025-01\", \"return_pct\": -0.9386270682679609, \"end_equity\": 9906.137293173204}, {\"month\": \"2025-02\", \"return_pct\": 9.759860871533288, \"end_equity\": 10872.962510729982}, {\"month\": \"2025-03\", \"return_pct\": -3.0546990343094493, \"end_equity\": 10540.826229913884}, {\"month\": \"2025-04\", \"return_pct\": 4.871062123963821, \"end_equity\": 11054.276423952064}, {\"month\": \"2025-05\", \"return_pct\": -0.9985183617702398, \"end_equity\": 10943.897444098064}, {\"month\": \"2025-06\", \"return_pct\": -5.9012305533452825, \"end_equity\": 10298.072824400175}], \"years\": [{\"year\": 2025, \"return_pct\": 2.9807282440017513, \"end_equity\": 10298.072824400175, \"full_year\": false}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 2379.9133156526327, \"negative_pnl\": -2081.840491252459, \"best_trade\": 910.6487012304265, \"worst_trade\": -226.57028379163452, \"adjusted_fills\": 0, \"curve_terminal_delta\": 5.4569682106375694e-12, \"sampled_dd_including_terminal_pct\": -12.415806454100531, \"equity_points\": 182, \"max_accounting_error\": 5.4569682106375694e-12, \"metric_open_indicator\": 0, \"metric_open_pl\": 0.0}]\n",
+  "output_lines_returned": 1,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}

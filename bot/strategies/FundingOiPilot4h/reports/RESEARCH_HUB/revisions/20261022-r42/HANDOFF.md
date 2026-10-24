@@ -1,0 +1,3 @@
+# R42 en preparación; objetivo activo
+
+R40 cerrada sin candidata. Estado revalidado: Hubr41 y0motores activos. El turno interrumpido por la pregunta del usuario no produjo experimentos; se retoma con nueva pregunta. R42 protocolo previo guardado: sólo BTC4h, HMM persistencia rho frente mezcla IID, mismas emisiones/pesos estacionarios. Un observador sin órdenes para evaluar MSE+Brier global/00UTC/años;0economía inicialmente. No implica candidata ni reemplaza r9. geometry implementa dos fuentes nuevas; root checks y observador después.68IDseconómicos desde r9 completos, sin modificar riesgo/costos/ventana. Seguir hasta evidencia terminal/auditoría; no marcar completo/pausado/bloqueado.

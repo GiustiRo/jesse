@@ -1,0 +1,136 @@
+{
+  "sector": "FUNDING_RESET",
+  "status": "SIN_CANDIDATA",
+  "screening_window": [
+    "2020-09-01",
+    "2024-01-01"
+  ],
+  "future_v4_runs": 0,
+  "source_static_job": "7e94800d008b4cba84b7aa8f4d9ab6af",
+  "smoke_ref": "AUDIT_ResearchV4FundingSmoke1h.json",
+  "checks": {
+    "sector": 52,
+    "common": 61
+  },
+  "per_configuration": [
+    {
+      "label": "FUNDING_FP",
+      "session_id": "fa6ee4dd-4ea8-434d-84a1-dbe0249c9068",
+      "dashboard_url": "http://localhost:9200/#/backtest/fa6ee4dd-4ea8-434d-84a1-dbe0249c9068",
+      "trades": 26,
+      "net": -6.927536131915649,
+      "PF": 0.5901817434126773,
+      "DD": -12.707733842756408,
+      "audit": "passed",
+      "full_log_pages": 59,
+      "lines": 12576,
+      "max_line": 1029,
+      "events": 3651,
+      "hashes": 3651,
+      "buckets": 101,
+      "months": 40,
+      "totals": {
+        "bars": 29208,
+        "entries": 26,
+        "exits": 26,
+        "opportunities": 26
+      },
+      "primary": {
+        "funding_initialization": 1,
+        "funding_repeated": 25556,
+        "funding_no_reset": 3450,
+        "features_invalid": 78,
+        "funding_regime_reject": 95,
+        "allowed": 26,
+        "in_position_or_pending": 1,
+        "boundary_or_inactive": 1
+      },
+      "feature_reasons": {
+        "funding_initialization": 1,
+        "funding_repeated": 25557,
+        "funding_no_reset": 3450,
+        "funding_sigma_zero": 78,
+        "funding_regime_reject": 95,
+        "funding_reset": 27
+      },
+      "independent_event_recalculation": {
+        "status": "passed",
+        "errors": [],
+        "all_events": 3651,
+        "initialization": 1,
+        "sigma_zero": 78,
+        "normalized_pairs": 3572,
+        "reset_price_contexts": 122,
+        "absolute_float_tolerance": 1e-9,
+        "note": "Independent arithmetic on captured canonical rates; small tolerance compares numeric evidence only, never changes signal inequalities or strategy decisions. Price confirmation verified from all event contexts; candle source hash/static tests certify window construction."
+      },
+      "entries_checked": 26,
+      "ma24_exit_states": 21,
+      "close_reasons": {
+        "ma24_adverse": 21,
+        "stop-loss": 5
+      },
+      "window_manifest_sha256": "42eddd4ba4451418393a6c462b3d8e2984aff39bef9d76d3b3cafecd9a7db9b8"
+    },
+    {
+      "label": "FUNDING_FPOI",
+      "session_id": "786b270b-f497-4f48-b254-648ab7ea63af",
+      "dashboard_url": "http://localhost:9200/#/backtest/786b270b-f497-4f48-b254-648ab7ea63af",
+      "trades": 12,
+      "net": -7.6561495507435335,
+      "PF": 0.2682118505987321,
+      "DD": -8.551299201561037,
+      "audit": "passed",
+      "full_log_pages": 59,
+      "lines": 12410,
+      "max_line": 1025,
+      "events": 3651,
+      "hashes": 3651,
+      "buckets": 101,
+      "months": 40,
+      "totals": {
+        "bars": 29208,
+        "entries": 12,
+        "exits": 12,
+        "opportunities": 27
+      },
+      "primary": {
+        "funding_initialization": 1,
+        "funding_repeated": 25556,
+        "funding_no_reset": 3450,
+        "features_invalid": 78,
+        "funding_regime_reject": 95,
+        "oi_nonrising": 15,
+        "allowed": 12,
+        "boundary_or_inactive": 1
+      },
+      "feature_reasons": {
+        "funding_initialization": 1,
+        "funding_repeated": 25557,
+        "funding_no_reset": 3450,
+        "funding_sigma_zero": 78,
+        "funding_regime_reject": 95,
+        "funding_reset": 27
+      },
+      "independent_event_recalculation": {
+        "status": "passed",
+        "errors": [],
+        "all_events": 3651,
+        "initialization": 1,
+        "sigma_zero": 78,
+        "normalized_pairs": 3572,
+        "reset_price_contexts": 122,
+        "absolute_float_tolerance": 1e-9,
+        "note": "Independent arithmetic on captured canonical rates; small tolerance compares numeric evidence only, never changes signal inequalities or strategy decisions. Price confirmation verified from all event contexts; candle source hash/static tests certify window construction."
+      },
+      "entries_checked": 12,
+      "ma24_exit_states": 8,
+      "close_reasons": {
+        "ma24_adverse": 8,
+        "stop-loss": 4
+      },
+      "window_manifest_sha256": "42eddd4ba4451418393a6c462b3d8e2984aff39bef9d76d3b3cafecd9a7db9b8"
+    }
+  ],
+  "limitation": "Full logs traversed and all canonical event hashes checked; persisted window evidence retains start/middle/end plus entry-associated windows, original session keeps all windows. Fee/funding/order/equity financial reconciliation belongs to root. No actual maximum_hold/calendar/fold_end exit appeared in these sessions; deterministic checks cover those branches."
+}

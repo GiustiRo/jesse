@@ -1,0 +1,58 @@
+{
+  "job_id": "ac045e27ac7a4c7d97bd6f2507771464",
+  "inputs": [
+    {
+      "session_type": "backtest",
+      "session_id": "438b717c-7b5e-4589-a84a-687fa63f8645",
+      "name": "breadth"
+    },
+    {
+      "session_type": "backtest",
+      "session_id": "62c90517-9034-4b34-91af-f77457895157",
+      "name": "state"
+    },
+    {
+      "session_type": "backtest",
+      "session_id": "8b78a705-a8f3-4656-9705-e56300623ddf",
+      "name": "impulse"
+    }
+  ],
+  "result": {
+    "scope": "diagnostic of factual standalone executed entries only, not all blocked signals or a simulated union",
+    "individual": {
+      "breadth": {
+        "N": 193,
+        "time_exposed_fraction": 0.15198959792250233
+      },
+      "state": {
+        "N": 102,
+        "time_exposed_fraction": 0.52531220821662
+      },
+      "impulse": {
+        "N": 381,
+        "time_exposed_fraction": 0.3003344566993464
+      }
+    },
+    "pairs": {
+      "breadth_impulse": {
+        "a_entries_outside_b": 119,
+        "b_entries_outside_a": 330,
+        "same_close_entries": 12,
+        "same_close_same_side": 12,
+        "same_close_opposite_side": 0,
+        "overlap_time_fraction": 0.050183458800186743,
+        "boundary_policy": "occupied at both open and close instants, conservative no same-close reentry"
+      },
+      "state_impulse": {
+        "a_entries_outside_b": 60,
+        "b_entries_outside_a": 188,
+        "same_close_entries": 7,
+        "same_close_same_side": 7,
+        "same_close_opposite_side": 0,
+        "overlap_time_fraction": 0.15399925595238095,
+        "boundary_policy": "occupied at both open and close instants, conservative no same-close reentry"
+      }
+    }
+  },
+  "analysis_code": "import json,math\nnames=(\"breadth\",\"state\",\"impulse\")\ndata={n:json.load(open(\"inputs/\"+n+\".json\")) for n in names}\ntrades={n:sorted(data[n][\"trades\"],key=lambda t:t[\"opened_at\"]) for n in names}\nstart,finish=1602720000000,1767225600000\nresult={\"scope\":\"diagnostic of factual standalone executed entries only, not all blocked signals or a simulated union\",\"individual\":{},\"pairs\":{}}\nfor n,tr in trades.items():\n assert all(t[\"opened_at\"]<=t[\"closed_at\"] for t in tr)\n assert all(a[\"closed_at\"]<=b[\"opened_at\"] for a,b in zip(tr,tr[1:]))\n result[\"individual\"][n]={\"N\":len(tr),\"time_exposed_fraction\":sum(t[\"closed_at\"]-t[\"opened_at\"] for t in tr)/(finish-start)}\nfor a,b in ((\"breadth\",\"impulse\"),(\"state\",\"impulse\")):\n at,bt=trades[a],trades[b]\n def audit(entry,other):\n  occupied=[t for t in other if t[\"opened_at\"]<=entry[\"opened_at\"]<=t[\"closed_at\"]]\n  return occupied\n a_out=sum(not audit(t,bt) for t in at);b_out=sum(not audit(t,at) for t in bt)\n simultaneous=[(x,y) for x in at for y in bt if x[\"opened_at\"]==y[\"opened_at\"]]\n overlap=sum(max(0,min(x[\"closed_at\"],y[\"closed_at\"])-max(x[\"opened_at\"],y[\"opened_at\"])) for x in at for y in bt)\n result[\"pairs\"][a+\"_\"+b]={\"a_entries_outside_b\":a_out,\"b_entries_outside_a\":b_out,\n  \"same_close_entries\":len(simultaneous),\"same_close_same_side\":sum(x[\"type\"]==y[\"type\"] for x,y in simultaneous),\n  \"same_close_opposite_side\":sum(x[\"type\"]!=y[\"type\"] for x,y in simultaneous),\n  \"overlap_time_fraction\":overlap/(finish-start),\n  \"boundary_policy\":\"occupied at both open and close instants, conservative no same-close reentry\"}\njson.dump(result,open(\"output/opportunity_timing.json\",\"w\"),indent=2)\nprint(json.dumps(result))\n"
+}

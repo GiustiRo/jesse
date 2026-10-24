@@ -1,0 +1,51 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "b756edfa6fbc444286c00ff4a072047f",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/b756edfa6fbc444286c00ff4a072047f",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "1ead2e5d-d907-43b2-8e9d-925aea5e3093",
+        "session_status": "finished",
+        "title": "MCP Backtest: V3 CONFIRM CHANNEL_P C1V",
+        "size_bytes": 117133
+      },
+      {
+        "name": "s1",
+        "file": "inputs/s1.json",
+        "session_type": "backtest",
+        "session_id": "faeccf79-ea48-4d5a-93bf-8ab77a0c8095",
+        "session_status": "finished",
+        "title": "MCP Backtest: V3 CONFIRM CHANNEL_POI C1V",
+        "size_bytes": 104075
+      }
+    ],
+    "status": "succeeded",
+    "pid": 6652,
+    "exit_code": 0,
+    "started_at": "2026-10-20T23:30:49+00:00",
+    "finished_at": "2026-10-20T23:30:49+00:00",
+    "timeout_minutes": 5,
+    "output_truncated": false,
+    "expires_at": "2026-10-21T23:30:49+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 5087,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"session_id\": \"1ead2e5d-d907-43b2-8e9d-925aea5e3093\", \"strategy\": \"ResearchV3CH_P_C1V\", \"start\": \"2024-01-01\", \"finish\": \"2024-07-01\", \"n\": 25, \"net\": 1631.4625811804374, \"net_pct\": 16.314625811804373, \"pf\": 1.5872113125233145, \"pf_no_losses\": false, \"dd\": -18.35338185083333, \"cagr_pct\": 35.40331091153277, \"turnover\": 44.5295461120352, \"gross\": 2034.031660006071, \"fees\": 200.38295750415836, \"funding\": -202.1861213214751, \"funding_events\": 179, \"holding_seconds\": 5315820.0, \"exposure\": 0.3380532661782662, \"directions\": {\"long\": {\"n\": 13, \"gross\": 3045.484750726002, \"fees\": 111.28664320035752, \"funding\": -248.92232015705946, \"net\": 2685.275787368585}, \"short\": {\"n\": 12, \"gross\": -1011.4530907199312, \"fees\": 89.09631430380087, \"funding\": 46.73619883558436, \"net\": -1053.8132061881474}}, \"exit_order_types\": {\"STOP\": 23, \"MARKET\": 2}, \"months\": [{\"month\": \"2024-01\", \"return_pct\": -0.972052282186564, \"end_equity\": 9902.794771781344}, {\"month\": \"2024-02\", \"return_pct\": 31.570947623619027, \"end_equity\": 13029.200922454917}, {\"month\": \"2024-03\", \"return_pct\": 0.2257186438867409, \"end_equity\": 13058.61025808636}, {\"month\": \"2024-04\", \"return_pct\": -5.504383838398863, \"end_equity\": 12339.814225520759}, {\"month\": \"2024-05\", \"return_pct\": -6.381869752470115, \"end_equity\": 11552.303353951245}, {\"month\": \"2024-06\", \"return_pct\": 0.6852246240756532, \"end_equity\": 11631.462581180438}], \"years\": [{\"year\": 2024, \"return_pct\": 16.314625811804383, \"end_equity\": 11631.462581180438, \"full_year\": false}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 4409.7853865941415, \"negative_pnl\": -2778.3228054137035, \"best_trade\": 1790.4841709640175, \"worst_trade\": -261.17219233482183, \"adjusted_fills\": 0, \"curve_terminal_delta\": -5.4569682106375694e-12, \"sampled_dd_including_terminal_pct\": -18.353381850833316, \"equity_points\": 183, \"max_accounting_error\": 5.4569682106375694e-12, \"metric_open_indicator\": 0, \"metric_open_pl\": 0.0}, {\"session_id\": \"faeccf79-ea48-4d5a-93bf-8ab77a0c8095\", \"strategy\": \"ResearchV3CH_OI_C1V\", \"start\": \"2024-01-01\", \"finish\": \"2024-07-01\", \"n\": 22, \"net\": 1199.157983281974, \"net_pct\": 11.991579832819742, \"pf\": 1.5005596549732394, \"pf_no_losses\": false, \"dd\": -15.059590810783508, \"cagr_pct\": 25.49920988473462, \"turnover\": 38.18464009553912, \"gross\": 1560.3848616330017, \"fees\": 171.830880429926, \"funding\": -189.3959979211015, \"funding_events\": 151, \"holding_seconds\": 4504680.0, \"exposure\": 0.2864697802197802, \"directions\": {\"long\": {\"n\": 13, \"gross\": 2087.9970203020753, \"fees\": 103.86175556657793, \"funding\": -216.60536895975883, \"net\": 1767.529895775739}, \"short\": {\"n\": 9, \"gross\": -527.612158669074, \"fees\": 67.96912486334809, \"funding\": 27.20937103865734, \"net\": -568.3719124937649}}, \"exit_order_types\": {\"STOP\": 20, \"MARKET\": 2}, \"months\": [{\"month\": \"2024-01\", \"return_pct\": -4.030746377762973, \"end_equity\": 9596.925362223703}, {\"month\": \"2024-02\", \"return_pct\": 26.05800280771371, \"end_equity\": 12097.692442566144}, {\"month\": \"2024-03\", \"return_pct\": 0.17725389754348342, \"end_equity\": 12119.136073933416}, {\"month\": \"2024-04\", \"return_pct\": -4.476586221558088, \"end_equity\": 11576.612498275837}, {\"month\": \"2024-05\", \"return_pct\": -4.477622218713783, \"end_equity\": 11058.255524878641}, {\"month\": \"2024-06\", \"return_pct\": 1.2741834196753121, \"end_equity\": 11199.157983281973}], \"years\": [{\"year\": 2024, \"return_pct\": 11.991579832819731, \"end_equity\": 11199.157983281973, \"full_year\": false}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 3594.792492311838, \"negative_pnl\": -2395.6345090298637, \"best_trade\": 1567.559187059163, \"worst_trade\": -242.38271882062423, \"adjusted_fills\": 0, \"curve_terminal_delta\": -3.637978807091713e-12, \"sampled_dd_including_terminal_pct\": -15.059590810783464, \"equity_points\": 183, \"max_accounting_error\": 3.637978807091713e-12, \"metric_open_indicator\": 0, \"metric_open_pl\": 0.0}]\nLEDGER_SAMPLE [{\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1704153600000, \"rate_decimal\": 0.00065846, \"mark_price\": 44230.2, \"mark_price_source\": \"fundingRate.settlement_mark\", \"qty\": 0.2080671, \"cashflow\": -6.059708246489713, \"trade_id\": \"8f716071-45ff-48ef-99d4-50791b266b8b\", \"effective_at\": 1704153600000}, {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1704182400000, \"rate_decimal\": 0.00035179, \"mark_price\": 45494.65069858, \"mark_price_source\": \"fundingRate.settlement_mark\", \"qty\": 0.2080671, \"cashflow\": -3.3300230453933763, \"trade_id\": \"8f716071-45ff-48ef-99d4-50791b266b8b\", \"effective_at\": 1704182400000}]\n",
+  "output_lines_returned": 2,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}

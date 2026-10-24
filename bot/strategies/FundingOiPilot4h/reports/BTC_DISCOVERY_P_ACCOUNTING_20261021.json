@@ -1,0 +1,103 @@
+{
+  "job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "0aceae731d224b0585f7fe7ff6ac3d47",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/0aceae731d224b0585f7fe7ff6ac3d47",
+      "inputs": [
+        {
+          "name": "K1001",
+          "file": "inputs/K1001.json",
+          "session_type": "backtest",
+          "session_id": "94ec00b5-7541-4e9a-b685-a98160e1abd4",
+          "session_status": "finished",
+          "title": "MCP Backtest: BTC discovery P | isolated K1001",
+          "size_bytes": 774721
+        },
+        {
+          "name": "N204",
+          "file": "inputs/N204.json",
+          "session_type": "backtest",
+          "session_id": "ea5e1bd8-3ecd-4762-b03e-1f5d3e76ca61",
+          "session_status": "finished",
+          "title": "MCP Backtest: BTC discovery P | isolated N204",
+          "size_bytes": 850943
+        }
+      ],
+      "status": "succeeded",
+      "pid": 375,
+      "exit_code": 0,
+      "started_at": "2026-10-21T20:11:27+00:00",
+      "finished_at": "2026-10-21T20:11:28+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T20:11:28+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "audit.json",
+        "size_bytes": 1433,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"K1001\": {\"N\": 192, \"net\": 24528.68899066185, \"return_pct\": 245.28688990661848, \"cagr_pct\": 26.814825248722983, \"pf\": 1.848898505486726, \"dd_daily_pct\": -15.512947676546851, \"fee\": 3176.475399165878, \"funding\": -410.42128599461074, \"funding_applied\": true, \"proxy_payments\": 698, \"errors\": {\"gross_fee_funding_pnl\": 2.9103830456733704e-11, \"pnl_metrics\": -1.0913936421275139e-11, \"terminal_vs_net\": -3.2741809263825417e-11, \"funding_vs_metric\": 1.1368683772161603e-13}, \"gross\": 28115.585675822364, \"finish\": 34528.688990661816, \"raw_open_counter\": 0, \"long_pnl\": 10650.419092195123, \"short_pnl\": 13878.269898466737}, \"N204\": {\"N\": 222, \"net\": 22075.557393635347, \"return_pct\": 220.75557393635347, \"cagr_pct\": 25.035820161417078, \"pf\": 1.653015053940036, \"dd_daily_pct\": -16.77071141577334, \"fee\": 3518.650567919331, \"funding\": -308.0655272156908, \"funding_applied\": true, \"proxy_payments\": 779, \"errors\": {\"gross_fee_funding_pnl\": 7.275957614183426e-12, \"pnl_metrics\": -7.275957614183426e-12, \"terminal_vs_net\": 7.639755494892597e-11, \"funding_vs_metric\": -1.1368683772161603e-13}, \"gross\": 25902.273488770377, \"finish\": 32075.557393635423, \"raw_open_counter\": 0, \"long_pnl\": 10594.666156313726, \"short_pnl\": 11480.891237321628}}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "code": "import json,math\nimport numpy as np\nimport pandas as pd\nresults={}\nfor name in (\"K1001\",\"N204\"):\n d=json.load(open(\"inputs/\"+name+\".json\"));m=d[\"metrics\"];tr=d[\"trades\"]\n gross=sum((t[\"exit_price\"]-t[\"entry_price\"])*abs(t[\"qty\"])*(1 if t[\"type\"]==\"long\" else -1) for t in tr)\n fees=sum(t[\"fee\"] for t in tr);fund=sum(t.get(\"funding\",0) for t in tr);net=sum(t[\"PNL\"] for t in tr)\n errors={\"gross_fee_funding_pnl\":gross-fees+fund-net,\"pnl_metrics\":net-m[\"net_profit\"],\n         \"terminal_vs_net\":m[\"finishing_balance\"]-10000-net,\"funding_vs_metric\":fund-m[\"funding\"][\"cashflow\"]}\n assert all(abs(x)<1e-6 for x in errors.values()),errors\n pf=sum(t[\"PNL\"] for t in tr if t[\"PNL\"]>0)/(-sum(t[\"PNL\"] for t in tr if t[\"PNL\"]<0))\n start=pd.Timestamp(\"2020-10-15\",tz=\"UTC\");finish=pd.Timestamp(\"2026-01-01\",tz=\"UTC\")\n cagr=(m[\"finishing_balance\"]/10000)**(365/((finish-start).total_seconds()/86400))-1\n results[name]={\"N\":len(tr),\"net\":net,\"return_pct\":net/100,\"cagr_pct\":cagr*100,\"pf\":pf,\n  \"dd_daily_pct\":m[\"max_drawdown\"],\"fee\":fees,\"funding\":fund,\"funding_applied\":m[\"funding\"][\"applied\"],\n  \"proxy_payments\":m[\"funding\"][\"mark_price_proxy_count\"],\"errors\":errors,\n  \"gross\":gross,\"finish\":m[\"finishing_balance\"],\"raw_open_counter\":m[\"total_open_trades\"],\n  \"long_pnl\":sum(t[\"PNL\"] for t in tr if t[\"type\"]==\"long\"),\"short_pnl\":sum(t[\"PNL\"] for t in tr if t[\"type\"]==\"short\")}\njson.dump(results,open(\"output/audit.json\",\"w\"),indent=2)\nprint(json.dumps(results))\n",
+  "results": {
+    "K1001": {
+      "N": 192,
+      "net": 24528.68899066185,
+      "return_pct": 245.28688990661848,
+      "cagr_pct": 26.814825248722983,
+      "pf": 1.848898505486726,
+      "dd_daily_pct": -15.512947676546851,
+      "fee": 3176.475399165878,
+      "funding": -410.42128599461074,
+      "funding_applied": true,
+      "proxy_payments": 698,
+      "errors": {
+        "gross_fee_funding_pnl": 2.9103830456733704e-11,
+        "pnl_metrics": -1.0913936421275139e-11,
+        "terminal_vs_net": -3.2741809263825417e-11,
+        "funding_vs_metric": 1.1368683772161603e-13
+      },
+      "gross": 28115.585675822364,
+      "finish": 34528.688990661816,
+      "raw_open_counter": 0,
+      "long_pnl": 10650.419092195123,
+      "short_pnl": 13878.269898466737
+    },
+    "N204": {
+      "N": 222,
+      "net": 22075.557393635347,
+      "return_pct": 220.75557393635347,
+      "cagr_pct": 25.035820161417078,
+      "pf": 1.653015053940036,
+      "dd_daily_pct": -16.77071141577334,
+      "fee": 3518.650567919331,
+      "funding": -308.0655272156908,
+      "funding_applied": true,
+      "proxy_payments": 779,
+      "errors": {
+        "gross_fee_funding_pnl": 7.275957614183426e-12,
+        "pnl_metrics": -7.275957614183426e-12,
+        "terminal_vs_net": 7.639755494892597e-11,
+        "funding_vs_metric": -1.1368683772161603e-13
+      },
+      "gross": 25902.273488770377,
+      "finish": 32075.557393635423,
+      "raw_open_counter": 0,
+      "long_pnl": 10594.666156313726,
+      "short_pnl": 11480.891237321628
+    }
+  },
+  "ledger_and_months_complete_reconciled": true
+}

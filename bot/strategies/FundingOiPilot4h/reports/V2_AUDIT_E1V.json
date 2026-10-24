@@ -1,0 +1,391 @@
+{
+  "stage": "E1V",
+  "job_id": "f81e9c42202b4c8286350b8a55b8508e",
+  "inputs": [
+    {
+      "name": "s0",
+      "file": "inputs/s0.json",
+      "session_type": "backtest",
+      "session_id": "ed789043-2aa2-4714-8963-112eadbc56b8",
+      "session_status": "finished",
+      "title": "MCP Backtest: WFV1 E1V H1_P",
+      "size_bytes": 202568
+    },
+    {
+      "name": "s1",
+      "file": "inputs/s1.json",
+      "session_type": "backtest",
+      "session_id": "88e7e822-cb4d-49f7-97ab-ec5743786d29",
+      "session_status": "finished",
+      "title": "MCP Backtest: WFV1 E1V H1_POI",
+      "size_bytes": 139552
+    },
+    {
+      "name": "s2",
+      "file": "inputs/s2.json",
+      "session_type": "backtest",
+      "session_id": "456e2c59-3c00-4404-8999-c57ab3b2efb0",
+      "session_status": "finished",
+      "title": "MCP Backtest: WFV2 E1V H1_ATR_P",
+      "size_bytes": 226289
+    },
+    {
+      "name": "s3",
+      "file": "inputs/s3.json",
+      "session_type": "backtest",
+      "session_id": "a10275b7-6074-435a-980f-c76f9beb3d66",
+      "session_status": "finished",
+      "title": "MCP Backtest: WFV2 E1V H1_ATR_POI",
+      "size_bytes": 156130
+    }
+  ],
+  "rows": [
+    {
+      "session_id": "ed789043-2aa2-4714-8963-112eadbc56b8",
+      "strategy": "ResearchV1_H1_P_E1V",
+      "n": 93,
+      "id": "H1_FIXED_P",
+      "stage": "E1V",
+      "start": "2022-01-01",
+      "finish": "2022-07-01",
+      "dashboard_url": "http://localhost:9200/#/backtest/ed789043-2aa2-4714-8963-112eadbc56b8",
+      "net": -1094.4420324596413,
+      "net_pct": -10.944420324596413,
+      "pf": 0.8836627462659475,
+      "pf_no_losses": false,
+      "dd": -20.772017128420362,
+      "turnover": 155.6301403338047,
+      "gross_price": -380.19342023868455,
+      "fees": 700.3356315021208,
+      "funding": -13.91298071883538,
+      "funding_events": 132,
+      "holding_seconds": 4084800,
+      "directions": {
+        "short": {
+          "n": 55,
+          "gross": 849.1955759070488,
+          "fees": 415.34608368292675,
+          "funding": 14.687773139053423,
+          "net": 448.5372653631755
+        },
+        "long": {
+          "n": 38,
+          "gross": -1229.388996145734,
+          "fees": 284.98954781919434,
+          "funding": -28.600753857888805,
+          "net": -1542.9792978228168
+        }
+      },
+      "months": [
+        {
+          "month": "2022-01",
+          "return_pct": -18.059284800997176,
+          "end_equity": 8194.071519900283
+        },
+        {
+          "month": "2022-02",
+          "return_pct": 1.0674295385028731,
+          "end_equity": 8281.537459709749
+        },
+        {
+          "month": "2022-03",
+          "return_pct": 6.062184723145725,
+          "end_equity": 8783.579558433863
+        },
+        {
+          "month": "2022-04",
+          "return_pct": -6.057471020788863,
+          "end_equity": 8251.516772093797
+        },
+        {
+          "month": "2022-05",
+          "return_pct": 3.5959319004029044,
+          "end_equity": 8548.235695968613
+        },
+        {
+          "month": "2022-06",
+          "return_pct": 4.18007041780879,
+          "end_equity": 8905.557967540368
+        }
+      ],
+      "exit_order_types": {
+        "STOP": 49,
+        "LIMIT": 22,
+        "MARKET": 22
+      },
+      "eligible": false,
+      "positive_pnl": 8313.052104900176,
+      "negative_pnl": -9407.494137359816,
+      "best_trade": 366.7620760366735,
+      "worst_trade": -202.40309399470385,
+      "mean_net_bps": -10.036143598567802,
+      "exposure": 0.26120319214241866,
+      "gate_failures": [
+        "net>0",
+        "PF>=1.2"
+      ],
+      "max_accounting_error": 9.094947017729282e-12
+    },
+    {
+      "session_id": "88e7e822-cb4d-49f7-97ab-ec5743786d29",
+      "strategy": "ResearchV1_H1_POI_E1V",
+      "n": 59,
+      "id": "H1_FIXED_POI",
+      "stage": "E1V",
+      "start": "2022-01-01",
+      "finish": "2022-07-01",
+      "dashboard_url": "http://localhost:9200/#/backtest/88e7e822-cb4d-49f7-97ab-ec5743786d29",
+      "net": 892.2709596086581,
+      "net_pct": 8.922709596086582,
+      "pf": 1.1417465005354768,
+      "pf_no_losses": false,
+      "dd": -8.440659642267468,
+      "turnover": 118.84268571197933,
+      "gross_price": 1434.7033690907786,
+      "fees": 534.7920857039071,
+      "funding": -7.640323778212991,
+      "funding_events": 91,
+      "holding_seconds": 2877480,
+      "directions": {
+        "short": {
+          "n": 33,
+          "gross": 1629.218624001262,
+          "fees": 298.9008819023401,
+          "funding": 20.21918076559228,
+          "net": 1350.5369228645134
+        },
+        "long": {
+          "n": 26,
+          "gross": -194.51525491048363,
+          "fees": 235.891203801567,
+          "funding": -27.85950454380526,
+          "net": -458.2659632558559
+        }
+      },
+      "months": [
+        {
+          "month": "2022-01",
+          "return_pct": -5.097745856517832,
+          "end_equity": 9490.225414348217
+        },
+        {
+          "month": "2022-02",
+          "return_pct": 6.744943457072483,
+          "end_equity": 10130.335752494728
+        },
+        {
+          "month": "2022-03",
+          "return_pct": 9.063345310854952,
+          "end_equity": 11048.483062892321
+        },
+        {
+          "month": "2022-04",
+          "return_pct": -4.017826127988499,
+          "end_equity": 10604.57422364505
+        },
+        {
+          "month": "2022-05",
+          "return_pct": 2.3044086278102283,
+          "end_equity": 10848.946946997265
+        },
+        {
+          "month": "2022-06",
+          "return_pct": 0.39933841342434384,
+          "end_equity": 10892.270959608653
+        }
+      ],
+      "exit_order_types": {
+        "STOP": 27,
+        "LIMIT": 15,
+        "MARKET": 17
+      },
+      "eligible": false,
+      "positive_pnl": 7187.106854942372,
+      "negative_pnl": -6294.835895333713,
+      "best_trade": 420.0617973227109,
+      "worst_trade": -232.8626584893298,
+      "mean_net_bps": 18.17646745702055,
+      "exposure": 0.18400092081031308,
+      "gate_failures": [
+        "PF>=1.2"
+      ],
+      "max_accounting_error": 5.4569682106375694e-12
+    },
+    {
+      "session_id": "456e2c59-3c00-4404-8999-c57ab3b2efb0",
+      "strategy": "ResearchV2_H1_ATR_P_E1V",
+      "n": 90,
+      "id": "H1_ATR_P",
+      "stage": "E1V",
+      "start": "2022-01-01",
+      "finish": "2022-07-01",
+      "dashboard_url": "http://localhost:9200/#/backtest/456e2c59-3c00-4404-8999-c57ab3b2efb0",
+      "net": -428.80556509689956,
+      "net_pct": -4.288055650968996,
+      "pf": 0.9280066509693009,
+      "pf_no_losses": false,
+      "dd": -16.10447443111337,
+      "turnover": 83.35488988997109,
+      "gross_price": -42.53289901015677,
+      "fees": 375.09700450487003,
+      "funding": -11.175661581872792,
+      "funding_events": 218,
+      "holding_seconds": 6419760,
+      "directions": {
+        "short": {
+          "n": 53,
+          "gross": 135.0504391983738,
+          "fees": 211.3535240345861,
+          "funding": 14.330906422011495,
+          "net": -61.97217841420096
+        },
+        "long": {
+          "n": 37,
+          "gross": -177.58333820853048,
+          "fees": 163.74348047028397,
+          "funding": -25.506568003884286,
+          "net": -366.8333866826987
+        }
+      },
+      "months": [
+        {
+          "month": "2022-01",
+          "return_pct": -8.833452547814069,
+          "end_equity": 9116.654745218593
+        },
+        {
+          "month": "2022-02",
+          "return_pct": -1.6018315534603422,
+          "end_equity": 8970.621292889642
+        },
+        {
+          "month": "2022-03",
+          "return_pct": 6.662547147509357,
+          "end_equity": 9568.293165952928
+        },
+        {
+          "month": "2022-04",
+          "return_pct": -9.328558902765582,
+          "end_equity": 8675.709301977715
+        },
+        {
+          "month": "2022-05",
+          "return_pct": 4.64411273179921,
+          "end_equity": 9078.619022244751
+        },
+        {
+          "month": "2022-06",
+          "return_pct": 5.425664536108732,
+          "end_equity": 9571.194434903106
+        }
+      ],
+      "exit_order_types": {
+        "MARKET": 61,
+        "STOP": 22,
+        "LIMIT": 7
+      },
+      "eligible": false,
+      "positive_pnl": 5527.377483340677,
+      "negative_pnl": -5956.183048437577,
+      "best_trade": 369.64364866718523,
+      "worst_trade": -203.97914526346966,
+      "mean_net_bps": -30.37994114007735,
+      "exposure": 0.410512584407612,
+      "gate_failures": [
+        "net>0",
+        "PF>=1.2"
+      ],
+      "max_accounting_error": 5.4569682106375694e-12
+    },
+    {
+      "session_id": "a10275b7-6074-435a-980f-c76f9beb3d66",
+      "strategy": "ResearchV2_H1_ATR_POI_E1V",
+      "n": 58,
+      "id": "H1_ATR_POI",
+      "stage": "E1V",
+      "start": "2022-01-01",
+      "finish": "2022-07-01",
+      "dashboard_url": "http://localhost:9200/#/backtest/a10275b7-6074-435a-980f-c76f9beb3d66",
+      "net": 1081.480534130555,
+      "net_pct": 10.81480534130555,
+      "pf": 1.2925849848332818,
+      "pf_no_losses": false,
+      "dd": -8.169688517586193,
+      "turnover": 63.388655859730605,
+      "gross_price": 1370.916797061782,
+      "fees": 285.24895136878763,
+      "funding": -4.1873115624399215,
+      "funding_events": 146,
+      "holding_seconds": 4259400,
+      "directions": {
+        "short": {
+          "n": 32,
+          "gross": 1021.8261803333099,
+          "fees": 155.18056383428356,
+          "funding": 16.738654166444057,
+          "net": 883.3842706654706
+        },
+        "long": {
+          "n": 26,
+          "gross": 349.09061672847224,
+          "fees": 130.06838753450398,
+          "funding": -20.92596572888398,
+          "net": 198.09626346508452
+        }
+      },
+      "months": [
+        {
+          "month": "2022-01",
+          "return_pct": -2.203526603537409,
+          "end_equity": 9779.647339646259
+        },
+        {
+          "month": "2022-02",
+          "return_pct": 6.373901300608131,
+          "end_equity": 10402.99240862286
+        },
+        {
+          "month": "2022-03",
+          "return_pct": 8.32267565017839,
+          "end_equity": 11268.799724705223
+        },
+        {
+          "month": "2022-04",
+          "return_pct": -4.7492361606325755,
+          "end_equity": 10733.617813310258
+        },
+        {
+          "month": "2022-05",
+          "return_pct": 1.9436564528464872,
+          "end_equity": 10942.242468562543
+        },
+        {
+          "month": "2022-06",
+          "return_pct": 1.2724819977993906,
+          "end_equity": 11081.48053413056
+        }
+      ],
+      "exit_order_types": {
+        "MARKET": 41,
+        "STOP": 12,
+        "LIMIT": 5
+      },
+      "eligible": true,
+      "positive_pnl": 4777.775936120491,
+      "negative_pnl": -3696.295401989936,
+      "best_trade": 407.55794136051634,
+      "worst_trade": -226.0343925808711,
+      "mean_net_bps": 12.591306895059882,
+      "exposure": 0.27236801718845915,
+      "gate_failures": [],
+      "max_accounting_error": 5.4569682106375694e-12
+    }
+  ],
+  "analysis_source": "import json\nmetadata=json.loads(\"{\\\"ed789043-2aa2-4714-8963-112eadbc56b8\\\":{\\\"id\\\":\\\"H1_FIXED_P\\\",\\\"stage\\\":\\\"E1V\\\",\\\"start\\\":\\\"2022-01-01\\\",\\\"finish\\\":\\\"2022-07-01\\\",\\\"name\\\":\\\"ResearchV1_H1_P_E1V\\\",\\\"source\\\":\\\"from strategies.ResearchWfCore4h import ResearchWfCore4h\\\\n\\\\n\\\\nclass ResearchV1_H1_P_E1V(ResearchWfCore4h):\\\\n    FAMILY = 1\\\\n    USE_FUNDING = False\\\\n    USE_OI = False\\\\n    START = 1640995200000\\\\n    FINISH = 1656633600000\\\\n\\\",\\\"status\\\":\\\"finished\\\",\\\"sha256\\\":\\\"8e1f5a3d5503f30befbdd31f29ab92620a28a5151d6d9ff3ee1ce971e6278819\\\",\\\"session_id\\\":\\\"ed789043-2aa2-4714-8963-112eadbc56b8\\\",\\\"dashboard_url\\\":\\\"http://localhost:9200/#/backtest/ed789043-2aa2-4714-8963-112eadbc56b8\\\",\\\"created_at\\\":\\\"2026-10-20T20:54:29.680Z\\\",\\\"started_at\\\":\\\"2026-10-20T20:54:30.063Z\\\",\\\"execution_duration\\\":4.51,\\\"finished_at\\\":\\\"2026-10-20T20:55:08.499Z\\\",\\\"metrics\\\":{\\\"trades\\\":93,\\\"net_pct\\\":-10.94442032459641,\\\"net\\\":-1094.4420324596408,\\\"pf\\\":0.8836627462659472,\\\"dd\\\":-20.772017128420362,\\\"fees\\\":700.3356315021208,\\\"funding\\\":-13.912980718835373},\\\"config_ref\\\":\\\"nominal_config\\\",\\\"config_verified\\\":true,\\\"audit_artifact\\\":\\\"strategies/FundingOiPilot4h/reports/AUDIT_ResearchV1_H1_P_E1V.json\\\",\\\"counter_verified\\\":true,\\\"v2_id\\\":\\\"H1_FIXED_P\\\",\\\"source_verified\\\":true,\\\"evaluation_already_observed\\\":true},\\\"88e7e822-cb4d-49f7-97ab-ec5743786d29\\\":{\\\"id\\\":\\\"H1_FIXED_POI\\\",\\\"stage\\\":\\\"E1V\\\",\\\"start\\\":\\\"2022-01-01\\\",\\\"finish\\\":\\\"2022-07-01\\\",\\\"name\\\":\\\"ResearchV1_H1_POI_E1V\\\",\\\"source\\\":\\\"from strategies.ResearchWfCore4h import ResearchWfCore4h\\\\n\\\\n\\\\nclass ResearchV1_H1_POI_E1V(ResearchWfCore4h):\\\\n    FAMILY = 1\\\\n    USE_FUNDING = False\\\\n    USE_OI = True\\\\n    START = 1640995200000\\\\n    FINISH = 1656633600000\\\\n\\\",\\\"status\\\":\\\"finished\\\",\\\"sha256\\\":\\\"dc87b971f63c5971dab741ec54180bc5b280b44cdbdd60f1c6084b2bd9660318\\\",\\\"session_id\\\":\\\"88e7e822-cb4d-49f7-97ab-ec5743786d29\\\",\\\"dashboard_url\\\":\\\"http://localhost:9200/#/backtest/88e7e822-cb4d-49f7-97ab-ec5743786d29\\\",\\\"created_at\\\":\\\"2026-10-20T20:55:47.520Z\\\",\\\"started_at\\\":\\\"2026-10-20T20:55:47.821Z\\\",\\\"execution_duration\\\":4.22,\\\"finished_at\\\":\\\"2026-10-20T20:56:24.956Z\\\",\\\"metrics\\\":{\\\"trades\\\":59,\\\"net_pct\\\":8.922709596086582,\\\"net\\\":892.2709596086582,\\\"pf\\\":1.1417465005354768,\\\"dd\\\":-8.440659642267468,\\\"fees\\\":534.7920857039069,\\\"funding\\\":-7.640323778212986},\\\"config_ref\\\":\\\"nominal_config\\\",\\\"config_verified\\\":true,\\\"audit_artifact\\\":\\\"strategies/FundingOiPilot4h/reports/AUDIT_ResearchV1_H1_POI_E1V.json\\\",\\\"counter_verified\\\":true,\\\"v2_id\\\":\\\"H1_FIXED_POI\\\",\\\"source_verified\\\":true,\\\"evaluation_already_observed\\\":true},\\\"456e2c59-3c00-4404-8999-c57ab3b2efb0\\\":{\\\"id\\\":\\\"H1_ATR_P\\\",\\\"session_id\\\":\\\"456e2c59-3c00-4404-8999-c57ab3b2efb0\\\",\\\"name\\\":\\\"ResearchV2_H1_ATR_P_E1V\\\",\\\"start\\\":\\\"2022-01-01\\\",\\\"finish\\\":\\\"2022-07-01\\\",\\\"stage\\\":\\\"E1V\\\",\\\"dashboard_url\\\":\\\"http://localhost:9200/#/backtest/456e2c59-3c00-4404-8999-c57ab3b2efb0\\\"},\\\"a10275b7-6074-435a-980f-c76f9beb3d66\\\":{\\\"id\\\":\\\"H1_ATR_POI\\\",\\\"session_id\\\":\\\"a10275b7-6074-435a-980f-c76f9beb3d66\\\",\\\"name\\\":\\\"ResearchV2_H1_ATR_POI_E1V\\\",\\\"start\\\":\\\"2022-01-01\\\",\\\"finish\\\":\\\"2022-07-01\\\",\\\"stage\\\":\\\"E1V\\\",\\\"dashboard_url\\\":\\\"http://localhost:9200/#/backtest/a10275b7-6074-435a-980f-c76f9beb3d66\\\"}}\")\nnominal=json.loads(\"{\\\"logging\\\":{\\\"order_submission\\\":false,\\\"order_cancellation\\\":false,\\\"order_execution\\\":false,\\\"position_opened\\\":false,\\\"position_increased\\\":false,\\\"position_reduced\\\":false,\\\"position_closed\\\":false,\\\"shorter_period_candles\\\":false,\\\"trading_candles\\\":false,\\\"balance_update\\\":false},\\\"warm_up_candles\\\":240,\\\"exchange\\\":{\\\"name\\\":\\\"Binance Perpetual Futures\\\",\\\"type\\\":\\\"futures\\\",\\\"balance\\\":10000,\\\"fee\\\":0.00045,\\\"futures_leverage_mode\\\":\\\"isolated\\\",\\\"futures_leverage\\\":3,\\\"slippage_bps\\\":0},\\\"funding\\\":{\\\"mode\\\":\\\"historical\\\",\\\"dataset_id\\\":\\\"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\\\"},\\\"open_interest\\\":{\\\"mode\\\":\\\"historical\\\",\\\"dataset_id\\\":\\\"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\\\",\\\"allow_missing_observations\\\":true,\\\"max_age_ms\\\":600000}}\")\nimport json, math\nfrom pathlib import Path\nfrom datetime import datetime, timezone\nrows=[]\nfor p in sorted(Path(\"inputs\").glob(\"s*.json\")):\n d=json.load(open(p)); s=d[\"summary\"]; m=d[\"metrics\"]; trades=d[\"trades\"]\n assert s[\"session_status\"]==\"finished\"\n meta=metadata[s[\"session_id\"]]\n assert s[\"form\"][\"start_date\"]==meta[\"start\"] and s[\"form\"][\"finish_date\"]==meta[\"finish\"]\n assert s[\"form\"][\"routes\"][0][\"strategy\"]==meta[\"name\"]\n assert s[\"form\"][\"config\"]==nominal\n assert m.get(\"funding\",{}).get(\"effective_fast_mode\") is False\n ledger=m.get(\"funding\",{}).get(\"ledger\",[])\n errors=[]; stats={}; prices=fees=funding=turnover=holding=0.\n ordered=sorted(trades,key=lambda t:t[\"opened_at\"]); capital=10000.\n pnls=[]; exit_types={}\n for t in ordered:\n  sign=1 if t[\"type\"]==\"long\" else -1\n  gross=sign*(t[\"exit_price\"]-t[\"entry_price\"])*t[\"qty\"]\n  cf=math.fsum(x[\"cashflow\"] for x in ledger if x[\"trade_id\"]==t[\"id\"])\n  errors.extend([abs(gross-t[\"fee\"]+cf-t[\"PNL\"]),abs(cf-t.get(\"funding\",0))])\n  executed=[o for o in t[\"orders\"] if o[\"status\"]==\"EXECUTED\"]\n  errors.append(abs(math.fsum(abs(o[\"filled_qty\"])*o[\"price\"]*.00045 for o in executed)-t[\"fee\"]))\n  for o in executed:\n   turnover+=abs(o[\"filled_qty\"])*o[\"price\"]\n   if o[\"reduce_only\"]: exit_types[o[\"type\"]]=exit_types.get(o[\"type\"],0)+1\n  prices+=gross;fees+=t[\"fee\"];funding+=cf;holding+=t[\"holding_period\"];pnls.append(t[\"PNL\"])\n  side=stats.setdefault(t[\"type\"],dict(n=0,gross=0.,fees=0.,funding=0.,net=0.))\n  side[\"n\"]+=1;side[\"gross\"]+=gross;side[\"fees\"]+=t[\"fee\"];side[\"funding\"]+=cf;side[\"net\"]+=t[\"PNL\"]\n  capital+=t[\"PNL\"]\n net=math.fsum(pnls); positive=math.fsum(x for x in pnls if x>0);negative=math.fsum(x for x in pnls if x<0)\n pf=positive/abs(negative) if negative else None\n errors.extend([abs(net-(m.get(\"net_profit\") or 0)),abs(fees-(m.get(\"fee\") or 0)),abs(funding-m.get(\"funding\",{}).get(\"cashflow\",0))])\n if trades:errors.append(abs(10000+net-m[\"finishing_balance\"]))\n assert max(errors,default=0)<1e-6\n dd=abs(m.get(\"max_drawdown\") or 0)\n pf_pass=bool((pf is not None and pf>=1.2) or (negative==0 and positive>0))\n eligible=bool(len(trades)>=30 and net>0 and pf_pass and dd<=25)\n start=datetime.fromisoformat(s[\"form\"][\"start_date\"]).replace(tzinfo=timezone.utc).timestamp()\n balances={}\n for curve in d[\"equity_curve\"]:\n  if curve[\"name\"]==\"Portfolio\":\n   for pt in sorted(curve[\"data\"],key=lambda x:x[\"time\"]):\n    stamp=pt[\"time\"]-61 if pt[\"time\"]>start else pt[\"time\"]\n    month=datetime.fromtimestamp(stamp,timezone.utc).strftime(\"%Y-%m\")\n    balances[month]=pt[\"value\"]\n previous=10000.;months=[]\n for month,b in sorted(balances.items()):\n  months.append(dict(month=month,return_pct=(b/previous-1)*100,end_equity=b));previous=b\n rows.append(dict(session_id=s[\"session_id\"],strategy=s[\"form\"][\"routes\"][0][\"strategy\"],n=len(trades),\n  id=meta[\"id\"],stage=meta[\"stage\"],start=meta[\"start\"],finish=meta[\"finish\"],dashboard_url=meta[\"dashboard_url\"],\n  net=net,net_pct=net/100,pf=pf,pf_no_losses=negative==0 and positive>0,dd=-dd,turnover=turnover/10000,\n  gross_price=prices,fees=fees,funding=funding,funding_events=len(ledger),holding_seconds=holding,\n  directions=stats,months=months,exit_order_types=exit_types,eligible=eligible,\n  positive_pnl=positive,negative_pnl=negative,best_trade=max(pnls,default=None),worst_trade=min(pnls,default=None),\n  mean_net_bps=math.fsum(t[\"PNL\"]/abs(t[\"qty\"]*t[\"entry_price\"])*10000 for t in trades)/len(trades) if trades else None,\n  exposure=holding/(datetime.fromisoformat(meta[\"finish\"]).replace(tzinfo=timezone.utc).timestamp()-datetime.fromisoformat(meta[\"start\"]).replace(tzinfo=timezone.utc).timestamp()),\n  gate_failures=[name for name,passed in [(\"trades>=30\",len(trades)>=30),(\"net>0\",net>0),(\"PF>=1.2\",pf_pass),(\"absDD<=25%\",dd<=25)] if not passed],\n  max_accounting_error=max(errors,default=0)))\njson.dump(rows,open(\"output/audit_stage.json\",\"w\"),indent=2)\nprint(json.dumps(rows))\n",
+  "limits": [
+    "Daily month labels shifted 61 seconds except initial balance; same V1 convention.",
+    "This stage is research evaluation; E1 selector was frozen flat.",
+    "Do not aggregate overlapping train sessions.",
+    "ATR_P total_open_trades/open_pl in metrics are pre-forced-close indicators. Full snapshot has90closedtrades including final fold_end; ledger and ending balance reconcile after that close. No residual active position inferred."
+  ]
+}

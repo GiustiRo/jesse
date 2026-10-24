@@ -1,0 +1,62 @@
+{
+  "id": "CARTERA",
+  "title": "K1001 y cartera histórica",
+  "asset": "Cartera",
+  "family": "multi-activo / K1001",
+  "execution": "inventariado",
+  "evidence": "histórica; alcance del informe",
+  "objective": "sin evaluar para el nuevo programa",
+  "hypothesis": "K1001 B/C, excepción OOS autorizada 2026. Informe definitivo sustituye runs invalidados por PAXG truncado.",
+  "origin": "Investigación anterior al Hub; inventarios completos enlazados",
+  "method": "Inventario y lectura de cierres existentes, sin nuevas ejecuciones.",
+  "protocol": null,
+  "budget": "No mezclar con conteos V1–V6",
+  "versions": "Fuentes y configuración en reportes originales; proxies no equivalen a perpetual nativo.",
+  "periods": [
+    "Excepción K1001: 2026-01-01 → 2026-10-19 exclusivo"
+  ],
+  "results": {
+    "scope": "Excepción histórica K1001; retornos de período, no CAGR",
+    "B_N": {
+      "net_pct": -1.27,
+      "pf": 0.971,
+      "dd_daily_pct": -25.88,
+      "trades": 46
+    },
+    "C_N": {
+      "net_pct": 10.35,
+      "pf": 1.224,
+      "dd_daily_pct": -19.26,
+      "trades": 47
+    },
+    "B_stress_net_pct": -5.28,
+    "C_stress_net_pct": 4.96,
+    "costs": ".00045 nominal / .00095 estrés por lado; sin funding ni slippage real",
+    "correlation": null,
+    "simultaneous_losses": null,
+    "comparable_with_without": null
+  },
+  "limitations": [
+    "Sin evaluación de la nueva línea.",
+    "Correlaciones, pérdidas simultáneas y comparación con/sin pieza bajo riesgo comparable: sin evaluar en esta revisión.",
+    "Leer los addenda y registros; no sumar curvas aisladas como cuenta compartida."
+  ],
+  "audit": "Inventario MCP y lectura del informe enlazado; no nueva auditoría económica.",
+  "decision": "Protocolo conjunto no superado: B falla, C cumple mínimos con concentración en un trade SPY. Sin promoción.",
+  "references": [
+    {
+      "label": "K1001_OOS_2026_10K_RESULTS_20261019.md",
+      "path": "strategies/MultiAssetRetestBtcShort4h/reports/K1001_OOS_2026_10K_RESULTS_20261019.md"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "K1001 C nominal",
+      "url": "http://localhost:9200/#/backtest/3c175497-66bf-4cf0-a9f8-c888834961da"
+    },
+    {
+      "label": "K1001 B nominal",
+      "url": "http://localhost:9200/#/backtest/d6ed3b7d-19c5-4240-8ad9-9cb2f7706667"
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "create": {
+    "status": "success",
+    "backtest_id": "1cbce950-5de8-40b3-bea1-652602a829a6",
+    "draft_state": {
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "BtcResearchR42LatentObserver4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": true,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 5
+          },
+          "funding": {
+            "mode": "disabled"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "results": {
+        "showResults": false,
+        "executing": false,
+        "logsModal": false,
+        "progressbar": {
+          "current": 0,
+          "estimated_remaining_seconds": 0
+        },
+        "routes_info": [
+          [
+            {
+              "value": "BTC-USDT",
+              "style": ""
+            },
+            {
+              "value": "4h",
+              "style": ""
+            },
+            {
+              "value": "BtcResearchR42LatentObserver4h",
+              "style": ""
+            }
+          ]
+        ],
+        "metrics": {},
+        "hyperparameters": [],
+        "generalInfo": {
+          "title": null,
+          "description": null
+        },
+        "infoLogs": "",
+        "exception": {
+          "error": "",
+          "traceback": ""
+        },
+        "charts": {
+          "equity_curve": []
+        },
+        "selectedRoute": {
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "BtcResearchR42LatentObserver4h"
+        },
+        "alert": {
+          "message": "",
+          "type": ""
+        },
+        "info": [],
+        "trades": []
+      }
+    },
+    "notes": {
+      "title": "MCP Backtest: R42 | Persistencia latente frente a IID | BTC sin órdenes",
+      "description": "Un observador BTC4h sin órdenes. Misma mezcla Gaussian2 y pesos estacionarios; un parámetro rho de persistencia. Emisiones y transiciones ajustadas sólo con pasado, pronósticos24h guardados y evaluados al madurar.137 checks sintéticos PASS. Gate predictivo previo a cualquier economía; no candidata ni OOS.",
+      "strategy_code_keys": [
+        "Binance Perpetual Futures-BTC-USDT"
+      ],
+      "strategy_codes_captured": 1
+    },
+    "dashboard_url": "http://localhost:9200/#/backtest/1cbce950-5de8-40b3-bea1-652602a829a6",
+    "message": "Backtest draft created with ID: 1cbce950-5de8-40b3-bea1-652602a829a6"
+  },
+  "verified": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "1cbce950-5de8-40b3-bea1-652602a829a6",
+    "session_status": "draft",
+    "status_note": "Not started yet, so there are no results.",
+    "title": "MCP Backtest: R42 | Persistencia latente frente a IID | BTC sin órdenes",
+    "description": "Un observador BTC4h sin órdenes. Misma mezcla Gaussian2 y pesos estacionarios; un parámetro rho de persistencia. Emisiones y transiciones ajustadas sólo con pasado, pronósticos24h guardados y evaluados al madurar.137 checks sintéticos PASS. Gate predictivo previo a cualquier economía; no candidata ni OOS.",
+    "description_truncated": false,
+    "created_at": 1792679425000,
+    "updated_at": 1792679425000,
+    "execution_duration": null,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "BtcResearchR42LatentObserver4h"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2020-10-15",
+      "finish_date": "2026-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": false,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": true,
+          "order_cancellation": true,
+          "order_execution": true,
+          "position_opened": true,
+          "position_increased": true,
+          "position_reduced": true,
+          "position_closed": true,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": true
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "metrics": null,
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": false,
+    "sections": {
+      "trades": {
+        "count": 0
+      },
+      "equity_curve": {
+        "series": []
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": null
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/1cbce950-5de8-40b3-bea1-652602a829a6"
+  },
+  "synthetic": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "d506bda01cce4fd2b92e06e4e9a4ce40",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/d506bda01cce4fd2b92e06e4e9a4ce40",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 3233,
+      "exit_code": 0,
+      "started_at": "2026-10-22T14:29:41+00:00",
+      "finished_at": "2026-10-22T14:29:43+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-23T14:29:43+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "check.json",
+        "size_bytes": 4361,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"PASS\", \"checks\": 137, \"outcomes\": [\"ast_BtcResearchR42LatentMath\", \"ast_BtcResearchR42LatentObserver4h\", \"math_hash\", \"observer_hash\", \"independent_js_cdf_-8\", \"independent_js_cdf_-4\", \"independent_js_cdf_-1\", \"independent_js_cdf_0\", \"independent_js_cdf_0.1\", \"independent_js_cdf_1\", \"independent_js_cdf_2\", \"independent_js_cdf_4\", \"independent_js_cdf_8\", \"stochastic_0.0\", \"common_stationary_0.0\", \"stochastic_0.1\", \"common_stationary_0.1\", \"stochastic_0.8\", \"common_stationary_0.8\", \"stochastic_0.999999\", \"common_stationary_0.999999\", \"forward_exact_prefix_1\", \"forward_exact_prefix_2\", \"forward_exact_prefix_3\", \"forward_exact_prefix_4\", \"forward_loglik_bruteforce\", \"xi_bruteforce\", \"xi_transition_count\", \"xi_loglik\", \"mstep_global_concave_diag\", \"mstep_global_concave_cross\", \"mstep_global_concave_interior\", \"independent_js_mean_0\", \"independent_js_probability_0\", \"exact64_0\", \"matrix_power_mean_0\", \"label_permutation_0\", \"independent_js_mean_1\", \"independent_js_probability_1\", \"exact64_1\", \"matrix_power_mean_1\", \"label_permutation_1\", \"independent_js_mean_2\", \"independent_js_probability_2\", \"exact64_2\", \"matrix_power_mean_2\", \"label_permutation_2\", \"independent_js_mean_3\", \"independent_js_probability_3\", \"exact64_3\", \"matrix_power_mean_3\", \"label_permutation_3\", \"independent_js_mean_4\", \"independent_js_probability_4\", \"exact64_4\", \"matrix_power_mean_4\", \"label_permutation_4\", \"independent_js_mean_5\", \"independent_js_probability_5\", \"exact64_5\", \"matrix_power_mean_5\", \"label_permutation_5\", \"independent_js_mean_6\", \"independent_js_probability_6\", \"exact64_6\", \"matrix_power_mean_6\", \"label_permutation_6\", \"independent_js_mean_7\", \"independent_js_probability_7\", \"exact64_7\", \"matrix_power_mean_7\", \"label_permutation_7\", \"independent_js_mean_8\", \"independent_js_probability_8\", \"exact64_8\", \"matrix_power_mean_8\", \"label_permutation_8\", \"independent_js_mean_9\", \"independent_js_probability_9\", \"exact64_9\", \"matrix_power_mean_9\", \"label_permutation_9\", \"independent_js_mean_10\", \"independent_js_probability_10\", \"exact64_10\", \"matrix_power_mean_10\", \"label_permutation_10\", \"independent_js_mean_11\", \"independent_js_probability_11\", \"exact64_11\", \"matrix_power_mean_11\", \"label_permutation_11\", \"mixture_valid\", \"training_input_unchanged\", \"mixture_fixed_contract\", \"mixture_scale_weights\", \"mixture_scale_means\", \"mixture_scale_variances\", \"persistent_fabricated_signal\", \"360_returns_359_transitions\", \"fit_final_refilter\", \"fit_final_likelihood\", \"reject_bad_training_102\", \"reject_bad_training_103\", \"reject_bad_training_104\", \"reject_bad_training_105\", \"iid_no_state_memory\", \"emissions_immutable_w\", \"emissions_immutable_mu\", \"emissions_immutable_var\", \"emissions_immutable_occupancy\", \"one_step_density_exact\", \"runtime_training_excludes_current\", \"runtime_emissions_asof\", \"callback_idempotent\", \"mature_exact_six\", \"frozen_mean_score\", \"frozen_probability_score\", \"terminal_conservation\", \"no_finish_origin\", \"zero_account_summary\", \"terminal_summary_idempotent\", \"no_orders_signals\", \"no_orders_fail_fast_go_long\", \"no_orders_fail_fast_go_short\", \"bounded_audit_logs\", \"future_prefix_invariant\", \"current_not_training_w\", \"current_not_training_mu\", \"current_not_training_var\", \"monthly_failure_preserves_forecast\", \"old_model_label_survives\", \"monthly_failure_old_score\", \"gap_censors_pending\", \"gap_reason\", \"seed_cash_no_forecast\", \"no_intramonth_fit_rescue\"], \"hashes\": {\"BtcResearchR42LatentMath\": \"1e601b4831115923bbfc9f05870b3afd312cf347c08a9ee335acaded3473f142\", \"BtcResearchR42LatentObserver4h\": \"c9ba8a41111ade0348e3a4e829cf4a7afe5a08a61fa12fdcd3480720ebdc88e1\"}, \"scope\": \"Supplied source, deterministic fabricated arrays/stubs, independent JS CDF/forecast oracles; no observed candles/project imports/DB/network/economic engine\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR42LatentMath": "import itertools\nimport math\nimport numpy as np\nfrom jesse.strategies import Strategy\n\nBAR = 14400000\nRHO_MAX = 1.0 - 1e-6\n\n\ndef closed_bars(candles, now, count):\n    \"\"\"Validate only the requested closed 4h slice; never repair a gap.\"\"\"\n    rows = np.asarray(candles)\n    if rows.ndim != 2 or rows.shape[1] < 5 or len(rows) < count:\n        return None\n    end = int(np.searchsorted(rows[:, 0], now - BAR, side=\"right\"))\n    tail = rows[max(0, end-count):end]\n    if len(tail) != count or tail[-1, 0] != now-BAR:\n        return None\n    if not np.all(np.isfinite(tail[:, :5])) or np.any(tail[:, 1:5] <= 0):\n        return None\n    if not np.all(np.diff(tail[:, 0]) == BAR):\n        return None\n    if np.any(tail[:, 3] < np.maximum(tail[:, 1], tail[:, 2])):\n        return None\n    if np.any(tail[:, 4] > np.minimum(tail[:, 1], tail[:, 2])):\n        return None\n    return tail\n\n\ndef _finite(values):\n    if not np.all(np.isfinite(values)):\n        raise FloatingPointError(\"nonfinite numerical result\")\n\n\ndef _logsumexp(values, axis=None):\n    maximum = np.max(values, axis=axis, keepdims=True)\n    _finite(maximum)\n    result = maximum + np.log(np.sum(np.exp(values-maximum), axis=axis, keepdims=True))\n    return np.squeeze(result, axis=axis)\n\n\ndef _gaussian_logpdf(values, mu, var):\n    return -.5 * (math.log(2*math.pi) + np.log(var)\n                  + (np.asarray(values, dtype=float)[:, None]-mu)**2 / var)\n\n\ndef fit_emissions(returns):\n    \"\"\"Exactly 360 returns, 30 EM updates; returns (frozen model, reason).\n\n    model arrays w/mu/var are in original return units, sorted by mu then var.\n    The 1e-6 z-variance floor is numerical regularization fixed by protocol.\n    Occupancy is recomputed using the final parameters, not the last old E-step.\n    \"\"\"\n    x = np.asarray(returns, dtype=float)\n    if x.shape != (360,) or not np.all(np.isfinite(x)):\n        return None, \"training_shape_or_nonfinite\"\n    try:\n        with np.errstate(over=\"raise\", invalid=\"raise\", divide=\"raise\", under=\"ignore\"):\n            center, scale = float(np.mean(x)), float(np.std(x, ddof=0))\n            if not math.isfinite(scale) or scale <= 0:\n                return None, \"training_std_degenerate\"\n            z = (x-center)/scale\n            mu = np.asarray(np.quantile(z, [.25, .75]), dtype=float)\n            if mu[0] == mu[1]:\n                return None, \"equal_initial_quantiles\"\n            var, w = np.ones(2), np.full(2, .5)\n            for _ in range(30):\n                logs = _gaussian_logpdf(z, mu, var) + np.log(w)\n                normalizer = _logsumexp(logs, axis=1)\n                gamma = np.exp(logs-normalizer[:, None])\n                mass = np.sum(gamma, axis=0)\n                if np.any(mass <= 0):\n                    return None, \"empty_em_component\"\n                w = mass/len(z)\n                mu = np.sum(gamma*z[:, None], axis=0)/mass\n                var = np.maximum(np.sum(gamma*(z[:, None]-mu)**2, axis=0)/mass, 1e-6)\n                _finite(np.concatenate((w, mu, var)))\n            logs = _gaussian_logpdf(z, mu, var) + np.log(w)\n            normalizer = _logsumexp(logs, axis=1)\n            occupancy = np.sum(np.exp(logs-normalizer[:, None]), axis=0)\n            if np.any(occupancy < 10):\n                return None, \"final_occupancy_below_10\"\n            original_mu = center + scale*mu\n            original_var = scale**2*var\n            _finite(np.concatenate((original_mu, original_var, w, occupancy)))\n            if np.any(original_var <= 0):\n                return None, \"original_variance_degenerate\"\n            order = np.lexsort((original_var, original_mu))\n            model = dict(w=w[order].copy(), mu=original_mu[order].copy(),\n                         var=original_var[order].copy(), occupancy=occupancy[order].copy(),\n                         center=center, scale=scale, em_iterations=30,\n                         iid_train_loglik=float(np.sum(normalizer)-len(z)*math.log(scale)))\n            _finite(model[\"iid_train_loglik\"])\n            return model, None\n    except (FloatingPointError, OverflowError):\n        return None, \"em_numerical_failure\"\n\n\ndef transition_matrix(w, rho):\n    \"\"\"Row-vector convention: q_next_prior=q@P; w@P=w for every allowed rho.\"\"\"\n    weights = np.asarray(w, dtype=float)\n    assert weights.shape == (2,) and np.all(weights > 0)\n    assert math.isclose(float(weights.sum()), 1., rel_tol=1e-10, abs_tol=1e-12)\n    assert math.isfinite(rho) and 0 <= rho <= RHO_MAX\n    return rho*np.eye(2)+(1-rho)*np.tile(weights, (2, 1))\n\n\ndef emission_logpdf(values, model):\n    \"\"\"N observations x two states, using frozen original-unit Gaussian emissions.\"\"\"\n    result = _gaussian_logpdf(np.asarray(values, dtype=float), model[\"mu\"], model[\"var\"])\n    _finite(result)\n    return result\n\n\ndef _forward_scaled(loge, w, rho):\n    P = transition_matrix(w, rho)\n    loge = np.asarray(loge, dtype=float)\n    assert loge.ndim == 2 and loge.shape[1] == 2 and len(loge) > 0\n    _finite(loge)\n    offset = np.max(loge, axis=1)\n    relative = np.exp(loge-offset[:, None])\n    alpha = np.empty_like(loge)\n    scales = np.empty(len(loge))\n    for t in range(len(loge)):\n        prior = np.asarray(w, dtype=float) if t == 0 else alpha[t-1]@P\n        raw = prior*relative[t]\n        scales[t] = float(np.sum(raw))\n        if not math.isfinite(scales[t]) or scales[t] <= 0:\n            raise FloatingPointError(\"forward scale invalid\")\n        alpha[t] = raw/scales[t]\n    loglik = float(np.sum(np.log(scales)+offset))\n    _finite(alpha)\n    _finite(loglik)\n    return alpha, relative, scales, loglik\n\n\ndef forward_filter(loge, w, rho):\n    \"\"\"Training only: initial state w, no smoothed state exposed for old forecasts.\"\"\"\n    alpha, _, _, loglik = _forward_scaled(loge, w, rho)\n    return alpha, loglik\n\n\ndef transition_counts(loge, w, rho):\n    \"\"\"Forward/backward on a past prefix; 360 returns give 359 xi transitions.\"\"\"\n    alpha, relative, scales, loglik = _forward_scaled(loge, w, rho)\n    P = transition_matrix(w, rho)\n    beta = np.ones_like(alpha)\n    for t in range(len(alpha)-2, -1, -1):\n        beta[t] = P@(relative[t+1]*beta[t+1])/scales[t+1]\n    C = np.zeros((2, 2))\n    for t in range(len(alpha)-1):\n        xi = (alpha[t, :, None]*P\n              *(relative[t+1]*beta[t+1])[None, :]/scales[t+1])\n        C += xi\n    _finite(C)\n    return C, loglik\n\n\ndef rho_m_step(C, w):\n    \"\"\"Concave transition objective: endpoints or exactly 40 bisection steps.\"\"\"\n    C, w = np.asarray(C, dtype=float), np.asarray(w, dtype=float)\n    direction = np.eye(2)-np.tile(w, (2, 1))\n\n    def derivative(rho):\n        return float(np.sum(C*direction/transition_matrix(w, rho)))\n\n    if derivative(0.) <= 0:\n        return 0.\n    if derivative(RHO_MAX) >= 0:\n        return RHO_MAX\n    low, high = 0., RHO_MAX\n    for _ in range(40):\n        middle = .5*(low+high)\n        if derivative(middle) > 0:\n            low = middle\n        else:\n            high = middle\n    return .5*(low+high)\n\n\ndef fit_persistence(returns, model):\n    \"\"\"Fixed emissions, rho=.5 then exactly20 EM updates; final q refiltered.\"\"\"\n    x = np.asarray(returns, dtype=float)\n    if x.shape != (360,) or not np.all(np.isfinite(x)):\n        return None, \"training_shape_or_nonfinite\"\n    try:\n        with np.errstate(over=\"raise\", invalid=\"raise\", divide=\"raise\", under=\"ignore\"):\n            loge = emission_logpdf(x, model)\n            rho = .5\n            for _ in range(20):\n                C, _ = transition_counts(loge, model[\"w\"], rho)\n                rho = rho_m_step(C, model[\"w\"])\n            posterior, loglik = forward_filter(loge, model[\"w\"], rho)\n            return dict(rho=float(rho), q=posterior[-1].copy(),\n                        loglik=loglik, em_iterations=20), None\n    except (FloatingPointError, OverflowError):\n        return None, \"persistence_numerical_failure\"\n\n\ndef assimilate(q, value, model, rho):\n    \"\"\"Single newly closed return; the caller supplies posterior known before it.\"\"\"\n    prior = np.asarray(q, dtype=float)@transition_matrix(model[\"w\"], rho)\n    logs = np.log(prior)+emission_logpdf([value], model)[0]\n    posterior = np.exp(logs-_logsumexp(logs))\n    _finite(posterior)\n    return posterior\n\n\ndef forecast_paths(q, model, rho, horizon=6):\n    \"\"\"Exactly64 paths: qP for first future state, then five transitions.\n\n    Gaussian emissions are conditionally independent along a state path.\n    This is model marginalization, not a market-independence claim.\n    \"\"\"\n    assert horizon == 6\n    P = transition_matrix(model[\"w\"], rho)\n    first = np.asarray(q, dtype=float)@P\n    mean, positive, mass = 0., 0., 0.\n    for states in itertools.product((0, 1), repeat=horizon):\n        weight = float(first[states[0]])\n        for t in range(1, horizon):\n            weight *= float(P[states[t-1], states[t]])\n        location = sum(float(model[\"mu\"][state]) for state in states)\n        variance = sum(float(model[\"var\"][state]) for state in states)\n        probability = .5*(1+math.erf(location/math.sqrt(2*variance)))\n        mean += weight*location\n        positive += weight*probability\n        mass += weight\n    _finite((mean, positive, mass))\n    assert math.isclose(mass, 1., rel_tol=1e-10, abs_tol=1e-12)\n    return dict(mean=float(mean), p_positive=float(positive), path_count=64)\n\n\ndef density_log(value, weights, model):\n    \"\"\"Exact frozen two-Gaussian one-step log density, not a Gaussian shortcut.\"\"\"\n    answer = float(_logsumexp(np.log(np.asarray(weights, dtype=float))\n                             +emission_logpdf([value], model)[0]))\n    _finite(answer)\n    return answer\n\n\nclass BtcResearchR42LatentMath(Strategy):\n    \"\"\"Importable helper container; never an economic strategy.\"\"\"\n    def should_long(self):\n        return False\n\n    def should_short(self):\n        return False\n\n    def go_long(self):\n        raise AssertionError(\"R42 math has no orders\")\n\n    def go_short(self):\n        raise AssertionError(\"R42 math has no orders\")\n",
+    "BtcResearchR42LatentObserver4h": "import json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\nfrom jesse.strategies import Strategy\nfrom strategies.BtcResearchR42LatentMath import (\n    BAR, closed_bars, fit_emissions, fit_persistence, emission_logpdf,\n    forward_filter, assimilate, forecast_paths, transition_matrix, density_log,\n)\n\nDAY = 86400000\n\n\nclass BtcResearchR42LatentObserver4h(Strategy):\n    \"\"\"Prequential model observer only: no trading, smoothed historical signals or PnL.\"\"\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def should_long(self):\n        return False\n\n    def should_short(self):\n        return False\n\n    def go_long(self):\n        raise AssertionError(\"R42 observer has no orders\")\n\n    def go_short(self):\n        raise AssertionError(\"R42 observer has no orders\")\n\n    def _log(self, label, payload):\n        encoded = label + \" \" + json.dumps(payload, separators=(\",\", \":\"), allow_nan=False)\n        # Audit records are deliberately split instead of truncating their evidence.\n        assert len(encoded) < 1800\n        self.log(encoded)\n\n    def _counts(self):\n        return self.vars.setdefault(\"r42_counts\", dict(\n            callbacks=0, fit_attempts=0, fit_valid=0, fit_invalid=0,\n            forecasts=0, unavailable_origins=0, scores=0, density_scores=0,\n            censored_six=0, censored_one=0, invalid_paths=0, invalid_models=0,\n            invalid_density=0))\n\n    def _groups(self):\n        return self.vars.setdefault(\"r42_groups\", {\n            key: dict(n=0, mse_p_sum=0., mse_i_sum=0., brier_p_sum=0., brier_i_sum=0.)\n            for key in (\"all4h\", \"utc00\", \"2021\", \"2022\", \"2023\", \"2024\", \"2025\")})\n\n    def _censor(self, reason):\n        counts = self._counts()\n        for horizon, key, counter in ((6, \"r42_pending6\", \"censored_six\"),\n                                      (1, \"r42_pending1\", \"censored_one\")):\n            for record in self.vars.get(key, []):\n                counts[counter] += 1\n                self._log(\"R42_CENSORED\", dict(origin=record[\"origin\"],\n                    target=record[\"target\"], model_id=record[\"model_id\"],\n                    horizon=horizon, reason=reason, observed_at=int(self.time)))\n            self.vars[key] = []\n\n    def _model_failure(self, reason):\n        self.vars[\"r42_model\"] = None\n        self._counts()[\"invalid_models\"] += 1\n        self._log(\"R42_INVALID\", dict(time=int(self.time), scope=\"model\", reason=reason))\n        # Valid old forecasts survive monthly/model failures unchanged.\n\n    def _path_failure(self, reason):\n        self.vars[\"r42_model\"] = None\n        self._counts()[\"invalid_paths\"] += 1\n        self._log(\"R42_INVALID\", dict(time=int(self.time), scope=\"path\", reason=reason))\n        self._censor(reason)\n\n    def _fit_failure(self, model_id, reason):\n        self.vars[\"r42_model\"] = None\n        self._counts()[\"fit_invalid\"] += 1\n        self._log(\"R42_FIT\", dict(time=int(self.time), model_id=model_id,\n            status=\"invalid\", reason=reason))\n\n    def _fit(self, now, model_id):\n        rows = closed_bars(self.candles, now, 362)\n        if rows is None:\n            self._fit_failure(model_id, \"training_362_closed_bars_invalid\")\n            return\n        values = np.diff(np.log(rows[:, 2]))\n        train = values[:-1]\n        train_start, train_finish = int(rows[0, 0])+BAR, int(rows[-2, 0])+BAR\n        # These are consumed in the native observer, never an external input peek.\n        for offset in range(0, 360, 40):\n            self._log(\"R42_TRAIN\", dict(model_id=model_id, time=now,\n                offset=offset, N=360, train_start=train_start,\n                train_finish=train_finish, returns=train[offset:offset+40].tolist()))\n        model, reason = fit_emissions(train)\n        if model is None:\n            self._fit_failure(model_id, reason)\n            return\n        persistent, reason = fit_persistence(train, model)\n        if persistent is None:\n            self._fit_failure(model_id, reason)\n            return\n        try:\n            with np.errstate(over=\"raise\", invalid=\"raise\", divide=\"raise\", under=\"ignore\"):\n                iid_sequence, iid_loglik = forward_filter(\n                    emission_logpdf(train, model), model[\"w\"], 0.)\n        except (FloatingPointError, OverflowError):\n            self._fit_failure(model_id, \"iid_filter_numerical_failure\")\n            return\n        self.vars[\"r42_model\"] = dict(emissions=model, rho=persistent[\"rho\"],\n            q=persistent[\"q\"], q_iid=iid_sequence[-1].copy(), q_at=now-BAR,\n            model_id=model_id, parameter_at=now,\n            train_start=train_start, train_finish=train_finish)\n        self._counts()[\"fit_valid\"] += 1\n        self._log(\"R42_FIT\", dict(time=now, model_id=model_id, status=\"valid\",\n            train_start=train_start, train_finish=train_finish, train_N=360,\n            q_train_at=now-BAR, w=model[\"w\"].tolist(), mu=model[\"mu\"].tolist(),\n            var=model[\"var\"].tolist(), occupancy=model[\"occupancy\"].tolist(),\n            center=model[\"center\"], scale=model[\"scale\"], mixture_iterations=30,\n            persistence_iterations=20, rho=persistent[\"rho\"],\n            q_train=persistent[\"q\"].tolist(), q_iid_train=iid_sequence[-1].tolist(),\n            persistent_train_loglik=persistent[\"loglik\"], iid_train_loglik=iid_loglik))\n\n    def _mature(self, now, price):\n        waiting = []\n        for record in self.vars.get(\"r42_pending6\", []):\n            if record[\"target\"] > now:\n                waiting.append(record)\n                continue\n            assert record[\"target\"] == now\n            y = math.log(price)-math.log(record[\"price\"])\n            positive = int(y > 0)\n            squared_p = (record[\"mean_p\"]-y)**2\n            squared_i = (record[\"mean_i\"]-y)**2\n            brier_p = (record[\"p_p\"]-positive)**2\n            brier_i = (record[\"p_i\"]-positive)**2\n            stamp = datetime.fromtimestamp(record[\"origin\"]/1000, timezone.utc)\n            cohorts = [\"all4h\"]\n            if record[\"origin\"] % DAY == 0:\n                cohorts.append(\"utc00\")\n            if str(stamp.year) in self._groups():\n                cohorts.append(str(stamp.year))\n            for key in cohorts:\n                group = self._groups()[key]\n                group[\"n\"] += 1\n                group[\"mse_p_sum\"] += squared_p\n                group[\"mse_i_sum\"] += squared_i\n                group[\"brier_p_sum\"] += brier_p\n                group[\"brier_i_sum\"] += brier_i\n            self._counts()[\"scores\"] += 1\n            self._log(\"R42_SCORE\", dict(origin=record[\"origin\"], target=record[\"target\"],\n                time=now, model_id=record[\"model_id\"], origin_price=record[\"price\"],\n                target_price=price, y=y, positive=positive,\n                mse_p=squared_p, mse_i=squared_i, mse_delta=squared_p-squared_i,\n                brier_p=brier_p, brier_i=brier_i, brier_delta=brier_p-brier_i,\n                utc00=record[\"origin\"] % DAY == 0, origin_year=stamp.year))\n        self.vars[\"r42_pending6\"] = waiting\n        waiting = []\n        for record in self.vars.get(\"r42_pending1\", []):\n            if record[\"target\"] > now:\n                waiting.append(record)\n                continue\n            assert record[\"target\"] == now\n            y = math.log(price)-math.log(record[\"price\"])\n            try:\n                with np.errstate(over=\"raise\", invalid=\"raise\", divide=\"raise\", under=\"ignore\"):\n                    log_p = density_log(y, record[\"weights_p\"], record[\"emissions\"])\n                    log_i = density_log(y, record[\"weights_i\"], record[\"emissions\"])\n            except (FloatingPointError, OverflowError):\n                self._counts()[\"invalid_density\"] += 1\n                self._log(\"R42_DENSITY\", dict(origin=record[\"origin\"], target=now,\n                    model_id=record[\"model_id\"], y=y, status=\"numerical_invalid\"))\n                continue\n            counts = self._counts()\n            counts[\"density_scores\"] += 1\n            density = self.vars.setdefault(\"r42_density\",\n                                          dict(n=0, log_p_sum=0., log_i_sum=0.))\n            density[\"n\"] += 1\n            density[\"log_p_sum\"] += log_p\n            density[\"log_i_sum\"] += log_i\n            self._log(\"R42_DENSITY\", dict(origin=record[\"origin\"], target=now,\n                model_id=record[\"model_id\"], y=y, status=\"valid\",\n                log_p=log_p, log_i=log_i, log_delta=log_p-log_i))\n        self.vars[\"r42_pending1\"] = waiting\n\n    def _predict(self, now, price, previous_price):\n        fit = self.vars.get(\"r42_model\")\n        if fit is None:\n            self._counts()[\"unavailable_origins\"] += 1\n            return\n        assert fit[\"q_at\"] == now-BAR\n        current = math.log(price)-math.log(previous_price)\n        emissions = fit[\"emissions\"]\n        try:\n            with np.errstate(over=\"raise\", invalid=\"raise\", divide=\"raise\", under=\"ignore\"):\n                q = assimilate(fit[\"q\"], current, emissions, fit[\"rho\"])\n                q_iid = assimilate(fit[\"q_iid\"], current, emissions, 0.)\n                prediction_p = forecast_paths(q, emissions, fit[\"rho\"])\n                prediction_i = forecast_paths(q_iid, emissions, 0.)\n                weights_p = q@transition_matrix(emissions[\"w\"], fit[\"rho\"])\n                weights_i = q_iid@transition_matrix(emissions[\"w\"], 0.)\n        except (FloatingPointError, OverflowError):\n            self._model_failure(\"filter_or_forecast_numerical_failure\")\n            self._counts()[\"unavailable_origins\"] += 1\n            return\n        fit[\"q\"], fit[\"q_iid\"], fit[\"q_at\"] = q, q_iid, now\n        six = dict(origin=now, target=now+6*BAR, price=price, model_id=fit[\"model_id\"],\n                   mean_p=prediction_p[\"mean\"], mean_i=prediction_i[\"mean\"],\n                   p_p=prediction_p[\"p_positive\"], p_i=prediction_i[\"p_positive\"])\n        one = dict(origin=now, target=now+BAR, price=price, model_id=fit[\"model_id\"],\n                   weights_p=weights_p.copy(), weights_i=weights_i.copy(),\n                   emissions=emissions)\n        self.vars.setdefault(\"r42_pending6\", []).append(six)\n        self.vars.setdefault(\"r42_pending1\", []).append(one)\n        self._counts()[\"forecasts\"] += 1\n        self._log(\"R42_PRED\", dict(origin=now, target=now+6*BAR, density_target=now+BAR,\n            model_id=fit[\"model_id\"], parameter_at=fit[\"parameter_at\"],\n            train_start=fit[\"train_start\"], train_finish=fit[\"train_finish\"],\n            q_at=now, price=price, previous_price=previous_price, return_current=current,\n            q=q.tolist(), q_iid=q_iid.tolist(), rho=fit[\"rho\"],\n            mean_p=six[\"mean_p\"], mean_i=six[\"mean_i\"],\n            p_p=six[\"p_p\"], p_i=six[\"p_i\"],\n            weights1_p=weights_p.tolist(), weights1_i=weights_i.tolist(), paths=64))\n\n    def before(self):\n        now = int(self.time)\n        if not self.START <= now <= self.FINISH:\n            return\n        previous_time = self.vars.get(\"r42_last_time\")\n        if previous_time is not None and now <= previous_time:\n            return\n        if not self.vars.get(\"r42_checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"4h\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"r42_checked\"] = True\n        self.vars[\"r42_last_time\"] = now\n        self._counts()[\"callbacks\"] += 1\n        month = datetime.fromtimestamp(now/1000, timezone.utc).strftime(\"%Y-%m\")\n        new_month = now < self.FINISH and month != self.vars.get(\"r42_month\")\n        model_id = month + \"_\" + str(now)\n        if new_month:\n            self.vars[\"r42_month\"] = month\n            self.vars[\"r42_model\"] = None\n            self._counts()[\"fit_attempts\"] += 1\n        rows = closed_bars(self.candles, now, 2)\n        reason = None\n        if now % BAR:\n            reason = \"callback_not_4h_boundary\"\n        elif rows is None:\n            reason = \"closed_ohlc_invalid\"\n        elif not math.isclose(float(rows[-1, 2]), float(self.price),\n                              rel_tol=1e-10, abs_tol=1e-8):\n            reason = \"current_price_asof_mismatch\"\n        elif previous_time is not None and now != previous_time+BAR:\n            reason = \"callback_gap\"\n        if reason is not None:\n            self._path_failure(reason)\n            if new_month:\n                self._fit_failure(model_id, reason)\n            return\n        price, previous_price = float(rows[-1, 2]), float(rows[-2, 2])\n        # Old forecasts mature before a refit; no retrospective rewriting.\n        self._mature(now, price)\n        if now == self.FINISH:\n            self._censor(\"target_after_finish\")\n            return\n        if new_month:\n            self._fit(now, model_id)\n        self._predict(now, price, previous_price)\n\n    def _summary(self):\n        if self.vars.get(\"r42_summary_emitted\"):\n            return\n        wallet = float(self.balance)\n        position_qty = float(self.position.qty)\n        entry_orders = len(self.entry_orders)\n        assert math.isclose(wallet, 10000., rel_tol=0., abs_tol=1e-6)\n        assert position_qty == 0. and entry_orders == 0\n        self.vars[\"r42_summary_emitted\"] = True\n        self._log(\"R42_SUMMARY\", dict(stage=\"FINAL\", kind=\"counts\",\n            wallet=wallet, position_qty=position_qty, entry_orders=entry_orders,\n            **self._counts()))\n        for key, group in self._groups().items():\n            n = group[\"n\"]\n            payload = dict(stage=\"FINAL\", kind=\"scores\", cohort=key, **group)\n            for name in (\"mse_p\", \"mse_i\", \"brier_p\", \"brier_i\"):\n                payload[name] = group[name+\"_sum\"]/n if n else None\n            payload[\"mse_delta\"] = payload[\"mse_p\"]-payload[\"mse_i\"] if n else None\n            payload[\"brier_delta\"] = payload[\"brier_p\"]-payload[\"brier_i\"] if n else None\n            # Root applies the fixed strict-improvement numerical gate to these sums.\n            self._log(\"R42_SUMMARY\", payload)\n        self._log(\"R42_SUMMARY\", dict(stage=\"FINAL\", kind=\"density\",\n            **self.vars.get(\"r42_density\", dict(n=0, log_p_sum=0., log_i_sum=0.))))\n\n    def before_terminate(self):\n        # If the native engine exposes a fresh closed FINISH bar here, process it.\n        # The time latch prevents duplicate assimilation/scoring of a prior callback.\n        self.before()\n        self._censor(\"terminal_unobserved_target\")\n        self._summary()\n"
+  },
+  "economic_budget": 0,
+  "observer_budget": 1
+}

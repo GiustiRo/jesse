@@ -1,0 +1,470 @@
+{
+  "format_version": 1,
+  "review": "r5",
+  "published_revision": "20261021-r6",
+  "reviewed_at_utc": "2026-10-21T14:45:00Z",
+  "execution_status": "documentary_review_completed",
+  "economic_status": "no_candidate_promoted",
+  "stage_exit": "definitions_ready_for_user_decision",
+  "risk_fixed": {
+    "trade_target_pct": 2,
+    "aggregate_admission_pct": 6,
+    "leverage": 3,
+    "margin_mode": "isolated",
+    "risk_search_reopened": false
+  },
+  "scope": {
+    "existing_evidence_only": true,
+    "new_backtests": 0,
+    "new_replays": 0,
+    "new_analysis_jobs": 0,
+    "new_optimizations": 0,
+    "new_monte_carlo": 0,
+    "new_candle_queries": 0,
+    "strategy_changes": 0,
+    "global_config_changes": 0,
+    "live_paper_actions": 0
+  },
+  "reviewers": [
+    {
+      "name": "risk_comparability",
+      "focus": "Capital,risk,window,cost equivalence",
+      "independence": "Separate documentary reading; not independent market evidence."
+    },
+    {
+      "name": "btc_evidence",
+      "focus": "BTC lineage,incremental concentration,verdicts"
+    },
+    {
+      "name": "components_evidence",
+      "focus": "PAXG/SPY,correlations,co-losses,proxies"
+    }
+  ],
+  "functional_references": [
+    {
+      "id": "K1001_B_C",
+      "function": "Frozen inherited research references; retain both B and C",
+      "decision": "retain_not_promote",
+      "reason": "Best return among equivalent reviewed development pairs, with existing adverse 2026 evidence and no universal dominance."
+    },
+    {
+      "id": "N204_B_C",
+      "function": "Frozen controls at identical 10k,2/6/3x,fee and development window",
+      "decision": "retain_control",
+      "reason": "Already available; lower stressed B drawdown and more positive months than K1001 B, despite lower total return."
+    },
+    {
+      "id": "PAXG_MARKET",
+      "function": "Frozen component feeding B/C",
+      "decision": "retain_component_reference",
+      "reason": "Local historical contribution and shared-account evidence; not the rejected weekend0.75 recipe."
+    },
+    {
+      "id": "SPY_SECOND_MECH01",
+      "function": "B selection/efficiency reference",
+      "decision": "retain_component_reference",
+      "reason": "Selective development evidence; small isolated sample and B failure2026."
+    },
+    {
+      "id": "SPY_MARKET_MECH05",
+      "function": "C higher-net development alternative",
+      "decision": "retain_component_reference",
+      "reason": "Higher historical net but concentration; one trade dominates2026C profit."
+    },
+    {
+      "id": "Y902",
+      "function": "Immediate comparator for K1001 historical increment",
+      "decision": "retain_context",
+      "reason": "Do not transfer 1/8/5x evidence to fixed profile; excluded from extended2026comparison, not failed2026."
+    },
+    {
+      "id": "CHANNEL_P",
+      "function": "V3 partial historical finding",
+      "decision": "retain_partial",
+      "reason": "No promotion; N95,CAGR17.54%,concentration2024; different BTC-only/funding/cap contract."
+    },
+    {
+      "id": "CROSS_P",
+      "function": "V5screen-eligible idea",
+      "decision": "unconfirmed_not_prioritized",
+      "reason": "No later confirmation; not failed, no automatic experiment."
+    }
+  ],
+  "fixed_profile_summary_rows": [
+    {
+      "label": "DEV_B_N",
+      "session_id": "b9f0cccc-8de0-4076-a7fa-eb9ae8e1be38",
+      "dashboard_url": "http://localhost:9200/#/backtest/b9f0cccc-8de0-4076-a7fa-eb9ae8e1be38",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00045,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 35727.07072805941,
+      "period_return_pct": 357.2707072805941,
+      "cagr_engine_pct": 33.85137915295113,
+      "drawdown_engine_pct": -13.344208838110882,
+      "trades": 242,
+      "fees_usdt": 4379.332765335456,
+      "final_balance_usdt": 45727.07072805946
+    },
+    {
+      "label": "DEV_C_N",
+      "session_id": "3ec33cac-3ea6-43c7-9cfe-4d315930fee2",
+      "dashboard_url": "http://localhost:9200/#/backtest/3ec33cac-3ea6-43c7-9cfe-4d315930fee2",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00045,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 37184.82939539716,
+      "period_return_pct": 371.8482939539716,
+      "cagr_engine_pct": 34.659478110543105,
+      "drawdown_engine_pct": -13.818055144302422,
+      "trades": 249,
+      "fees_usdt": 4666.532549522784,
+      "final_balance_usdt": 47184.82939539717
+    },
+    {
+      "label": "DEV_B_F",
+      "session_id": "bb6e80f2-36f1-4c8f-8c8c-cac840794b8c",
+      "dashboard_url": "http://localhost:9200/#/backtest/bb6e80f2-36f1-4c8f-8c8c-cac840794b8c",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00095,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 24064.339531872713,
+      "period_return_pct": 240.64339531872713,
+      "cagr_engine_pct": 26.5017173759847,
+      "drawdown_engine_pct": -14.585142774601845,
+      "trades": 242,
+      "fees_usdt": 7794.134645025068,
+      "final_balance_usdt": 34064.33953187272
+    },
+    {
+      "label": "DEV_C_F",
+      "session_id": "ac57b4d3-cfeb-4add-88cb-19358d701db1",
+      "dashboard_url": "http://localhost:9200/#/backtest/ac57b4d3-cfeb-4add-88cb-19358d701db1",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00095,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 24652.003040557607,
+      "period_return_pct": 246.52003040557608,
+      "cagr_engine_pct": 26.917410033490796,
+      "drawdown_engine_pct": -14.544128162832859,
+      "trades": 249,
+      "fees_usdt": 8217.90174915877,
+      "final_balance_usdt": 34652.00304055762
+    },
+    {
+      "label": "2026_B_N",
+      "session_id": "d6ed3b7d-19c5-4240-8ad9-9cb2f7706667",
+      "dashboard_url": "http://localhost:9200/#/backtest/d6ed3b7d-19c5-4240-8ad9-9cb2f7706667",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00045,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2026-01-01",
+      "finish_exclusive": "2026-10-19",
+      "net_usdt": -126.85925098621762,
+      "period_return_pct": -1.2685925098621762,
+      "cagr_engine_pct": null,
+      "drawdown_engine_pct": -25.883011163935965,
+      "trades": 46,
+      "fees_usdt": 384.1234713938939,
+      "final_balance_usdt": 9873.140749013795
+    },
+    {
+      "label": "2026_C_N",
+      "session_id": "3c175497-66bf-4cf0-a9f8-c888834961da",
+      "dashboard_url": "http://localhost:9200/#/backtest/3c175497-66bf-4cf0-a9f8-c888834961da",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00045,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2026-01-01",
+      "finish_exclusive": "2026-10-19",
+      "net_usdt": 1035.1210344464566,
+      "period_return_pct": 10.351210344464565,
+      "cagr_engine_pct": null,
+      "drawdown_engine_pct": -19.255823725787845,
+      "trades": 47,
+      "fees_usdt": 423.6400552432852,
+      "final_balance_usdt": 11035.121034446462
+    },
+    {
+      "label": "2026_B_F",
+      "session_id": "40239c00-168a-4ab4-b423-069c91e6e6b7",
+      "dashboard_url": "http://localhost:9200/#/backtest/40239c00-168a-4ab4-b423-069c91e6e6b7",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00095,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2026-01-01",
+      "finish_exclusive": "2026-10-19",
+      "net_usdt": -528.0538219355211,
+      "period_return_pct": -5.280538219355211,
+      "cagr_engine_pct": null,
+      "drawdown_engine_pct": -27.816571716671625,
+      "trades": 46,
+      "fees_usdt": 782.4942375242424,
+      "final_balance_usdt": 9471.946178064476
+    },
+    {
+      "label": "2026_C_F",
+      "session_id": "df30484a-1331-4faa-9097-6c2e7d7011bc",
+      "dashboard_url": "http://localhost:9200/#/backtest/df30484a-1331-4faa-9097-6c2e7d7011bc",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00095,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2026-01-01",
+      "finish_exclusive": "2026-10-19",
+      "net_usdt": 496.36637677866855,
+      "period_return_pct": 4.963663767786686,
+      "cagr_engine_pct": null,
+      "drawdown_engine_pct": -21.07491447059133,
+      "trades": 47,
+      "fees_usdt": 858.3715187051457,
+      "final_balance_usdt": 10496.366376778666
+    },
+    {
+      "label": "N204_DEV_B_N",
+      "session_id": "c7c06f37-6fc6-41b5-8b64-9314e34461ab",
+      "dashboard_url": "http://localhost:9200/#/backtest/c7c06f37-6fc6-41b5-8b64-9314e34461ab",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00045,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 33646.44571451735,
+      "period_return_pct": 336.4644571451735,
+      "cagr_engine_pct": 32.66114541285119,
+      "drawdown_engine_pct": -13.375492042825854,
+      "trades": 273,
+      "fees_usdt": 4638.393739485868,
+      "final_balance_usdt": 43646.44571451734
+    },
+    {
+      "label": "N204_DEV_B_F",
+      "session_id": "114d7db9-f127-4a64-863c-f4d7fd0f3e3b",
+      "dashboard_url": "http://localhost:9200/#/backtest/114d7db9-f127-4a64-863c-f4d7fd0f3e3b",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00095,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 22034.260114574805,
+      "period_return_pct": 220.34260114574806,
+      "cagr_engine_pct": 25.019604651986562,
+      "drawdown_engine_pct": -14.030530672409935,
+      "trades": 273,
+      "fees_usdt": 8202.336901296014,
+      "final_balance_usdt": 32034.26011457478
+    },
+    {
+      "label": "N204_DEV_C_N",
+      "session_id": "436b001f-2868-44cc-890e-77d62e7a6397",
+      "dashboard_url": "http://localhost:9200/#/backtest/436b001f-2868-44cc-890e-77d62e7a6397",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00045,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 35025.678744685174,
+      "period_return_pct": 350.2567874468518,
+      "cagr_engine_pct": 33.455125809981176,
+      "drawdown_engine_pct": -14.996090444461485,
+      "trades": 280,
+      "fees_usdt": 4913.476656168994,
+      "final_balance_usdt": 45025.6787446852
+    },
+    {
+      "label": "N204_DEV_C_F",
+      "session_id": "3dbe6a72-a7e8-40d6-b773-e3c2434567f0",
+      "dashboard_url": "http://localhost:9200/#/backtest/3dbe6a72-a7e8-40d6-b773-e3c2434567f0",
+      "session_status": "finished",
+      "capital_usdt": 10000,
+      "fee_per_side": 0.00095,
+      "leverage": 3,
+      "margin_mode": "isolated",
+      "start_inclusive": "2020-10-15",
+      "finish_exclusive": "2025-12-31",
+      "net_usdt": 22494.176256066905,
+      "period_return_pct": 224.94176256066908,
+      "cagr_engine_pct": 25.3618920431953,
+      "drawdown_engine_pct": -15.664935932848522,
+      "trades": 280,
+      "fees_usdt": 8581.17463166757,
+      "final_balance_usdt": 32494.17625606689
+    }
+  ],
+  "development_interpretation": "K1001 retains higher total return than N204 in all four equivalent reviewed B/C×fee pairs. This is historical reused development, not prospective approval. N204 B stress has smaller drawdown and more positive months.",
+  "annual_context": {
+    "source": "strategies/MultiAssetRetestBtcShort4h/reports/BTC_R14_SIN_FUNDING_RESULTS_20261020.md",
+    "scope": "K1001 BASE_C annual MTM returns already reported;2020and2025partial",
+    "nominal_pct": {
+      "2021": 45.54,
+      "2022": 18.1,
+      "2023": 42.07,
+      "2024": 32.47,
+      "2020_partial": 7.14,
+      "2025_partial": 36.13
+    },
+    "stress_pct": {
+      "2021": 39.63,
+      "2022": 15.38,
+      "2023": 37.33,
+      "2024": 26.26,
+      "2020_partial": 6.19,
+      "2025_partial": 16.81
+    },
+    "interpretation": "Historical CAGR does not imply20–30%every year; above30%is not rejected merely for exceeding an orientative target. Portfolio CAGR does not prove each component target."
+  },
+  "historical_diversification": {
+    "status": "measured_at_different_profile",
+    "profile": {
+      "trade_pct": 1,
+      "aggregate_pct": 8,
+      "leverage": 5
+    },
+    "basis": "monthly_MTM_component_contributions",
+    "complete_months": 61,
+    "source": "strategies/MultiAssetRetestBtcShort4h/reports/PORT_CANDIDATES_EXACT_AUDIT_20261019.md",
+    "correlations": [
+      {
+        "portfolio": "CONTROL",
+        "btc_paxg": -0.004,
+        "btc_spy": -0.0539,
+        "paxg_spy": -0.0837
+      },
+      {
+        "portfolio": "B",
+        "btc_paxg": -0.0927,
+        "btc_spy": -0.0648,
+        "paxg_spy": -0.0469
+      },
+      {
+        "portfolio": "C",
+        "btc_paxg": -0.0929,
+        "btc_spy": -0.1114,
+        "paxg_spy": -0.0144
+      }
+    ],
+    "co_losses": [
+      {
+        "pair": "BTC/PAXG",
+        "control_negative_both": 4,
+        "control_nonzero_both": 29,
+        "B_negative_both": 3,
+        "B_nonzero_both": 29,
+        "C_negative_both": 3,
+        "C_nonzero_both": 29
+      },
+      {
+        "pair": "BTC/SPY",
+        "control_negative_both": 6,
+        "control_nonzero_both": 30,
+        "B_negative_both": 0,
+        "B_nonzero_both": 14,
+        "C_negative_both": 2,
+        "C_nonzero_both": 21
+      },
+      {
+        "pair": "PAXG/SPY",
+        "control_negative_both": 3,
+        "control_nonzero_both": 16,
+        "B_negative_both": 0,
+        "B_nonzero_both": 7,
+        "C_negative_both": 2,
+        "C_nonzero_both": 11
+      }
+    ],
+    "limits": [
+      "Zero exposure months included in correlations; price correlation is not the same statistic.",
+      "Small concurrent samples; zero co-losses is not immunity.",
+      "All four C sleeves lost in April2021 despite low global correlations.",
+      "Equivalent current-version2/6/3xmatrix not documented in reviewedR12annexes; no global absence claim."
+    ]
+  },
+  "corrections": [
+    {
+      "claim": "Five changed entries imply five independent incremental cases",
+      "corrected": "Three removed and two new entry records represent only three unique discordant signal situations: two delayed fills and one no-fill; B/C repeat the same situations.",
+      "source": "strategies/MultiAssetRetestBtcShort4h/reports/BTC_K1001_DISTINCT_CASE_AUDIT_20261019.md"
+    },
+    {
+      "claim": "Correlations/co-losses have never been evaluated",
+      "corrected": "Measured for historical1/8/5xaccount variants. Do not transfer to fixed2/6/3xversions.",
+      "source": "strategies/MultiAssetRetestBtcShort4h/reports/PORT_CANDIDATES_RESULTS_20261019.md"
+    },
+    {
+      "claim": "BTClineage portfolioCAGR provesBTCindividual20–30%",
+      "corrected": "Those are shared portfolio returns, not an isolated component return.",
+      "source": "strategies/MultiAssetRetestBtcShort4h/reports/CAPITAL_R12_RESULTS_20261019.md"
+    },
+    {
+      "claim": "Rawtotal_open_trades1infinisheddevelopmentCmeansliveposition",
+      "corrected": "Documented preterminal counter. Two last stored K1001Ctrade receipts confirm full reduce-onlyMARKETexecutionatfinish; no new complete audit claimed."
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "incremental_edge",
+      "question": "Is K1001's increment generalizable?",
+      "evidence": "Three discordant situations,one avoided loss inJuly2024and confidence intervals including zero.",
+      "decision": "insufficient_for_robustness_claim",
+      "new_test_authorized": false
+    },
+    {
+      "id": "components_target",
+      "question": "Does each BTC/PAXG/SPY piece meet20–30%at the fixed profile?",
+      "evidence": "Shared portfolioCAGR cannot answer it; isolated studies differ in risk/capital/exposure.",
+      "decision": "not_accredited_by_comparable_isolated_evidence",
+      "new_test_authorized": false
+    },
+    {
+      "id": "fixed_profile_diversification",
+      "question": "What are aligned monthly correlations/co-losses for the exact frozen2/6/3xversions?",
+      "evidence": "Existing reviewedR12annexes provide aggregate attribution and portfolio months,not equivalent monthly component matrix.",
+      "decision": "bounded_evidence_gap",
+      "new_test_authorized": false
+    },
+    {
+      "id": "native_execution",
+      "question": "How much survives native instrument feeds/funding/slippage/liquidity?",
+      "evidence": "PAXGspot/SPXCFDBIDproxies; feesstress is not native fill/slippage or funding.",
+      "decision": "not_certified",
+      "new_test_authorized": false
+    },
+    {
+      "id": "prospective",
+      "question": "Does a frozen candidate persist in genuinely unused future evidence?",
+      "evidence": "Development reused;2026alreadyobservedincludingextendedexploratorycomparison.",
+      "decision": "not_established",
+      "new_test_authorized": false
+    }
+  ],
+  "final_decision": "Close r5documentary work with references and limits defined. Keep2/6/3xfixed,do not promote,remove components,retune orlaunch experiments. Present conclusions to user before any next stage."
+}

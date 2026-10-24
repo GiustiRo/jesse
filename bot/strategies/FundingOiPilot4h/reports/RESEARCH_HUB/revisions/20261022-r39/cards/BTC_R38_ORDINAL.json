@@ -1,0 +1,47 @@
+{
+  "id": "BTC_R38_ORDINAL",
+  "title": "Primer frente a segundo cierre extremo del episodio",
+  "asset": "BTC",
+  "status": "cerrado",
+  "execution": "2 motores terminados; auditoría íntegra PASS",
+  "family": "Orden de oportunidades dentro del estado de precio",
+  "question": "¿Cambiar el ordinal de entrada mejora retorno y regularidad con la misma captura estructural?",
+  "verdict": "NO_CUMPLE en ambas; SECOND tampoco gana el contraste comparativo",
+  "sessions": [
+    {
+      "name": "FIRST",
+      "session_id": "7d2a7a2f-77e0-4926-ab15-b6772beac17b",
+      "dashboard_url": "http://localhost:9200/#/backtest/7d2a7a2f-77e0-4926-ab15-b6772beac17b",
+      "cagr": 6.7778499438455375,
+      "pf": 1.213350288974837,
+      "dd_m1_pct": 15.959131914298474,
+      "N": 296,
+      "positive_active": 30,
+      "active_months": 62,
+      "positive_quarters": 8
+    },
+    {
+      "name": "SECOND",
+      "session_id": "ff157a56-362d-4a0a-9fd3-c8d90c813577",
+      "dashboard_url": "http://localhost:9200/#/backtest/ff157a56-362d-4a0a-9fd3-c8d90c813577",
+      "cagr": 6.884832268824348,
+      "pf": 1.3409820285484053,
+      "dd_m1_pct": 17.41511837411487,
+      "N": 184,
+      "positive_active": 27,
+      "active_months": 61,
+      "positive_quarters": 12
+    }
+  ],
+  "sources": [
+    {
+      "label": "Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R38_FINAL_20261022.md"
+    },
+    {
+      "label": "Resultados auditados",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R38_RESULTS_20261022.json"
+    }
+  ],
+  "not_independent_samples": true
+}

@@ -1,0 +1,183 @@
+{
+  "id": "V5",
+  "title": "Ciclo V5",
+  "asset": "BTC",
+  "family": "funding / cruce / VWAP",
+  "execution": "cerrado",
+  "evidence": "histórica adaptativa",
+  "objective": "no alcanzado",
+  "hypothesis": "Normalización de funding, cruces y VWAP con controles/OI y selección por DD.",
+  "origin": "Protocolos históricos V1–V6; no son propuestas nuevas.",
+  "method": "Screening y selección cronológica según protocolo original. Pruebas técnicas separadas de resultados económicos.",
+  "protocol": null,
+  "budget": {
+    "cycle": "V5",
+    "economic_unique": 37,
+    "nominal_slots": 40,
+    "technical_attempts": 3
+  },
+  "versions": "Fuentes/config/datasets congelados en registry original; consultar referencias. No se afirman hashes nuevos.",
+  "periods": [
+    "screen 2020–2023",
+    "confirmación adaptativa 2024–2025"
+  ],
+  "results": {
+    "scope": "replays continuos 2024–2025",
+    "funding_oi": {
+      "net_pct": -6.866518,
+      "cagr_pct": -3.489614,
+      "pf": 0.853912,
+      "drawdown_engine_pct": -17.669256,
+      "trades": 84,
+      "positive_half_years": "1/4"
+    },
+    "funding": {
+      "net_pct": -2.079607,
+      "cagr_pct": -1.043844,
+      "pf": 0.960575,
+      "drawdown_engine_pct": -14.311619,
+      "trades": 107,
+      "positive_half_years": "2/4"
+    },
+    "stress": "17 corridas de fase C negativas; no promover vecinos",
+    "annual": null,
+    "half_years": null,
+    "exposure": null,
+    "costs": "fee nominal .00045, slip 0, funding histórico; S1 fee .0009; S2 slip5bps; S3 fee .0009/slip10bps",
+    "nominals": [
+      {
+        "strategy": "ResearchV5FundingFPReplay4h",
+        "period": "2024-01-01 → 2026-01-01 exclusivo",
+        "cagr_pct": -1.0438437362836228,
+        "net_pct": -2.079606506156359,
+        "drawdown_engine_pct": -14.311618647638635,
+        "pf": 0.9605749237229804,
+        "trades": 107,
+        "annual": [
+          {
+            "year": 2024,
+            "return_pct": -2.2931244999153,
+            "full_year": true
+          },
+          {
+            "year": 2025,
+            "return_pct": 0.21852913898445792,
+            "full_year": true
+          }
+        ],
+        "half_years": [
+          {
+            "period": "2024H1",
+            "return_pct": -2.717044868658558,
+            "full_semester": true
+          },
+          {
+            "period": "2024H2",
+            "return_pct": 0.43576016802833184,
+            "full_semester": true
+          },
+          {
+            "period": "2025H1",
+            "return_pct": 1.3797016032595755,
+            "full_semester": true
+          },
+          {
+            "period": "2025H2",
+            "return_pct": -1.145369779070049,
+            "full_semester": true
+          }
+        ],
+        "costs": {
+          "fees_usdt": 491.4570400136251,
+          "funding_usdt": 167.58179242170849,
+          "proxy_funding_usdt": 0
+        },
+        "exposure_pct": 30.10544915640675
+      },
+      {
+        "strategy": "ResearchV5FundingFPOiReplay4h",
+        "period": "2024-01-01 → 2026-01-01 exclusivo",
+        "cagr_pct": -3.489614458523238,
+        "net_pct": -6.866518446538871,
+        "drawdown_engine_pct": -17.669256287775113,
+        "pf": 0.8539117648521104,
+        "trades": 84,
+        "annual": [
+          {
+            "year": 2024,
+            "return_pct": -0.7623918982563871,
+            "full_year": true
+          },
+          {
+            "year": 2025,
+            "return_pct": -6.151021437381077,
+            "full_year": true
+          }
+        ],
+        "half_years": [
+          {
+            "period": "2024H1",
+            "return_pct": -2.7530759535795535,
+            "full_semester": true
+          },
+          {
+            "period": "2024H2",
+            "return_pct": 2.047040638913078,
+            "full_semester": true
+          },
+          {
+            "period": "2025H1",
+            "return_pct": -2.934626741752877,
+            "full_semester": true
+          },
+          {
+            "period": "2025H2",
+            "return_pct": -3.3136375904833093,
+            "full_semester": true
+          }
+        ],
+        "costs": {
+          "fees_usdt": 371.8790790103507,
+          "funding_usdt": 141.15492232717867,
+          "proxy_funding_usdt": 0
+        },
+        "exposure_pct": 25.587570299437605
+      }
+    ]
+  },
+  "limitations": [
+    "2020–2025 ya examinados; no son OOS virgen.",
+    "Los gates originales se conservan, no se reemplazan por la nueva meta.",
+    "Sin conclusión prospectiva ni autorización de trading."
+  ],
+  "audit": "Decisiones finales originales y cierre consolidado leídos por MCP. Conteos contrastados con RESEARCH_COUNTS_V1_V6_20261020.json.",
+  "decision": "Finalistas Funding rechazadas tras confirmación y estrés. CROSS elegible en screening, fuera del cupo; sin confirmación.",
+  "references": [
+    {
+      "label": "FINAL_DECISION_V5.md",
+      "path": "strategies/FundingOiPilot4h/reports/FINAL_DECISION_V5.md"
+    },
+    {
+      "label": "RESEARCH_PROTOCOL_V5_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_PROTOCOL_V5_20261020.md"
+    },
+    {
+      "label": "REGISTRY_V5.json",
+      "path": "strategies/FundingOiPilot4h/reports/REGISTRY_V5.json"
+    },
+    {
+      "label": "Nominales, años y semestres V5",
+      "path": "strategies/FundingOiPilot4h/reports/V5_REPLAY_NOMINAL_ACCOUNTING.json"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "Funding OI",
+      "url": "http://localhost:9200/#/backtest/46f4c14a-1ac2-4cc0-b347-5d6bff007051"
+    },
+    {
+      "label": "Funding",
+      "url": "http://localhost:9200/#/backtest/ff2f12bf-1faf-4bec-808f-800a778421a4"
+    }
+  ]
+}

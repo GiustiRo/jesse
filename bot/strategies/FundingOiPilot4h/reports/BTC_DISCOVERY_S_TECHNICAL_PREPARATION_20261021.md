@@ -1,0 +1,31 @@
+# S — preparación técnica final
+
+Fuentes nuevas BtcResearchR19UtilityBase1m, BtcResearchR19UtilityKnn1m y BtcResearchR19UtilityGlobal1m. Protocoloactualizado yreadback antes fuentes, revisiónroot/independiente conforme. Ocho readbackscompletos idénticos, sin editar padres.
+
+Check1a13343c98ea41adbf0ee4bb6d97ab74 succeeded primerintento1900aserciones/0errores. Granpartedelconteo esoráculo repetidoparalos360orígenes; no confianzaestadística. Cero nuevas económicas/drafts/backtests técnicos; presupuesto de hasta2reemplazos técnicos ECONÓMICOS separado de análisispreflight.
+
+Se verificó mapping380→372/padding8/orígenes14..373,ATRprimero0..14,asof/full1440M1obligatorias aun conambosstops tempranos,madurezdeadline,stopfirst/gapambossides/últimominuto,fee-onlypernocional sinfundinglabels,cachéparidad/359hits+1nueva/purge/invalidosmaduros/nofuturecache,searchsortedviews sinfullscanM1,common20/19/currentzero,top20tiesolder/GLOBALall,mediaslongshort/longtie/hurdle,ocupación/nuevacuatrohoras/sameexit,riskSLnoTP24h/FINALheredado.
+
+cache_hits/misses/purged; labels_valid/invalid and invalid_reasons; future_denied; fixed_origins360; common_valid/min/max;feature_invalid;cached;decisions;M1visible_rows/oldest. They distinguish unique mature-label cache creations from cache hits and current valid training pool.
+
+Límites: completitud/retenciónM1real ybroker timing no probados porfixture. LabelentryC_origen,stopmatemáticoyexpiraciónexactaorigin+24h soncontrafactuales fee-only; no son netocompleto y funding aplica enledgerREAL. Gestiónreal AR sinTP24h/primer4htrasfill se preserva incluso si difiere deldeadline label. No simulador/órdenesvirtualesocultas ni backtestanidado.
+
+## SHA256
+
+- BtcResearchR19UtilityBase1m: 9a5f5dd5232dc62d32368f337c6a7dcef7e20577320bd13fdf092bb557752314
+- BtcResearchR19UtilityKnn1m: 86b7541e309b946634ad0311f88de146cc321db37d240bb83f5da1b1907b3912
+- BtcResearchR19UtilityGlobal1m: 8eb1b8d0bd70c596ea54fad7c790fae215d938dd55edcf68d4a349ee73ef4648
+- AngleBtcProbability4h: d4add40c46e6c46210e77b976e93759da8ee368d182ec5343c453a7dc7ab47c1
+- BtcResearchR18AnalogueBase1m: e8fc9ba9710cef644a41e32608b3132d38d6aca55f5027f259b1c147404e9e2e
+- BtcResearchR10Base4h: 2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9
+- BtcResearchR12ArBase1m: 1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343
+- BtcResearchR11Base1m: be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87
+
+Checkcode fde7d3809cb6a7743039127c7ed20a9803f2bfc4a478c5fec07cb4e210a23d99; protocolo 34a99d6419a03e5bb30f3e8278435042d5c267347c325a32d34a4f73e9bc9c41.
+
+Archivos guardados enmáquinaJesse:
+- strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_S_PROTOCOL_20261021.md
+- strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_S_TECHNICAL_CHECK_20261021.json (CODES8fuentes completo,checkexacto,job/result,hashes/readbacks/contadores/límites)
+- strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_S_TECHNICAL_PREPARATION_20261021.md
+
+Root revisaantesdrafts/manifiestogenuino/economía. BTC1m+BTC4h,warmup4004h,2%/6%/3x10k,fee.00045,fundingfixedsnapshotON/proxy,slip0,[2020-10-15,2026-01-01),gatesr9intactos. Sincoverageprecheck/import ni cambiosframework. CerrarS tras2económicas sinvecinos segúnresultados.

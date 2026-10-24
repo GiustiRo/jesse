@@ -1,0 +1,158 @@
+{
+  "job_id": "8aec2dc27d76401a80f0b0068001f2de",
+  "rows": [
+    {
+      "side": "P",
+      "url": "http://localhost:9200/#/backtest/16da36e2-2807-4a9b-85e3-51cf8fa67c75",
+      "terminal": 13822.585629132223,
+      "return_pct": 38.22585629132222,
+      "cagr": 17.543463188216002,
+      "dd": -18.413963881560203,
+      "pf": 1.3485110973136518,
+      "n": 95,
+      "synthetic": 13822.585688110834,
+      "delta": -0.00005897861046832986,
+      "folds": [
+        {
+          "fold": "C1",
+          "wfret": 16.31462581180432,
+          "replayret": 16.31462581180432,
+          "begin_equity": 10000,
+          "end_equity": 11631.462581180433,
+          "matched": 25,
+          "n": 25,
+          "same_price": true,
+          "same_exit": true,
+          "min_qty_ratio": 1,
+          "max_qty_ratio": 1
+        },
+        {
+          "fold": "C2",
+          "wfret": 18.94485406552391,
+          "replayret": 18.94485480300019,
+          "begin_equity": 11631.462581180433,
+          "end_equity": 13835.026278650364,
+          "matched": 21,
+          "n": 21,
+          "same_price": false,
+          "same_exit": true,
+          "min_qty_ratio": 1.163146083932628,
+          "max_qty_ratio": 1.1631463330530556
+        },
+        {
+          "fold": "C3",
+          "wfret": 1.8702588568721978,
+          "replayret": 1.870258068999875,
+          "begin_equity": 13835.026278650364,
+          "end_equity": 14093.776973975077,
+          "matched": 25,
+          "n": 25,
+          "same_price": false,
+          "same_exit": true,
+          "min_qty_ratio": 1.3835025299330883,
+          "max_qty_ratio": 1.3835027981327448
+        },
+        {
+          "fold": "C4",
+          "wfret": -1.924191844157852,
+          "replayret": -1.9241921121898153,
+          "begin_equity": 14093.776973975077,
+          "end_equity": 13822.585629132223,
+          "matched": 24,
+          "n": 24,
+          "same_price": false,
+          "same_exit": true,
+          "min_qty_ratio": 1.4093775490185956,
+          "max_qty_ratio": 1.4093778715920084
+        }
+      ]
+    },
+    {
+      "side": "OI",
+      "url": "http://localhost:9200/#/backtest/48ee9577-29cb-4860-8dff-be0d82caf796",
+      "terminal": 12289.026303883857,
+      "return_pct": 22.890263038838565,
+      "cagr": 10.840252750960522,
+      "dd": -17.16843594295251,
+      "pf": 1.25978678179047,
+      "n": 84,
+      "synthetic": 12289.026190771438,
+      "delta": 0.00011311241905787028,
+      "folds": [
+        {
+          "fold": "C1",
+          "wfret": 11.991579832819689,
+          "replayret": 11.991579832819689,
+          "begin_equity": 10000,
+          "end_equity": 11199.15798328197,
+          "matched": 22,
+          "n": 22,
+          "same_price": true,
+          "same_exit": true,
+          "min_qty_ratio": 1,
+          "max_qty_ratio": 1
+        },
+        {
+          "fold": "C2",
+          "wfret": 0.813184784923382,
+          "replayret": 0.8131853406227796,
+          "begin_equity": 11199.15798328197,
+          "end_equity": 11290.227894275205,
+          "matched": 22,
+          "n": 22,
+          "same_price": false,
+          "same_exit": true,
+          "min_qty_ratio": 1.1199156791726124,
+          "max_qty_ratio": 1.119915922861032
+        },
+        {
+          "fold": "C3",
+          "wfret": 2.9807282440017957,
+          "replayret": 2.980728031518076,
+          "begin_equity": 11290.227894275205,
+          "end_equity": 11626.75888194214,
+          "matched": 22,
+          "n": 22,
+          "same_price": false,
+          "same_exit": true,
+          "min_qty_ratio": 1.1290227417988103,
+          "max_qty_ratio": 1.1290229038753932
+        },
+        {
+          "fold": "C4",
+          "wfret": 5.696061627636473,
+          "replayret": 5.6960622359710555,
+          "begin_equity": 11626.75888194214,
+          "end_equity": 12289.026303883857,
+          "matched": 18,
+          "n": 18,
+          "same_price": false,
+          "same_exit": true,
+          "min_qty_ratio": 1.1626758342794528,
+          "max_qty_ratio": 1.1626760581024398
+        }
+      ]
+    }
+  ],
+  "entry_price_precision": [
+    {
+      "side": "P",
+      "mismatched_entry_prices": 14,
+      "max_abs_entry_price_difference": 1.4551915228366852e-11,
+      "all_exit_times_match": true
+    },
+    {
+      "side": "OI",
+      "mismatched_entry_prices": 15,
+      "max_abs_entry_price_difference": 2.9103830456733704e-11,
+      "all_exit_times_match": true
+    }
+  ],
+  "global_selector": [
+    "OI",
+    "OI",
+    "OI",
+    "OI"
+  ],
+  "conclusion": "All179entries match timestamp/direction and exit time. Prices differ only at floatingpoint precision as quantified. No position/funding on semester boundaries. Capital carried via equity/qtyratios; no new gates."
+}

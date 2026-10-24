@@ -1,0 +1,51 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "4e7a0ed5db2249ca8f41c351afa566c2",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/4e7a0ed5db2249ca8f41c351afa566c2",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "23cdce16-42b9-4a76-96e5-02fbf06106df",
+        "session_status": "finished",
+        "title": "MCP Backtest: V4 TECH ResearchV4ShockSmoke1h",
+        "size_bytes": 19271
+      },
+      {
+        "name": "s1",
+        "file": "inputs/s1.json",
+        "session_type": "backtest",
+        "session_id": "141a8327-87d0-43c3-8de1-9893b380f35e",
+        "session_status": "finished",
+        "title": "MCP Backtest: V4 OSCILLATOR SMOKE 1h",
+        "size_bytes": 16318
+      }
+    ],
+    "status": "succeeded",
+    "pid": 8179,
+    "exit_code": 0,
+    "started_at": "2026-10-21T00:25:23+00:00",
+    "finished_at": "2026-10-21T00:25:23+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-22T00:25:23+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 6372,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"session_id\": \"23cdce16-42b9-4a76-96e5-02fbf06106df\", \"strategy\": \"ResearchV4ShockSmoke1h\", \"start\": \"2020-09-01\", \"finish\": \"2020-09-08\", \"n\": 5, \"net\": 270.27125917136686, \"net_pct\": 2.7027125917136687, \"pf\": 4.55113262175877, \"pf_no_losses\": false, \"dd\": -0.7610846677911787, \"cagr_pct\": 301.7113534862555, \"turnover\": 10.102322401415194, \"gross\": 315.73170997773525, \"fees\": 45.46045080636837, \"funding\": 0.0, \"funding_events\": 0, \"proxy_funding\": 0.0, \"exact_funding\": 0.0, \"unclassified_funding\": 0.0, \"funding_sources\": {}, \"holding_seconds\": 9420.0, \"exposure\": 0.015575396825396826, \"directions\": {\"long\": {\"n\": 4, \"gross\": 306.09305692773523, \"fees\": 36.22190417595267, \"funding\": 0.0, \"net\": 269.8711527517826}, \"short\": {\"n\": 1, \"gross\": 9.63865305, \"fees\": 9.2385466304157, \"funding\": 0.0, \"net\": 0.4001064195843007}}, \"exit_order_types\": {\"STOP\": 1, \"LIMIT\": 3, \"MARKET\": 1}, \"months\": [{\"month\": \"2020-09\", \"return_pct\": 2.702712591713663, \"end_equity\": 10270.271259171366}], \"years\": [{\"year\": 2020, \"return_pct\": 2.702712591713663, \"end_equity\": 10270.271259171366, \"full_year\": false}], \"semesters\": [{\"period\": \"2020H2\", \"return_pct\": 2.702712591713663, \"end_equity\": 10270.271259171366, \"full_semester\": false}], \"replay_nominal_gates\": null, \"replay_nominal_eligible\": null, \"funding_sensitivities\": [{\"kind\": \"proxy_only\", \"multiplier\": 0.5, \"net_usdt\": 270.27125917136686, \"net_pct\": 2.7027125917136687, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"proxy_only\", \"multiplier\": 1.5, \"net_usdt\": 270.27125917136686, \"net_pct\": 2.7027125917136687, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 0.5, \"net_usdt\": 270.27125917136686, \"net_pct\": 2.7027125917136687, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 1.5, \"net_usdt\": 270.27125917136686, \"net_pct\": 2.7027125917136687, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 346.37972595048416, \"negative_pnl\": -76.10846677911726, \"best_trade\": 171.16891786936708, \"worst_trade\": -76.10846677911726, \"adjusted_fills\": 0, \"curve_terminal_delta\": -1.8189894035458565e-12, \"sampled_dd_including_terminal_pct\": -0.7610846677911787, \"equity_points\": 8, \"max_accounting_error\": 1.8189894035458565e-12, \"metric_open_indicator\": 1, \"metric_open_pl\": 9.638653050000357}, {\"session_id\": \"141a8327-87d0-43c3-8de1-9893b380f35e\", \"strategy\": \"ResearchV4OscillatorSmoke1h\", \"start\": \"2020-09-01\", \"finish\": \"2020-09-08\", \"n\": 3, \"net\": -38.06703986821635, \"net_pct\": -0.38067039868216346, \"pf\": 0.008207349853309183, \"pf_no_losses\": false, \"dd\": -0.3838205482021628, \"cagr_pct\": -18.034452925871257, \"turnover\": 4.78416009467034, \"gross\": -16.538319442199818, \"fees\": 21.52872042601653, \"funding\": 0.0, \"funding_events\": 0, \"proxy_funding\": 0.0, \"exact_funding\": 0.0, \"unclassified_funding\": 0.0, \"funding_sources\": {}, \"holding_seconds\": 28800.0, \"exposure\": 0.047619047619047616, \"directions\": {\"long\": {\"n\": 1, \"gross\": -24.54817971719982, \"fees\": 8.98895321509455, \"funding\": 0.0, \"net\": -33.53713293229437}, \"short\": {\"n\": 2, \"gross\": 8.009860275, \"fees\": 12.53976721092198, \"funding\": 0.0, \"net\": -4.5299069359219795}}, \"exit_order_types\": {\"MARKET\": 3}, \"months\": [{\"month\": \"2020-09\", \"return_pct\": -0.38067039868215913, \"end_equity\": 9961.932960131784}], \"years\": [{\"year\": 2020, \"return_pct\": -0.38067039868215913, \"end_equity\": 9961.932960131784, \"full_year\": false}], \"semesters\": [{\"period\": \"2020H2\", \"return_pct\": -0.38067039868215913, \"end_equity\": 9961.932960131784, \"full_semester\": false}], \"replay_nominal_gates\": null, \"replay_nominal_eligible\": null, \"funding_sensitivities\": [{\"kind\": \"proxy_only\", \"multiplier\": 0.5, \"net_usdt\": -38.06703986821635, \"net_pct\": -0.38067039868216346, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"proxy_only\", \"multiplier\": 1.5, \"net_usdt\": -38.06703986821635, \"net_pct\": -0.38067039868216346, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 0.5, \"net_usdt\": -38.06703986821635, \"net_pct\": -0.38067039868216346, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 1.5, \"net_usdt\": -38.06703986821635, \"net_pct\": -0.38067039868216346, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 0.31501495199839447, \"negative_pnl\": -38.38205482021474, \"best_trade\": 0.31501495199839447, \"worst_trade\": -33.53713293229437, \"adjusted_fills\": 0, \"curve_terminal_delta\": -1.8189894035458565e-12, \"sampled_dd_including_terminal_pct\": -0.3838205482021628, \"equity_points\": 8, \"max_accounting_error\": 1.8189894035458565e-12, \"metric_open_indicator\": 1, \"metric_open_pl\": 7.588780582500476}]\n",
+  "output_lines_returned": 1,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}

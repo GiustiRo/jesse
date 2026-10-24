@@ -1,0 +1,827 @@
+# AA technical supplied-source harnesses and preserved attempts
+
+Initial unexecuted v0: equivalent-span and repeated-count fixture refinements. Attempt1 failed on AST substring predicate falsely matching BtcResearch class names; no productive source change. Attempt2 narrows forbidden module exactly to jesse.research before repeat. All code preserved below; inputs always empty.
+
+## Unexecuted v0
+```python
+import ast, math, json, hashlib, copy
+from datetime import datetime, timezone
+from types import SimpleNamespace
+from unittest.mock import patch
+import numpy as np
+
+SOURCES={"BtcResearchR10Base4h":"import json\nimport math\n\nimport numpy as np\nfrom jesse.strategies import Strategy\n\nBAR = 14400000\nDAY = 86400000\n\n\ndef closed_window(candles, now, count):\n    \"\"\"Use only consecutive, closed 4h bars; no synthetic gap repair.\"\"\"\n    rows = candles[candles[:, 0] + BAR <= now][-count:]\n    if len(rows) != count or rows[-1, 0] != now - BAR:\n        return None\n    if not np.all(np.diff(rows[:, 0]) == BAR):\n        return None\n    if not np.all(np.isfinite(rows[:, :5])) or np.any(rows[:, 1:5] <= 0):\n        return None\n    if np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2])):\n        return None\n    if np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2])):\n        return None\n    return rows\n\n\ndef atr14(rows):\n    previous = rows[-15:-1, 2]\n    current = rows[-14:]\n    tr = np.maximum(current[:, 3] - current[:, 4],\n                    np.maximum(abs(current[:, 3] - previous), abs(current[:, 4] - previous)))\n    value = float(np.mean(tr))\n    return value if math.isfinite(value) and value > 0 else None\n\n\ndef breadth_state(closes):\n    changes = np.diff(closes)\n    positive = changes > 0\n    negative = changes < 0\n    if int(positive[-6:].sum()) >= 4 and int(positive[-24:].sum()) >= 16:\n        return 1\n    if int(negative[-6:].sum()) >= 4 and int(negative[-24:].sum()) >= 16:\n        return -1\n    return 0\n\n\ndef breadth_signal(rows):\n    \"\"\"Count sign persistence, not return magnitudes; consume only new states.\"\"\"\n    now_state = breadth_state(rows[-25:, 2])\n    old_state = breadth_state(rows[-26:-1, 2])\n    return now_state if now_state != old_state else 0\n\n\ndef funding_failure_signal(rows, now, events):\n    \"\"\"Observe a full post-payment bar; never know or collect the next payment.\"\"\"\n    event_start = now - BAR\n    matching = []\n    for event in events:\n        raw = int(event[\"settled_at\"])\n        effective = raw // 60000 * 60000\n        if effective == event_start and 0 <= raw - effective <= 1000:\n            if int(event[\"available_at\"]) <= now and int(event[\"available_at\"]) > raw:\n                matching.append(event)\n    if len(matching) != 1:\n        return 0, None\n    event = matching[0]\n    rate = float(event[\"rate_decimal\"])\n    if not math.isfinite(rate):\n        return 0, None\n    pre, post = rows[-2], rows[-1]\n    if rate > 0 and pre[2] > pre[1] and post[2] < pre[1]:\n        return -1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    if rate < 0 and pre[2] < pre[1] and post[2] > pre[1]:\n        return 1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    return 0, None\n\n\ndef entry_plan(price, capital, margin, leverage, fee, direction, distance):\n    stop = price - direction * distance\n    values = (price, capital, margin, leverage, distance, stop)\n    if direction not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in values):\n        return None\n    if not math.isfinite(fee) or fee < 0:\n        return None\n    unit_loss = distance + fee * (price + stop)\n    # 2% includes both execution fees. The 90% margin ceiling retains the\n    # historical reserve and does not increase the stop's monetary risk.\n    risk_qty = 0.02 * capital / unit_loss\n    margin_qty = 0.90 * margin * leverage / (price * (1 + fee * leverage))\n    qty = math.floor(min(risk_qty, margin_qty) * 1e8) / 1e8\n    if qty <= 0:\n        return None\n    assert qty * unit_loss <= 0.02 * capital + 1e-6\n    return dict(qty=qty, price=price, capital=capital, distance=distance,\n                stop=stop, risk_budget=0.02 * capital,\n                planned_loss=qty * unit_loss, margin_capped=margin_qty < risk_qty)\n\n\nclass BtcResearchR10Base4h(Strategy):\n    \"\"\"R10 discovery harness: one BTC position, fixed risk and base costs only.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, value):\n        self.log(label + \" \" + json.dumps(value, separators=(\",\", \":\"), allow_nan=False))\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\"\n            assert self.leverage == 3\n            assert abs(self.fee_rate - 0.00045) < 1e-12\n            self.vars[\"checked\"] = True\n            self._log(\"R10_CONFIG\", dict(mode=self.MODE, risk=0.02, aggregate=0.06,\n                                        leverage=self.leverage, fee=self.fee_rate,\n                                        margin_buffer=0.90, stop_atr=2, target_r=2, hold_hours=48))\n        self.vars[\"direction\"] = 0\n        rows = closed_window(self.candles, now, 26)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            return\n        if self.MODE == \"BREADTH\":\n            direction = breadth_signal(rows)\n            evidence = None\n        else:\n            assert self.MODE == \"POST_FUNDING\"\n            events = self.get_funding_history(count=6)\n            assert all(int(e[\"available_at\"]) <= now for e in events)\n            direction, evidence = funding_failure_signal(rows, now, events)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        # Signals are evaluated and consumed while occupied as well. No deferred\n        # order or re-entry from a previously blocked funding/breadth event.\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        capital = max(0.0, min(float(self.balance), float(self.portfolio_value)))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or float(self.price) + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n        self.vars[\"evidence\"] = evidence\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        plan = self.vars[\"plan\"]\n        self.buy = plan[\"qty\"], self.price\n\n    def go_short(self):\n        plan = self.vars[\"plan\"]\n        self.sell = plan[\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        distance = plan[\"distance\"]\n        stop = entry - direction * distance\n        target = entry + direction * 2 * distance\n        assert qty * (distance + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._log(\"R10_ENTRY\", dict(time=int(self.time), direction=direction, entry=entry,\n                                   qty=qty, stop=stop, target=target, plan=plan,\n                                   evidence=self.vars.get(\"evidence\")))\n\n    def update_position(self):\n        # No ratchet, discretionary exit or same-close reversal. Funding applies\n        # continuously to actual held quantity, independently of signal inputs.\n        if int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        self.vars[\"last_exit_at\"] = int(self.time)\n\n    def before_terminate(self):\n        self._log(\"R10_COUNTERS\", dict(signals=self.vars.get(\"signals\", 0),\n                                     occupied=self.vars.get(\"occupied\", 0),\n                                     entries=self.vars.get(\"entries\", 0),\n                                     invalid_windows=self.vars.get(\"invalid_windows\", 0)))\n","BtcResearchR11Base1m":"import json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\nfrom jesse.strategies import Strategy\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef cusum_step(rows, accumulators):\n    \"\"\"Transfer the R40 design:60 past log returns, drift0.25, boundary4.\"\"\"\n    returns = np.diff(np.log(rows[-62:, 2]))\n    sigma = float(np.std(returns[:-1], ddof=1))\n    if not math.isfinite(sigma) or sigma <= 0:\n        return 0, (0.0, 0.0)\n    z = float((returns[-1] - np.mean(returns[:-1])) / sigma)\n    if not math.isfinite(z):\n        return 0, (0.0, 0.0)\n    up = max(0.0, accumulators[0] + z - 0.25)\n    down = max(0.0, accumulators[1] - z - 0.25)\n    if up >= 4 or down >= 4:\n        direction = 0 if up >= 4 and down >= 4 else 1 if up >= 4 else -1\n        return direction, (0.0, 0.0)\n    return 0, (up, down)\n\n\ndef absorption_signal(rows):\n    \"\"\"Large volume but small body, followed by escape of that closed bar.\"\"\"\n    window, setup, confirmation = rows[-26:-2], rows[-2], rows[-1]\n    if not np.all(np.isfinite(rows[-26:, 5])) or np.any(rows[-26:, 5] < 0):\n        return 0\n    average_volume = float(np.mean(window[:, 5]))\n    prior_atr = atr14(window)\n    if not math.isfinite(average_volume) or average_volume <= 0 or prior_atr is None:\n        return 0\n    if setup[5] < 2 * average_volume or abs(setup[2] - setup[1]) > 0.25 * prior_atr:\n        return 0\n    if confirmation[2] > setup[3]:\n        return 1\n    if confirmation[2] < setup[4]:\n        return -1\n    return 0\n\n\ndef month_name(timestamp):\n    return datetime.fromtimestamp(timestamp / 1000, timezone.utc).strftime(\"%Y-%m\")\n\n\ndef monthly_summary(boundaries, active_months):\n    \"\"\"Declared post-settlement/pre-decision UTC cuts; no00:01 approximation.\"\"\"\n    points = sorted(boundaries.items())\n    months = []\n    for (start, before), (finish, after) in zip(points, points[1:]):\n        stamp = datetime.fromtimestamp(start / 1000, timezone.utc)\n        month = stamp.strftime(\"%Y-%m\")\n        complete = stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0\n        if before <= 0:\n            continue\n        months.append(dict(month=month, start=start, finish=finish,\n                           complete=complete, active=month in active_months,\n                           pnl=after-before, return_fraction=after/before-1))\n    complete = [m for m in months if m[\"complete\"]]\n    active = [m for m in complete if m[\"active\"]]\n    quarter_groups = {}\n    for m in months:\n        quarter = m[\"month\"][:4] + \"Q\" + str((int(m[\"month\"][5:])-1)//3+1)\n        quarter_groups.setdefault(quarter, []).append(m)\n    quarters = [q for q in quarter_groups.values()\n                if len(q) == 3 and all(m[\"complete\"] for m in q)]\n    returns = [m[\"return_fraction\"] for m in complete]\n    contributions = sorted([m[\"pnl\"] for m in months], reverse=True)\n    return dict(months=months, complete_months=len(complete), active_months=len(active),\n                positive_active=sum(m[\"pnl\"] > 0 for m in active),\n                positive_calendar=sum(m[\"pnl\"] > 0 for m in complete),\n                median_return=float(np.median(returns)) if returns else None,\n                complete_quarters=len(quarters),\n                positive_quarters=sum(sum(m[\"pnl\"] for m in q) > 0 for q in quarters),\n                pnl_without_best_two=sum(m[\"pnl\"] for m in months)-sum(contributions[:2]))\n\n\nclass BtcResearchR11Base1m(Strategy):\n    \"\"\"M1 accounting observer; signal and management decisions remain4h.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, payload):\n        # Event logs stay small; monthly history is emitted as separate rows.\n        self.log(label + \" \" + json.dumps(payload, separators=(\",\", \":\"), allow_nan=False))\n\n    def _observe(self, stage):\n        now = int(self.time)\n        # BTC-only futures equity. portfolio_value multiplies open PnL by\n        # leverage in this checkout, so it is deliberately not used here.\n        equity = float(self.balance) + (float(self.position.pnl) if self.is_open else 0.0)\n        assert math.isfinite(equity)\n        self.vars[\"peak\"] = max(self.vars.get(\"peak\", 10000.0), equity)\n        drawdown = equity / self.vars[\"peak\"] - 1\n        self.vars[\"dd\"] = min(self.vars.get(\"dd\", 0.0), drawdown)\n        self.vars[\"sequence\"] = self.vars.get(\"sequence\", 0) + 1\n        self.vars[\"last_equity\"] = equity\n        active = self.vars.setdefault(\"active_months\", set())\n        if self.is_open:\n            # Pre marks describe exposure during the minute that just closed;\n            # an opening fill at T instead belongs to the new interval.\n            active.add(month_name(now if stage == \"open\" else now-1))\n        boundaries = self.vars.setdefault(\"boundaries\", {self.START: 10000.0})\n        if stage == \"pre\":\n            self.vars[\"minute_marks\"] = self.vars.get(\"minute_marks\", 0) + 1\n            stamp = datetime.fromtimestamp(now / 1000, timezone.utc)\n            if stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0:\n                boundaries[now] = equity\n        if now >= self.FINISH:\n            # A later terminal close callback replaces the mark with post-fee equity.\n            boundaries[self.FINISH] = equity\n        return equity\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - 0.00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # This is signal alignment, not a market-session/calendar filter.\n        if now % BAR != 0:\n            return\n        count = 62 if self.MODE == \"CUSUM\" else 26\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, count)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self.vars[\"cusum\"] = (0.0, 0.0)\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        if self.MODE == \"CUSUM\":\n            direction, state = cusum_step(rows, self.vars.get(\"cusum\", (0.0, 0.0)))\n            self.vars[\"cusum\"] = state\n        else:\n            assert self.MODE == \"ABSORPTION\"\n            direction = absorption_signal(rows)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        # Flat BTC account: wallet equals equity. Reuse the frozen2% fee-aware\n        # plan, eight-decimal research precision and90% margin ceiling.\n        capital = max(0.0, float(self.balance))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or self.price + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        self.buy = self.vars[\"plan\"][\"qty\"], self.price\n\n    def go_short(self):\n        self.sell = self.vars[\"plan\"][\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        stop = entry - direction * plan[\"distance\"]\n        target = entry + direction * 2 * plan[\"distance\"]\n        assert qty * (plan[\"distance\"] + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._observe(\"open\")\n\n    def update_position(self):\n        # Preserve the four-hour management clock despite the M1 observer.\n        if int(self.time) % BAR == 0 and int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        now = int(self.time)\n        active = self.vars.setdefault(\"active_months\", set())\n        active.add(month_name(now-1))\n        # At a month boundary, retain both the held interval and any fee-only\n        # execution month. Terminal liquidation belongs to the final interval.\n        if now < self.FINISH:\n            active.add(month_name(now))\n        self.vars[\"last_exit_at\"] = now\n        self._observe(\"close\")\n        if now >= self.FINISH and self.vars.get(\"emitted\"):\n            self._emit(\"FINAL\")\n\n    def _emit(self, stage):\n        summary = monthly_summary(self.vars[\"boundaries\"], self.vars.get(\"active_months\", set()))\n        # Emit rows at the end, so one bounded log page can retrieve all months.\n        for item in summary.pop(\"months\"):\n            self._log(\"R11_MONTH\", dict(stage=stage, **item))\n        summary.update(stage=stage, equity=self.vars[\"last_equity\"],\n                       dd_m1_events=self.vars.get(\"dd\", 0),\n                       minute_marks=self.vars.get(\"minute_marks\", 0),\n                       sequence=self.vars.get(\"sequence\", 0),\n                       signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n                       invalid_windows=self.vars.get(\"invalid_windows\", 0))\n        self._log(\"R11_SUMMARY\", summary)\n\n    def before_terminate(self):\n        self._observe(\"terminal\")\n        self.vars[\"emitted\"] = True\n        self._emit(\"PRETERMINAL\")\n","BtcResearchR12ArBase1m":"import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef return_forecast(rows, autoregressive):\n    \"\"\"240 observed (x,y) pairs, then six genuinely future recursive forecasts.\"\"\"\n    returns = np.diff(np.log(rows[-242:, 2]))\n    x, y = returns[:-1], returns[1:]\n    variance = float(np.mean((x-x.mean())**2))\n    if not math.isfinite(variance) or variance <= 0:\n        return None\n    beta = float(np.mean((x-x.mean())*(y-y.mean()))/variance) if autoregressive else 0.\n    intercept = float(y.mean()-beta*x.mean())\n    value, forecast = float(returns[-1]), 0.\n    for _ in range(6):\n        value = intercept+beta*value\n        forecast += value\n    return forecast if math.isfinite(forecast) else None\n\n\nclass BtcResearchR12ArBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 242)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"AR1\", \"DRIFT\")\n        forecast = return_forecast(rows, self.MODE == \"AR1\")\n        # Fixed signal hurdle inherited from R20, not simulated execution friction.\n        if forecast is None or abs(forecast) <= .0019 or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        atr = atr14(rows)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        # Forecast horizon is24h; no fixed target clips the model's payoff.\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n\n    def update_position(self):\n        if int(self.time) % BAR == 0 and int(self.time)-int(self.position.opened_at) >= 6*BAR:\n            self.liquidate()\n","BtcResearchR27VolumeInteractionBase1m":"\"\"\"AA: conditional price response to participation, not identified order flow.\"\"\"\nimport math\nimport numpy as np\n\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef interaction_inputs(rows):\n    \"\"\"Origins42..401/current407; every surprise owns42 strictly prior volumes.\"\"\"\n    if rows.ndim != 2 or rows.shape[0] != 408 or rows.shape[1] < 6:\n        return None\n    if (not np.all(np.isfinite(rows[:, :6])) or np.any(rows[:, 1:6] <= 0)\n            or not np.all(np.diff(rows[:, 0]) == BAR)\n            or np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2]))\n            or np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2]))):\n        return None\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        close = np.log(rows[:, 2])\n        volume = np.log(rows[:, 5])\n        # Last sliding window includes V407 and has no following current volume:\n        # discard it. Remaining366 windows end one bar BEFORE each origin42..407.\n        prior = np.lib.stride_tricks.sliding_window_view(volume, 42)[:-1]\n        r = np.diff(close)[41:]\n        v = volume[42:]-np.mean(prior, axis=1)\n        # RAW product is prescribed for interpretable coefficient conversion.\n        # Products after affine centering can span the same model with main effects.\n        raw = np.column_stack((r, v, r*v))\n        labels = close[48:408]-close[42:402]\n    if not np.all(np.isfinite(raw)) or not np.all(np.isfinite(labels)):\n        return None\n    return raw[:360], labels, raw[-1]\n\n\ndef interaction_fit(raw, labels, current):\n    \"\"\"Two nested OLS models share all360 rows, scalers and numerical admission.\"\"\"\n    if raw.shape != (360, 3) or labels.shape != (360,) or current.shape != (3,):\n        return None, dict(reason=\"shape_invalid\")\n    if not all(np.all(np.isfinite(x)) for x in (raw, labels, current)):\n        return None, dict(reason=\"arithmetic_invalid\")\n    # Exact constants can yield a tiny positive std after a rounded mean. Detect\n    # equality first; no near-zero threshold or dropping a column for MAIN.\n    if np.any(np.all(raw == raw[:1], axis=0)):\n        return None, dict(reason=\"constant_column\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        center = raw.mean(axis=0)\n        scale = raw.std(axis=0, ddof=0)\n        scaled = (raw-center)/scale\n        point = (current-center)/scale\n    if (not np.all(np.isfinite(center)) or not np.all(np.isfinite(scale))\n            or np.any(scale <= 0) or not np.all(np.isfinite(scaled))\n            or not np.all(np.isfinite(point))):\n        return None, dict(reason=\"scale_invalid\")\n    full = np.column_stack((np.ones(360), scaled))\n    main = full[:, :3]\n    try:\n        # None is NumPy's dtype/shape-dependent default numerical-rank cutoff,\n        # frozen ex ante. Deficient rank rejects BOTH; no ridge or fallback.\n        bf, _, rankf, sf = np.linalg.lstsq(full, labels, rcond=None)\n        bm, _, rankm, sm = np.linalg.lstsq(main, labels, rcond=None)\n    except np.linalg.LinAlgError:\n        return None, dict(reason=\"solver_error\")\n    if rankf != 4 or rankm != 3:\n        return None, dict(reason=\"rank_invalid\", ranks=[int(rankf), int(rankm)])\n    if not all(np.all(np.isfinite(x)) for x in (bf, bm, sf, sm)):\n        return None, dict(reason=\"coefficient_invalid\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        x = np.r_[1., point]\n        ff = float(x @ bf)\n        fm = float(x[:3] @ bm)\n        g = float(bf[3]/scale[2])\n    if not all(math.isfinite(x) for x in (ff, fm, g)):\n        return None, dict(reason=\"forecast_or_g_invalid\")\n    evidence = dict(reason=\"valid\", n=360, origins=[42, 401], current_index=407,\n        target_indices=[48, 407], current_raw=current.tolist(),\n        center=center.tolist(), scale=scale.tolist(),\n        coefficients_full=bf.tolist(), coefficients_main=bm.tolist(),\n        ranks=[int(rankf), int(rankm)], singular_full=sf.tolist(),\n        singular_main=sm.tolist(), g_raw=g,\n        forecast_full=ff, forecast_main=fm)\n    return (ff, fm), evidence\n\n\ndef interaction_forecasts(rows):\n    values = interaction_inputs(rows)\n    if values is None:\n        return None, dict(reason=\"data_invalid\")\n    return interaction_fit(*values)\n\n\ndef empty_interaction_diagnostic():\n    return dict(last=None, n=0, g_negative=0, g_zero=0, g_positive=0,\n        means={key: dict(available=True, value=None)\n               for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")},\n        aggregation_errors=0, latest=None)\n\n\ndef interaction_diagnostic(state, now, evidence):\n    \"\"\"O(1), once per valid fit, independent of mode, hurdle, ATR and occupation.\"\"\"\n    if state[\"last\"] is not None and now <= state[\"last\"]:\n        return state\n    result = dict(state)\n    result[\"last\"], result[\"n\"] = int(now), state[\"n\"]+1\n    g = evidence[\"g_raw\"]\n    key = \"g_negative\" if g < 0 else \"g_positive\" if g > 0 else \"g_zero\"\n    result[key] += 1\n    result[\"latest\"] = {key: evidence[key]\n                        for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")}\n    result[\"means\"] = {}\n    for key, old in state[\"means\"].items():\n        item = dict(old)\n        if old[\"available\"]:\n            value = evidence[key]\n            mean = value if state[\"n\"] == 0 else old[\"value\"]+(value-old[\"value\"])/result[\"n\"]\n            if math.isfinite(mean):\n                item[\"value\"] = mean\n            else:\n                # An unavailable descriptive aggregate cannot affect any forecast\n                # or the accepted fit. Do not serialize Infinity or invent a mean.\n                item.update(available=False, value=None)\n                result[\"aggregation_errors\"] += 1\n        result[\"means\"][key] = item\n    return result\n\n\nclass BtcResearchR27VolumeInteractionBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"INTERACTION\", \"MAIN_EFFECTS\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        last = self.vars.get(\"interaction_last\")\n        if last is not None and now <= last:\n            return\n        self.vars[\"interaction_last\"] = now\n        if not self.START < now < self.FINISH:\n            return\n        counts = self.vars.setdefault(\"interaction_counts\", {})\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 408)\n        if rows is None:\n            counts[\"window_invalid\"] = counts.get(\"window_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        if not math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8):\n            # As-of route mismatch is shared invalid data, before either model or\n            # diagnostic. It is cash, not a framework invariant that halts a run.\n            counts[\"price_alignment_invalid\"] = counts.get(\"price_alignment_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        forecasts, evidence = interaction_forecasts(rows)\n        reason = evidence[\"reason\"]\n        counts[reason] = counts.get(reason, 0)+1\n        self.vars[\"interaction_latest_fit\"] = evidence\n        if forecasts is None:\n            return\n        evidence.update(origin=now, window_first=int(rows[0, 0]), window_last=int(rows[-1, 0]))\n        # Record BOTH forecasts and raw gamma before all trading gates. MODE and\n        # wallet/order state never enter any mathematical/diagnostic helper.\n        diagnostic = self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())\n        self.vars[\"interaction_diagnostic\"] = interaction_diagnostic(diagnostic, now, evidence)\n        forecast = forecasts[0 if self.MODE == \"INTERACTION\" else 1]\n        if abs(forecast) <= .0019:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            counts[\"atr_invalid\"] = counts.get(\"atr_invalid\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            counts[\"plan_invalid\"] = counts.get(\"plan_invalid\", 0)+1\n            return\n        self.vars[\"plan\"] = dict(plan, interaction_evidence=evidence,\n                                forecast=forecast, forecast_origin=now)\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        self._log(\"R27_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            forecast=plan[\"forecast\"], forecast_origin=plan[\"forecast_origin\"],\n            forecast_deadline=plan[\"forecast_origin\"]+6*BAR,\n            opened_at=int(self.position.opened_at),\n            hold_deadline=int(self.position.opened_at)+6*BAR,\n            entry=float(self.position.entry_price), qty=abs(float(self.position.qty)),\n            stop=float(self.position.entry_price)-direction*plan[\"distance\"],\n            distance=plan[\"distance\"], risk_budget=plan[\"risk_budget\"]))\n        self._log(\"R27_OPEN_FIT\", plan[\"interaction_evidence\"])\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R27_COUNTS\", dict(stage=stage, mode=self.MODE,\n            counts=self.vars.get(\"interaction_counts\", {}),\n            signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n            occupied=self.vars.get(\"occupied\", 0)))\n        self._log(\"R27_DIAGNOSTIC\", dict(stage=stage,\n            **self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())))\n        self._log(\"R27_LAST_FIT\", dict(stage=stage,\n            **self.vars.get(\"interaction_latest_fit\", {})))\n","BtcResearchR27VolumeInteraction1m":"from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27VolumeInteraction1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"INTERACTION\"\n","BtcResearchR27MainEffects1m":"from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27MainEffects1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"MAIN_EFFECTS\"\n"}
+
+N=0
+LABELS=[]
+def check(value,label):
+    global N
+    assert bool(value),label
+    N+=1;LABELS.append(label)
+def near(a,b,label,tol=1e-10):
+    check(np.allclose(a,b,atol=tol,rtol=tol),label)
+class Strategy:
+    def __init__(self):
+        self.vars={};self.logs=[];self.time=1609459200000
+        self.symbol="BTC-USDT";self.timeframe="1m";self.exchange="synthetic"
+        self.balance=10000.;self.available_margin=10000.;self.leverage=3;self.fee_rate=.00045
+        self._open=False;self._side=1;self.entry_orders=[];self.price=100.
+        self.position=SimpleNamespace(pnl=0.,qty=.01,entry_price=100.,opened_at=self.time)
+        self.liquidations=0;self.fetches=0
+    @property
+    def is_open(self):return self._open
+    @property
+    def is_long(self):return self._open and self._side==1
+    @property
+    def is_short(self):return self._open and self._side==-1
+    def get_candles(self,*args):self.fetches+=1;return self.aux
+    def log(self,x):self.logs.append(x)
+    def liquidate(self):self.liquidations+=1
+env=dict(math=math,np=np,json=json,datetime=datetime,timezone=timezone,Strategy=Strategy)
+for name,source in SOURCES.items():
+    tree=ast.parse(source)
+    tree.body=[n for n in tree.body if not isinstance(n,(ast.Import,ast.ImportFrom))]
+    exec(compile(tree,"supplied:"+name,"exec"),env)
+    check(True,"compile supplied AST "+name)
+B=env["BAR"];T=1609459200000
+inputs=env["interaction_inputs"];fit=env["interaction_fit"];forecast=env["interaction_forecasts"]
+diag=env["interaction_diagnostic"];empty=env["empty_interaction_diagnostic"]
+Full=env["BtcResearchR27VolumeInteraction1m"];Main=env["BtcResearchR27MainEffects1m"]
+Parent=env["BtcResearchR12ArBase1m"];Base=env["BtcResearchR27VolumeInteractionBase1m"]
+# No framework modules, real strategies, project files or session data are imported.
+check(Full.MODE=="INTERACTION" and Main.MODE=="MAIN_EFFECTS","wrapper policies exact")
+for method in ("update_position","on_close_position","before_terminate","should_long","should_short","go_long","go_short"):
+    check(getattr(Base,method) is getattr(Parent,method),"literal inherited lifecycle "+method)
+tree=ast.parse(SOURCES["BtcResearchR27VolumeInteractionBase1m"])
+handlers=[h for n in ast.walk(tree) if isinstance(n,ast.Try) for h in n.handlers]
+check(len(handlers)==1 and ast.unparse(handlers[0].type)=="np.linalg.LinAlgError","only solver exception caught")
+check("research" not in "".join(n.module or "" for n in tree.body if isinstance(n,ast.ImportFrom)).lower(),"no research module")
+parents={
+ "BtcResearchR10Base4h":"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+ "BtcResearchR11Base1m":"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+ "BtcResearchR12ArBase1m":"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343"}
+for name,digest in parents.items():
+    check(hashlib.sha256(SOURCES[name].encode()).hexdigest()==digest,"parent unchanged "+name)
+def candles(n=408,end=T):
+    k=np.arange(n,dtype=float)
+    closes=100*np.exp(np.cumsum(.001*np.sin(k*.43)+.0007*np.cos(k*.11)))
+    opens=np.r_[closes[0],closes[:-1]]
+    volume=np.exp(2+.2*np.sin(k*.31)+.1*np.cos(k*.013)+.0005*k)
+    return np.column_stack((end-(n-np.arange(n))*B,opens,closes,
+        np.maximum(opens,closes)*1.001,np.minimum(opens,closes)*.999,volume))
+rows=candles();untouched=rows.copy()
+raw,y,current=inputs(rows)
+check(raw.shape==(360,3) and y.shape==(360,) and current.shape==(3,),"exact360 trained and current")
+# Independent scalar loops, no sliding windows or producer intermediates.
+oracle=[]
+for i in range(42,408):
+    rr=math.log(rows[i,2])-math.log(rows[i-1,2])
+    vv=math.log(rows[i,5])-math.fsum(math.log(rows[j,5]) for j in range(i-42,i))/42
+    oracle.append([rr,vv,rr*vv])
+oy=np.array([math.log(rows[i+6,2])-math.log(rows[i,2]) for i in range(42,402)])
+near(raw,np.array(oracle[:360]),"origin-owned prior42 features scalar oracle",1e-13)
+near(current,oracle[-1],"current407 scalar feature oracle",1e-13)
+near(y,oy,"matured target endpoints48..407 scalar oracle",1e-13)
+check(np.array_equal(rows,untouched),"OHLCV unchanged by mathematical input builder")
+changed=rows.copy();changed[-1,5]*=2
+near(inputs(changed)[2][1]-current[1],math.log(2),"current volume excluded from own baseline",1e-13)
+changed=rows.copy();changed[0,5]*=2
+near(inputs(changed)[0][0,1]-raw[0,1],-math.log(2)/42,"oldest volume used at first origin",1e-13)
+near(inputs(changed)[2],current,"oldest volume outside current own baseline",1e-13)
+changed=rows.copy();changed[56,1:5]*=1.1;changed[56,5]*=3
+near(inputs(changed)[0][8],raw[8],"future after origin50 cannot change its feature",1e-13)
+check(abs(inputs(changed)[1][8]-y[8])>.01,"futuretarget56 legitimately changes matured label50")
+near(raw[:,2],raw[:,0]*raw[:,1],"raw product exactly prescribed before scaler",1e-15)
+for col,value in ((5,0.),(5,-1.),(5,float("nan")),(2,0.),(3,1.),(4,1e6),(0,T)):
+    bad=rows.copy();bad[75,col]=value
+    check(inputs(bad) is None,"common invalid input col"+str(col)+" value"+str(value))
+check(inputs(rows[:-1]) is None,"insufficient407 rows invalid")
+f,e=forecast(rows);check(f is not None and e["ranks"]==[4,3],"finite synthetic candles fit both")
+check(e["origins"]==[42,401] and e["target_indices"]==[48,407] and e["current_index"]==407,"fit evidence indices")
+prefix=candles(30,end=T-408*B)
+future=np.array([[T,900,900,901,899,2.],[T+B,800,800,801,799,3.]])
+selected=env["closed_window"](np.vstack((prefix,rows,future)),T,408)
+check(np.array_equal(selected,rows),"causal asof ignores sorted oldprefix/future")
+near(forecast(selected)[0],f,"prefix future forecast parity")
+# Balanced independent design gives exact known raw coefficients and orthogonal
+# interaction, so its main projection is analytically known; no solver oracle.
+rr=np.tile(np.repeat([-.02,-.01,.01,.02],2),45)
+vv=np.tile([-.5,.5],180)
+x=np.column_stack((rr,vv,rr*vv))
+beta=np.array([.004,.3,-.002,.8])
+target=beta[0]+x@beta[1:]
+point=np.array([.015,.3,.0045])
+ff,ev=fit(x,target,point)
+check(ff is not None,"known coefficient design jointly admitted")
+near(ff[0],beta[0]+point@beta[1:],"FULL exact coefficient prediction",1e-12)
+near(ff[1],beta[0]+point[:2]@beta[1:3],"MAIN analytical orthogonal projection",1e-12)
+near(ev["g_raw"],beta[3],"raw gamma conversion known coefficient",1e-12)
+near(ev["center"],x.mean(axis=0),"one set of centers from360training")
+near(ev["scale"],x.std(axis=0,ddof=0),"population scaling360 not current")
+expected_scaled=np.r_[beta[0]+x.mean(axis=0)@beta[1:],beta[1:]*x.std(axis=0,ddof=0)]
+near(ev["coefficients_full"],expected_scaled,"raw to scaled coefficients exact",1e-12)
+# Spy only observes supplied design arrays, never replaces numerical result.
+real_solver=np.linalg.lstsq
+calls=[]
+def spying(a,b,**kw):
+    calls.append((a.copy(),b.copy(),kw.copy()))
+    return real_solver(a,b,**kw)
+with patch.object(np.linalg,"lstsq",side_effect=spying): fit(x,target,point)
+check(len(calls)==2,"exact two fits")
+check(np.array_equal(calls[1][0],calls[0][0][:,:3]),"MAIN literal first3 columns FULL")
+check(np.array_equal(calls[0][1],calls[1][1]),"labels same exact360rows")
+check(all(c[2]=={"rcond":None} for c in calls),"rcondNone both")
+near(calls[0][0][:,3],(x[:,2]-x[:,2].mean())/x[:,2].std(ddof=0),"prescribed raw-product column")
+check(not np.array_equal(calls[0][0][:,3],calls[0][0][:,1]*calls[0][0][:,2]),"representation inspected without claiming forecasts must differ")
+# Alternate affine product spans same columns with intercept/main effects.
+cent=(x-x.mean(0))/x.std(0)
+alt=np.column_stack((np.ones(360),cent[:,:2],cent[:,0]*cent[:,1]))
+ab=real_solver(alt,target,rcond=None)[0]
+cp=(point-x.mean(0))/x.std(0)
+near(np.array([1.,cp[0],cp[1],cp[0]*cp[1]])@ab,ff[0],"affine product can preserve full prediction",1e-12)
+for col in range(3):
+    xx=x.copy();xx[:,col]=.0001
+    check(fit(xx,target,point)[1]["reason"]=="constant_column","exactconstant before std col"+str(col))
+xx=x.copy();xx[:,1]=2*xx[:,0];xx[:,2]=xx[:,0]**2
+check(fit(xx,target,point)[1]["reason"]=="rank_invalid","nonconstant rank deficient rejects both")
+for array,col in ((x.copy(),0),(x.copy(),2)):
+    array[6,col]=float("inf")
+    check(fit(array,target,point)[1]["reason"]=="arithmetic_invalid","input finite guard"+str(col))
+check(fit(x,target[:-1],point)[1]["reason"]=="shape_invalid","label shape checked")
+huge=x.copy();huge[:,0]=np.where(np.arange(360)%2,1e308,-1e308)
+check(fit(huge,target,point)[1]["reason"]=="scale_invalid","scale overflow cash both")
+with patch.object(np.linalg,"lstsq",side_effect=np.linalg.LinAlgError("synthetic")):
+    check(fit(x,target,point)[1]["reason"]=="solver_error","LinAlgError sharedcash")
+propagated=False
+try:
+    with patch.object(np.linalg,"lstsq",side_effect=RuntimeError("synthetic programmer fault")):
+        fit(x,target,point)
+except RuntimeError:propagated=True
+check(propagated,"unexpected programming fault not swallowed")
+def badg(a,b,**kw):
+    coeff=np.zeros(a.shape[1])
+    if a.shape[1]==4:coeff[3]=1e308
+    return coeff,np.array([]),a.shape[1],np.ones(a.shape[1])
+with patch.object(np.linalg,"lstsq",side_effect=badg):
+    check(fit(x,target,x.mean(0))[1]["reason"]=="forecast_or_g_invalid","nonfinite rawgamma health commoncash")
+def badrank(a,b,**kw):
+    return np.zeros(a.shape[1]),np.array([]),2,np.ones(a.shape[1])
+with patch.object(np.linalg,"lstsq",side_effect=badrank):
+    check(fit(x,target,point)[1]["reason"]=="rank_invalid","solver returned deficient main/full no fallback")
+for sign in (-1,0,1):
+    event=dict(g_raw=float(sign),forecast_full=.003,forecast_main=-.004)
+    d0=empty();d1=diag(d0,T,event)
+    check(d0["n"]==0 and d0["last"] is None,"diagnostic input not mutated "+str(sign))
+    check(d1["n"]==1 and sum(d1[k] for k in ("g_negative","g_zero","g_positive"))==1,"gamma sign count "+str(sign))
+    check(d1["means"]["g_raw"]["value"]==sign,"gamma raw mean "+str(sign))
+    check(diag(d1,T,event)==d1 and diag(d1,T-B,event)==d1,"duplicate/backwards diagnostic no-op "+str(sign))
+d=diag(empty(),T,dict(g_raw=1e308,forecast_full=.003,forecast_main=-.004))
+d2=diag(d,T+B,dict(g_raw=-1e308,forecast_full=.005,forecast_main=-.002))
+check(d2["n"]==2 and d2["g_positive"]==1 and d2["g_negative"]==1,"overflow still counts validfits")
+check(d2["means"]["g_raw"]==dict(available=False,value=None) and d2["aggregation_errors"]==1,"overflow descriptive gamma unavailable")
+near(d2["means"]["forecast_full"]["value"],.004,"other means retained after gamma overflow")
+json.dumps(d2,allow_nan=False);check(True,"overflow diagnostic valid JSON no Infinity")
+# Integration runs supplied callbacks with real feature math once, then declared
+# forecast stubs to isolate clock/admission/lifecycle behavior, not broker fills.
+def instance(cls=Full,aux=rows):
+    z=cls();z.aux=aux.copy();z.price=float(aux[-1,2]);z.time=T
+    return z
+a,b=instance(Full),instance(Main)
+a.before();b.before()
+check(a.vars["interaction_diagnostic"]==b.vars["interaction_diagnostic"],"real math identical between policies")
+check(a.vars["interaction_diagnostic"]["n"]==1,"one real mathematical fit callback")
+before=copy.deepcopy(a.vars["interaction_diagnostic"]);fetches=a.fetches
+a.before();a.time=T-B;a.before()
+check(a.vars["interaction_diagnostic"]==before and a.fetches==fetches,"runtime duplicate/backwards beforefetch/fit")
+check(a.vars["direction"]==0,"duplicate no queued signal")
+# Frozen fit evidence below is deliberate callback input, not a mock of economics.
+real_forecast=env["interaction_forecasts"]
+def fixed(ff=.003,fm=-.004,g=.8):
+    evidence=copy.deepcopy(ev);evidence.update(g_raw=g,forecast_full=ff,forecast_main=fm)
+    return lambda r:((ff,fm),copy.deepcopy(evidence))
+env["interaction_forecasts"]=fixed()
+for occupied in ("open","pending","sameexit"):
+    z=instance()
+    if occupied=="open":z._open=True
+    if occupied=="pending":z.entry_orders=[object()]
+    if occupied=="sameexit":z.vars["last_exit_at"]=T
+    z.before()
+    check(z.vars["direction"]==0 and "plan" not in z.vars,"occupied noentry "+occupied)
+    check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["occupied"]==1,"occupied fit consumed "+occupied)
+for hurdle in (.0019,-.0019,0.):
+    env["interaction_forecasts"]=fixed(hurdle,hurdle)
+    z=instance();z.before()
+    check(z.vars["direction"]==0 and z.vars["interaction_diagnostic"]["n"]==1,"hurdle inclusive and diagnostic "+str(hurdle))
+env["interaction_forecasts"]=fixed()
+old_atr=env["atr14"];env["atr14"]=lambda r:None
+z=instance();z.before()
+check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["direction"]==0,"ATRNone after fit diagnostic")
+env["atr14"]=old_atr
+old_plan=env["entry_plan"];env["entry_plan"]=lambda *args:None
+z=instance();z.before()
+check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["direction"]==0,"sizinginvalid after fit diagnostic")
+env["entry_plan"]=old_plan
+z=instance();z.price*=1.2
+env["interaction_forecasts"]=lambda r:(_ for _ in ()).throw(AssertionError("must not reach model"))
+z.before()
+check(z.vars["interaction_counts"].get("price_alignment_invalid")==1,"price mismatch common invalidcash")
+check("interaction_diagnostic" not in z.vars and z.vars["direction"]==0,"asof mismatch before model/diagnostic/orders")
+z=instance();z.aux[-1,0]-=B;z.before()
+check(z.vars["invalid_windows"]==1 and "interaction_diagnostic" not in z.vars,"window invalid beforefit")
+z=instance();z.time=T+60000;z.before()
+check(z.fetches==0 and "interaction_diagnostic" not in z.vars,"nonboundaryM1 only observer")
+env["interaction_forecasts"]=fixed()
+af,am=instance(Full),instance(Main)
+af.before();am.before()
+check(af.vars["direction"]==1 and am.vars["direction"]==-1,"mode selects different forecast only after commonfit")
+check(af.vars["interaction_diagnostic"]==am.vars["interaction_diagnostic"],"trading direction cannot feed diagnostic")
+check(af.vars["plan"]["capital"]==10000. and af.vars["plan"]["risk_budget"]==200.,"flat capital and2%feeaware")
+for z,side in ((af,1),(am,-1)):
+    plan=z.vars["plan"]
+    check(plan["planned_loss"]<=200.+1e-6 and plan["qty"]>0,"risk sizing admitted "+str(side))
+    z._open=True;z._side=side;z.position=SimpleNamespace(pnl=0.,qty=side*plan["qty"],entry_price=z.price,opened_at=T)
+    z.on_open_position(None)
+    near(z.stop_loss[1],z.position.entry_price-side*plan["distance"],"actual fill relative SL "+str(side))
+    check(not hasattr(z,"take_profit"),"noTP inherited "+str(side))
+    near(plan["distance"],2*old_atr(rows),"currentATRsimple stop distance "+str(side))
+    op=json.loads(next(q for q in z.logs if q.startswith("R27_OPEN ")).split(" ",1)[1])
+    check(op["hold_deadline"]==T+6*B and op["forecast_deadline"]==T+6*B,"fill forecast deadlines "+str(side))
+    near(op["stop"],z.stop_loss[1],"logged actual submitted stop "+str(side))
+    z.time=T+5*B;z.update_position();check(z.liquidations==0,"before24h no liquidation "+str(side))
+    z.time=T+6*B-60000;z.update_position();check(z.liquidations==0,"M1beforedeadline no liquidation "+str(side))
+    z.time=T+6*B;z.update_position();check(z.liquidations==1,"24h boundary liquidation "+str(side))
+# Diagnostic overflow never becomes a selector even during a valid trade signal.
+env["interaction_forecasts"]=fixed(.003,-.004,-1e308)
+z=instance();z.vars["interaction_diagnostic"]=diag(empty(),T-B,
+    dict(g_raw=1e308,forecast_full=.003,forecast_main=-.004))
+z.before()
+check(z.vars["direction"]==1 and z.vars["interaction_diagnostic"]["aggregation_errors"]==1,"diagnostic overflow cannot gate trading")
+# Parent observer marks wallet + PnL once, never leverage times PnL.
+z._open=True;z.position.pnl=10.;z._observe("open")
+check(z.vars["last_equity"]==10010.,"observer equity wallet plus rawPnL")
+z.time=z.FINISH;z._open=False;z.balance=10001.;z.before_terminate()
+check(z.vars["boundaries"][z.FINISH]==10001.,"terminal observer preterminal equity")
+z.balance=10000.9;z.on_close_position(None,None)
+check(z.vars["boundaries"][z.FINISH]==10000.9,"terminal fee callback updates final boundary")
+for q in z.logs+af.logs+am.logs:
+    if q.startswith(("R27_","R11_")):
+        json.loads(q.split(" ",1)[1])
+        check(len(q)<1900,"bounded JSON "+q.split(" ",1)[0])
+env["interaction_forecasts"]=real_forecast
+check(np.array_equal(rows,untouched),"integration no inputOHLCV mutation")
+result=dict(status="PASS",assertions=N,labels=LABELS,
+ source_sha256={name:hashlib.sha256(text.encode()).hexdigest() for name,text in SOURCES.items()},
+ scope="Supplied-source AST/stubs, independent scalar feature and known-coefficient OLS oracle. No framework/real strategy imports, session inputs, observed candles or nested backtests.",
+ limits="Synthetic checks do not prove broker/runtime coverage, predictive economics, statistical independence, significance or OOS.")
+open("output/technical_check.json","w").write(json.dumps(result,indent=2))
+print(json.dumps({key:value for key,value in result.items() if key!="labels"}))
+
+```
+
+## Attempt1 failed
+```python
+import ast, math, json, hashlib, copy
+from datetime import datetime, timezone
+from types import SimpleNamespace
+from unittest.mock import patch
+import numpy as np
+
+SOURCES={"BtcResearchR10Base4h":"import json\nimport math\n\nimport numpy as np\nfrom jesse.strategies import Strategy\n\nBAR = 14400000\nDAY = 86400000\n\n\ndef closed_window(candles, now, count):\n    \"\"\"Use only consecutive, closed 4h bars; no synthetic gap repair.\"\"\"\n    rows = candles[candles[:, 0] + BAR <= now][-count:]\n    if len(rows) != count or rows[-1, 0] != now - BAR:\n        return None\n    if not np.all(np.diff(rows[:, 0]) == BAR):\n        return None\n    if not np.all(np.isfinite(rows[:, :5])) or np.any(rows[:, 1:5] <= 0):\n        return None\n    if np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2])):\n        return None\n    if np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2])):\n        return None\n    return rows\n\n\ndef atr14(rows):\n    previous = rows[-15:-1, 2]\n    current = rows[-14:]\n    tr = np.maximum(current[:, 3] - current[:, 4],\n                    np.maximum(abs(current[:, 3] - previous), abs(current[:, 4] - previous)))\n    value = float(np.mean(tr))\n    return value if math.isfinite(value) and value > 0 else None\n\n\ndef breadth_state(closes):\n    changes = np.diff(closes)\n    positive = changes > 0\n    negative = changes < 0\n    if int(positive[-6:].sum()) >= 4 and int(positive[-24:].sum()) >= 16:\n        return 1\n    if int(negative[-6:].sum()) >= 4 and int(negative[-24:].sum()) >= 16:\n        return -1\n    return 0\n\n\ndef breadth_signal(rows):\n    \"\"\"Count sign persistence, not return magnitudes; consume only new states.\"\"\"\n    now_state = breadth_state(rows[-25:, 2])\n    old_state = breadth_state(rows[-26:-1, 2])\n    return now_state if now_state != old_state else 0\n\n\ndef funding_failure_signal(rows, now, events):\n    \"\"\"Observe a full post-payment bar; never know or collect the next payment.\"\"\"\n    event_start = now - BAR\n    matching = []\n    for event in events:\n        raw = int(event[\"settled_at\"])\n        effective = raw // 60000 * 60000\n        if effective == event_start and 0 <= raw - effective <= 1000:\n            if int(event[\"available_at\"]) <= now and int(event[\"available_at\"]) > raw:\n                matching.append(event)\n    if len(matching) != 1:\n        return 0, None\n    event = matching[0]\n    rate = float(event[\"rate_decimal\"])\n    if not math.isfinite(rate):\n        return 0, None\n    pre, post = rows[-2], rows[-1]\n    if rate > 0 and pre[2] > pre[1] and post[2] < pre[1]:\n        return -1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    if rate < 0 and pre[2] < pre[1] and post[2] > pre[1]:\n        return 1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    return 0, None\n\n\ndef entry_plan(price, capital, margin, leverage, fee, direction, distance):\n    stop = price - direction * distance\n    values = (price, capital, margin, leverage, distance, stop)\n    if direction not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in values):\n        return None\n    if not math.isfinite(fee) or fee < 0:\n        return None\n    unit_loss = distance + fee * (price + stop)\n    # 2% includes both execution fees. The 90% margin ceiling retains the\n    # historical reserve and does not increase the stop's monetary risk.\n    risk_qty = 0.02 * capital / unit_loss\n    margin_qty = 0.90 * margin * leverage / (price * (1 + fee * leverage))\n    qty = math.floor(min(risk_qty, margin_qty) * 1e8) / 1e8\n    if qty <= 0:\n        return None\n    assert qty * unit_loss <= 0.02 * capital + 1e-6\n    return dict(qty=qty, price=price, capital=capital, distance=distance,\n                stop=stop, risk_budget=0.02 * capital,\n                planned_loss=qty * unit_loss, margin_capped=margin_qty < risk_qty)\n\n\nclass BtcResearchR10Base4h(Strategy):\n    \"\"\"R10 discovery harness: one BTC position, fixed risk and base costs only.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, value):\n        self.log(label + \" \" + json.dumps(value, separators=(\",\", \":\"), allow_nan=False))\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\"\n            assert self.leverage == 3\n            assert abs(self.fee_rate - 0.00045) < 1e-12\n            self.vars[\"checked\"] = True\n            self._log(\"R10_CONFIG\", dict(mode=self.MODE, risk=0.02, aggregate=0.06,\n                                        leverage=self.leverage, fee=self.fee_rate,\n                                        margin_buffer=0.90, stop_atr=2, target_r=2, hold_hours=48))\n        self.vars[\"direction\"] = 0\n        rows = closed_window(self.candles, now, 26)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            return\n        if self.MODE == \"BREADTH\":\n            direction = breadth_signal(rows)\n            evidence = None\n        else:\n            assert self.MODE == \"POST_FUNDING\"\n            events = self.get_funding_history(count=6)\n            assert all(int(e[\"available_at\"]) <= now for e in events)\n            direction, evidence = funding_failure_signal(rows, now, events)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        # Signals are evaluated and consumed while occupied as well. No deferred\n        # order or re-entry from a previously blocked funding/breadth event.\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        capital = max(0.0, min(float(self.balance), float(self.portfolio_value)))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or float(self.price) + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n        self.vars[\"evidence\"] = evidence\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        plan = self.vars[\"plan\"]\n        self.buy = plan[\"qty\"], self.price\n\n    def go_short(self):\n        plan = self.vars[\"plan\"]\n        self.sell = plan[\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        distance = plan[\"distance\"]\n        stop = entry - direction * distance\n        target = entry + direction * 2 * distance\n        assert qty * (distance + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._log(\"R10_ENTRY\", dict(time=int(self.time), direction=direction, entry=entry,\n                                   qty=qty, stop=stop, target=target, plan=plan,\n                                   evidence=self.vars.get(\"evidence\")))\n\n    def update_position(self):\n        # No ratchet, discretionary exit or same-close reversal. Funding applies\n        # continuously to actual held quantity, independently of signal inputs.\n        if int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        self.vars[\"last_exit_at\"] = int(self.time)\n\n    def before_terminate(self):\n        self._log(\"R10_COUNTERS\", dict(signals=self.vars.get(\"signals\", 0),\n                                     occupied=self.vars.get(\"occupied\", 0),\n                                     entries=self.vars.get(\"entries\", 0),\n                                     invalid_windows=self.vars.get(\"invalid_windows\", 0)))\n","BtcResearchR11Base1m":"import json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\nfrom jesse.strategies import Strategy\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef cusum_step(rows, accumulators):\n    \"\"\"Transfer the R40 design:60 past log returns, drift0.25, boundary4.\"\"\"\n    returns = np.diff(np.log(rows[-62:, 2]))\n    sigma = float(np.std(returns[:-1], ddof=1))\n    if not math.isfinite(sigma) or sigma <= 0:\n        return 0, (0.0, 0.0)\n    z = float((returns[-1] - np.mean(returns[:-1])) / sigma)\n    if not math.isfinite(z):\n        return 0, (0.0, 0.0)\n    up = max(0.0, accumulators[0] + z - 0.25)\n    down = max(0.0, accumulators[1] - z - 0.25)\n    if up >= 4 or down >= 4:\n        direction = 0 if up >= 4 and down >= 4 else 1 if up >= 4 else -1\n        return direction, (0.0, 0.0)\n    return 0, (up, down)\n\n\ndef absorption_signal(rows):\n    \"\"\"Large volume but small body, followed by escape of that closed bar.\"\"\"\n    window, setup, confirmation = rows[-26:-2], rows[-2], rows[-1]\n    if not np.all(np.isfinite(rows[-26:, 5])) or np.any(rows[-26:, 5] < 0):\n        return 0\n    average_volume = float(np.mean(window[:, 5]))\n    prior_atr = atr14(window)\n    if not math.isfinite(average_volume) or average_volume <= 0 or prior_atr is None:\n        return 0\n    if setup[5] < 2 * average_volume or abs(setup[2] - setup[1]) > 0.25 * prior_atr:\n        return 0\n    if confirmation[2] > setup[3]:\n        return 1\n    if confirmation[2] < setup[4]:\n        return -1\n    return 0\n\n\ndef month_name(timestamp):\n    return datetime.fromtimestamp(timestamp / 1000, timezone.utc).strftime(\"%Y-%m\")\n\n\ndef monthly_summary(boundaries, active_months):\n    \"\"\"Declared post-settlement/pre-decision UTC cuts; no00:01 approximation.\"\"\"\n    points = sorted(boundaries.items())\n    months = []\n    for (start, before), (finish, after) in zip(points, points[1:]):\n        stamp = datetime.fromtimestamp(start / 1000, timezone.utc)\n        month = stamp.strftime(\"%Y-%m\")\n        complete = stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0\n        if before <= 0:\n            continue\n        months.append(dict(month=month, start=start, finish=finish,\n                           complete=complete, active=month in active_months,\n                           pnl=after-before, return_fraction=after/before-1))\n    complete = [m for m in months if m[\"complete\"]]\n    active = [m for m in complete if m[\"active\"]]\n    quarter_groups = {}\n    for m in months:\n        quarter = m[\"month\"][:4] + \"Q\" + str((int(m[\"month\"][5:])-1)//3+1)\n        quarter_groups.setdefault(quarter, []).append(m)\n    quarters = [q for q in quarter_groups.values()\n                if len(q) == 3 and all(m[\"complete\"] for m in q)]\n    returns = [m[\"return_fraction\"] for m in complete]\n    contributions = sorted([m[\"pnl\"] for m in months], reverse=True)\n    return dict(months=months, complete_months=len(complete), active_months=len(active),\n                positive_active=sum(m[\"pnl\"] > 0 for m in active),\n                positive_calendar=sum(m[\"pnl\"] > 0 for m in complete),\n                median_return=float(np.median(returns)) if returns else None,\n                complete_quarters=len(quarters),\n                positive_quarters=sum(sum(m[\"pnl\"] for m in q) > 0 for q in quarters),\n                pnl_without_best_two=sum(m[\"pnl\"] for m in months)-sum(contributions[:2]))\n\n\nclass BtcResearchR11Base1m(Strategy):\n    \"\"\"M1 accounting observer; signal and management decisions remain4h.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, payload):\n        # Event logs stay small; monthly history is emitted as separate rows.\n        self.log(label + \" \" + json.dumps(payload, separators=(\",\", \":\"), allow_nan=False))\n\n    def _observe(self, stage):\n        now = int(self.time)\n        # BTC-only futures equity. portfolio_value multiplies open PnL by\n        # leverage in this checkout, so it is deliberately not used here.\n        equity = float(self.balance) + (float(self.position.pnl) if self.is_open else 0.0)\n        assert math.isfinite(equity)\n        self.vars[\"peak\"] = max(self.vars.get(\"peak\", 10000.0), equity)\n        drawdown = equity / self.vars[\"peak\"] - 1\n        self.vars[\"dd\"] = min(self.vars.get(\"dd\", 0.0), drawdown)\n        self.vars[\"sequence\"] = self.vars.get(\"sequence\", 0) + 1\n        self.vars[\"last_equity\"] = equity\n        active = self.vars.setdefault(\"active_months\", set())\n        if self.is_open:\n            # Pre marks describe exposure during the minute that just closed;\n            # an opening fill at T instead belongs to the new interval.\n            active.add(month_name(now if stage == \"open\" else now-1))\n        boundaries = self.vars.setdefault(\"boundaries\", {self.START: 10000.0})\n        if stage == \"pre\":\n            self.vars[\"minute_marks\"] = self.vars.get(\"minute_marks\", 0) + 1\n            stamp = datetime.fromtimestamp(now / 1000, timezone.utc)\n            if stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0:\n                boundaries[now] = equity\n        if now >= self.FINISH:\n            # A later terminal close callback replaces the mark with post-fee equity.\n            boundaries[self.FINISH] = equity\n        return equity\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - 0.00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # This is signal alignment, not a market-session/calendar filter.\n        if now % BAR != 0:\n            return\n        count = 62 if self.MODE == \"CUSUM\" else 26\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, count)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self.vars[\"cusum\"] = (0.0, 0.0)\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        if self.MODE == \"CUSUM\":\n            direction, state = cusum_step(rows, self.vars.get(\"cusum\", (0.0, 0.0)))\n            self.vars[\"cusum\"] = state\n        else:\n            assert self.MODE == \"ABSORPTION\"\n            direction = absorption_signal(rows)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        # Flat BTC account: wallet equals equity. Reuse the frozen2% fee-aware\n        # plan, eight-decimal research precision and90% margin ceiling.\n        capital = max(0.0, float(self.balance))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or self.price + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        self.buy = self.vars[\"plan\"][\"qty\"], self.price\n\n    def go_short(self):\n        self.sell = self.vars[\"plan\"][\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        stop = entry - direction * plan[\"distance\"]\n        target = entry + direction * 2 * plan[\"distance\"]\n        assert qty * (plan[\"distance\"] + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._observe(\"open\")\n\n    def update_position(self):\n        # Preserve the four-hour management clock despite the M1 observer.\n        if int(self.time) % BAR == 0 and int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        now = int(self.time)\n        active = self.vars.setdefault(\"active_months\", set())\n        active.add(month_name(now-1))\n        # At a month boundary, retain both the held interval and any fee-only\n        # execution month. Terminal liquidation belongs to the final interval.\n        if now < self.FINISH:\n            active.add(month_name(now))\n        self.vars[\"last_exit_at\"] = now\n        self._observe(\"close\")\n        if now >= self.FINISH and self.vars.get(\"emitted\"):\n            self._emit(\"FINAL\")\n\n    def _emit(self, stage):\n        summary = monthly_summary(self.vars[\"boundaries\"], self.vars.get(\"active_months\", set()))\n        # Emit rows at the end, so one bounded log page can retrieve all months.\n        for item in summary.pop(\"months\"):\n            self._log(\"R11_MONTH\", dict(stage=stage, **item))\n        summary.update(stage=stage, equity=self.vars[\"last_equity\"],\n                       dd_m1_events=self.vars.get(\"dd\", 0),\n                       minute_marks=self.vars.get(\"minute_marks\", 0),\n                       sequence=self.vars.get(\"sequence\", 0),\n                       signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n                       invalid_windows=self.vars.get(\"invalid_windows\", 0))\n        self._log(\"R11_SUMMARY\", summary)\n\n    def before_terminate(self):\n        self._observe(\"terminal\")\n        self.vars[\"emitted\"] = True\n        self._emit(\"PRETERMINAL\")\n","BtcResearchR12ArBase1m":"import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef return_forecast(rows, autoregressive):\n    \"\"\"240 observed (x,y) pairs, then six genuinely future recursive forecasts.\"\"\"\n    returns = np.diff(np.log(rows[-242:, 2]))\n    x, y = returns[:-1], returns[1:]\n    variance = float(np.mean((x-x.mean())**2))\n    if not math.isfinite(variance) or variance <= 0:\n        return None\n    beta = float(np.mean((x-x.mean())*(y-y.mean()))/variance) if autoregressive else 0.\n    intercept = float(y.mean()-beta*x.mean())\n    value, forecast = float(returns[-1]), 0.\n    for _ in range(6):\n        value = intercept+beta*value\n        forecast += value\n    return forecast if math.isfinite(forecast) else None\n\n\nclass BtcResearchR12ArBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 242)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"AR1\", \"DRIFT\")\n        forecast = return_forecast(rows, self.MODE == \"AR1\")\n        # Fixed signal hurdle inherited from R20, not simulated execution friction.\n        if forecast is None or abs(forecast) <= .0019 or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        atr = atr14(rows)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        # Forecast horizon is24h; no fixed target clips the model's payoff.\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n\n    def update_position(self):\n        if int(self.time) % BAR == 0 and int(self.time)-int(self.position.opened_at) >= 6*BAR:\n            self.liquidate()\n","BtcResearchR27VolumeInteractionBase1m":"\"\"\"AA: conditional price response to participation, not identified order flow.\"\"\"\nimport math\nimport numpy as np\n\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef interaction_inputs(rows):\n    \"\"\"Origins42..401/current407; every surprise owns42 strictly prior volumes.\"\"\"\n    if rows.ndim != 2 or rows.shape[0] != 408 or rows.shape[1] < 6:\n        return None\n    if (not np.all(np.isfinite(rows[:, :6])) or np.any(rows[:, 1:6] <= 0)\n            or not np.all(np.diff(rows[:, 0]) == BAR)\n            or np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2]))\n            or np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2]))):\n        return None\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        close = np.log(rows[:, 2])\n        volume = np.log(rows[:, 5])\n        # Last sliding window includes V407 and has no following current volume:\n        # discard it. Remaining366 windows end one bar BEFORE each origin42..407.\n        prior = np.lib.stride_tricks.sliding_window_view(volume, 42)[:-1]\n        r = np.diff(close)[41:]\n        v = volume[42:]-np.mean(prior, axis=1)\n        # RAW product is prescribed for interpretable coefficient conversion.\n        # Products after affine centering can span the same model with main effects.\n        raw = np.column_stack((r, v, r*v))\n        labels = close[48:408]-close[42:402]\n    if not np.all(np.isfinite(raw)) or not np.all(np.isfinite(labels)):\n        return None\n    return raw[:360], labels, raw[-1]\n\n\ndef interaction_fit(raw, labels, current):\n    \"\"\"Two nested OLS models share all360 rows, scalers and numerical admission.\"\"\"\n    if raw.shape != (360, 3) or labels.shape != (360,) or current.shape != (3,):\n        return None, dict(reason=\"shape_invalid\")\n    if not all(np.all(np.isfinite(x)) for x in (raw, labels, current)):\n        return None, dict(reason=\"arithmetic_invalid\")\n    # Exact constants can yield a tiny positive std after a rounded mean. Detect\n    # equality first; no near-zero threshold or dropping a column for MAIN.\n    if np.any(np.all(raw == raw[:1], axis=0)):\n        return None, dict(reason=\"constant_column\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        center = raw.mean(axis=0)\n        scale = raw.std(axis=0, ddof=0)\n        scaled = (raw-center)/scale\n        point = (current-center)/scale\n    if (not np.all(np.isfinite(center)) or not np.all(np.isfinite(scale))\n            or np.any(scale <= 0) or not np.all(np.isfinite(scaled))\n            or not np.all(np.isfinite(point))):\n        return None, dict(reason=\"scale_invalid\")\n    full = np.column_stack((np.ones(360), scaled))\n    main = full[:, :3]\n    try:\n        # None is NumPy's dtype/shape-dependent default numerical-rank cutoff,\n        # frozen ex ante. Deficient rank rejects BOTH; no ridge or fallback.\n        bf, _, rankf, sf = np.linalg.lstsq(full, labels, rcond=None)\n        bm, _, rankm, sm = np.linalg.lstsq(main, labels, rcond=None)\n    except np.linalg.LinAlgError:\n        return None, dict(reason=\"solver_error\")\n    if rankf != 4 or rankm != 3:\n        return None, dict(reason=\"rank_invalid\", ranks=[int(rankf), int(rankm)])\n    if not all(np.all(np.isfinite(x)) for x in (bf, bm, sf, sm)):\n        return None, dict(reason=\"coefficient_invalid\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        x = np.r_[1., point]\n        ff = float(x @ bf)\n        fm = float(x[:3] @ bm)\n        g = float(bf[3]/scale[2])\n    if not all(math.isfinite(x) for x in (ff, fm, g)):\n        return None, dict(reason=\"forecast_or_g_invalid\")\n    evidence = dict(reason=\"valid\", n=360, origins=[42, 401], current_index=407,\n        target_indices=[48, 407], current_raw=current.tolist(),\n        center=center.tolist(), scale=scale.tolist(),\n        coefficients_full=bf.tolist(), coefficients_main=bm.tolist(),\n        ranks=[int(rankf), int(rankm)], singular_full=sf.tolist(),\n        singular_main=sm.tolist(), g_raw=g,\n        forecast_full=ff, forecast_main=fm)\n    return (ff, fm), evidence\n\n\ndef interaction_forecasts(rows):\n    values = interaction_inputs(rows)\n    if values is None:\n        return None, dict(reason=\"data_invalid\")\n    return interaction_fit(*values)\n\n\ndef empty_interaction_diagnostic():\n    return dict(last=None, n=0, g_negative=0, g_zero=0, g_positive=0,\n        means={key: dict(available=True, value=None)\n               for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")},\n        aggregation_errors=0, latest=None)\n\n\ndef interaction_diagnostic(state, now, evidence):\n    \"\"\"O(1), once per valid fit, independent of mode, hurdle, ATR and occupation.\"\"\"\n    if state[\"last\"] is not None and now <= state[\"last\"]:\n        return state\n    result = dict(state)\n    result[\"last\"], result[\"n\"] = int(now), state[\"n\"]+1\n    g = evidence[\"g_raw\"]\n    key = \"g_negative\" if g < 0 else \"g_positive\" if g > 0 else \"g_zero\"\n    result[key] += 1\n    result[\"latest\"] = {key: evidence[key]\n                        for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")}\n    result[\"means\"] = {}\n    for key, old in state[\"means\"].items():\n        item = dict(old)\n        if old[\"available\"]:\n            value = evidence[key]\n            mean = value if state[\"n\"] == 0 else old[\"value\"]+(value-old[\"value\"])/result[\"n\"]\n            if math.isfinite(mean):\n                item[\"value\"] = mean\n            else:\n                # An unavailable descriptive aggregate cannot affect any forecast\n                # or the accepted fit. Do not serialize Infinity or invent a mean.\n                item.update(available=False, value=None)\n                result[\"aggregation_errors\"] += 1\n        result[\"means\"][key] = item\n    return result\n\n\nclass BtcResearchR27VolumeInteractionBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"INTERACTION\", \"MAIN_EFFECTS\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        last = self.vars.get(\"interaction_last\")\n        if last is not None and now <= last:\n            return\n        self.vars[\"interaction_last\"] = now\n        if not self.START < now < self.FINISH:\n            return\n        counts = self.vars.setdefault(\"interaction_counts\", {})\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 408)\n        if rows is None:\n            counts[\"window_invalid\"] = counts.get(\"window_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        if not math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8):\n            # As-of route mismatch is shared invalid data, before either model or\n            # diagnostic. It is cash, not a framework invariant that halts a run.\n            counts[\"price_alignment_invalid\"] = counts.get(\"price_alignment_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        forecasts, evidence = interaction_forecasts(rows)\n        reason = evidence[\"reason\"]\n        counts[reason] = counts.get(reason, 0)+1\n        self.vars[\"interaction_latest_fit\"] = evidence\n        if forecasts is None:\n            return\n        evidence.update(origin=now, window_first=int(rows[0, 0]), window_last=int(rows[-1, 0]))\n        # Record BOTH forecasts and raw gamma before all trading gates. MODE and\n        # wallet/order state never enter any mathematical/diagnostic helper.\n        diagnostic = self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())\n        self.vars[\"interaction_diagnostic\"] = interaction_diagnostic(diagnostic, now, evidence)\n        forecast = forecasts[0 if self.MODE == \"INTERACTION\" else 1]\n        if abs(forecast) <= .0019:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            counts[\"atr_invalid\"] = counts.get(\"atr_invalid\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            counts[\"plan_invalid\"] = counts.get(\"plan_invalid\", 0)+1\n            return\n        self.vars[\"plan\"] = dict(plan, interaction_evidence=evidence,\n                                forecast=forecast, forecast_origin=now)\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        self._log(\"R27_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            forecast=plan[\"forecast\"], forecast_origin=plan[\"forecast_origin\"],\n            forecast_deadline=plan[\"forecast_origin\"]+6*BAR,\n            opened_at=int(self.position.opened_at),\n            hold_deadline=int(self.position.opened_at)+6*BAR,\n            entry=float(self.position.entry_price), qty=abs(float(self.position.qty)),\n            stop=float(self.position.entry_price)-direction*plan[\"distance\"],\n            distance=plan[\"distance\"], risk_budget=plan[\"risk_budget\"]))\n        self._log(\"R27_OPEN_FIT\", plan[\"interaction_evidence\"])\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R27_COUNTS\", dict(stage=stage, mode=self.MODE,\n            counts=self.vars.get(\"interaction_counts\", {}),\n            signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n            occupied=self.vars.get(\"occupied\", 0)))\n        self._log(\"R27_DIAGNOSTIC\", dict(stage=stage,\n            **self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())))\n        self._log(\"R27_LAST_FIT\", dict(stage=stage,\n            **self.vars.get(\"interaction_latest_fit\", {})))\n","BtcResearchR27VolumeInteraction1m":"from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27VolumeInteraction1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"INTERACTION\"\n","BtcResearchR27MainEffects1m":"from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27MainEffects1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"MAIN_EFFECTS\"\n"}
+
+N=0
+LABELS=[]
+def check(value,label):
+    global N
+    assert bool(value),label
+    N+=1;LABELS.append(label)
+def near(a,b,label,tol=1e-10):
+    check(np.allclose(a,b,atol=tol,rtol=tol),label)
+class Strategy:
+    def __init__(self):
+        self.vars={};self.logs=[];self.time=1609459200000
+        self.symbol="BTC-USDT";self.timeframe="1m";self.exchange="synthetic"
+        self.balance=10000.;self.available_margin=10000.;self.leverage=3;self.fee_rate=.00045
+        self._open=False;self._side=1;self.entry_orders=[];self.price=100.
+        self.position=SimpleNamespace(pnl=0.,qty=.01,entry_price=100.,opened_at=self.time)
+        self.liquidations=0;self.fetches=0
+    @property
+    def is_open(self):return self._open
+    @property
+    def is_long(self):return self._open and self._side==1
+    @property
+    def is_short(self):return self._open and self._side==-1
+    def get_candles(self,*args):self.fetches+=1;return self.aux
+    def log(self,x):self.logs.append(x)
+    def liquidate(self):self.liquidations+=1
+env=dict(math=math,np=np,json=json,datetime=datetime,timezone=timezone,Strategy=Strategy)
+for name,source in SOURCES.items():
+    tree=ast.parse(source)
+    tree.body=[n for n in tree.body if not isinstance(n,(ast.Import,ast.ImportFrom))]
+    exec(compile(tree,"supplied:"+name,"exec"),env)
+    check(True,"compile supplied AST "+name)
+B=env["BAR"];T=1609459200000
+inputs=env["interaction_inputs"];fit=env["interaction_fit"];forecast=env["interaction_forecasts"]
+diag=env["interaction_diagnostic"];empty=env["empty_interaction_diagnostic"]
+Full=env["BtcResearchR27VolumeInteraction1m"];Main=env["BtcResearchR27MainEffects1m"]
+Parent=env["BtcResearchR12ArBase1m"];Base=env["BtcResearchR27VolumeInteractionBase1m"]
+# No framework modules, real strategies, project files or session data are imported.
+check(Full.MODE=="INTERACTION" and Main.MODE=="MAIN_EFFECTS","wrapper policies exact")
+for method in ("update_position","on_close_position","before_terminate","should_long","should_short","go_long","go_short"):
+    check(getattr(Base,method) is getattr(Parent,method),"literal inherited lifecycle "+method)
+tree=ast.parse(SOURCES["BtcResearchR27VolumeInteractionBase1m"])
+handlers=[h for n in ast.walk(tree) if isinstance(n,ast.Try) for h in n.handlers]
+check(len(handlers)==1 and ast.unparse(handlers[0].type)=="np.linalg.LinAlgError","only solver exception caught")
+check("research" not in "".join(n.module or "" for n in tree.body if isinstance(n,ast.ImportFrom)).lower(),"no research module")
+parents={
+ "BtcResearchR10Base4h":"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+ "BtcResearchR11Base1m":"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+ "BtcResearchR12ArBase1m":"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343"}
+for name,digest in parents.items():
+    check(hashlib.sha256(SOURCES[name].encode()).hexdigest()==digest,"parent unchanged "+name)
+def candles(n=408,end=T):
+    k=np.arange(n,dtype=float)
+    closes=100*np.exp(np.cumsum(.001*np.sin(k*.43)+.0007*np.cos(k*.11)))
+    opens=np.r_[closes[0],closes[:-1]]
+    volume=np.exp(2+.2*np.sin(k*.31)+.1*np.cos(k*.013)+.0005*k)
+    return np.column_stack((end-(n-np.arange(n))*B,opens,closes,
+        np.maximum(opens,closes)*1.001,np.minimum(opens,closes)*.999,volume))
+rows=candles();untouched=rows.copy()
+raw,y,current=inputs(rows)
+check(raw.shape==(360,3) and y.shape==(360,) and current.shape==(3,),"exact360 trained and current")
+# Independent scalar loops, no sliding windows or producer intermediates.
+oracle=[]
+for i in range(42,408):
+    rr=math.log(rows[i,2])-math.log(rows[i-1,2])
+    vv=math.log(rows[i,5])-math.fsum(math.log(rows[j,5]) for j in range(i-42,i))/42
+    oracle.append([rr,vv,rr*vv])
+oy=np.array([math.log(rows[i+6,2])-math.log(rows[i,2]) for i in range(42,402)])
+near(raw,np.array(oracle[:360]),"origin-owned prior42 features scalar oracle",1e-13)
+near(current,oracle[-1],"current407 scalar feature oracle",1e-13)
+near(y,oy,"matured target endpoints48..407 scalar oracle",1e-13)
+check(np.array_equal(rows,untouched),"OHLCV unchanged by mathematical input builder")
+changed=rows.copy();changed[-1,5]*=2
+near(inputs(changed)[2][1]-current[1],math.log(2),"current volume excluded from own baseline",1e-13)
+changed=rows.copy();changed[0,5]*=2
+near(inputs(changed)[0][0,1]-raw[0,1],-math.log(2)/42,"oldest volume used at first origin",1e-13)
+near(inputs(changed)[2],current,"oldest volume outside current own baseline",1e-13)
+changed=rows.copy();changed[56,1:5]*=1.1;changed[56,5]*=3
+near(inputs(changed)[0][8],raw[8],"future after origin50 cannot change its feature",1e-13)
+check(abs(inputs(changed)[1][8]-y[8])>.01,"futuretarget56 legitimately changes matured label50")
+near(raw[:,2],raw[:,0]*raw[:,1],"raw product exactly prescribed before scaler",1e-15)
+for col,value in ((5,0.),(5,-1.),(5,float("nan")),(2,0.),(3,1.),(4,1e6),(0,T)):
+    bad=rows.copy();bad[75,col]=value
+    check(inputs(bad) is None,"common invalid input col"+str(col)+" value"+str(value))
+check(inputs(rows[:-1]) is None,"insufficient407 rows invalid")
+f,e=forecast(rows);check(f is not None and e["ranks"]==[4,3],"finite synthetic candles fit both")
+check(e["origins"]==[42,401] and e["target_indices"]==[48,407] and e["current_index"]==407,"fit evidence indices")
+prefix=candles(30,end=T-408*B)
+future=np.array([[T,900,900,901,899,2.],[T+B,800,800,801,799,3.]])
+selected=env["closed_window"](np.vstack((prefix,rows,future)),T,408)
+check(np.array_equal(selected,rows),"causal asof ignores sorted oldprefix/future")
+near(forecast(selected)[0],f,"prefix future forecast parity")
+# Balanced independent design gives exact known raw coefficients and orthogonal
+# interaction, so its main projection is analytically known; no solver oracle.
+rr=np.tile(np.repeat([-.02,-.01,.01,.02],2),45)
+vv=np.tile([-.5,.5],180)
+x=np.column_stack((rr,vv,rr*vv))
+beta=np.array([.004,.3,-.002,.8])
+target=beta[0]+x@beta[1:]
+point=np.array([.015,.3,.0045])
+ff,ev=fit(x,target,point)
+check(ff is not None,"known coefficient design jointly admitted")
+near(ff[0],beta[0]+point@beta[1:],"FULL exact coefficient prediction",1e-12)
+near(ff[1],beta[0]+point[:2]@beta[1:3],"MAIN analytical orthogonal projection",1e-12)
+near(ev["g_raw"],beta[3],"raw gamma conversion known coefficient",1e-12)
+near(ev["center"],x.mean(axis=0),"one set of centers from360training")
+near(ev["scale"],x.std(axis=0,ddof=0),"population scaling360 not current")
+expected_scaled=np.r_[beta[0]+x.mean(axis=0)@beta[1:],beta[1:]*x.std(axis=0,ddof=0)]
+near(ev["coefficients_full"],expected_scaled,"raw to scaled coefficients exact",1e-12)
+# Spy only observes supplied design arrays, never replaces numerical result.
+real_solver=np.linalg.lstsq
+calls=[]
+def spying(a,b,**kw):
+    calls.append((a.copy(),b.copy(),kw.copy()))
+    return real_solver(a,b,**kw)
+with patch.object(np.linalg,"lstsq",side_effect=spying): fit(x,target,point)
+check(len(calls)==2,"exact two fits")
+check(np.array_equal(calls[1][0],calls[0][0][:,:3]),"MAIN literal first3 columns FULL")
+check(np.array_equal(calls[0][1],calls[1][1]),"labels same exact360rows")
+check(all(c[2]=={"rcond":None} for c in calls),"rcondNone both")
+near(calls[0][0][:,3],(x[:,2]-x[:,2].mean())/x[:,2].std(ddof=0),"prescribed raw-product column")
+# Alternate affine product spans same columns with intercept/main effects.
+cent=(x-x.mean(0))/x.std(0)
+alt=np.column_stack((np.ones(360),cent[:,:2],cent[:,0]*cent[:,1]))
+ab=real_solver(alt,target,rcond=None)[0]
+cp=(point-x.mean(0))/x.std(0)
+near(np.array([1.,cp[0],cp[1],cp[0]*cp[1]])@ab,ff[0],"affine product can preserve full prediction",1e-12)
+for col in range(3):
+    xx=x.copy();xx[:,col]=.0001
+    check(fit(xx,target,point)[1]["reason"]=="constant_column","exactconstant before std col"+str(col))
+xx=x.copy();xx[:,1]=2*xx[:,0];xx[:,2]=xx[:,0]**2
+check(fit(xx,target,point)[1]["reason"]=="rank_invalid","nonconstant rank deficient rejects both")
+for array,col in ((x.copy(),0),(x.copy(),2)):
+    array[6,col]=float("inf")
+    check(fit(array,target,point)[1]["reason"]=="arithmetic_invalid","input finite guard"+str(col))
+check(fit(x,target[:-1],point)[1]["reason"]=="shape_invalid","label shape checked")
+huge=x.copy();huge[:,0]=np.where(np.arange(360)%2,1e308,-1e308)
+check(fit(huge,target,point)[1]["reason"]=="scale_invalid","scale overflow cash both")
+with patch.object(np.linalg,"lstsq",side_effect=np.linalg.LinAlgError("synthetic")):
+    check(fit(x,target,point)[1]["reason"]=="solver_error","LinAlgError sharedcash")
+propagated=False
+try:
+    with patch.object(np.linalg,"lstsq",side_effect=RuntimeError("synthetic programmer fault")):
+        fit(x,target,point)
+except RuntimeError:propagated=True
+check(propagated,"unexpected programming fault not swallowed")
+def badg(a,b,**kw):
+    coeff=np.zeros(a.shape[1])
+    if a.shape[1]==4:coeff[3]=1e308
+    return coeff,np.array([]),a.shape[1],np.ones(a.shape[1])
+with patch.object(np.linalg,"lstsq",side_effect=badg):
+    check(fit(x,target,x.mean(0))[1]["reason"]=="forecast_or_g_invalid","nonfinite rawgamma health commoncash")
+def badrank(a,b,**kw):
+    return np.zeros(a.shape[1]),np.array([]),2,np.ones(a.shape[1])
+with patch.object(np.linalg,"lstsq",side_effect=badrank):
+    check(fit(x,target,point)[1]["reason"]=="rank_invalid","solver returned deficient main/full no fallback")
+for sign in (-1,0,1):
+    event=dict(g_raw=float(sign),forecast_full=.003,forecast_main=-.004)
+    d0=empty();d1=diag(d0,T,event)
+    check(d0["n"]==0 and d0["last"] is None,"diagnostic input not mutated "+str(sign))
+    check(d1["n"]==1 and sum(d1[k] for k in ("g_negative","g_zero","g_positive"))==1,"gamma sign count "+str(sign))
+    check(d1["means"]["g_raw"]["value"]==sign,"gamma raw mean "+str(sign))
+    check(diag(d1,T,event)==d1 and diag(d1,T-B,event)==d1,"duplicate/backwards diagnostic no-op "+str(sign))
+d=diag(empty(),T,dict(g_raw=1e308,forecast_full=.003,forecast_main=-.004))
+d2=diag(d,T+B,dict(g_raw=-1e308,forecast_full=.005,forecast_main=-.002))
+check(d2["n"]==2 and d2["g_positive"]==1 and d2["g_negative"]==1,"overflow still counts validfits")
+check(d2["means"]["g_raw"]==dict(available=False,value=None) and d2["aggregation_errors"]==1,"overflow descriptive gamma unavailable")
+near(d2["means"]["forecast_full"]["value"],.004,"other means retained after gamma overflow")
+json.dumps(d2,allow_nan=False);check(True,"overflow diagnostic valid JSON no Infinity")
+# Integration runs supplied callbacks with real feature math once, then declared
+# forecast stubs to isolate clock/admission/lifecycle behavior, not broker fills.
+def instance(cls=Full,aux=rows):
+    z=cls();z.aux=aux.copy();z.price=float(aux[-1,2]);z.time=T
+    return z
+a,b=instance(Full),instance(Main)
+a.before();b.before()
+check(a.vars["interaction_diagnostic"]==b.vars["interaction_diagnostic"],"real math identical between policies")
+check(a.vars["interaction_diagnostic"]["n"]==1,"one real mathematical fit callback")
+before=copy.deepcopy(a.vars["interaction_diagnostic"]);fetches=a.fetches
+a.before();a.time=T-B;a.before()
+check(a.vars["interaction_diagnostic"]==before and a.fetches==fetches,"runtime duplicate/backwards beforefetch/fit")
+check(a.vars["direction"]==0,"duplicate no queued signal")
+# Frozen fit evidence below is deliberate callback input, not a mock of economics.
+real_forecast=env["interaction_forecasts"]
+def fixed(ff=.003,fm=-.004,g=.8):
+    evidence=copy.deepcopy(ev);evidence.update(g_raw=g,forecast_full=ff,forecast_main=fm)
+    return lambda r:((ff,fm),copy.deepcopy(evidence))
+env["interaction_forecasts"]=fixed()
+for occupied in ("open","pending","sameexit"):
+    z=instance()
+    if occupied=="open":z._open=True
+    if occupied=="pending":z.entry_orders=[object()]
+    if occupied=="sameexit":z.vars["last_exit_at"]=T
+    z.before()
+    check(z.vars["direction"]==0 and "plan" not in z.vars,"occupied noentry "+occupied)
+    check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["occupied"]==1,"occupied fit consumed "+occupied)
+for hurdle in (.0019,-.0019,0.):
+    env["interaction_forecasts"]=fixed(hurdle,hurdle)
+    z=instance();z.before()
+    check(z.vars["direction"]==0 and z.vars["interaction_diagnostic"]["n"]==1,"hurdle inclusive and diagnostic "+str(hurdle))
+env["interaction_forecasts"]=fixed()
+old_atr=env["atr14"];env["atr14"]=lambda r:None
+z=instance();z.before()
+check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["direction"]==0,"ATRNone after fit diagnostic")
+env["atr14"]=old_atr
+old_plan=env["entry_plan"];env["entry_plan"]=lambda *args:None
+z=instance();z.before()
+check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["direction"]==0,"sizinginvalid after fit diagnostic")
+env["entry_plan"]=old_plan
+z=instance();z.price*=1.2
+env["interaction_forecasts"]=lambda r:(_ for _ in ()).throw(AssertionError("must not reach model"))
+z.before()
+check(z.vars["interaction_counts"].get("price_alignment_invalid")==1,"price mismatch common invalidcash")
+check("interaction_diagnostic" not in z.vars and z.vars["direction"]==0,"asof mismatch before model/diagnostic/orders")
+z=instance();z.aux[-1,0]-=B;z.before()
+check(z.vars["invalid_windows"]==1 and "interaction_diagnostic" not in z.vars,"window invalid beforefit")
+z=instance();z.time=T+60000;z.before()
+check(z.fetches==0 and "interaction_diagnostic" not in z.vars,"nonboundaryM1 only observer")
+env["interaction_forecasts"]=fixed()
+af,am=instance(Full),instance(Main)
+af.before();am.before()
+check(af.vars["direction"]==1 and am.vars["direction"]==-1,"mode selects different forecast only after commonfit")
+check(af.vars["interaction_diagnostic"]==am.vars["interaction_diagnostic"],"trading direction cannot feed diagnostic")
+check(af.vars["plan"]["capital"]==10000. and af.vars["plan"]["risk_budget"]==200.,"flat capital and2%feeaware")
+for z,side in ((af,1),(am,-1)):
+    plan=z.vars["plan"]
+    check(plan["planned_loss"]<=200.+1e-6 and plan["qty"]>0,"risk sizing admitted "+str(side))
+    z._open=True;z._side=side;z.position=SimpleNamespace(pnl=0.,qty=side*plan["qty"],entry_price=z.price,opened_at=T)
+    z.on_open_position(None)
+    near(z.stop_loss[1],z.position.entry_price-side*plan["distance"],"actual fill relative SL "+str(side))
+    check(not hasattr(z,"take_profit"),"noTP inherited "+str(side))
+    near(plan["distance"],2*old_atr(rows),"currentATRsimple stop distance "+str(side))
+    op=json.loads(next(q for q in z.logs if q.startswith("R27_OPEN ")).split(" ",1)[1])
+    check(op["hold_deadline"]==T+6*B and op["forecast_deadline"]==T+6*B,"fill forecast deadlines "+str(side))
+    near(op["stop"],z.stop_loss[1],"logged actual submitted stop "+str(side))
+    z.time=T+5*B;z.update_position();check(z.liquidations==0,"before24h no liquidation "+str(side))
+    z.time=T+6*B-60000;z.update_position();check(z.liquidations==0,"M1beforedeadline no liquidation "+str(side))
+    z.time=T+6*B;z.update_position();check(z.liquidations==1,"24h boundary liquidation "+str(side))
+# Diagnostic overflow never becomes a selector even during a valid trade signal.
+env["interaction_forecasts"]=fixed(.003,-.004,-1e308)
+z=instance();z.vars["interaction_diagnostic"]=diag(empty(),T-B,
+    dict(g_raw=1e308,forecast_full=.003,forecast_main=-.004))
+z.before()
+check(z.vars["direction"]==1 and z.vars["interaction_diagnostic"]["aggregation_errors"]==1,"diagnostic overflow cannot gate trading")
+# Parent observer marks wallet + PnL once, never leverage times PnL.
+z._open=True;z.position.pnl=10.;z._observe("open")
+check(z.vars["last_equity"]==10010.,"observer equity wallet plus rawPnL")
+z.time=z.FINISH;z._open=False;z.balance=10001.;z.before_terminate()
+check(z.vars["boundaries"][z.FINISH]==10001.,"terminal observer preterminal equity")
+z.balance=10000.9;z.on_close_position(None,None)
+check(z.vars["boundaries"][z.FINISH]==10000.9,"terminal fee callback updates final boundary")
+eventlogs=[q for q in z.logs+af.logs+am.logs if q.startswith(("R27_","R11_"))]
+for q in eventlogs:json.loads(q.split(" ",1)[1])
+check(bool(eventlogs) and all(len(q)<1900 for q in eventlogs),"all callback evidence JSON finite and bounded1900")
+env["interaction_forecasts"]=real_forecast
+check(np.array_equal(rows,untouched),"integration no inputOHLCV mutation")
+result=dict(status="PASS",assertions=N,labels=LABELS,
+ source_sha256={name:hashlib.sha256(text.encode()).hexdigest() for name,text in SOURCES.items()},
+ scope="Supplied-source AST/stubs, independent scalar feature and known-coefficient OLS oracle. No framework/real strategy imports, session inputs, observed candles or nested backtests.",
+ limits="Synthetic checks do not prove broker/runtime coverage, predictive economics, statistical independence, significance or OOS.")
+open("output/technical_check.json","w").write(json.dumps(result,indent=2))
+print(json.dumps({key:value for key,value in result.items() if key!="labels"}))
+
+```
+
+## Attempt2 submitted
+```python
+import ast, math, json, hashlib, copy
+from datetime import datetime, timezone
+from types import SimpleNamespace
+from unittest.mock import patch
+import numpy as np
+
+SOURCES={"BtcResearchR10Base4h":"import json\nimport math\n\nimport numpy as np\nfrom jesse.strategies import Strategy\n\nBAR = 14400000\nDAY = 86400000\n\n\ndef closed_window(candles, now, count):\n    \"\"\"Use only consecutive, closed 4h bars; no synthetic gap repair.\"\"\"\n    rows = candles[candles[:, 0] + BAR <= now][-count:]\n    if len(rows) != count or rows[-1, 0] != now - BAR:\n        return None\n    if not np.all(np.diff(rows[:, 0]) == BAR):\n        return None\n    if not np.all(np.isfinite(rows[:, :5])) or np.any(rows[:, 1:5] <= 0):\n        return None\n    if np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2])):\n        return None\n    if np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2])):\n        return None\n    return rows\n\n\ndef atr14(rows):\n    previous = rows[-15:-1, 2]\n    current = rows[-14:]\n    tr = np.maximum(current[:, 3] - current[:, 4],\n                    np.maximum(abs(current[:, 3] - previous), abs(current[:, 4] - previous)))\n    value = float(np.mean(tr))\n    return value if math.isfinite(value) and value > 0 else None\n\n\ndef breadth_state(closes):\n    changes = np.diff(closes)\n    positive = changes > 0\n    negative = changes < 0\n    if int(positive[-6:].sum()) >= 4 and int(positive[-24:].sum()) >= 16:\n        return 1\n    if int(negative[-6:].sum()) >= 4 and int(negative[-24:].sum()) >= 16:\n        return -1\n    return 0\n\n\ndef breadth_signal(rows):\n    \"\"\"Count sign persistence, not return magnitudes; consume only new states.\"\"\"\n    now_state = breadth_state(rows[-25:, 2])\n    old_state = breadth_state(rows[-26:-1, 2])\n    return now_state if now_state != old_state else 0\n\n\ndef funding_failure_signal(rows, now, events):\n    \"\"\"Observe a full post-payment bar; never know or collect the next payment.\"\"\"\n    event_start = now - BAR\n    matching = []\n    for event in events:\n        raw = int(event[\"settled_at\"])\n        effective = raw // 60000 * 60000\n        if effective == event_start and 0 <= raw - effective <= 1000:\n            if int(event[\"available_at\"]) <= now and int(event[\"available_at\"]) > raw:\n                matching.append(event)\n    if len(matching) != 1:\n        return 0, None\n    event = matching[0]\n    rate = float(event[\"rate_decimal\"])\n    if not math.isfinite(rate):\n        return 0, None\n    pre, post = rows[-2], rows[-1]\n    if rate > 0 and pre[2] > pre[1] and post[2] < pre[1]:\n        return -1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    if rate < 0 and pre[2] < pre[1] and post[2] > pre[1]:\n        return 1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    return 0, None\n\n\ndef entry_plan(price, capital, margin, leverage, fee, direction, distance):\n    stop = price - direction * distance\n    values = (price, capital, margin, leverage, distance, stop)\n    if direction not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in values):\n        return None\n    if not math.isfinite(fee) or fee < 0:\n        return None\n    unit_loss = distance + fee * (price + stop)\n    # 2% includes both execution fees. The 90% margin ceiling retains the\n    # historical reserve and does not increase the stop's monetary risk.\n    risk_qty = 0.02 * capital / unit_loss\n    margin_qty = 0.90 * margin * leverage / (price * (1 + fee * leverage))\n    qty = math.floor(min(risk_qty, margin_qty) * 1e8) / 1e8\n    if qty <= 0:\n        return None\n    assert qty * unit_loss <= 0.02 * capital + 1e-6\n    return dict(qty=qty, price=price, capital=capital, distance=distance,\n                stop=stop, risk_budget=0.02 * capital,\n                planned_loss=qty * unit_loss, margin_capped=margin_qty < risk_qty)\n\n\nclass BtcResearchR10Base4h(Strategy):\n    \"\"\"R10 discovery harness: one BTC position, fixed risk and base costs only.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, value):\n        self.log(label + \" \" + json.dumps(value, separators=(\",\", \":\"), allow_nan=False))\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\"\n            assert self.leverage == 3\n            assert abs(self.fee_rate - 0.00045) < 1e-12\n            self.vars[\"checked\"] = True\n            self._log(\"R10_CONFIG\", dict(mode=self.MODE, risk=0.02, aggregate=0.06,\n                                        leverage=self.leverage, fee=self.fee_rate,\n                                        margin_buffer=0.90, stop_atr=2, target_r=2, hold_hours=48))\n        self.vars[\"direction\"] = 0\n        rows = closed_window(self.candles, now, 26)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            return\n        if self.MODE == \"BREADTH\":\n            direction = breadth_signal(rows)\n            evidence = None\n        else:\n            assert self.MODE == \"POST_FUNDING\"\n            events = self.get_funding_history(count=6)\n            assert all(int(e[\"available_at\"]) <= now for e in events)\n            direction, evidence = funding_failure_signal(rows, now, events)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        # Signals are evaluated and consumed while occupied as well. No deferred\n        # order or re-entry from a previously blocked funding/breadth event.\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        capital = max(0.0, min(float(self.balance), float(self.portfolio_value)))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or float(self.price) + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n        self.vars[\"evidence\"] = evidence\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        plan = self.vars[\"plan\"]\n        self.buy = plan[\"qty\"], self.price\n\n    def go_short(self):\n        plan = self.vars[\"plan\"]\n        self.sell = plan[\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        distance = plan[\"distance\"]\n        stop = entry - direction * distance\n        target = entry + direction * 2 * distance\n        assert qty * (distance + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._log(\"R10_ENTRY\", dict(time=int(self.time), direction=direction, entry=entry,\n                                   qty=qty, stop=stop, target=target, plan=plan,\n                                   evidence=self.vars.get(\"evidence\")))\n\n    def update_position(self):\n        # No ratchet, discretionary exit or same-close reversal. Funding applies\n        # continuously to actual held quantity, independently of signal inputs.\n        if int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        self.vars[\"last_exit_at\"] = int(self.time)\n\n    def before_terminate(self):\n        self._log(\"R10_COUNTERS\", dict(signals=self.vars.get(\"signals\", 0),\n                                     occupied=self.vars.get(\"occupied\", 0),\n                                     entries=self.vars.get(\"entries\", 0),\n                                     invalid_windows=self.vars.get(\"invalid_windows\", 0)))\n","BtcResearchR11Base1m":"import json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\nfrom jesse.strategies import Strategy\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef cusum_step(rows, accumulators):\n    \"\"\"Transfer the R40 design:60 past log returns, drift0.25, boundary4.\"\"\"\n    returns = np.diff(np.log(rows[-62:, 2]))\n    sigma = float(np.std(returns[:-1], ddof=1))\n    if not math.isfinite(sigma) or sigma <= 0:\n        return 0, (0.0, 0.0)\n    z = float((returns[-1] - np.mean(returns[:-1])) / sigma)\n    if not math.isfinite(z):\n        return 0, (0.0, 0.0)\n    up = max(0.0, accumulators[0] + z - 0.25)\n    down = max(0.0, accumulators[1] - z - 0.25)\n    if up >= 4 or down >= 4:\n        direction = 0 if up >= 4 and down >= 4 else 1 if up >= 4 else -1\n        return direction, (0.0, 0.0)\n    return 0, (up, down)\n\n\ndef absorption_signal(rows):\n    \"\"\"Large volume but small body, followed by escape of that closed bar.\"\"\"\n    window, setup, confirmation = rows[-26:-2], rows[-2], rows[-1]\n    if not np.all(np.isfinite(rows[-26:, 5])) or np.any(rows[-26:, 5] < 0):\n        return 0\n    average_volume = float(np.mean(window[:, 5]))\n    prior_atr = atr14(window)\n    if not math.isfinite(average_volume) or average_volume <= 0 or prior_atr is None:\n        return 0\n    if setup[5] < 2 * average_volume or abs(setup[2] - setup[1]) > 0.25 * prior_atr:\n        return 0\n    if confirmation[2] > setup[3]:\n        return 1\n    if confirmation[2] < setup[4]:\n        return -1\n    return 0\n\n\ndef month_name(timestamp):\n    return datetime.fromtimestamp(timestamp / 1000, timezone.utc).strftime(\"%Y-%m\")\n\n\ndef monthly_summary(boundaries, active_months):\n    \"\"\"Declared post-settlement/pre-decision UTC cuts; no00:01 approximation.\"\"\"\n    points = sorted(boundaries.items())\n    months = []\n    for (start, before), (finish, after) in zip(points, points[1:]):\n        stamp = datetime.fromtimestamp(start / 1000, timezone.utc)\n        month = stamp.strftime(\"%Y-%m\")\n        complete = stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0\n        if before <= 0:\n            continue\n        months.append(dict(month=month, start=start, finish=finish,\n                           complete=complete, active=month in active_months,\n                           pnl=after-before, return_fraction=after/before-1))\n    complete = [m for m in months if m[\"complete\"]]\n    active = [m for m in complete if m[\"active\"]]\n    quarter_groups = {}\n    for m in months:\n        quarter = m[\"month\"][:4] + \"Q\" + str((int(m[\"month\"][5:])-1)//3+1)\n        quarter_groups.setdefault(quarter, []).append(m)\n    quarters = [q for q in quarter_groups.values()\n                if len(q) == 3 and all(m[\"complete\"] for m in q)]\n    returns = [m[\"return_fraction\"] for m in complete]\n    contributions = sorted([m[\"pnl\"] for m in months], reverse=True)\n    return dict(months=months, complete_months=len(complete), active_months=len(active),\n                positive_active=sum(m[\"pnl\"] > 0 for m in active),\n                positive_calendar=sum(m[\"pnl\"] > 0 for m in complete),\n                median_return=float(np.median(returns)) if returns else None,\n                complete_quarters=len(quarters),\n                positive_quarters=sum(sum(m[\"pnl\"] for m in q) > 0 for q in quarters),\n                pnl_without_best_two=sum(m[\"pnl\"] for m in months)-sum(contributions[:2]))\n\n\nclass BtcResearchR11Base1m(Strategy):\n    \"\"\"M1 accounting observer; signal and management decisions remain4h.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, payload):\n        # Event logs stay small; monthly history is emitted as separate rows.\n        self.log(label + \" \" + json.dumps(payload, separators=(\",\", \":\"), allow_nan=False))\n\n    def _observe(self, stage):\n        now = int(self.time)\n        # BTC-only futures equity. portfolio_value multiplies open PnL by\n        # leverage in this checkout, so it is deliberately not used here.\n        equity = float(self.balance) + (float(self.position.pnl) if self.is_open else 0.0)\n        assert math.isfinite(equity)\n        self.vars[\"peak\"] = max(self.vars.get(\"peak\", 10000.0), equity)\n        drawdown = equity / self.vars[\"peak\"] - 1\n        self.vars[\"dd\"] = min(self.vars.get(\"dd\", 0.0), drawdown)\n        self.vars[\"sequence\"] = self.vars.get(\"sequence\", 0) + 1\n        self.vars[\"last_equity\"] = equity\n        active = self.vars.setdefault(\"active_months\", set())\n        if self.is_open:\n            # Pre marks describe exposure during the minute that just closed;\n            # an opening fill at T instead belongs to the new interval.\n            active.add(month_name(now if stage == \"open\" else now-1))\n        boundaries = self.vars.setdefault(\"boundaries\", {self.START: 10000.0})\n        if stage == \"pre\":\n            self.vars[\"minute_marks\"] = self.vars.get(\"minute_marks\", 0) + 1\n            stamp = datetime.fromtimestamp(now / 1000, timezone.utc)\n            if stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0:\n                boundaries[now] = equity\n        if now >= self.FINISH:\n            # A later terminal close callback replaces the mark with post-fee equity.\n            boundaries[self.FINISH] = equity\n        return equity\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - 0.00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # This is signal alignment, not a market-session/calendar filter.\n        if now % BAR != 0:\n            return\n        count = 62 if self.MODE == \"CUSUM\" else 26\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, count)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self.vars[\"cusum\"] = (0.0, 0.0)\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        if self.MODE == \"CUSUM\":\n            direction, state = cusum_step(rows, self.vars.get(\"cusum\", (0.0, 0.0)))\n            self.vars[\"cusum\"] = state\n        else:\n            assert self.MODE == \"ABSORPTION\"\n            direction = absorption_signal(rows)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        # Flat BTC account: wallet equals equity. Reuse the frozen2% fee-aware\n        # plan, eight-decimal research precision and90% margin ceiling.\n        capital = max(0.0, float(self.balance))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or self.price + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        self.buy = self.vars[\"plan\"][\"qty\"], self.price\n\n    def go_short(self):\n        self.sell = self.vars[\"plan\"][\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        stop = entry - direction * plan[\"distance\"]\n        target = entry + direction * 2 * plan[\"distance\"]\n        assert qty * (plan[\"distance\"] + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._observe(\"open\")\n\n    def update_position(self):\n        # Preserve the four-hour management clock despite the M1 observer.\n        if int(self.time) % BAR == 0 and int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        now = int(self.time)\n        active = self.vars.setdefault(\"active_months\", set())\n        active.add(month_name(now-1))\n        # At a month boundary, retain both the held interval and any fee-only\n        # execution month. Terminal liquidation belongs to the final interval.\n        if now < self.FINISH:\n            active.add(month_name(now))\n        self.vars[\"last_exit_at\"] = now\n        self._observe(\"close\")\n        if now >= self.FINISH and self.vars.get(\"emitted\"):\n            self._emit(\"FINAL\")\n\n    def _emit(self, stage):\n        summary = monthly_summary(self.vars[\"boundaries\"], self.vars.get(\"active_months\", set()))\n        # Emit rows at the end, so one bounded log page can retrieve all months.\n        for item in summary.pop(\"months\"):\n            self._log(\"R11_MONTH\", dict(stage=stage, **item))\n        summary.update(stage=stage, equity=self.vars[\"last_equity\"],\n                       dd_m1_events=self.vars.get(\"dd\", 0),\n                       minute_marks=self.vars.get(\"minute_marks\", 0),\n                       sequence=self.vars.get(\"sequence\", 0),\n                       signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n                       invalid_windows=self.vars.get(\"invalid_windows\", 0))\n        self._log(\"R11_SUMMARY\", summary)\n\n    def before_terminate(self):\n        self._observe(\"terminal\")\n        self.vars[\"emitted\"] = True\n        self._emit(\"PRETERMINAL\")\n","BtcResearchR12ArBase1m":"import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef return_forecast(rows, autoregressive):\n    \"\"\"240 observed (x,y) pairs, then six genuinely future recursive forecasts.\"\"\"\n    returns = np.diff(np.log(rows[-242:, 2]))\n    x, y = returns[:-1], returns[1:]\n    variance = float(np.mean((x-x.mean())**2))\n    if not math.isfinite(variance) or variance <= 0:\n        return None\n    beta = float(np.mean((x-x.mean())*(y-y.mean()))/variance) if autoregressive else 0.\n    intercept = float(y.mean()-beta*x.mean())\n    value, forecast = float(returns[-1]), 0.\n    for _ in range(6):\n        value = intercept+beta*value\n        forecast += value\n    return forecast if math.isfinite(forecast) else None\n\n\nclass BtcResearchR12ArBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 242)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"AR1\", \"DRIFT\")\n        forecast = return_forecast(rows, self.MODE == \"AR1\")\n        # Fixed signal hurdle inherited from R20, not simulated execution friction.\n        if forecast is None or abs(forecast) <= .0019 or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        atr = atr14(rows)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        # Forecast horizon is24h; no fixed target clips the model's payoff.\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n\n    def update_position(self):\n        if int(self.time) % BAR == 0 and int(self.time)-int(self.position.opened_at) >= 6*BAR:\n            self.liquidate()\n","BtcResearchR27VolumeInteractionBase1m":"\"\"\"AA: conditional price response to participation, not identified order flow.\"\"\"\nimport math\nimport numpy as np\n\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef interaction_inputs(rows):\n    \"\"\"Origins42..401/current407; every surprise owns42 strictly prior volumes.\"\"\"\n    if rows.ndim != 2 or rows.shape[0] != 408 or rows.shape[1] < 6:\n        return None\n    if (not np.all(np.isfinite(rows[:, :6])) or np.any(rows[:, 1:6] <= 0)\n            or not np.all(np.diff(rows[:, 0]) == BAR)\n            or np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2]))\n            or np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2]))):\n        return None\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        close = np.log(rows[:, 2])\n        volume = np.log(rows[:, 5])\n        # Last sliding window includes V407 and has no following current volume:\n        # discard it. Remaining366 windows end one bar BEFORE each origin42..407.\n        prior = np.lib.stride_tricks.sliding_window_view(volume, 42)[:-1]\n        r = np.diff(close)[41:]\n        v = volume[42:]-np.mean(prior, axis=1)\n        # RAW product is prescribed for interpretable coefficient conversion.\n        # Products after affine centering can span the same model with main effects.\n        raw = np.column_stack((r, v, r*v))\n        labels = close[48:408]-close[42:402]\n    if not np.all(np.isfinite(raw)) or not np.all(np.isfinite(labels)):\n        return None\n    return raw[:360], labels, raw[-1]\n\n\ndef interaction_fit(raw, labels, current):\n    \"\"\"Two nested OLS models share all360 rows, scalers and numerical admission.\"\"\"\n    if raw.shape != (360, 3) or labels.shape != (360,) or current.shape != (3,):\n        return None, dict(reason=\"shape_invalid\")\n    if not all(np.all(np.isfinite(x)) for x in (raw, labels, current)):\n        return None, dict(reason=\"arithmetic_invalid\")\n    # Exact constants can yield a tiny positive std after a rounded mean. Detect\n    # equality first; no near-zero threshold or dropping a column for MAIN.\n    if np.any(np.all(raw == raw[:1], axis=0)):\n        return None, dict(reason=\"constant_column\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        center = raw.mean(axis=0)\n        scale = raw.std(axis=0, ddof=0)\n        scaled = (raw-center)/scale\n        point = (current-center)/scale\n    if (not np.all(np.isfinite(center)) or not np.all(np.isfinite(scale))\n            or np.any(scale <= 0) or not np.all(np.isfinite(scaled))\n            or not np.all(np.isfinite(point))):\n        return None, dict(reason=\"scale_invalid\")\n    full = np.column_stack((np.ones(360), scaled))\n    main = full[:, :3]\n    try:\n        # None is NumPy's dtype/shape-dependent default numerical-rank cutoff,\n        # frozen ex ante. Deficient rank rejects BOTH; no ridge or fallback.\n        bf, _, rankf, sf = np.linalg.lstsq(full, labels, rcond=None)\n        bm, _, rankm, sm = np.linalg.lstsq(main, labels, rcond=None)\n    except np.linalg.LinAlgError:\n        return None, dict(reason=\"solver_error\")\n    if rankf != 4 or rankm != 3:\n        return None, dict(reason=\"rank_invalid\", ranks=[int(rankf), int(rankm)])\n    if not all(np.all(np.isfinite(x)) for x in (bf, bm, sf, sm)):\n        return None, dict(reason=\"coefficient_invalid\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        x = np.r_[1., point]\n        ff = float(x @ bf)\n        fm = float(x[:3] @ bm)\n        g = float(bf[3]/scale[2])\n    if not all(math.isfinite(x) for x in (ff, fm, g)):\n        return None, dict(reason=\"forecast_or_g_invalid\")\n    evidence = dict(reason=\"valid\", n=360, origins=[42, 401], current_index=407,\n        target_indices=[48, 407], current_raw=current.tolist(),\n        center=center.tolist(), scale=scale.tolist(),\n        coefficients_full=bf.tolist(), coefficients_main=bm.tolist(),\n        ranks=[int(rankf), int(rankm)], singular_full=sf.tolist(),\n        singular_main=sm.tolist(), g_raw=g,\n        forecast_full=ff, forecast_main=fm)\n    return (ff, fm), evidence\n\n\ndef interaction_forecasts(rows):\n    values = interaction_inputs(rows)\n    if values is None:\n        return None, dict(reason=\"data_invalid\")\n    return interaction_fit(*values)\n\n\ndef empty_interaction_diagnostic():\n    return dict(last=None, n=0, g_negative=0, g_zero=0, g_positive=0,\n        means={key: dict(available=True, value=None)\n               for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")},\n        aggregation_errors=0, latest=None)\n\n\ndef interaction_diagnostic(state, now, evidence):\n    \"\"\"O(1), once per valid fit, independent of mode, hurdle, ATR and occupation.\"\"\"\n    if state[\"last\"] is not None and now <= state[\"last\"]:\n        return state\n    result = dict(state)\n    result[\"last\"], result[\"n\"] = int(now), state[\"n\"]+1\n    g = evidence[\"g_raw\"]\n    key = \"g_negative\" if g < 0 else \"g_positive\" if g > 0 else \"g_zero\"\n    result[key] += 1\n    result[\"latest\"] = {key: evidence[key]\n                        for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")}\n    result[\"means\"] = {}\n    for key, old in state[\"means\"].items():\n        item = dict(old)\n        if old[\"available\"]:\n            value = evidence[key]\n            mean = value if state[\"n\"] == 0 else old[\"value\"]+(value-old[\"value\"])/result[\"n\"]\n            if math.isfinite(mean):\n                item[\"value\"] = mean\n            else:\n                # An unavailable descriptive aggregate cannot affect any forecast\n                # or the accepted fit. Do not serialize Infinity or invent a mean.\n                item.update(available=False, value=None)\n                result[\"aggregation_errors\"] += 1\n        result[\"means\"][key] = item\n    return result\n\n\nclass BtcResearchR27VolumeInteractionBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"INTERACTION\", \"MAIN_EFFECTS\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        last = self.vars.get(\"interaction_last\")\n        if last is not None and now <= last:\n            return\n        self.vars[\"interaction_last\"] = now\n        if not self.START < now < self.FINISH:\n            return\n        counts = self.vars.setdefault(\"interaction_counts\", {})\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 408)\n        if rows is None:\n            counts[\"window_invalid\"] = counts.get(\"window_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        if not math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8):\n            # As-of route mismatch is shared invalid data, before either model or\n            # diagnostic. It is cash, not a framework invariant that halts a run.\n            counts[\"price_alignment_invalid\"] = counts.get(\"price_alignment_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        forecasts, evidence = interaction_forecasts(rows)\n        reason = evidence[\"reason\"]\n        counts[reason] = counts.get(reason, 0)+1\n        self.vars[\"interaction_latest_fit\"] = evidence\n        if forecasts is None:\n            return\n        evidence.update(origin=now, window_first=int(rows[0, 0]), window_last=int(rows[-1, 0]))\n        # Record BOTH forecasts and raw gamma before all trading gates. MODE and\n        # wallet/order state never enter any mathematical/diagnostic helper.\n        diagnostic = self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())\n        self.vars[\"interaction_diagnostic\"] = interaction_diagnostic(diagnostic, now, evidence)\n        forecast = forecasts[0 if self.MODE == \"INTERACTION\" else 1]\n        if abs(forecast) <= .0019:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            counts[\"atr_invalid\"] = counts.get(\"atr_invalid\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            counts[\"plan_invalid\"] = counts.get(\"plan_invalid\", 0)+1\n            return\n        self.vars[\"plan\"] = dict(plan, interaction_evidence=evidence,\n                                forecast=forecast, forecast_origin=now)\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        self._log(\"R27_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            forecast=plan[\"forecast\"], forecast_origin=plan[\"forecast_origin\"],\n            forecast_deadline=plan[\"forecast_origin\"]+6*BAR,\n            opened_at=int(self.position.opened_at),\n            hold_deadline=int(self.position.opened_at)+6*BAR,\n            entry=float(self.position.entry_price), qty=abs(float(self.position.qty)),\n            stop=float(self.position.entry_price)-direction*plan[\"distance\"],\n            distance=plan[\"distance\"], risk_budget=plan[\"risk_budget\"]))\n        self._log(\"R27_OPEN_FIT\", plan[\"interaction_evidence\"])\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R27_COUNTS\", dict(stage=stage, mode=self.MODE,\n            counts=self.vars.get(\"interaction_counts\", {}),\n            signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n            occupied=self.vars.get(\"occupied\", 0)))\n        self._log(\"R27_DIAGNOSTIC\", dict(stage=stage,\n            **self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())))\n        self._log(\"R27_LAST_FIT\", dict(stage=stage,\n            **self.vars.get(\"interaction_latest_fit\", {})))\n","BtcResearchR27VolumeInteraction1m":"from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27VolumeInteraction1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"INTERACTION\"\n","BtcResearchR27MainEffects1m":"from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27MainEffects1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"MAIN_EFFECTS\"\n"}
+
+N=0
+LABELS=[]
+def check(value,label):
+    global N
+    assert bool(value),label
+    N+=1;LABELS.append(label)
+def near(a,b,label,tol=1e-10):
+    check(np.allclose(a,b,atol=tol,rtol=tol),label)
+class Strategy:
+    def __init__(self):
+        self.vars={};self.logs=[];self.time=1609459200000
+        self.symbol="BTC-USDT";self.timeframe="1m";self.exchange="synthetic"
+        self.balance=10000.;self.available_margin=10000.;self.leverage=3;self.fee_rate=.00045
+        self._open=False;self._side=1;self.entry_orders=[];self.price=100.
+        self.position=SimpleNamespace(pnl=0.,qty=.01,entry_price=100.,opened_at=self.time)
+        self.liquidations=0;self.fetches=0
+    @property
+    def is_open(self):return self._open
+    @property
+    def is_long(self):return self._open and self._side==1
+    @property
+    def is_short(self):return self._open and self._side==-1
+    def get_candles(self,*args):self.fetches+=1;return self.aux
+    def log(self,x):self.logs.append(x)
+    def liquidate(self):self.liquidations+=1
+env=dict(math=math,np=np,json=json,datetime=datetime,timezone=timezone,Strategy=Strategy)
+for name,source in SOURCES.items():
+    tree=ast.parse(source)
+    tree.body=[n for n in tree.body if not isinstance(n,(ast.Import,ast.ImportFrom))]
+    exec(compile(tree,"supplied:"+name,"exec"),env)
+    check(True,"compile supplied AST "+name)
+B=env["BAR"];T=1609459200000
+inputs=env["interaction_inputs"];fit=env["interaction_fit"];forecast=env["interaction_forecasts"]
+diag=env["interaction_diagnostic"];empty=env["empty_interaction_diagnostic"]
+Full=env["BtcResearchR27VolumeInteraction1m"];Main=env["BtcResearchR27MainEffects1m"]
+Parent=env["BtcResearchR12ArBase1m"];Base=env["BtcResearchR27VolumeInteractionBase1m"]
+# No framework modules, real strategies, project files or session data are imported.
+check(Full.MODE=="INTERACTION" and Main.MODE=="MAIN_EFFECTS","wrapper policies exact")
+for method in ("update_position","on_close_position","before_terminate","should_long","should_short","go_long","go_short"):
+    check(getattr(Base,method) is getattr(Parent,method),"literal inherited lifecycle "+method)
+tree=ast.parse(SOURCES["BtcResearchR27VolumeInteractionBase1m"])
+handlers=[h for n in ast.walk(tree) if isinstance(n,ast.Try) for h in n.handlers]
+check(len(handlers)==1 and ast.unparse(handlers[0].type)=="np.linalg.LinAlgError","only solver exception caught")
+check(not any(isinstance(n,ast.ImportFrom) and ((n.module or "")=="jesse.research" or (n.module or "").startswith("jesse.research.") or (n.module=="jesse" and any(a.name=="research" for a in n.names))) for n in tree.body),"no jesse.research module; class names Research permitted")
+parents={
+ "BtcResearchR10Base4h":"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+ "BtcResearchR11Base1m":"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+ "BtcResearchR12ArBase1m":"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343"}
+for name,digest in parents.items():
+    check(hashlib.sha256(SOURCES[name].encode()).hexdigest()==digest,"parent unchanged "+name)
+def candles(n=408,end=T):
+    k=np.arange(n,dtype=float)
+    closes=100*np.exp(np.cumsum(.001*np.sin(k*.43)+.0007*np.cos(k*.11)))
+    opens=np.r_[closes[0],closes[:-1]]
+    volume=np.exp(2+.2*np.sin(k*.31)+.1*np.cos(k*.013)+.0005*k)
+    return np.column_stack((end-(n-np.arange(n))*B,opens,closes,
+        np.maximum(opens,closes)*1.001,np.minimum(opens,closes)*.999,volume))
+rows=candles();untouched=rows.copy()
+raw,y,current=inputs(rows)
+check(raw.shape==(360,3) and y.shape==(360,) and current.shape==(3,),"exact360 trained and current")
+# Independent scalar loops, no sliding windows or producer intermediates.
+oracle=[]
+for i in range(42,408):
+    rr=math.log(rows[i,2])-math.log(rows[i-1,2])
+    vv=math.log(rows[i,5])-math.fsum(math.log(rows[j,5]) for j in range(i-42,i))/42
+    oracle.append([rr,vv,rr*vv])
+oy=np.array([math.log(rows[i+6,2])-math.log(rows[i,2]) for i in range(42,402)])
+near(raw,np.array(oracle[:360]),"origin-owned prior42 features scalar oracle",1e-13)
+near(current,oracle[-1],"current407 scalar feature oracle",1e-13)
+near(y,oy,"matured target endpoints48..407 scalar oracle",1e-13)
+check(np.array_equal(rows,untouched),"OHLCV unchanged by mathematical input builder")
+changed=rows.copy();changed[-1,5]*=2
+near(inputs(changed)[2][1]-current[1],math.log(2),"current volume excluded from own baseline",1e-13)
+changed=rows.copy();changed[0,5]*=2
+near(inputs(changed)[0][0,1]-raw[0,1],-math.log(2)/42,"oldest volume used at first origin",1e-13)
+near(inputs(changed)[2],current,"oldest volume outside current own baseline",1e-13)
+changed=rows.copy();changed[56,1:5]*=1.1;changed[56,5]*=3
+near(inputs(changed)[0][8],raw[8],"future after origin50 cannot change its feature",1e-13)
+check(abs(inputs(changed)[1][8]-y[8])>.01,"futuretarget56 legitimately changes matured label50")
+near(raw[:,2],raw[:,0]*raw[:,1],"raw product exactly prescribed before scaler",1e-15)
+for col,value in ((5,0.),(5,-1.),(5,float("nan")),(2,0.),(3,1.),(4,1e6),(0,T)):
+    bad=rows.copy();bad[75,col]=value
+    check(inputs(bad) is None,"common invalid input col"+str(col)+" value"+str(value))
+check(inputs(rows[:-1]) is None,"insufficient407 rows invalid")
+f,e=forecast(rows);check(f is not None and e["ranks"]==[4,3],"finite synthetic candles fit both")
+check(e["origins"]==[42,401] and e["target_indices"]==[48,407] and e["current_index"]==407,"fit evidence indices")
+prefix=candles(30,end=T-408*B)
+future=np.array([[T,900,900,901,899,2.],[T+B,800,800,801,799,3.]])
+selected=env["closed_window"](np.vstack((prefix,rows,future)),T,408)
+check(np.array_equal(selected,rows),"causal asof ignores sorted oldprefix/future")
+near(forecast(selected)[0],f,"prefix future forecast parity")
+# Balanced independent design gives exact known raw coefficients and orthogonal
+# interaction, so its main projection is analytically known; no solver oracle.
+rr=np.tile(np.repeat([-.02,-.01,.01,.02],2),45)
+vv=np.tile([-.5,.5],180)
+x=np.column_stack((rr,vv,rr*vv))
+beta=np.array([.004,.3,-.002,.8])
+target=beta[0]+x@beta[1:]
+point=np.array([.015,.3,.0045])
+ff,ev=fit(x,target,point)
+check(ff is not None,"known coefficient design jointly admitted")
+near(ff[0],beta[0]+point@beta[1:],"FULL exact coefficient prediction",1e-12)
+near(ff[1],beta[0]+point[:2]@beta[1:3],"MAIN analytical orthogonal projection",1e-12)
+near(ev["g_raw"],beta[3],"raw gamma conversion known coefficient",1e-12)
+near(ev["center"],x.mean(axis=0),"one set of centers from360training")
+near(ev["scale"],x.std(axis=0,ddof=0),"population scaling360 not current")
+expected_scaled=np.r_[beta[0]+x.mean(axis=0)@beta[1:],beta[1:]*x.std(axis=0,ddof=0)]
+near(ev["coefficients_full"],expected_scaled,"raw to scaled coefficients exact",1e-12)
+# Spy only observes supplied design arrays, never replaces numerical result.
+real_solver=np.linalg.lstsq
+calls=[]
+def spying(a,b,**kw):
+    calls.append((a.copy(),b.copy(),kw.copy()))
+    return real_solver(a,b,**kw)
+with patch.object(np.linalg,"lstsq",side_effect=spying): fit(x,target,point)
+check(len(calls)==2,"exact two fits")
+check(np.array_equal(calls[1][0],calls[0][0][:,:3]),"MAIN literal first3 columns FULL")
+check(np.array_equal(calls[0][1],calls[1][1]),"labels same exact360rows")
+check(all(c[2]=={"rcond":None} for c in calls),"rcondNone both")
+near(calls[0][0][:,3],(x[:,2]-x[:,2].mean())/x[:,2].std(ddof=0),"prescribed raw-product column")
+# Alternate affine product spans same columns with intercept/main effects.
+cent=(x-x.mean(0))/x.std(0)
+alt=np.column_stack((np.ones(360),cent[:,:2],cent[:,0]*cent[:,1]))
+ab=real_solver(alt,target,rcond=None)[0]
+cp=(point-x.mean(0))/x.std(0)
+near(np.array([1.,cp[0],cp[1],cp[0]*cp[1]])@ab,ff[0],"affine product can preserve full prediction",1e-12)
+for col in range(3):
+    xx=x.copy();xx[:,col]=.0001
+    check(fit(xx,target,point)[1]["reason"]=="constant_column","exactconstant before std col"+str(col))
+xx=x.copy();xx[:,1]=2*xx[:,0];xx[:,2]=xx[:,0]**2
+check(fit(xx,target,point)[1]["reason"]=="rank_invalid","nonconstant rank deficient rejects both")
+for array,col in ((x.copy(),0),(x.copy(),2)):
+    array[6,col]=float("inf")
+    check(fit(array,target,point)[1]["reason"]=="arithmetic_invalid","input finite guard"+str(col))
+check(fit(x,target[:-1],point)[1]["reason"]=="shape_invalid","label shape checked")
+huge=x.copy();huge[:,0]=np.where(np.arange(360)%2,1e308,-1e308)
+check(fit(huge,target,point)[1]["reason"]=="scale_invalid","scale overflow cash both")
+with patch.object(np.linalg,"lstsq",side_effect=np.linalg.LinAlgError("synthetic")):
+    check(fit(x,target,point)[1]["reason"]=="solver_error","LinAlgError sharedcash")
+propagated=False
+try:
+    with patch.object(np.linalg,"lstsq",side_effect=RuntimeError("synthetic programmer fault")):
+        fit(x,target,point)
+except RuntimeError:propagated=True
+check(propagated,"unexpected programming fault not swallowed")
+def badg(a,b,**kw):
+    coeff=np.zeros(a.shape[1])
+    if a.shape[1]==4:coeff[3]=1e308
+    return coeff,np.array([]),a.shape[1],np.ones(a.shape[1])
+with patch.object(np.linalg,"lstsq",side_effect=badg):
+    check(fit(x,target,x.mean(0))[1]["reason"]=="forecast_or_g_invalid","nonfinite rawgamma health commoncash")
+def badrank(a,b,**kw):
+    return np.zeros(a.shape[1]),np.array([]),2,np.ones(a.shape[1])
+with patch.object(np.linalg,"lstsq",side_effect=badrank):
+    check(fit(x,target,point)[1]["reason"]=="rank_invalid","solver returned deficient main/full no fallback")
+for sign in (-1,0,1):
+    event=dict(g_raw=float(sign),forecast_full=.003,forecast_main=-.004)
+    d0=empty();d1=diag(d0,T,event)
+    check(d0["n"]==0 and d0["last"] is None,"diagnostic input not mutated "+str(sign))
+    check(d1["n"]==1 and sum(d1[k] for k in ("g_negative","g_zero","g_positive"))==1,"gamma sign count "+str(sign))
+    check(d1["means"]["g_raw"]["value"]==sign,"gamma raw mean "+str(sign))
+    check(diag(d1,T,event)==d1 and diag(d1,T-B,event)==d1,"duplicate/backwards diagnostic no-op "+str(sign))
+d=diag(empty(),T,dict(g_raw=1e308,forecast_full=.003,forecast_main=-.004))
+d2=diag(d,T+B,dict(g_raw=-1e308,forecast_full=.005,forecast_main=-.002))
+check(d2["n"]==2 and d2["g_positive"]==1 and d2["g_negative"]==1,"overflow still counts validfits")
+check(d2["means"]["g_raw"]==dict(available=False,value=None) and d2["aggregation_errors"]==1,"overflow descriptive gamma unavailable")
+near(d2["means"]["forecast_full"]["value"],.004,"other means retained after gamma overflow")
+json.dumps(d2,allow_nan=False);check(True,"overflow diagnostic valid JSON no Infinity")
+# Integration runs supplied callbacks with real feature math once, then declared
+# forecast stubs to isolate clock/admission/lifecycle behavior, not broker fills.
+def instance(cls=Full,aux=rows):
+    z=cls();z.aux=aux.copy();z.price=float(aux[-1,2]);z.time=T
+    return z
+a,b=instance(Full),instance(Main)
+a.before();b.before()
+check(a.vars["interaction_diagnostic"]==b.vars["interaction_diagnostic"],"real math identical between policies")
+check(a.vars["interaction_diagnostic"]["n"]==1,"one real mathematical fit callback")
+before=copy.deepcopy(a.vars["interaction_diagnostic"]);fetches=a.fetches
+a.before();a.time=T-B;a.before()
+check(a.vars["interaction_diagnostic"]==before and a.fetches==fetches,"runtime duplicate/backwards beforefetch/fit")
+check(a.vars["direction"]==0,"duplicate no queued signal")
+# Frozen fit evidence below is deliberate callback input, not a mock of economics.
+real_forecast=env["interaction_forecasts"]
+def fixed(ff=.003,fm=-.004,g=.8):
+    evidence=copy.deepcopy(ev);evidence.update(g_raw=g,forecast_full=ff,forecast_main=fm)
+    return lambda r:((ff,fm),copy.deepcopy(evidence))
+env["interaction_forecasts"]=fixed()
+for occupied in ("open","pending","sameexit"):
+    z=instance()
+    if occupied=="open":z._open=True
+    if occupied=="pending":z.entry_orders=[object()]
+    if occupied=="sameexit":z.vars["last_exit_at"]=T
+    z.before()
+    check(z.vars["direction"]==0 and "plan" not in z.vars,"occupied noentry "+occupied)
+    check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["occupied"]==1,"occupied fit consumed "+occupied)
+for hurdle in (.0019,-.0019,0.):
+    env["interaction_forecasts"]=fixed(hurdle,hurdle)
+    z=instance();z.before()
+    check(z.vars["direction"]==0 and z.vars["interaction_diagnostic"]["n"]==1,"hurdle inclusive and diagnostic "+str(hurdle))
+env["interaction_forecasts"]=fixed()
+old_atr=env["atr14"];env["atr14"]=lambda r:None
+z=instance();z.before()
+check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["direction"]==0,"ATRNone after fit diagnostic")
+env["atr14"]=old_atr
+old_plan=env["entry_plan"];env["entry_plan"]=lambda *args:None
+z=instance();z.before()
+check(z.vars["interaction_diagnostic"]["n"]==1 and z.vars["direction"]==0,"sizinginvalid after fit diagnostic")
+env["entry_plan"]=old_plan
+z=instance();z.price*=1.2
+env["interaction_forecasts"]=lambda r:(_ for _ in ()).throw(AssertionError("must not reach model"))
+z.before()
+check(z.vars["interaction_counts"].get("price_alignment_invalid")==1,"price mismatch common invalidcash")
+check("interaction_diagnostic" not in z.vars and z.vars["direction"]==0,"asof mismatch before model/diagnostic/orders")
+z=instance();z.aux[-1,0]-=B;z.before()
+check(z.vars["invalid_windows"]==1 and "interaction_diagnostic" not in z.vars,"window invalid beforefit")
+z=instance();z.time=T+60000;z.before()
+check(z.fetches==0 and "interaction_diagnostic" not in z.vars,"nonboundaryM1 only observer")
+env["interaction_forecasts"]=fixed()
+af,am=instance(Full),instance(Main)
+af.before();am.before()
+check(af.vars["direction"]==1 and am.vars["direction"]==-1,"mode selects different forecast only after commonfit")
+check(af.vars["interaction_diagnostic"]==am.vars["interaction_diagnostic"],"trading direction cannot feed diagnostic")
+check(af.vars["plan"]["capital"]==10000. and af.vars["plan"]["risk_budget"]==200.,"flat capital and2%feeaware")
+for z,side in ((af,1),(am,-1)):
+    plan=z.vars["plan"]
+    check(plan["planned_loss"]<=200.+1e-6 and plan["qty"]>0,"risk sizing admitted "+str(side))
+    z._open=True;z._side=side;z.position=SimpleNamespace(pnl=0.,qty=side*plan["qty"],entry_price=z.price,opened_at=T)
+    z.on_open_position(None)
+    near(z.stop_loss[1],z.position.entry_price-side*plan["distance"],"actual fill relative SL "+str(side))
+    check(not hasattr(z,"take_profit"),"noTP inherited "+str(side))
+    near(plan["distance"],2*old_atr(rows),"currentATRsimple stop distance "+str(side))
+    op=json.loads(next(q for q in z.logs if q.startswith("R27_OPEN ")).split(" ",1)[1])
+    check(op["hold_deadline"]==T+6*B and op["forecast_deadline"]==T+6*B,"fill forecast deadlines "+str(side))
+    near(op["stop"],z.stop_loss[1],"logged actual submitted stop "+str(side))
+    z.time=T+5*B;z.update_position();check(z.liquidations==0,"before24h no liquidation "+str(side))
+    z.time=T+6*B-60000;z.update_position();check(z.liquidations==0,"M1beforedeadline no liquidation "+str(side))
+    z.time=T+6*B;z.update_position();check(z.liquidations==1,"24h boundary liquidation "+str(side))
+# Diagnostic overflow never becomes a selector even during a valid trade signal.
+env["interaction_forecasts"]=fixed(.003,-.004,-1e308)
+z=instance();z.vars["interaction_diagnostic"]=diag(empty(),T-B,
+    dict(g_raw=1e308,forecast_full=.003,forecast_main=-.004))
+z.before()
+check(z.vars["direction"]==1 and z.vars["interaction_diagnostic"]["aggregation_errors"]==1,"diagnostic overflow cannot gate trading")
+# Parent observer marks wallet + PnL once, never leverage times PnL.
+z._open=True;z.position.pnl=10.;z._observe("open")
+check(z.vars["last_equity"]==10010.,"observer equity wallet plus rawPnL")
+z.time=z.FINISH;z._open=False;z.balance=10001.;z.before_terminate()
+check(z.vars["boundaries"][z.FINISH]==10001.,"terminal observer preterminal equity")
+z.balance=10000.9;z.on_close_position(None,None)
+check(z.vars["boundaries"][z.FINISH]==10000.9,"terminal fee callback updates final boundary")
+eventlogs=[q for q in z.logs+af.logs+am.logs if q.startswith(("R27_","R11_"))]
+for q in eventlogs:json.loads(q.split(" ",1)[1])
+check(bool(eventlogs) and all(len(q)<1900 for q in eventlogs),"all callback evidence JSON finite and bounded1900")
+env["interaction_forecasts"]=real_forecast
+check(np.array_equal(rows,untouched),"integration no inputOHLCV mutation")
+result=dict(status="PASS",assertions=N,labels=LABELS,
+ source_sha256={name:hashlib.sha256(text.encode()).hexdigest() for name,text in SOURCES.items()},
+ scope="Supplied-source AST/stubs, independent scalar feature and known-coefficient OLS oracle. No framework/real strategy imports, session inputs, observed candles or nested backtests.",
+ limits="Synthetic checks do not prove broker/runtime coverage, predictive economics, statistical independence, significance or OOS.")
+open("output/technical_check.json","w").write(json.dumps(result,indent=2))
+print(json.dumps({key:value for key,value in result.items() if key!="labels"}))
+
+```

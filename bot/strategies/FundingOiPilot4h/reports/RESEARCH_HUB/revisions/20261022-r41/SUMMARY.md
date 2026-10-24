@@ -1,0 +1,1 @@
+R40 cerrada sin candidata: UNWIND CAGR 0,556%, PF 1,128, DD 5,852%, meses 18/37; CLOCK pierde. 118 operaciones y 554 pagos auditados, 62 episodios comunes. Objetivo global activo.

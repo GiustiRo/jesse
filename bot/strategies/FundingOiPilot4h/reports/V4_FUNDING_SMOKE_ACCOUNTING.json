@@ -1,0 +1,42 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "c7b7a77168ff4ac080a5fc0f01c3dae5",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/c7b7a77168ff4ac080a5fc0f01c3dae5",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "72cdd654-a757-488b-9df7-6351496574ba",
+        "session_status": "finished",
+        "title": "MCP Backtest: V4 SMOKE FUNDING_RESET",
+        "size_bytes": 8616
+      }
+    ],
+    "status": "succeeded",
+    "pid": 8230,
+    "exit_code": 0,
+    "started_at": "2026-10-21T00:26:43+00:00",
+    "finished_at": "2026-10-21T00:26:43+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-22T00:26:43+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 2015,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"session_id\": \"72cdd654-a757-488b-9df7-6351496574ba\", \"strategy\": \"ResearchV4FundingSmoke1h\", \"start\": \"2020-09-01\", \"finish\": \"2020-09-08\", \"n\": 0, \"net\": 0.0, \"net_pct\": 0.0, \"pf\": null, \"pf_no_losses\": false, \"dd\": 0, \"cagr_pct\": 0.0, \"turnover\": 0.0, \"gross\": 0.0, \"fees\": 0.0, \"funding\": 0.0, \"funding_events\": 0, \"proxy_funding\": 0.0, \"exact_funding\": 0.0, \"unclassified_funding\": 0.0, \"funding_sources\": {}, \"holding_seconds\": 0.0, \"exposure\": 0.0, \"directions\": {}, \"exit_order_types\": {}, \"months\": [], \"years\": [], \"semesters\": [], \"replay_nominal_gates\": null, \"replay_nominal_eligible\": null, \"funding_sensitivities\": [{\"kind\": \"proxy_only\", \"multiplier\": 0.5, \"net_usdt\": 0.0, \"net_pct\": 0.0, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"proxy_only\", \"multiplier\": 1.5, \"net_usdt\": 0.0, \"net_pct\": 0.0, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 0.5, \"net_usdt\": 0.0, \"net_pct\": 0.0, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 1.5, \"net_usdt\": 0.0, \"net_pct\": 0.0, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 0.0, \"negative_pnl\": 0.0, \"best_trade\": null, \"worst_trade\": null, \"adjusted_fills\": 0, \"curve_terminal_delta\": null, \"sampled_dd_including_terminal_pct\": -0.0, \"equity_points\": 0, \"equity_evidence\": \"absent_zero_trades\", \"max_accounting_error\": 0.0, \"metric_open_indicator\": null, \"metric_open_pl\": null}]\n",
+  "output_lines_returned": 1,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}
