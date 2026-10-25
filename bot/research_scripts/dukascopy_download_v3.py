@@ -81,7 +81,7 @@ def _fetch(inst: str, d: date, cache_dir: str) -> bytes:
                 response.raise_for_status()
                 raw = response.content
             # Validate compressed bytes before committing the resumable cache.
-            _decode(raw, d, POINT_DIVISOR[inst])
+            _decode(raw, d, POINT_DIVISOR.get(inst, 1000.0))
             with open(path + '.tmp', 'wb') as fh:
                 fh.write(raw)
             os.replace(path + '.tmp', path)
@@ -128,11 +128,16 @@ def main() -> None:
     ap.add_argument('--out', default=None)
     ap.add_argument('--probe', action='store_true', help='decode one day and print, no CSV')
     ap.add_argument('--base-url', default=None, help='override the datafeed root, e.g. http://datafeed.dukascopy.com/datafeed')
+    # r50: instruments outside POINT_DIVISOR (gas, bond, copper...) quote with other point
+    # sizes; the probe output is checked against known price levels before a full download.
+    ap.add_argument('--divisor', type=float, default=None, help='price points per unit for instruments not in POINT_DIVISOR')
     args = ap.parse_args()
     if args.base_url:
         _set_base_url(args.base_url)
 
     inst = args.instrument
+    if args.divisor:
+        POINT_DIVISOR[inst] = args.divisor
     divisor = POINT_DIVISOR.get(inst, 1000.0)
     cache_dir = os.path.join(DATA_DIR, 'dukascopy_cache', inst)
     os.makedirs(cache_dir, exist_ok=True)
