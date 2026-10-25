@@ -2970,11 +2970,170 @@
         }
       },
       "decision": "no pasa (CAGR común 21,9%, DSR 0,66/0,95)"
+    },
+    {
+      "id": "R50_F1G_G1",
+      "hypothesis": "Efecto cambio de mes (días -1..+3) en 8 índices/ETF de acciones",
+      "harness": "research_scripts/r50_f1g.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1G_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1g",
+      "date_utc": "2026-10-25",
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "sharpe": -0.1432324714808375,
+          "cagr": -0.011422139573461387,
+          "max_dd": -0.132630642863808,
+          "quarters_pos": 0.5,
+          "halves": {
+            "h2": -0.013293725429923402
+          },
+          "top5_share": null,
+          "trades_per_year": 93.55042016806723,
+          "corr_p1": 0.14683638204880292,
+          "corr_p1_losing_quarters": 0.18388260531079767
+        },
+        "long": {
+          "from": "2001-01-12",
+          "sharpe": 0.11037099239007196,
+          "cagr": 0.0051796372165682225,
+          "max_dd": -0.2906292192911142,
+          "quarters_pos": 0.53,
+          "halves": {
+            "h1": 0.18596838544233246,
+            "h2": -0.03627573467395943
+          },
+          "top5_share": 0.31463098285548624,
+          "trades_per_year": 83.48574561403508,
+          "corr_p1": 0.09983096096352535,
+          "corr_p1_losing_quarters": 0.043321241857280965
+        }
+      },
+      "gates": {
+        "sharpe_long_ge_0_5": false,
+        "sharpe_common_ge_0_5": false,
+        "both_halves_pos": false,
+        "top5_lt_60": true,
+        "decorrelated_le_0_3": true,
+        "pass": false
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1G_G2",
+      "hypothesis": "Reversión RSI(2) solo en índices de EE.UU. (SPX, NDX, IWM, SMH)",
+      "harness": "research_scripts/r50_f1g.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1G_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1g",
+      "date_utc": "2026-10-25",
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "sharpe": 0.5452716760742061,
+          "cagr": 0.02219044515778612,
+          "max_dd": -0.0669859657330697,
+          "quarters_pos": 0.55,
+          "halves": {
+            "h2": 0.5099192517495311
+          },
+          "top5_share": 0.41416282342503624,
+          "trades_per_year": 26.83823529411765,
+          "corr_p1": 0.1537596964815111,
+          "corr_p1_losing_quarters": 0.17562834625826906
+        },
+        "long": {
+          "from": "2001-06-08",
+          "sharpe": 0.18677165061733939,
+          "cagr": 0.00793992392231857,
+          "max_dd": -0.22336188604151874,
+          "quarters_pos": 0.5151515151515151,
+          "halves": {
+            "h1": 0.4247838296690149,
+            "h2": -0.13410966014509249
+          },
+          "top5_share": 0.3797375093148798,
+          "trades_per_year": 20.29811657193804,
+          "corr_p1": 0.1169257667140302,
+          "corr_p1_losing_quarters": 0.15786203359676576
+        }
+      },
+      "gates": {
+        "sharpe_long_ge_0_5": false,
+        "sharpe_common_ge_0_5": true,
+        "both_halves_pos": false,
+        "top5_lt_60": true,
+        "decorrelated_le_0_3": true,
+        "pass": false
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1G_G3",
+      "hypothesis": "Compra tras pánico de volatilidad (vol 10 d > 2x mediana y mínimo de 20 d) en 8 índices/ETF",
+      "harness": "research_scripts/r50_f1g.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1G_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1g",
+      "date_utc": "2026-10-25",
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "sharpe": 0.38341234649349976,
+          "cagr": 0.00859027110046906,
+          "max_dd": -0.02154271968025845,
+          "quarters_pos": 0.5,
+          "halves": {
+            "h2": 0.375473617552758
+          },
+          "top5_share": 0.7577762054010363,
+          "trades_per_year": 3.6423319327731094,
+          "corr_p1": 0.0395194572017727,
+          "corr_p1_losing_quarters": 0.08707336672567279
+        },
+        "long": {
+          "from": "2001-01-12",
+          "sharpe": 0.15632746318873683,
+          "cagr": 0.005108502990546215,
+          "max_dd": -0.14252333497934933,
+          "quarters_pos": 0.38,
+          "halves": {
+            "h1": 0.1955938952302747,
+            "h2": 0.13228528840030718
+          },
+          "top5_share": 0.3526507472743356,
+          "trades_per_year": 4.522478070175438,
+          "corr_p1": 0.03600112458476493,
+          "corr_p1_losing_quarters": 0.0942063584485948
+        }
+      },
+      "gates": {
+        "sharpe_long_ge_0_5": false,
+        "sharpe_common_ge_0_5": false,
+        "both_halves_pos": true,
+        "top5_lt_60": true,
+        "decorrelated_le_0_3": true,
+        "pass": false
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1G_P5",
+      "hypothesis": "P1 + mangas G que pasen",
+      "components": [
+        "R1",
+        "C6"
+      ],
+      "round": "r50",
+      "phase": "F1g",
+      "date_utc": "2026-10-25",
+      "decision": "igual a P1 (ninguna G pasa)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 94,
+    "declared": 98,
     "sensitivity": [
       20,
       200
@@ -2989,7 +3148,8 @@
     "r50_f2_note": "+1 por la construcción y la regla de inclusión de F2 (2026-10-25).",
     "r50_f1d_note": "+9 por F1d (2026-10-25). PBO 0,28 sobre 20 canastas 2011–25; N efectivo estimado ~57 por correlación media 0,37.",
     "r50_f1e_note": "+2 por K1r y P3 (2026-10-25).",
-    "r50_f1f_note": "+2 por R1 amplio y P4 (2026-10-25)."
+    "r50_f1f_note": "+2 por R1 amplio y P4 (2026-10-25).",
+    "r50_f1g_note": "+4 por G1, G2, G3 y P5 (2026-10-25)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
