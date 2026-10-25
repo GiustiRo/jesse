@@ -1459,11 +1459,470 @@
         "pass": true
       },
       "decision": "pasa"
+    },
+    {
+      "id": "R50_F1C_C0",
+      "hypothesis": "Cartera por clase: cripto R2+R3, SPX R1+M2a, oro R1, WTI/gas N1+M2a, bono R1 (asignación informada por F1/F1b)",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 1.8198,
+          "cagr": 0.0547,
+          "max_dd": -0.0251,
+          "quarters_pos": 0.7,
+          "trades_per_year": null,
+          "top5_share": 0.3391,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "dsr": 0.9519,
+          "r1_same_assets": {
+            "sharpe": 0.9890073363755796,
+            "quarters_pos": 0.55
+          },
+          "corr_r1_losing_quarters": 0.6693
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 1.068,
+          "cagr": 0.0525,
+          "max_dd": -0.126,
+          "quarters_pos": 0.6885,
+          "trades_per_year": null,
+          "top5_share": 0.2697,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "dsr": 0.9513,
+          "r1_same_assets": {
+            "sharpe": 0.8989335236129651,
+            "quarters_pos": 0.5409836065573771
+          },
+          "corr_r1_losing_quarters": 0.7827
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": true,
+        "sharpe_gt_r1": true,
+        "q_ge_r1": true,
+        "long_veto": false,
+        "pass": true
+      },
+      "decision": "pasa",
+      "selection_note": "Asignación elegida mirando F1/F1b: in-sample en el núcleo; prueba honesta en F3."
+    },
+    {
+      "id": "R50_F1C_C1",
+      "hypothesis": "Momentum diario cripto: largo si retorno 7 d > 0",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 0.6196,
+          "cagr": 0.0686,
+          "max_dd": -0.1525,
+          "quarters_pos": 0.55,
+          "trades_per_year": 67.1632,
+          "top5_share": 1.0334,
+          "members": [
+            "BTC",
+            "ETH"
+          ],
+          "dsr": 0.1402,
+          "r1_same_assets": {
+            "sharpe": 0.6109114105418882,
+            "quarters_pos": 0.45
+          },
+          "corr_r1_losing_quarters": 0.5735
+        },
+        "long": {
+          "from": "2018-05-04",
+          "to": "2025-12-31",
+          "sharpe": 1.1107,
+          "cagr": 0.1405,
+          "max_dd": -0.1431,
+          "quarters_pos": 0.5161,
+          "trades_per_year": 65.7235,
+          "top5_share": 0.5547,
+          "members": [
+            "BTC",
+            "ETH"
+          ],
+          "dsr": 0.7421,
+          "r1_same_assets": {
+            "sharpe": 1.154750196141993,
+            "quarters_pos": 0.4838709677419355
+          },
+          "corr_r1_losing_quarters": 0.5454
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": false,
+        "sharpe_ge_0_8": false,
+        "beats_r1_same_assets": true,
+        "long_veto": false,
+        "pass": false
+      },
+      "decision": "no pasa",
+      "selection_note": null
+    },
+    {
+      "id": "R50_F1C_C2",
+      "hypothesis": "Momentum 12-1 mensual en los 7 activos",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 0.8115,
+          "cagr": 0.0519,
+          "max_dd": -0.093,
+          "quarters_pos": 0.5,
+          "trades_per_year": 4.1977,
+          "top5_share": 3.9195,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "dsr": 0.2614,
+          "r1_same_assets": {
+            "sharpe": 0.9890073363755796,
+            "quarters_pos": 0.55
+          },
+          "corr_r1_losing_quarters": 0.7045
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 0.5392,
+          "cagr": 0.0425,
+          "max_dd": -0.2092,
+          "quarters_pos": 0.541,
+          "trades_per_year": 3.9733,
+          "top5_share": 0.9347,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "dsr": 0.3602,
+          "r1_same_assets": {
+            "sharpe": 0.8989335236129651,
+            "quarters_pos": 0.5409836065573771
+          },
+          "corr_r1_losing_quarters": 0.5784
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": false,
+        "sharpe_ge_0_8": true,
+        "beats_r1_same_assets": false,
+        "long_veto": false,
+        "pass": false
+      },
+      "decision": "no pasa",
+      "selection_note": null
+    },
+    {
+      "id": "R50_F1C_C3",
+      "hypothesis": "Comprar y mantener con tamaño por vol en SPX y oro",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 1.3996,
+          "cagr": 0.2212,
+          "max_dd": -0.1895,
+          "quarters_pos": 0.8,
+          "trades_per_year": 0.3998,
+          "top5_share": 1.0,
+          "members": [
+            "SPX",
+            "XAU"
+          ],
+          "dsr": 0.7521,
+          "r1_same_assets": {
+            "sharpe": 1.4039971046304935,
+            "quarters_pos": 0.75
+          },
+          "corr_r1_losing_quarters": 0.6963
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 0.9221,
+          "cagr": 0.1396,
+          "max_dd": -0.2757,
+          "quarters_pos": 0.6885,
+          "trades_per_year": 0.1436,
+          "top5_share": 1.0,
+          "members": [
+            "SPX",
+            "XAU"
+          ],
+          "dsr": 0.8651,
+          "r1_same_assets": {
+            "sharpe": 0.9482249051442536,
+            "quarters_pos": 0.5901639344262295
+          },
+          "corr_r1_losing_quarters": 0.6656
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": null,
+        "sharpe_ge_0_8": true,
+        "beats_r1_same_assets": true,
+        "long_veto": true,
+        "pass": false
+      },
+      "decision": "no pasa",
+      "selection_note": null
+    },
+    {
+      "id": "R50_F1C_C4",
+      "hypothesis": "Ruptura R2 en velas diarias para CFD (sin tope de stop 5,5%)",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 0.4104,
+          "cagr": 0.005,
+          "max_dd": -0.0186,
+          "quarters_pos": 0.45,
+          "trades_per_year": 7.5958,
+          "top5_share": 1.9574,
+          "members": [
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "dsr": 0.0639,
+          "r1_same_assets": {
+            "sharpe": 0.8935939244092898,
+            "quarters_pos": 0.6
+          },
+          "corr_r1_losing_quarters": 0.5213
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 0.1734,
+          "cagr": 0.0028,
+          "max_dd": -0.0883,
+          "quarters_pos": 0.3279,
+          "trades_per_year": 6.4229,
+          "top5_share": 2.3786,
+          "members": [
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "dsr": 0.0379,
+          "r1_same_assets": {
+            "sharpe": 0.7167577344762978,
+            "quarters_pos": 0.5901639344262295
+          },
+          "corr_r1_losing_quarters": 0.4865
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": false,
+        "sharpe_ge_0_8": false,
+        "beats_r1_same_assets": false,
+        "long_veto": false,
+        "pass": false
+      },
+      "decision": "no pasa",
+      "selection_note": null
+    },
+    {
+      "id": "R50_F1C_C5",
+      "hypothesis": "Tendencia diaria (ensamble >=50%) con entrada en retroceso RSI(2) de 4h",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 0.7768,
+          "cagr": 0.076,
+          "max_dd": -0.1588,
+          "quarters_pos": 0.6,
+          "trades_per_year": 25.7859,
+          "top5_share": 1.022,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "dsr": 0.2383,
+          "r1_same_assets": {
+            "sharpe": 0.9890073363755796,
+            "quarters_pos": 0.55
+          },
+          "corr_r1_losing_quarters": 0.86
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 0.6301,
+          "cagr": 0.0647,
+          "max_dd": -0.2196,
+          "quarters_pos": 0.5902,
+          "trades_per_year": 22.1781,
+          "top5_share": 0.8306,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "dsr": 0.4961,
+          "r1_same_assets": {
+            "sharpe": 0.8989335236129651,
+            "quarters_pos": 0.5409836065573771
+          },
+          "corr_r1_losing_quarters": 0.834
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": false,
+        "sharpe_ge_0_8": false,
+        "beats_r1_same_assets": true,
+        "long_veto": false,
+        "pass": false
+      },
+      "decision": "no pasa",
+      "selection_note": null
+    },
+    {
+      "id": "R50_F1C_C6",
+      "hypothesis": "Ensamble 50/50 de rupturas R2+R3 en BTC y ETH",
+      "harness": "research_scripts/r50_f1c.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1c",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 1.533,
+          "cagr": 0.0862,
+          "max_dd": -0.0335,
+          "quarters_pos": 0.65,
+          "trades_per_year": null,
+          "top5_share": 0.3919,
+          "members": [
+            "BTC",
+            "ETH"
+          ],
+          "dsr": 0.8765,
+          "r1_same_assets": {
+            "sharpe": 0.6109114105418882,
+            "quarters_pos": 0.45
+          },
+          "corr_r1_losing_quarters": 0.3497
+        },
+        "long": {
+          "from": "2018-05-04",
+          "to": "2025-12-31",
+          "sharpe": 1.4657,
+          "cagr": 0.0893,
+          "max_dd": -0.0495,
+          "quarters_pos": 0.5484,
+          "trades_per_year": null,
+          "top5_share": 0.263,
+          "members": [
+            "BTC",
+            "ETH"
+          ],
+          "dsr": 0.9756,
+          "r1_same_assets": {
+            "sharpe": 1.154750196141993,
+            "quarters_pos": 0.4838709677419355
+          },
+          "corr_r1_losing_quarters": 0.335
+        }
+      },
+      "gates": {
+        "top5_lt_60pct": true,
+        "sharpe_ge_0_8": true,
+        "beats_r1_same_assets": true,
+        "long_veto": false,
+        "pass": true
+      },
+      "decision": "pasa",
+      "selection_note": null
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 73,
+    "declared": 80,
     "sensitivity": [
       20,
       200
@@ -1473,7 +1932,8 @@
     "phase2b_note": "+5 por decisiones de lado (BTC, PAXG, SPY), inclusión de ETH y construcción B1/B2 (2026-10-24).",
     "phase2c_note": "+2 por la decisión de lado de WTI y su inclusión; las corridas largas son validación (2026-10-24).",
     "r50_f1_note": "+6 por M1, M2a, M2b, M3, M3-nr y M4 (2026-10-25). Ninguna pasa F1.",
-    "r50_f1b_note": "+10 por R1–R6 y N1–N4 de F1b (2026-10-25). Solo N4 pasa."
+    "r50_f1b_note": "+10 por R1–R6 y N1–N4 de F1b (2026-10-25). Solo N4 pasa.",
+    "r50_f1c_note": "+7 por C0–C6 de F1c (2026-10-25). Pasan C0 y C6."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {

@@ -127,7 +127,9 @@ def r1_run(name, d):
     return ts, eq, acct
 
 
-def r2_r3_decider(bars, retest):
+def r2_r3_decider(bars, retest, max_stop=0.055):
+    # max_stop: Core4h's 5.5% cap on the initial stop distance (a BTC 4h calibration). F1c's
+    # daily CFD version (C4) passes None to drop it, as declared in PHASE1C_PROTOCOL.md.
     c, h, l, o = bars[:, C], bars[:, H], bars[:, L], bars[:, O]
     e20 = ta.ema(bars, period=20, sequential=True)
     e80 = ta.ema(bars, period=80, sequential=True)
@@ -173,7 +175,7 @@ def r2_r3_decider(bars, retest):
                 st['limit'] = (entry, 2 * atr[i])
         elif c[i] > hh26[i]:
             frac = max(2 * atr[i] / c[i], 0.008)
-            if frac <= 0.055:
+            if max_stop is None or frac <= max_stop:
                 open_pos(acct, i, c[i], frac * c[i], ts, TAKER)
     return decide
 
