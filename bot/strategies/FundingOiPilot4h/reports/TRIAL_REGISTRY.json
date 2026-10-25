@@ -2409,11 +2409,155 @@
       "phase": "F1d",
       "date_utc": "2026-10-25",
       "decision": "igual a P1 (X1 no mejora)"
+    },
+    {
+      "id": "R50_F1E_K1r",
+      "hypothesis": "Carry de funding BTC/ETH con perp 2x aislado, re-hedge a +40%, fee spot 0,10%, slippage 2 bp",
+      "harness": "research_scripts/r50_f1e.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1E_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F1e",
+      "date_utc": "2026-10-25",
+      "metrics": {
+        "from": "2020-02-15",
+        "sharpe": 8.240778980099462,
+        "cagr": 0.07926888253620246,
+        "max_dd": -0.003843405513076825,
+        "months_pos": 0.8450704225352113,
+        "quarters_pos": 0.9166666666666666,
+        "worst_30d": -0.0032292006713832144,
+        "halves": {
+          "h1": 8.363197810759006,
+          "h2": 10.651262756227583
+        },
+        "by_year": {
+          "2020": 0.0724,
+          "2021": 0.2434,
+          "2022": 0.0036,
+          "2023": 0.0494,
+          "2024": 0.0814,
+          "2025": 0.0313
+        }
+      },
+      "stress_funding_x0_5": {
+        "sharpe": 5.07899530106858,
+        "cagr": 0.03028937160000833,
+        "max_dd": -0.0033978449107820996,
+        "months_pos": 0.6197183098591549
+      },
+      "stats": {
+        "BTC": {
+          "funding_total": 5834.361859116979,
+          "fees_total": 540.9410190305315,
+          "rehedges": 10,
+          "days_in_position": 1705,
+          "days_total": 2147,
+          "audit_funding_direct": 5834.361859116966,
+          "audit_rel_diff": 2.182402485873259e-15
+        },
+        "ETH": {
+          "funding_total": 6414.829283032961,
+          "fees_total": 411.65353529623417,
+          "rehedges": 8,
+          "days_in_position": 1562,
+          "days_total": 1965,
+          "audit_funding_direct": 6414.82928303295,
+          "audit_rel_diff": 1.7013603854029608e-15
+        }
+      },
+      "gates": {
+        "sharpe_ge_1": true,
+        "months_pos_ge_70": true,
+        "dd_le_10": true,
+        "both_halves_pos": true,
+        "funding_half_sharpe_ge_0_5": true,
+        "worst_30d_ge_m5": true,
+        "audit_ok": true,
+        "pass": true
+      },
+      "decision": "pasa"
+    },
+    {
+      "id": "R50_F1E_P3",
+      "hypothesis": "Cartera R1 + C6 + K1r, construcción F2, k<=8, carry k<=1,5",
+      "round": "r50",
+      "phase": "F1e",
+      "date_utc": "2026-10-25",
+      "metrics": {
+        "common": {
+          "from": "2021-02-28",
+          "cagr": 0.2385422344045134,
+          "max_dd": -0.09098848383821401,
+          "sharpe": 2.025981532019251,
+          "pf_trades": 3.6185612158712726,
+          "months_pos": 0.5932203389830508,
+          "quarters_pos": 0.7,
+          "median_month": 0.0026853988830171094,
+          "dsr": 0.9830143626978933,
+          "k_mean": 7.9304311524915,
+          "weights_last": {
+            "R1": 0.13760664636462583,
+            "C6": 0.12631686173987433,
+            "K1r": 0.7360764918954997
+          },
+          "gates_r50": {
+            "cagr_ge_30": false,
+            "dd_le_20": true,
+            "pf_ge_1_2": true,
+            "median_month_pos": true,
+            "positive_without_best2": true,
+            "dsr_ge_0_95": true
+          },
+          "pass_r50": false,
+          "by_year": {
+            "2021": 0.5032,
+            "2022": -0.0324,
+            "2023": 0.3234,
+            "2024": 0.3536,
+            "2025": 0.0812
+          }
+        },
+        "long": {
+          "from": "2020-06-30",
+          "cagr": 0.3206966229853907,
+          "max_dd": -0.07167386505048001,
+          "sharpe": 2.683092457178439,
+          "pf_trades": 3.895246532396898,
+          "months_pos": 0.6268656716417911,
+          "quarters_pos": 0.7391304347826086,
+          "median_month": 0.0069667228662826375,
+          "dsr": 0.9999856994847882,
+          "k_mean": 8.0,
+          "weights_last": {
+            "R1": 0.11631282806406577,
+            "C6": 0.12600125138831872,
+            "K1r": 0.7576859205476155
+          },
+          "gates_r50": {
+            "cagr_ge_30": true,
+            "dd_le_20": true,
+            "pf_ge_1_2": true,
+            "median_month_pos": true,
+            "positive_without_best2": true,
+            "dsr_ge_0_95": true
+          },
+          "pass_r50": true,
+          "by_year": {
+            "2020": 0.2267,
+            "2021": 0.8165,
+            "2022": -0.009,
+            "2023": 0.3239,
+            "2024": 0.4269,
+            "2025": 0.1091
+          }
+        }
+      },
+      "decision": "no pasa: solo falla CAGR en la ventana común (23,9%); k pegado al techo 8"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 90,
+    "declared": 92,
     "sensitivity": [
       20,
       200
@@ -2426,7 +2570,8 @@
     "r50_f1b_note": "+10 por R1–R6 y N1–N4 de F1b (2026-10-25). Solo N4 pasa.",
     "r50_f1c_note": "+7 por C0–C6 de F1c (2026-10-25). Pasan C0 y C6.",
     "r50_f2_note": "+1 por la construcción y la regla de inclusión de F2 (2026-10-25).",
-    "r50_f1d_note": "+9 por F1d (2026-10-25). PBO 0,28 sobre 20 canastas 2011–25; N efectivo estimado ~57 por correlación media 0,37."
+    "r50_f1d_note": "+9 por F1d (2026-10-25). PBO 0,28 sobre 20 canastas 2011–25; N efectivo estimado ~57 por correlación media 0,37.",
+    "r50_f1e_note": "+2 por K1r y P3 (2026-10-25)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
