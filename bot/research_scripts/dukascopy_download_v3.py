@@ -46,6 +46,10 @@ POINT_DIVISOR = {'USA500IDXUSD': 1000.0, 'XAUUSD': 1000.0, 'LIGHTCMDUSD': 1000.0
 # a ~1,600-file run reliable without hammering the free service.
 REQUEST_DELAY_S = 0.35
 MAX_RETRIES = 8
+# Days whose invalid records (non-positive price, etc.) may be dropped instead of failing the
+# run, set by --drop-bad-records-on after manual review (r50: USTBOND 2018-03-13).
+DROP_BAD_RECORD_DAYS: set = set()
+DROPPED: dict = {}
 
 
 def _url(inst: str, d: date) -> str:
@@ -109,6 +113,13 @@ def _decode(raw: bytes, d: date, divisor: float) -> np.ndarray:
         rec['o'] / divisor, rec['h'] / divisor, rec['l'] / divisor, rec['c'] / divisor,
         rec['v'].astype(np.float64),
     ])
+    bad = ~np.isfinite(out).all(axis=1) | (out[:, 1:5] <= 0).any(axis=1) | (out[:, 5] < 0)
+    if bad.any() and d.isoformat() in DROP_BAD_RECORD_DAYS:
+        # Only days named on the command line after review; every dropped record is logged
+        # into the manifest. All other days keep the strict all-or-nothing rejection.
+        DROPPED.setdefault(d.isoformat(), [
+            {'timestamp_ms': int(r[0]), 'ohlcv': [float(x) for x in r[1:]]} for r in out[bad]])
+        out, rec = out[~bad], rec[~bad]
     if not np.isfinite(out).all() or (out[:, 1:5] <= 0).any() or (out[:, 5] < 0).any():
         raise ValueError(f'non-finite, non-positive price or negative tick volume on {d}')
     if (rec['t'] >= 86400).any() or (rec['t'] % 60 != 0).any() or (np.diff(out[:, 0]) <= 0).any():
@@ -131,9 +142,11 @@ def main() -> None:
     # r50: instruments outside POINT_DIVISOR (gas, bond, copper...) quote with other point
     # sizes; the probe output is checked against known price levels before a full download.
     ap.add_argument('--divisor', type=float, default=None, help='price points per unit for instruments not in POINT_DIVISOR')
+    ap.add_argument('--drop-bad-records-on', default='', help='comma-separated YYYY-MM-DD days whose invalid records are dropped and logged')
     args = ap.parse_args()
     if args.base_url:
         _set_base_url(args.base_url)
+    DROP_BAD_RECORD_DAYS.update(x for x in args.drop_bad_records_on.split(',') if x)
 
     inst = args.instrument
     if args.divisor:
@@ -177,6 +190,10 @@ def main() -> None:
     # Only a completed download receives its final CSV name. A failed run leaves
     # a visibly partial artifact and reusable per-day cache, never an import-ready CSV.
     os.replace(partial, out)
+    manifest['excluded_records'] = {
+        'policy': 'records with non-finite or non-positive prices or negative volume, only on days '
+                  'listed in --drop-bad-records-on after manual review',
+        'days_allowed': sorted(DROP_BAD_RECORD_DAYS), 'dropped': DROPPED}
     with open(out + '.manifest.json', 'w') as fh:
         json.dump(manifest, fh, indent=2)
     jh.debug(f'wrote {total_rows} rows to {out}; review weekday gaps in manifest before import')

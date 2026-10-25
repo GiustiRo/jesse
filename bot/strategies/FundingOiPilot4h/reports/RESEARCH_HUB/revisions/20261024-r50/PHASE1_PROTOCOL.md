@@ -10,7 +10,7 @@ Fecha: 2026-10-25. Este archivo se commitea **antes** de correr cualquier screen
 - Velas diarias UTC armadas con el arnés `r50_harness.py` desde las velas de 1m guardadas en Jesse, con la agregación propia de Jesse (`generate_completed_candles_from_observed_minutes`).
 - En los CFD (oro, SPX, WTI, gas y bono), los minutos de sábado y domingo UTC se suman a la vela del lunes. Así la reapertura del domingo no forma una vela corta propia.
 - Nada posterior al 2025-12-31: el arnés lo rechaza.
-- Los activos de validación (plata, Nasdaq, cobre, EWJ, EWY y platino) no se cargan en F1.
+- Los activos de validación (plata, Nasdaq, cobre, EWJ y EWY; el platino quedó excluido por datos) no se cargan en F1.
 
 **Símbolos del núcleo**
 
@@ -22,7 +22,7 @@ Fecha: 2026-10-25. Este archivo se commitea **antes** de correr cualquier screen
 | SPX | `Custom Data / SPXD-USDT` (Dukascopy) | ídem desde 2012 |
 | WTI | `Custom Data / WTI-USDT` (Dukascopy) | ídem desde 2012, sin abr–jul 2020 |
 | Gas | símbolo nuevo `Custom Data / NATGAS-USDT` (Dukascopy) | ídem desde el primer dato |
-| Bono | símbolo nuevo `Custom Data / USTBOND-USDT` (Dukascopy) | ídem desde el primer dato |
+| Bono | símbolo nuevo `Custom Data / USTBOND-USDT` (Dukascopy, desde 2018-03) | **sin lente larga** (decisión del usuario, 2026-10-25): no puede ser vetado por historia larga, y se reporta como límite |
 
 **Ventanas**
 - **Común:** 2020-10-15 → 2025-12-31. Las métricas se miden desde 2021-01-01; el tramo previo es calentamiento.
@@ -157,7 +157,7 @@ Cada variante se registra en `TRIAL_REGISTRY.json`, con métricas por activo y c
 - **bono: 15 bp;**
 - **gas natural: 5 bp;**
 - cobre (F3): 5 bp;
-- EWJ y platino (F3, por la ampliación de la validación del 2026-10-25): 10 bp;
+- EWJ (F3, por la ampliación de la validación del 2026-10-25): 10 bp;
 - resto: 0.
 
 Las entradas maker (límite) no llevan slippage.

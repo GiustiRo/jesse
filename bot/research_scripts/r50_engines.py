@@ -60,8 +60,10 @@ ASSETS = {
     'GAS': dict(common=('Custom Data', 'NATGAS-USDT'), long=('Custom Data', 'NATGAS-USDT'),
                 long_start='2010-01-01', cfd=True, m1='ls',
                 null=dict(candles_per_day=6, ann_days=252, hours=ENERGY_HOURS)),
-    'BOND': dict(common=('Custom Data', 'USTBOND-USDT'), long=('Custom Data', 'USTBOND-USDT'),
-                 long_start='2010-01-01', cfd=True, m1='ls',
+    # Dukascopy USTBOND only has data from 2018-03; by the user's decision the bond has no long
+    # lens (it cannot be vetoed by long history, reported as a limit).
+    'BOND': dict(common=('Custom Data', 'USTBOND-USDT'), long=None,
+                 long_start=None, cfd=True, m1='ls',
                  null=dict(candles_per_day=6, ann_days=252, hours=ENERGY_HOURS)),
 }
 # Extra adverse slippage per side on taker fills and stops (protocol amendment 4b, measured
@@ -420,6 +422,9 @@ def screen(names):
         rec = {}
         for window in ('common', 'long'):
             exch_sym = spec[window]
+            if exch_sym is None:
+                rec[window] = {'status': 'sin lente larga (límite declarado)'}
+                continue
             frm = COMMON[0] if window == 'common' else spec['long_start']
             to = COMMON[1]
             bars = load_daily(exch_sym[0], exch_sym[1], frm, to, spec['cfd'])
@@ -547,6 +552,8 @@ def inventory():
     rows = {}
     for name, spec in ASSETS.items():
         for window in ('common', 'long'):
+            if spec[window] is None:
+                continue
             ex, sym = spec[window]
             b = load_daily(ex, sym, '2010-01-01', COMMON[1], spec['cfd'], warmup_days=0)
             rows[f'{name} {window} {ex}/{sym}'] = ({'first': hz._date(int(b[0, T])), 'last': hz._date(int(b[-1, T])),

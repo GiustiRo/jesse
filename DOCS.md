@@ -47,10 +47,10 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
   Se mantiene la ambición r9 de cartera (abajo).
 - **Universo (10 activos operables en Binance USDT-M):**
   - núcleo de diseño: BTC, ETH, oro, SPX, WTI, gas natural y bono largo de EE.UU.;
-  - validación: plata, Nasdaq 100, cobre, EWJ, EWY y platino, que solo se usan con motores congelados en la F3. EWJ, EWY y platino se sumaron el 2026-10-25; EWJ y EWY van con datos diarios de los ETF.
+  - validación: plata, Nasdaq 100, cobre, EWJ y EWY, que solo se usan con motores congelados en la F3. EWJ y EWY se sumaron el 2026-10-25 y van con datos diarios de los ETF (Yahoo). El platino se pidió pero quedó excluido por datos.
 - **Dos lentes:**
   - la ventana común decide: 2020-10 → 2025, o 2018 → 2025 en los motores cripto con spot;
-  - la ventana larga por activo solo veta: oro, SPX, WTI y gas desde 2012; BTC/ETH spot desde 2017-08, en símbolos aparte, sin funding ni empalme.
+  - la ventana larga por activo solo veta: oro, SPX, WTI y gas desde 2012; BTC/ETH spot desde 2017-08, en símbolos aparte, sin funding ni empalme. El bono no tiene lente larga (Dukascopy desde 2018-03, decisión del usuario).
 - **2026 reservado por definición:** ningún dato posterior al 2025-12-31 se mira ni se usa hasta que el usuario lo apruebe.
 - **Iteración:** con `bot/research_scripts/r50_harness.py`, validado contra Jesse. Jesse se usa para confirmar en la F4, con ≤10 corridas.
 - **Scripts:** el usuario autorizó scripts en `research_scripts/`, las descargas de los 10 activos y el push de la rama para r50.
