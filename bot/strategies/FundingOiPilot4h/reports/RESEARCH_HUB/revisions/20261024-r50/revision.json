@@ -1,11 +1,11 @@
 {
   "format_version": 1,
   "id": "20261024-r50",
-  "updated_at_utc": "2026-10-25 19:30:00 UTC",
+  "updated_at_utc": "2026-10-25 20:15:00 UTC",
   "objective": "Varios motores con perfiles distintos (tendencia v2, reversión de corto plazo, corto con régimen, valor relativo ETH/BTC) sobre un núcleo de 7 activos operables en Binance USDT-M, validados con motores congelados en 3 activos no vistos. Se mantiene la ambición r9 de cartera (CAGR 30%, DD 20%, M65, Q80) y se reporta en cada fase qué tan lejos queda.",
-  "latest": "Corrección de alcance: P3 usa spot (carry K1r) y queda fuera. Candidata operable: P1 = R1 + C6 (2018-09+ pasa todo; 2021–25 CAGR 24,6%, DSR 0,76). N=92.",
-  "next": "Decisión del usuario: confirmar P1, explorar más diversificadores solo-futuros, o cerrar r50.",
-  "blockers": "Decisión del usuario tras F1e.",
+  "latest": "F1f (solo futuros): R1 sobre 21–22 perpetuos operables diluye (Sharpe 0,64 común, 0,46 desde 2001); P4 = R1 amplio + C6 no pasa (común 21,9% / DSR 0,66). Mejor operable: P1 = R1 núcleo + C6 (2018+ pasa; 2021–25 no). El motor fuerte es cripto (C6). N=94.",
+  "next": "Decisión del usuario: confirmar P1, foco cripto (rupturas en más perpetuos), o cerrar r50.",
+  "blockers": "Decisión del usuario tras F1f.",
   "counts": {
     "r50": {
       "n_declared_start": 57,
@@ -24,10 +24,13 @@
       "phase1d_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1D_RESULTS_20261025.md",
       "n_declared_after_f1d": 90,
       "phase1e_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1E_RESULTS_20261025.md",
-      "n_declared_after_f1e": 92
+      "n_declared_after_f1e": 92,
+      "phase1f_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1F_RESULTS_20261025.md",
+      "n_declared_after_f1f": 94
     }
   },
   "decisions": [
+    "2026-10-25 r50 F1f: ampliar la tendencia a todo el universo TradFi operable no mejora; la ventaja fuerte está en cripto.",
     "2026-10-25 r50: toda la operativa debe funcionar en futuros USDT-M de Binance (usuario). Spot solo como proxy de datos. K1/K1r y P3 quedan fuera de alcance; la candidata operable es P1 = R1 + C6.",
     "2026-10-25 r50 F1e: K1r pasa compuertas de carry; P3 queda a un paso (CAGR común 23,9% por techo de apalancamiento). No se avanza a confirmación sin decisión del usuario.",
     "2026-10-25 r50 F1d: M65/Q80 pasan a seguimiento y 2026 autorizado solo para confirmar R1/R2/R3 (usuario). La cartera R1+C6 no pasa en la ventana común; no se avanza a confirmación.",
@@ -107,6 +110,13 @@
       "state": "completada: K1r pasa; P3 falla solo CAGR común (24%)",
       "depends": "F1d y aprobación del usuario",
       "gate": "PHASE1E_PROTOCOL.md"
+    },
+    {
+      "order": 2.8,
+      "title": "F1f repaso en futuros y universo amplio",
+      "state": "completada: no mejora",
+      "depends": "F1e",
+      "gate": "PHASE1F_PROTOCOL.md"
     },
     {
       "order": 3,
@@ -211,11 +221,19 @@
     {
       "label": "r50 F1e: resultados",
       "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1E_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1f: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1F_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1f: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1F_RESULTS_20261025.md"
     }
   ],
   "current_stage": {
     "stage": "r50_multimotor",
-    "execution_status": "f1e_closed_awaiting_user",
+    "execution_status": "f1f_closed_awaiting_user",
     "current_focus": "Infraestructura: arnés validado y descargas del universo de 10 activos",
     "permitted": [
       "Scripts en research_scripts.",
