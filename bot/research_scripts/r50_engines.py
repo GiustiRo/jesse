@@ -85,7 +85,11 @@ def load_daily(exchange, symbol, start, finish, cfd, warmup_days=400):
     s_ms, f_ms = hz._ms(start) - warmup_days * DAY_MS, hz._ms(finish)
     if f_ms > hz.RESERVED_FROM_MS:
         raise ValueError('r50: data after 2025-12-31 is reserved')
-    m = hz._minutes(exchange, symbol, s_ms, f_ms)
+    return daily_from_minutes(hz._minutes(exchange, symbol, s_ms, f_ms), cfd, f_ms)
+
+
+def daily_from_minutes(m, cfd, f_ms):
+    """Aggregate 1m rows into UTC daily bars; CFD Saturday/Sunday minutes join Monday."""
     if not len(m):
         return np.zeros((0, 6))
     day = (m[:, T].astype(np.int64) // DAY_MS) * DAY_MS
@@ -211,15 +215,15 @@ def _pay(acct, fc, close_ts):
     fc[3] = i
 
 
-def simulate(bars, start_ms, decide, name=None, use_funding=False):
-    """Daily loop from the first bar opening at/after start_ms. `decide(i, acct)` places orders.
-    Returns (close_ts array, equity array, Account)."""
+def simulate(bars, start_ms, decide, name=None, use_funding=False, tf_ms=DAY_MS):
+    """Bar loop (daily by default) from the first bar opening at/after start_ms.
+    `decide(i, acct, close_ts)` places orders. Returns (close_ts array, equity array, Account)."""
     acct = Account(BALANCE, TAKER, LEVERAGE, SLIP_BPS.get(name, 0.0))
     k0 = int(np.searchsorted(bars[:, T], start_ms, side='left'))
     fc = _funding_cursor(name, bars[k0:]) if use_funding and k0 < len(bars) else None
     ts_out, eq_out = [], []
     for i in range(k0, len(bars)):
-        close_ts = int(bars[i, T]) + DAY_MS
+        close_ts = int(bars[i, T]) + tf_ms
         _pay(acct, fc, close_ts)
         decide(i, acct, close_ts)
         ts_out.append(close_ts)
