@@ -85,6 +85,18 @@ Una manga entra **solo si pasa la ventana común y no falla en la larga**. BTC n
 | Plata | XAGUSDT (133 M) | metales preciosos | Dukascopy XAGUSD 2010+ |
 | Nasdaq 100 | QQQUSDT (39 M) | otro índice de acciones | Dukascopy USATECH 2012+ |
 | Cobre | COPPERUSDT (2,8 M) | metal industrial, ligado al ciclo | Dukascopy COPPER (CFD) |
+| Japón | EWJUSDT (perp desde 2026-03) | acciones de Japón, con exposición al yen | ETF EWJ diario (Stooq/Yahoo, ~2000+) |
+| Corea | EWYUSDT (perp desde 2026-03) | acciones de Corea, muy cargado en semiconductores | ETF EWY diario (Stooq/Yahoo, ~2000+) |
+| Platino | XPTUSDT | metal precioso e industrial | Dukascopy XPTUSD 1m si existe; si no, diario |
+
+*Ampliación del 2026-10-25, pedida por el usuario:* la validación pasa de 3 a 6 activos con EWJ, EWY y platino, sin tocar el núcleo.
+- Las reglas son las mismas: no se usan para diseñar ni calibrar, solo entran en la F3 con los motores congelados y sus datos llegan hasta 2025-12-31.
+- EWJ y EWY se evalúan con velas diarias de los ETF. Sus perpetuos existen recién desde 2026-03, así que no hay confirmación posible en Jesse con 1m; queda declarado.
+- Liquidez medida en Binance (spread / profundidad a ±0,2%):
+  - EWY: 0,7 bp / 475k;
+  - EWJ: 2,1 bp / 27k;
+  - XPT: 0,1 bp / ~38k.
+- Slippage extra en F3: 10 bp por lado en EWJ y XPT.
 
 Todos los activos del universo deben ser operables con la integración actual de Binance USDT-M. No hay FX operable salvo `USDBRLUSDT` (0,5 M/día), así que FX queda fuera.
 

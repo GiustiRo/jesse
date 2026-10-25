@@ -130,6 +130,7 @@ class Account:
             self.entry = (self.entry * self.qty + px * dqty) / new
             self.qty = new
             return
+        side = float(np.sign(self.qty))
         close = min(abs(dqty), abs(self.qty)) * np.sign(dqty)
         realized = -close * (px - self.entry)
         self.balance += realized
@@ -138,7 +139,7 @@ class Account:
         rest = dqty - close
         if not self.is_open:
             self.qty, self.entry = 0.0, 0.0
-            self.trades.append({'opened': self._trade_open_ts, 'closed': ts, 'pnl': self._trade_pnl})
+            self.trades.append({'opened': self._trade_open_ts, 'closed': ts, 'pnl': self._trade_pnl, 'side': side})
             self._trade_pnl = 0.0
             if abs(rest) > 1e-12:  # flip
                 self.trade(rest, price, ts, slippage)

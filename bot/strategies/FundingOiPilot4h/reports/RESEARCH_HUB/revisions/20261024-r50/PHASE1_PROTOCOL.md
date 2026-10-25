@@ -10,7 +10,7 @@ Fecha: 2026-10-25. Este archivo se commitea **antes** de correr cualquier screen
 - Velas diarias UTC armadas con el arnés `r50_harness.py` desde las velas de 1m guardadas en Jesse, con la agregación propia de Jesse (`generate_completed_candles_from_observed_minutes`).
 - En los CFD (oro, SPX, WTI, gas y bono), los minutos de sábado y domingo UTC se suman a la vela del lunes. Así la reapertura del domingo no forma una vela corta propia.
 - Nada posterior al 2025-12-31: el arnés lo rechaza.
-- Plata, Nasdaq y cobre no se cargan en F1.
+- Los activos de validación (plata, Nasdaq, cobre, EWJ, EWY y platino) no se cargan en F1.
 
 **Símbolos del núcleo**
 
@@ -146,6 +146,26 @@ Variantes nuevas: M1, M2a, M2b, M3, M3-nr y M4. Son +6.
 **N declarado para F1: 63** (57 + 6). Los activos que llegan tarde (gas y bono) se evalúan con las mismas reglas y no suman variantes.
 
 Cada variante se registra en `TRIAL_REGISTRY.json`, con métricas por activo y canasta en las dos ventanas.
+
+## 4b. Enmienda de costes (2026-10-25, antes de cualquier resultado)
+
+**Fuente:** libro de Binance medido hoy por la sesión coordinadora.
+- La profundidad a ±0,2% es de 3–6 k en TMFUSDT/TBTUSDT y de 0,09–0,14 M en NATGASUSDT.
+- Spreads: 3,4 / 7,7 bp en TMF/TBT y 3,3 bp en gas.
+
+**Cambio:** se suma un slippage adverso por lado a cada fill taker y a cada stop, además de las fees:
+- **bono: 15 bp;**
+- **gas natural: 5 bp;**
+- cobre (F3): 5 bp;
+- EWJ y platino (F3, por la ampliación de la validación del 2026-10-25): 10 bp;
+- resto: 0.
+
+Las entradas maker (límite) no llevan slippage.
+
+**Bono:**
+- Las señales se calculan sobre el Tesoro largo subyacente.
+- La ejecución real sería con TMF (3x largo) o TBT (2x corto), que tienen decaimiento por apalancamiento diario. El decaimiento no se modela en F1 y queda declarado como sesgo a favor.
+- La operabilidad con tamaño mayor a una cuenta chica sigue pendiente de verificar.
 
 ## 5. Salida de F1
 - Un informe corto con la tabla motor × activo y las puertas, para el usuario.

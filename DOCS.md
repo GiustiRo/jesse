@@ -47,7 +47,7 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
   Se mantiene la ambición r9 de cartera (abajo).
 - **Universo (10 activos operables en Binance USDT-M):**
   - núcleo de diseño: BTC, ETH, oro, SPX, WTI, gas natural y bono largo de EE.UU.;
-  - validación: plata, Nasdaq 100 y cobre, que solo se usan con motores congelados en la F3.
+  - validación: plata, Nasdaq 100, cobre, EWJ, EWY y platino, que solo se usan con motores congelados en la F3. EWJ, EWY y platino se sumaron el 2026-10-25; EWJ y EWY van con datos diarios de los ETF.
 - **Dos lentes:**
   - la ventana común decide: 2020-10 → 2025, o 2018 → 2025 en los motores cripto con spot;
   - la ventana larga por activo solo veta: oro, SPX, WTI y gas desde 2012; BTC/ETH spot desde 2017-08, en símbolos aparte, sin funding ni empalme.
