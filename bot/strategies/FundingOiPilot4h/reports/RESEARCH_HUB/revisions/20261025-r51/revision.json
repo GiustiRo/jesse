@@ -1,0 +1,122 @@
+{
+  "format_version": 1,
+  "id": "20261025-r51",
+  "updated_at_utc": "2026-10-25 23:59:00 UTC",
+  "objective": "Cortos como prioridad, reglas propias para bono y WTI y pronósticos continuos transversales, sobre la base P1 (R1 + C6) confirmada en Jesse. Metas r9 de cartera; M65/Q80 en seguimiento.",
+  "latest": "r51 abierta: plan aprobado y protocolo preregistrado. F0 en curso.",
+  "next": "F1: confirmar P1 en Jesse (9 corridas nuevas, 1 de reserva).",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r51": {
+      "n_declared_start": 98,
+      "n_cap": 115,
+      "jesse_runs_budget": 10,
+      "jesse_runs_used": 0
+    }
+  },
+  "decisions": [
+    "2026-10-25 r51 aprobado por el usuario: cortos como prioridad central, reglas específicas para bono y WTI, SOL/XRP/BNB diferidos, paper fuera de alcance, enfoque transversal recomendado = pronósticos continuos estilo Carver; ML diferido.",
+    "2026-10-25 r51: TLT diario 2002–2025 como lente larga del bono, solo veta (usuario). La decisión sigue en 2018-03 → 2025.",
+    "2026-10-25 r51 F1: una manga por sesión Jesse (las rutas comparten billetera); R1 BTC y WTI se comparan con sesiones existentes."
+  ],
+  "supersedes": "20261024-r50",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 preparación",
+      "state": "en curso",
+      "depends": "plan aprobado",
+      "gate": "protocolo commiteado y datos descargados"
+    },
+    {
+      "order": 1,
+      "title": "F1 confirmación de P1 en Jesse",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R51.md F1"
+    },
+    {
+      "order": 2,
+      "title": "F2 diagnóstico de P1",
+      "state": "pendiente",
+      "depends": "F1",
+      "gate": "descriptivo"
+    },
+    {
+      "order": 3,
+      "title": "F3 bloque A: bono, WTI, gas",
+      "state": "pendiente",
+      "depends": "F2",
+      "gate": "PROTOCOL_R51.md F6 compuertas"
+    },
+    {
+      "order": 4,
+      "title": "F4 bloque B: cortos y valor relativo",
+      "state": "pendiente",
+      "depends": "F2",
+      "gate": "PROTOCOL_R51.md F6 compuertas"
+    },
+    {
+      "order": 5,
+      "title": "F5 pronósticos continuos",
+      "state": "pendiente",
+      "depends": "F2",
+      "gate": "PROTOCOL_R51.md F6"
+    },
+    {
+      "order": 6,
+      "title": "F6 cartera y validación",
+      "state": "pendiente",
+      "depends": "F3–F5",
+      "gate": "inclusión greedy y validación congelada"
+    },
+    {
+      "order": 7,
+      "title": "F7 cierre",
+      "state": "pendiente",
+      "depends": "F6",
+      "gate": "congelamiento"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r51: plan aprobado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md"
+    },
+    {
+      "label": "r51: protocolo preregistrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md"
+    },
+    {
+      "label": "r50: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md"
+    },
+    {
+      "label": "Registro de ensayos",
+      "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    }
+  ],
+  "current_stage": {
+    "stage": "r51_cortos",
+    "execution_status": "r51_f0",
+    "current_focus": "Preregistro y confirmación de P1 en Jesse",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Descargas de TLT, Brent y dólar (solo señal).",
+      "Push de la rama exploration/gpt-6.1-sol.",
+      "≤10 corridas Jesse en F1, máximo 2 simultáneas."
+    ],
+    "excluded": [
+      "Live/paper y la Pi.",
+      "Datos posteriores al 2025-12-31.",
+      "SOL/XRP/BNB.",
+      "ML.",
+      "Usar activos de validación para diseñar."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r51 aprobado por el usuario el 2026-10-25; reporte breve al cierre de cada fase.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "open"
+  }
+}

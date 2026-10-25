@@ -15,7 +15,8 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| **[r50 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md)** | **Plan vigente: varios motores, universo de 10 activos, dos lentes y fases F0–F5.** Ejecución según [`HANDOFF.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/HANDOFF.md). |
+| **[r51 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md)** | **Plan vigente: cortos, bono y WTI con reglas propias y pronósticos continuos sobre P1.** Reglas y puertas en [`PROTOCOL_R51.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md). |
+| [r50 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md) | Varios motores, universo de 10 activos, dos lentes; cerrada con P1 ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)). |
 | [r49 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PLAN.md) | Puertas, riesgo y costes heredados por r50; r49 cerrada sin candidata ([cierre](bot/strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md)). |
 | [`r50_harness.py`](bot/research_scripts/r50_harness.py) | Arnés de investigación r50 (barras, cuenta, métricas); `repro` lo valida contra las sesiones Jesse de r49. |
 | [r49 `HISTORY_SUMMARY.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/HISTORY_SUMMARY.md) | Todo lo ejecutado hasta r48 en una página. Leerlo antes de proponer un experimento. |
@@ -34,7 +35,16 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r50, 2026-10-24)
+## Decisiones vigentes (r51, 2026-10-25)
+
+- **r51 abierta (2026-10-25):** plan aprobado por el usuario.
+  - Cortos como prioridad central y reglas propias para bono, WTI y gas.
+  - Pronósticos continuos estilo Carver como enfoque transversal; ML diferido.
+  - SOL/XRP/BNB diferidos a r52; paper fuera de alcance; 2026 sigue reservado.
+  - TLT diario 2002–2025 como lente larga del bono que solo veta.
+  - Primero se confirma P1 en Jesse (≤10 corridas). N parte de 98, techo 115.
+
+## Decisiones r50 (2026-10-24)
 
 - **r50 cerrada (2026-10-25)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)): candidata P1 = R1 (ensamble Donchian en los 7 activos del núcleo) + C6 (rupturas cripto R2+R3 en BTC/ETH), 100% futuros USDT-M, congelada en `5caf4a53`. Cumple 6/8 metas r9 en 2018–25 y 3/8 en 2021–25; nunca alcanza M65/Q80. Pendientes para r51: F4 en Jesse, validación independiente con activos operables nuevos (SOL, XRP, BNB, DOGE) y 2026, y la decisión sobre bono y WTI. La reversión de corto plazo no generaliza; el carry de funding queda fuera (usa spot).
 
