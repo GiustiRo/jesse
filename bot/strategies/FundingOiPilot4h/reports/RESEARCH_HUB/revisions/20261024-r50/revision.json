@@ -1,11 +1,11 @@
 {
   "format_version": 1,
   "id": "20261024-r50",
-  "updated_at_utc": "2026-10-25 02:00:00 UTC",
+  "updated_at_utc": "2026-10-25 04:20:00 UTC",
   "objective": "Varios motores con perfiles distintos (tendencia v2, reversión de corto plazo, corto con régimen, valor relativo ETH/BTC) sobre un núcleo de 7 activos operables en Binance USDT-M, validados con motores congelados en 3 activos no vistos. Se mantiene la ambición r9 de cartera (CAGR 30%, DD 20%, M65, Q80) y se reporta en cada fase qué tan lejos queda.",
-  "latest": "F0 en curso: arnés r50_harness.py reproduce las sesiones r49 (BTC y PAXG exactos a nivel de orden; SPY máx. 0,43%). Descargas en background: BTC spot, gas natural y bono largo EE.UU.",
-  "next": "Cerrar F0 con el inventario de los 10 activos; luego F1: protocolo de screening M1–M4 commiteado antes de mirar resultados.",
-  "blockers": "Ninguno técnico. Cobertura de gas y bono en Dukascopy por confirmar (no hay datos en 2015 para el bono).",
+  "latest": "F0 cerrada: arnés validado contra Jesse (BTC y PAXG exactos a nivel de orden; SPY máx. 0,43%); núcleo de 7 cargado (bono 2018+ sin lente larga); validación de 5 activos (platino excluido por datos).",
+  "next": "F1: screening de M1–M4 con PHASE1_PROTOCOL.md (N=63).",
+  "blockers": "Ninguno.",
   "counts": {
     "r50": {
       "n_declared_start": 57,
@@ -15,6 +15,7 @@
     }
   },
   "decisions": [
+    "2026-10-25 r50 F0: bono solo Dukascopy 2018+, sin lente larga (decisión del usuario); platino excluido por datos; validación con plata, Nasdaq, cobre, EWJ y EWY (EWJ/EWY diarios de Yahoo); slippage extra por lado: bono 15 bp, gas/cobre 5 bp, EWJ 10 bp (enmienda 4b, antes de resultados).",
     "2026-10-24 r50 aprobado por el usuario: varios motores (M1 tendencia v2, M2 reversión de corto plazo, M3 corto con régimen, M4 valor relativo ETH/BTC; M5 funding solo como freno o filtro) sin dar ninguno por sentado.",
     "2026-10-24 r50: universo de 10 activos. Núcleo de diseño y calibración: BTC, ETH, oro, SPX, WTI, gas natural y bono largo EE.UU. Validación, solo con motores congelados en F3: plata, Nasdaq 100 y cobre.",
     "2026-10-24 r50: dos lentes. Ventana común (decide): 2020-10 → 2025, o 2018 → 2025 en motores cripto con spot. Ventana larga por activo (solo veta): oro, SPX, WTI y gas desde 2012; BTC/ETH spot desde 2017-08. Una manga entra solo si pasa la común y no falla en la larga.",
@@ -37,25 +38,83 @@
   ],
   "supersedes": "20261024-r49",
   "roadmap": [
-    {"order": 0, "title": "F0 infraestructura y datos", "state": "en curso", "depends": "MCP jesse-local", "gate": "Tabla de reproducción arnés vs Jesse (< 0,5%) e inventario de los 10 activos."},
-    {"order": 1, "title": "F1 screening de motores", "state": "pendiente", "depends": "F0 y protocolo commiteado", "gate": "Puertas de falsación por motor×activo en las dos ventanas."},
-    {"order": 2, "title": "F2 combinación", "state": "pendiente", "depends": "F1 reportada al usuario", "gate": "Puertas r9 y DSR de cartera en las dos ventanas."},
-    {"order": 3, "title": "F3 validación en plata, Nasdaq y cobre", "state": "pendiente", "depends": "F2, motores congelados", "gate": "Sharpe > 0 en la mayoría de motor×activo, sin derrumbes."},
-    {"order": 4, "title": "F4 confirmación en Jesse", "state": "pendiente", "depends": "F3", "gate": "Arnés y Jesse coinciden por manga (≤10 corridas)."},
-    {"order": 5, "title": "F5 freno y congelamiento", "state": "pendiente", "depends": "F4", "gate": "Código, parámetros y pesos congelados; 2026 o paper los decide el usuario."}
+    {
+      "order": 0,
+      "title": "F0 infraestructura y datos",
+      "state": "completada",
+      "depends": "MCP jesse-local",
+      "gate": "Tabla de reproducción arnés vs Jesse (< 0,5%) e inventario de los 10 activos."
+    },
+    {
+      "order": 1,
+      "title": "F1 screening de motores",
+      "state": "pendiente",
+      "depends": "F0 y protocolo commiteado",
+      "gate": "Puertas de falsación por motor×activo en las dos ventanas."
+    },
+    {
+      "order": 2,
+      "title": "F2 combinación",
+      "state": "pendiente",
+      "depends": "F1 reportada al usuario",
+      "gate": "Puertas r9 y DSR de cartera en las dos ventanas."
+    },
+    {
+      "order": 3,
+      "title": "F3 validación en plata, Nasdaq y cobre",
+      "state": "pendiente",
+      "depends": "F2, motores congelados",
+      "gate": "Sharpe > 0 en la mayoría de motor×activo, sin derrumbes."
+    },
+    {
+      "order": 4,
+      "title": "F4 confirmación en Jesse",
+      "state": "pendiente",
+      "depends": "F3",
+      "gate": "Arnés y Jesse coinciden por manga (≤10 corridas)."
+    },
+    {
+      "order": 5,
+      "title": "F5 freno y congelamiento",
+      "state": "pendiente",
+      "depends": "F4",
+      "gate": "Código, parámetros y pesos congelados; 2026 o paper los decide el usuario."
+    }
   ],
   "explorations": [],
   "documents": [
-    {"label": "r50: plan aprobado", "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md"},
-    {"label": "r50: handoff de ejecución", "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/HANDOFF.md"},
-    {"label": "r49: cierre", "path": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md"},
-    {"label": "Historial r1–r48 resumido", "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/HISTORY_SUMMARY.md"},
-    {"label": "Registro de ensayos", "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"},
-    {"label": "r50 F0: resultados", "path": "strategies/FundingOiPilot4h/reports/R50_PHASE0_RESULTS_20261025.md"}
+    {
+      "label": "r50: plan aprobado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md"
+    },
+    {
+      "label": "r50: handoff de ejecución",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/HANDOFF.md"
+    },
+    {
+      "label": "r49: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md"
+    },
+    {
+      "label": "Historial r1–r48 resumido",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/HISTORY_SUMMARY.md"
+    },
+    {
+      "label": "Registro de ensayos",
+      "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    },
+    {
+      "label": "r50 F0: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE0_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1: protocolo de screening (fijado antes de resultados)",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md"
+    }
   ],
   "current_stage": {
     "stage": "r50_multimotor",
-    "execution_status": "f0_in_progress",
+    "execution_status": "f0_closed_f1_next",
     "current_focus": "Infraestructura: arnés validado y descargas del universo de 10 activos",
     "permitted": [
       "Scripts en research_scripts.",
