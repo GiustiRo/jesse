@@ -82,7 +82,7 @@ Lo que sigue viene de r49 y continúa vigente salvo lo dicho arriba:
   - auditoría contable completa solo para candidatas;
   - máximo 2 backtests simultáneos.
 - **Live:** paper, live, cambios en la Pi o en la configuración global requieren autorización explícita. No ejecutar `jesse install-live` ni definir `LICENSE_API_TOKEN`: es un repo open source 100% customizable.
-- **Operativa en Binance:** perpetuos USDT-M, una sesión por cuenta (one-way netea el símbolo).
+- **Operativa en Binance:** perpetuos USDT-M, una sesión por cuenta (one-way netea el símbolo). Toda estrategia candidata debe operarse solo con futuros USDT-M; spot (por ejemplo BTC/ETH desde 2017) se usa únicamente como proxy de datos históricos, nunca como pata operada.
 - **Seguridad:** no commitear `.env`, `bot/docs/raspberry-pi.md` ni claves, y no imprimirlas.
 - **Frontend:** el que se sirve vive en `jesse/static/`. Sus módulos Nuxt distribuidos están en `_nuxt/`; las extensiones editables quedan fuera de esos bundles.
 
