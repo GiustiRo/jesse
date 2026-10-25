@@ -224,7 +224,8 @@ def test_rate_fraction_unit_and_sign_with_mock_engine():
         state = configure(dataset([(START, rate, 10_000)]))
         trade = SimpleNamespace(id='trade', funding=0)
         cash = []
-        position = SimpleNamespace(is_open=True, qty=qty, exchange=SimpleNamespace(apply_funding=cash.append))
+        position = SimpleNamespace(is_open=True, qty=qty, exchange=SimpleNamespace(
+            apply_funding=lambda amount, position: cash.append(amount)))
         fake = SimpleNamespace(positions=SimpleNamespace(get_position=lambda *args: position),
                                closed_trades=SimpleNamespace(_get_current_trade=lambda *args: trade))
         state.settle(START, fake)

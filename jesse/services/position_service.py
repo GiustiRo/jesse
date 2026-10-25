@@ -50,6 +50,7 @@ def _mutating_close(position: Position, close_price: float) -> None:
 
     # reset entry_price
     position.entry_price = None
+    position.funding_margin_drawn = 0
 
     _close(position)
 
@@ -80,6 +81,11 @@ def _mutating_reduce(position: Position, qty: float, price: float) -> None:
     elif position.type == trade_types.SHORT:
         _update_qty(position, qty, operation='add')
 
+    # Reducing releases isolated margin pro rata, including the part funding
+    # already consumed, so the liquidation price does not move.
+    if position.funding_margin_drawn and position.previous_qty:
+        position.funding_margin_drawn *= abs(position.qty) / abs(position.previous_qty)
+
 
 def _mutating_increase(position: Position, qty: float, price: float) -> None:
     if not position.is_open:
@@ -105,6 +111,7 @@ def _mutating_open(position: Position, qty: float, price: float) -> None:
 
     position.entry_price = price
     position.exit_price = None
+    position.funding_margin_drawn = 0
 
     if position._can_mutate_qty:
         _update_qty(position, qty, operation='set')

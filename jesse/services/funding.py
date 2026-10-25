@@ -399,7 +399,7 @@ class FundingState:
             if position is not None and position.is_open:
                 amount = -position.qty * event.mark_price * event.rate_decimal
                 exchange = position.exchange
-                exchange.apply_funding(amount)
+                exchange.apply_funding(amount, position)
                 trade = engine_store.closed_trades._get_current_trade(event.exchange, event.symbol)
                 trade.funding += amount
                 self.ledger.append(asdict(event) | {
