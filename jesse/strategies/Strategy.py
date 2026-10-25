@@ -1788,15 +1788,19 @@ class Strategy(ABC):
     def settled_funding_timestamp(self) -> Optional[int]:
         return self.position.settled_funding_timestamp
 
-    def get_funding_history(self, count: int = 100) -> List[FundingHistoryRow]:
+    def get_funding_history(self, count: int = 100, symbol: Optional[str] = None) -> List[FundingHistoryRow]:
         """Causal historical settlements, oldest first; no future estimated rates.
 
+        Defaults to this route's symbol when a dataset covers it. `symbol` reads
+        another configured dataset, e.g. BTC funding as a signal on an ETH route.
         Live current/final observations use funding_rate and
         settled_funding_rate. Historical rate windows require imported datasets.
         """
         if jh.is_live():
             raise ValueError('Funding history windows require a historical dataset in backtest mode')
-        return store.funding.history(int(store.app.time), count)
+        if symbol is None and self.symbol in store.funding.symbols:
+            symbol = self.symbol
+        return store.funding.history(int(store.app.time), count, symbol)
 
     @property
     def open_interest(self) -> Optional[float]:

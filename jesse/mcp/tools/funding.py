@@ -22,13 +22,16 @@ def _request(path: str, payload: dict) -> dict:
 
 def register_funding_tools(mcp):
     @mcp.tool()
-    async def import_funding(start_date: str, finish_date: str, allow_mark_price_proxy: bool = False) -> dict:
-        """Import public Binance USD-M BTC-USDT settled funding, UTC [start,finish).
+    async def import_funding(start_date: str, finish_date: str, allow_mark_price_proxy: bool = False,
+                             symbol: str = 'BTC-USDT') -> dict:
+        """Import public Binance USD-M settled funding of one USDT perpetual, UTC [start,finish).
 
+        symbol is Jesse's form (BTC-USDT, ETH-USDT, ...); one dataset per symbol.
         Returns an immutable dataset_id and coverage/gap diagnostics. No keys, live
         session or orders. Inspect coverage before research. Opt into a backtest via
-        form.config.funding={mode:'historical',dataset_id:'returned digest'}.
-        Rates are decimal fractions; mark prices are settlement marks. Other
+        form.config.funding={mode:'historical',dataset_id:'digest'} for one symbol, or
+        dataset_ids:['btc digest','eth digest'] so each route pays its own symbol.
+        Rates are decimal fractions; mark prices are settlement marks. Non-USDT
         instruments and simulated/predicted rates are deliberately unsupported.
 
         Older Binance rows may omit settlement marks. Default refuses them;
@@ -36,7 +39,8 @@ def register_funding_tools(mcp):
         an approximation, recorded per event and in dataset metadata.
         """
         return await run_blocking(_request, 'import', {'start_date': start_date, 'finish_date': finish_date,
-                                                      'allow_mark_price_proxy': allow_mark_price_proxy})
+                                                      'allow_mark_price_proxy': allow_mark_price_proxy,
+                                                      'symbol': symbol})
 
     @mcp.tool()
     async def get_funding_dataset(dataset_id: str, include_events: bool = False, offset: int = 0, limit: int = 50) -> dict:
@@ -51,13 +55,13 @@ def register_funding_tools(mcp):
         return await run_blocking(_request, 'dataset', payload)
 
     @mcp.tool()
-    async def list_funding_datasets() -> dict:
-        """List local immutable BTC funding snapshots with source, coverage and quality."""
-        return await run_blocking(_request, 'datasets', {})
+    async def list_funding_datasets(symbol: str | None = None) -> dict:
+        """List local immutable funding snapshots (optionally one symbol) with source, coverage and quality."""
+        return await run_blocking(_request, 'datasets', {'symbol': symbol} if symbol else {})
 
     @mcp.tool()
     async def update_funding_dataset(dataset_id: str, finish_date: str) -> dict:
-        """Refresh Binance history to an exclusive UTC finish date, preserving the old ID."""
+        """Refresh Binance history of the dataset's own symbol to an exclusive UTC finish, preserving the old ID."""
         return await run_blocking(_request, 'update', {'dataset_id': dataset_id, 'finish_date': finish_date})
 
     @mcp.tool()
@@ -69,7 +73,8 @@ def register_funding_tools(mcp):
         Config is saved in form.config; normal run_backtest consumes it. Historical
         funding forces exact minute replay even if fast_mode was requested.
         OI is a signal with explicit missing/stale values, not a trading cost.
-        BTC funding only: other route symbols require explicit funding.exclude_symbols.
+        funding: dataset_id (one symbol) or dataset_ids (one per symbol). Each route
+        pays its own symbol's dataset; routes without one need funding.exclude_symbols.
         """
         return await run_blocking(_request, 'session-config', {
             'session_id': session_id, 'funding': funding, 'open_interest': open_interest})

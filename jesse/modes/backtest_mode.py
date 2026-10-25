@@ -555,14 +555,17 @@ def simulator(*args, fast_mode: bool = False, **kwargs) -> dict:
     if store.funding.enabled or store.open_interest.enabled:
         fast_mode = False
     if store.funding.enabled:
+        # Every funded symbol settles against its own minute bars; a gap would
+        # skip a settlement boundary of exactly that instrument.
         for stream in candles.values():
-            if stream['exchange'] == 'Binance Perpetual Futures' and stream['symbol'] == 'BTC-USDT':
+            symbol = stream['symbol']
+            if stream['exchange'] == 'Binance Perpetual Futures' and symbol in store.funding.symbols:
                 rows = stream['candles']
                 if (not len(rows) or rows[0, 0] > store.funding.start
                         or rows[-1, 0] + 60_000 < store.funding.finish):
-                    raise ValueError('BTC execution candles do not span the full funding backtest window')
+                    raise ValueError(f'{symbol.split("-")[0]} execution candles do not span the full funding backtest window')
                 if len(rows) > 1 and not np.all(np.diff(rows[:, 0]) == 60_000):
-                    raise ValueError('Funding requires uninterrupted BTC one-minute execution candles')
+                    raise ValueError(f'Funding requires uninterrupted {symbol.split("-")[0]} one-minute execution candles')
     uses_timestamp_replay = _uses_observed_timestamp_replay(candles)
     store.candles.uses_timestamp_buckets = uses_timestamp_replay
     if uses_timestamp_replay:

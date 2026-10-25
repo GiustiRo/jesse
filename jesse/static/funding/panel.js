@@ -75,10 +75,28 @@
   function dateOnly(value) { return Number.isFinite(Number(value)) ? new Date(Number(value)).toISOString().slice(0, 10) : "—"; }
   function fillDatasetSelect(kind) {
     const select = $(kind === "funding" ? "funding-dataset" : "oi-dataset");
-    const previous = select.value;
-    select.innerHTML = '<option value="">Seleccioná una versión</option>' + state.datasets[kind].map(dataset => `<option value="${esc(dataset.dataset_id)}" ${datasetSelectable(kind, dataset) ? "" : "disabled"}>${esc(dateOnly(dataset.start))} → ${esc(dateOnly(dataset.finish))} · ${esc(dataset.dataset_id.slice(0, 12))} · ${esc(coverageLabel(dataset))}</option>`).join("");
-    if (state.datasets[kind].some(dataset => dataset.dataset_id === previous && datasetSelectable(kind, dataset))) select.value = previous;
+    const previous = [...select.selectedOptions].map(option => option.value);
+    // Funding is a multi-select (one version per symbol); OI keeps its single select.
+    select.innerHTML = (kind === "funding" ? "" : '<option value="">Seleccioná una versión</option>') + state.datasets[kind].map(dataset => `<option value="${esc(dataset.dataset_id)}" ${datasetSelectable(kind, dataset) ? "" : "disabled"}>${kind === "funding" ? `${esc(dataset.symbol || "BTC-USDT")} · ` : ""}${esc(dateOnly(dataset.start))} → ${esc(dateOnly(dataset.finish))} · ${esc(dataset.dataset_id.slice(0, 12))} · ${esc(coverageLabel(dataset))}</option>`).join("");
+    for (const option of select.options) option.selected = previous.includes(option.value) && !option.disabled;
     if (kind === "oi") renderOISelectionWarning();
+    else renderFundingExclusions();
+  }
+
+  function selectedFundingSymbols() {
+    const ids = [...$("funding-dataset").selectedOptions].map(option => option.value);
+    return state.datasets.funding.filter(dataset => ids.includes(dataset.dataset_id)).map(dataset => dataset.symbol || "BTC-USDT");
+  }
+
+  // Each route pays only its own symbol's funding. Routes without a selected
+  // version must be excluded explicitly; checked boxes survive re-rendering.
+  function renderFundingExclusions(saved) {
+    const target = $("funding-exclusions");
+    const checked = saved || [...root.querySelectorAll('[name="funding-excluded-symbol"]:checked')].map(input => input.value);
+    const covered = selectedFundingSymbols();
+    const otherSymbols = [...new Set((state.session?.route_symbols || []).filter(symbol => typeof symbol === "string" && !covered.includes(symbol)))];
+    target.hidden = otherSymbols.length === 0;
+    target.innerHTML = otherSymbols.length ? `<p class="callout warning"><strong>Funding sólo de ${esc(covered.length ? covered.join(", ") : "los símbolos con versión seleccionada")}; otras rutas requieren exclusión explícita.</strong><br>Excluir una ruta significa que sus costos de funding no se modelan. No se agregan exclusiones automáticamente.</p>` + otherSymbols.map(symbol => `<label class="checkbox-row"><input type="checkbox" name="funding-excluded-symbol" value="${esc(symbol)}" ${checked.includes(symbol) ? "checked" : ""}>Excluir ${esc(symbol)} del cálculo de funding</label>`).join("") : "";
   }
 
   function renderOISelectionWarning() {
@@ -121,6 +139,8 @@
     $("oi-source-label").hidden = kind !== "oi";
     $("oi-coverage-note").hidden = kind !== "oi";
     $("allow-mark-proxy-label").hidden = kind !== "funding";
+    $("funding-symbol-label").hidden = kind !== "funding";
+    $("funding-symbol").required = kind === "funding";
     $("mark-proxy-note").hidden = kind !== "funding";
     updateArchiveConsent();
     $("data-description").textContent = kind === "funding" ? "Tasas ya liquidadas y precio de referencia de cada cobro. Cada descarga genera una versión identificable." : "Interés abierto agregado de Binance: cantidad y valor de contratos. Es una señal disponible para la estrategia, sin movimientos de saldo.";
@@ -225,7 +245,7 @@
     $("session-summary").innerHTML = summaryItem("Estado de la sesión", sessionStatus || "—") +
       summaryItem("Funding neto", applied ? money(result.cashflow) : "No confirmado", "Positivo: cobro · negativo: pago") +
       summaryItem("Liquidaciones con posición", applied ? result.event_count ?? result.total ?? 0 : "—") +
-      summaryItem("Versión usada", result.dataset_id ? result.dataset_id.slice(0, 16) : "—", result.dataset_id || "Sin versión registrada") +
+      (result.dataset_ids?.length > 1 ? summaryItem("Versiones usadas", result.dataset_ids.map(id => id.slice(0, 12)).join(", "), Object.entries(result.cashflow_by_symbol || {}).map(([symbol, cash]) => `${symbol}: ${money(cash)}`).join(" · ")) : summaryItem("Versión usada", result.dataset_id ? result.dataset_id.slice(0, 16) : "—", result.dataset_id || "Sin versión registrada")) +
       summaryItem("Interés abierto", oiApplied ? "Histórico aplicado" : oi?.mode === "historical" ? "Sin aplicación confirmada" : oi?.mode === "disabled" ? "Desactivado" : "Sin evidencia", oiApplied ? "Fuente disponible a la estrategia; no implica que sus reglas la usen" : oi?.dataset_id || "") +
       (oiApplied ? summaryItem("Versión de interés abierto", oi.dataset_id ? oi.dataset_id.slice(0, 16) : "—", oi.dataset_id || "Sin versión registrada") : "") +
       (oiApplied ? summaryItem("Datos de interés abierto", `${oi.observation_count ?? oi.data?.observation_count ?? "—"} observaciones`, oi.data ? `${coverageLabel(oi.data)} · Primera: ${utcDate(oi.data.first_observation)} · Última: ${utcDate(oi.data.last_observation)}` : "Sin detalle de cobertura") : "") +
@@ -243,17 +263,16 @@
       $("enable-oi").checked = oi.mode === "historical";
       $("allow-missing-oi").checked = oi.allow_missing_observations === true;
       fillDatasetSelect("oi");
-      $("funding-dataset").value = funding.dataset_id || "";
+      const fundingIds = funding.dataset_ids || (funding.dataset_id ? [funding.dataset_id] : []);
+      for (const option of $("funding-dataset").options) option.selected = fundingIds.includes(option.value);
       $("oi-dataset").value = oi.dataset_id || "";
       renderOISelectionWarning();
-      const otherSymbols = [...new Set((result.route_symbols || []).filter(symbol => typeof symbol === "string" && symbol !== "BTC-USDT"))];
-      $("funding-exclusions").hidden = otherSymbols.length === 0;
-      $("funding-exclusions").innerHTML = otherSymbols.length ? '<p class="callout warning"><strong>Funding sólo BTC; otras rutas requieren exclusión explícita.</strong><br>Excluir una ruta significa que sus costos de funding no se modelan. No se agregan exclusiones automáticamente.</p>' + otherSymbols.map(symbol => `<label class="checkbox-row"><input type="checkbox" name="funding-excluded-symbol" value="${esc(symbol)}" ${(funding.exclude_symbols || []).includes(symbol) ? "checked" : ""}>Excluir ${esc(symbol)} del cálculo de funding</label>`).join("") : "";
+      renderFundingExclusions(funding.exclude_symbols || []);
     }
     const ledger = result.ledger || [];
     state.total = result.total ?? result.event_count ?? ledger.length;
     $("ledger-section").hidden = !applied;
-    $("ledger-body").innerHTML = ledger.length ? ledger.map(row => `<tr><td>${esc(utcDate(row.settled_at))}</td><td>${esc(rate(row.rate_decimal))}</td><td>${esc(row.qty)}</td><td>${esc(Number(row.mark_price).toFixed(4))}</td><td>${esc(row.mark_price_source === "fundingRate.settlement_mark" ? "Liquidación Binance" : row.mark_price_source === "markPriceKlines.1h_open_proxy" ? "Aproximado · apertura mark 1h" : "Sin detalle")}</td><td>${esc(money(row.cashflow))}</td></tr>`).join("") : '<tr><td colspan="6" class="empty">No hubo movimientos de funding con una posición abierta.</td></tr>';
+    $("ledger-body").innerHTML = ledger.length ? ledger.map(row => `<tr><td>${esc(utcDate(row.settled_at))}</td><td>${esc(row.symbol || "BTC-USDT")}</td><td>${esc(rate(row.rate_decimal))}</td><td>${esc(row.qty)}</td><td>${esc(Number(row.mark_price).toFixed(4))}</td><td>${esc(row.mark_price_source === "fundingRate.settlement_mark" ? "Liquidación Binance" : row.mark_price_source === "markPriceKlines.1h_open_proxy" ? "Aproximado · apertura mark 1h" : "Sin detalle")}</td><td>${esc(money(row.cashflow))}</td></tr>`).join("") : '<tr><td colspan="7" class="empty">No hubo movimientos de funding con una posición abierta.</td></tr>';
     $("ledger-page").textContent = state.total ? `${state.offset + 1}–${Math.min(state.offset + ledger.length, state.total)} de ${state.total}` : "0 movimientos";
     $("ledger-prev").disabled = state.offset === 0;
     $("ledger-next").disabled = state.offset + PAGE_SIZE >= state.total;
@@ -299,6 +318,7 @@
   $("oi-source").addEventListener("change", updateArchiveConsent);
   $("allow-missing-oi").addEventListener("change", () => fillDatasetSelect("oi"));
   $("oi-dataset").addEventListener("change", renderOISelectionWarning);
+  $("funding-dataset").addEventListener("change", () => renderFundingExclusions());
   $("refresh-datasets").addEventListener("click", event => action(event.currentTarget, refreshDatasets));
   $("datasets-body").addEventListener("change", event => {
     if (event.target.name !== "dataset") return;
@@ -318,7 +338,10 @@
         body.background = true;
         if (body.source !== "rest" && !body.allow_archive_assumptions) throw new Error("Para usar archivos históricos tenés que aceptar explícitamente la hipótesis de publicación y las posibles revisiones.");
       }
-      else body.allow_mark_price_proxy = $("allow-mark-proxy").checked;
+      else {
+        body.allow_mark_price_proxy = $("allow-mark-proxy").checked;
+        body.symbol = $("funding-symbol").value.trim().toUpperCase();
+      }
       const result = unwrap(await api(`${endpoint()}/import`, body));
       await consumeImportResult(result, kind);
     });
@@ -338,13 +361,17 @@
   $("session-config-form").addEventListener("submit", event => {
     event.preventDefault();
     action($("save-config"), async () => {
-      const funding = $("enable-funding").checked ? { mode: "historical", dataset_id: $("funding-dataset").value } : { mode: "disabled" };
+      const fundingIds = [...$("funding-dataset").selectedOptions].map(option => option.value).filter(Boolean);
+      // One version keeps the original dataset_id shape; several use dataset_ids.
+      const funding = !$("enable-funding").checked ? { mode: "disabled" } : fundingIds.length > 1 ? { mode: "historical", dataset_ids: fundingIds } : { mode: "historical", dataset_id: fundingIds[0] || "" };
       const open_interest = $("enable-oi").checked ? { mode: "historical", dataset_id: $("oi-dataset").value } : { mode: "disabled" };
       if (open_interest.mode === "historical" && $("allow-missing-oi").checked) open_interest.allow_missing_observations = true;
-      if (funding.mode === "historical" && !funding.dataset_id || open_interest.mode === "historical" && !open_interest.dataset_id) throw new Error("Seleccioná una versión para cada fuente habilitada.");
+      if (funding.mode === "historical" && !fundingIds.length || open_interest.mode === "historical" && !open_interest.dataset_id) throw new Error("Seleccioná una versión para cada fuente habilitada.");
       if (funding.mode === "historical") {
+        const symbols = selectedFundingSymbols();
+        if (new Set(symbols).size !== symbols.length) throw new Error("Seleccioná una sola versión de funding por símbolo.");
         const exclusions = [...root.querySelectorAll('[name="funding-excluded-symbol"]')];
-        if (exclusions.some(input => !input.checked)) throw new Error("El funding sólo cubre BTC-USDT. Las demás rutas requieren exclusión explícita; sus costos de funding quedarían sin modelar.");
+        if (exclusions.some(input => !input.checked)) throw new Error(`El funding sólo cubre ${symbols.join(", ")}. Las demás rutas requieren exclusión explícita; sus costos de funding quedarían sin modelar.`);
         if (exclusions.length) funding.exclude_symbols = exclusions.map(input => input.value);
       }
       await api("/funding/session-config", { session_id: $("session-id").value.trim(), funding, open_interest });
