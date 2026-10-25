@@ -563,13 +563,76 @@ def inventory():
         json.dump(rows, fh, indent=2)
 
 
+def selftest():
+    """Synthetic sign checks (no market data): a linearly falling series must pay a short,
+    including the funding a short collects when rates are positive."""
+    n = 400
+    t0 = hz._ms('2021-01-01')
+    c = np.linspace(200.0, 100.0, n)
+    bars = np.column_stack([t0 + np.arange(n) * DAY_MS, c, c, c * 1.001, c * 0.999, np.ones(n)])
+    acct = Account(BALANCE, TAKER, LEVERAGE)
+    acct.trade(-50.0, c[0], int(bars[0, T]))
+    for i in range(1, n):
+        acct.pay_funding(c[i], 0.0001)  # positive funding: longs pay, shorts receive
+    acct.trade(50.0, c[-1], int(bars[-1, T]))
+    short_pnl, short_funding = acct.trades[-1]['pnl'], acct.funding_paid
+    ts, eq, a2 = simulate(bars, t0, m1_decider(bars, False, 'ls'), None, False)
+    res = {'short_trade_pnl': short_pnl, 'short_funding_received': short_funding,
+           'expected_price_pnl': 50 * 100.0, 'm1_ls_final_equity': float(eq[-1]),
+           'm1_ls_exposure_end': float(a2.qty * c[-1] / a2.equity(c[-1]))}
+    res['pass'] = short_pnl > 0 and short_funding > 0 and eq[-1] > BALANCE and a2.qty < 0
+    hz.jh.debug(res)
+    return res
+
+
+def audit(name):
+    """Sanity audit of one asset in the common window: yearly price path and M1 trades by side.
+    Diagnostic only; it changes no rule and is not a variant."""
+    spec = ASSETS[name]
+    ex, sym = spec['common']
+    bars = load_daily(ex, sym, COMMON[0], COMMON[1], spec['cfd'])
+    lr = logret(bars[:, C])
+    big = np.argsort(-np.nan_to_num(abs(lr)))[:8]
+    hz.jh.debug(f'{name} largest daily moves: ' + ', '.join(
+        f'{hz._date(int(bars[k, T]))[:10]} {lr[k]:+.4f}' for k in sorted(big)))
+    for y in range(2019, 2026):
+        yb = bars[(bars[:, T] >= hz._ms(f'{y}-01-01')) & (bars[:, T] < hz._ms(f'{y + 1}-01-01'))]
+        if len(yb):
+            hz.jh.debug(f'{name} {y}: first {yb[0, C]:.3f} last {yb[-1, C]:.3f} min {yb[:, L].min():.3f} '
+                        f'max {yb[:, H].max():.3f} bars {len(yb)} max |daily ret| {np.nanmax(abs(logret(yb[:, C]))):.4f}')
+    if spec['m1']:
+        dec = m1_decider(bars, spec['cfd'], spec['m1'])
+        expo = {}
+
+        def traced(i, acct, ts):
+            dec(i, acct, ts)
+            m = datetime.fromtimestamp(int(bars[i, T]) / 1000, tz=timezone.utc).strftime('%Y-%m')
+            expo.setdefault(m, []).append((acct.qty * bars[i, C] / acct.equity(bars[i, C]), acct.equity(bars[i, C])))
+        ts, eq, acct = simulate(bars, hz._ms(COMMON[0]), traced, name, False)
+        for m in sorted(expo):
+            if m.startswith('2022') or m.startswith('2021-1'):
+                x = expo[m]
+                hz.jh.debug(f'{name} {m}: mean exposure {np.mean([e for e, _ in x]):+.2f}x equity {x[-1][1]:.0f}')
+        by = {}
+        for t in acct.trades:
+            y = datetime.fromtimestamp(t['closed'] / 1000, tz=timezone.utc).year
+            k = (y, 'short' if t['side'] < 0 else 'long')
+            by[k] = (by.get(k, (0, 0.0))[0] + 1, by.get(k, (0, 0.0))[1] + t['pnl'])
+        hz.jh.debug(f'{name} M1 trades by (year, side): {sorted(by.items())}; fees {acct.fees_paid:.0f}')
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('command', choices=['screen', 'inventory'])
+    ap.add_argument('command', choices=['screen', 'inventory', 'audit', 'selftest'])
     ap.add_argument('--assets', default=','.join(ASSETS))
     args = ap.parse_args()
     if args.command == 'screen':
         screen([a for a in args.assets.split(',') if a])
+    elif args.command == 'selftest':
+        selftest()
+    elif args.command == 'audit':
+        for a in args.assets.split(','):
+            audit(a)
     else:
         inventory()
 

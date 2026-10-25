@@ -672,11 +672,333 @@
       "decision": "validación (no selección): WTI descartado",
       "report": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md",
       "analysis_job": "cdc317dbb6ad40b8903e1b8b4e81614c"
+    },
+    {
+      "id": "R50_F1_M1",
+      "hypothesis": "Tendencia v2 (15/60/250 d continua, vol 17%) mejora al nulo r49 en Sharpe o trimestres positivos.",
+      "harness": "research_scripts/r50_engines.py (sobre r50_harness.py validado en F0)",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md",
+      "family": "r50_m1",
+      "round": "r50",
+      "phase": "F1",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 0.4806,
+          "cagr": 0.0166,
+          "max_dd": -0.0403,
+          "quarters_pos": 0.65,
+          "trades_per_year": 91.7497,
+          "members": [
+            "BTC",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ]
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 0.6215,
+          "cagr": 0.0317,
+          "max_dd": -0.1012,
+          "quarters_pos": 0.4918,
+          "trades_per_year": 66.6062,
+          "members": [
+            "BTC",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ]
+        }
+      },
+      "gates": {
+        "falsified_common": false,
+        "veto_long": true,
+        "pass": false,
+        "per_asset_improves_null": {
+          "BTC": false,
+          "XAU": false,
+          "SPX": false,
+          "WTI": false,
+          "GAS": false,
+          "BOND": true
+        }
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1_M2a",
+      "hypothesis": "Reversión RSI(2)<10 sobre SMA200, salida SMA5/5 d, entradas maker; canasta oro/SPX/WTI/gas/bono.",
+      "harness": "research_scripts/r50_engines.py (sobre r50_harness.py validado en F0)",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md",
+      "family": "r50_m2",
+      "round": "r50",
+      "phase": "F1",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": 0.6642,
+          "cagr": 0.016,
+          "max_dd": -0.0233,
+          "quarters_pos": 0.6,
+          "trades_per_year": 31.3828,
+          "members": [
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "corr_m1_losing_quarters": -0.0046
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": 0.4301,
+          "cagr": 0.0148,
+          "max_dd": -0.0922,
+          "quarters_pos": 0.6721,
+          "trades_per_year": 25.5089,
+          "members": [
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "corr_m1_losing_quarters": 0.02
+        }
+      },
+      "gates": {
+        "sharpe_ok": true,
+        "trades_ok": false,
+        "corr_ok": true,
+        "falsified_common": true,
+        "veto_long": true,
+        "pass": false
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1_M2b",
+      "hypothesis": "Reversión IBS<0,2 sobre SMA200, salida IBS>0,8/máximo previo/5 d; misma canasta.",
+      "harness": "research_scripts/r50_engines.py (sobre r50_harness.py validado en F0)",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md",
+      "family": "r50_m2",
+      "round": "r50",
+      "phase": "F1",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": -0.3303,
+          "cagr": -0.0124,
+          "max_dd": -0.1384,
+          "quarters_pos": 0.4,
+          "trades_per_year": 82.3549,
+          "members": [
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "corr_m1_losing_quarters": 0.2971
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": -0.3041,
+          "cagr": -0.0174,
+          "max_dd": -0.2805,
+          "quarters_pos": 0.459,
+          "trades_per_year": 70.1997,
+          "members": [
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "corr_m1_losing_quarters": 0.2423
+        }
+      },
+      "gates": {
+        "sharpe_ok": false,
+        "trades_ok": true,
+        "corr_ok": false,
+        "falsified_common": true,
+        "veto_long": true,
+        "pass": false
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1_M3",
+      "hypothesis": "Corto con régimen (bajo SMA200 y SMA50 cayendo), ruptura de mínimos 20 d, salida 10 d/2 ATR/20 d.",
+      "harness": "research_scripts/r50_engines.py (sobre r50_harness.py validado en F0)",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md",
+      "family": "r50_m3",
+      "round": "r50",
+      "phase": "F1",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": -0.1339,
+          "cagr": -0.0052,
+          "max_dd": -0.0863,
+          "quarters_pos": 0.4,
+          "trades_per_year": 19.5893,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "corr_m1_losing_quarters": 0.3175
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": -0.1235,
+          "cagr": -0.0063,
+          "max_dd": -0.1404,
+          "quarters_pos": 0.3279,
+          "trades_per_year": 17.1218,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "corr_m1_losing_quarters": 0.1299
+        }
+      },
+      "gates": {
+        "sharpe_ok": false,
+        "regime_adds": 0.4340195568482551,
+        "regime_ok": true,
+        "pass": false
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1_M3nr",
+      "hypothesis": "Ablación de M3 sin filtro de régimen.",
+      "harness": "research_scripts/r50_engines.py (sobre r50_harness.py validado en F0)",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md",
+      "family": "r50_m3",
+      "round": "r50",
+      "phase": "F1",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": -0.5679,
+          "cagr": -0.0271,
+          "max_dd": -0.1752,
+          "quarters_pos": 0.25,
+          "trades_per_year": 36.58,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS",
+            "BOND"
+          ],
+          "corr_m1_losing_quarters": 0.175
+        },
+        "long": {
+          "from": "2010-12-31",
+          "to": "2025-12-31",
+          "sharpe": -0.4671,
+          "cagr": -0.0291,
+          "max_dd": -0.3873,
+          "quarters_pos": 0.2295,
+          "trades_per_year": 32.3301,
+          "members": [
+            "BTC",
+            "ETH",
+            "XAU",
+            "SPX",
+            "WTI",
+            "GAS"
+          ],
+          "corr_m1_losing_quarters": 0.072
+        }
+      },
+      "gates": {
+        "ablation_of": "M3"
+      },
+      "decision": "no pasa"
+    },
+    {
+      "id": "R50_F1_M4",
+      "hypothesis": "Corto ETH / largo BTC con momentum negativo del ratio a 4/8/12 semanas.",
+      "harness": "research_scripts/r50_engines.py (sobre r50_harness.py validado en F0)",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md",
+      "family": "r50_m4",
+      "round": "r50",
+      "phase": "F1",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "metrics": {
+        "common": {
+          "from": "2021-01-01",
+          "to": "2025-12-31",
+          "sharpe": -0.1799,
+          "cagr": -0.035,
+          "max_dd": -0.3506,
+          "quarters_pos": 0.4,
+          "trades_per_year": 9.5947,
+          "corr_btc_daily": -0.0609,
+          "corr_m1_losing_quarters": 0.0081
+        },
+        "long": {
+          "from": "2017-11-25",
+          "to": "2025-12-31",
+          "sharpe": 0.2616,
+          "cagr": 0.0276,
+          "max_dd": -0.3779,
+          "quarters_pos": 0.4545,
+          "trades_per_year": 9.9916,
+          "corr_btc_daily": -0.0047,
+          "corr_m1_losing_quarters": 0.0094
+        }
+      },
+      "gates": {
+        "sharpe_ok": false,
+        "corr_btc_ok": true,
+        "pass": false
+      },
+      "decision": "no pasa"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 57,
+    "declared": 63,
     "sensitivity": [
       20,
       200
@@ -684,7 +1006,8 @@
     "method": "Conteo de familias de hipótesis en HISTORY_SUMMARY (≈28 ciclos r10–r48 + 6 V1–V6 + ~5 Fase 1 + ~10 cartera/PAXG/SPY). Agrupando las curvas disponibles 2021–2025, las 5 referencias dan una razón de participación de autovalores de 2,8 (Core/Baseline3 ρ=1,00; K1001 B/C ρ=0,99).",
     "dated": "2026-10-24",
     "phase2b_note": "+5 por decisiones de lado (BTC, PAXG, SPY), inclusión de ETH y construcción B1/B2 (2026-10-24).",
-    "phase2c_note": "+2 por la decisión de lado de WTI y su inclusión; las corridas largas son validación (2026-10-24)."
+    "phase2c_note": "+2 por la decisión de lado de WTI y su inclusión; las corridas largas son validación (2026-10-24).",
+    "r50_f1_note": "+6 por M1, M2a, M2b, M3, M3-nr y M4 (2026-10-25). Ninguna pasa F1."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
