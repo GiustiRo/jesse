@@ -36,6 +36,8 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 
 ## Decisiones vigentes (r50, 2026-10-24)
 
+- **r50 cerrada (2026-10-25)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)): candidata P1 = R1 (ensamble Donchian en los 7 activos del núcleo) + C6 (rupturas cripto R2+R3 en BTC/ETH), 100% futuros USDT-M, congelada en `5caf4a53`. Cumple 6/8 metas r9 en 2018–25 y 3/8 en 2021–25; nunca alcanza M65/Q80. Pendientes para r51: F4 en Jesse, validación independiente con activos operables nuevos (SOL, XRP, BNB, DOGE) y 2026, y la decisión sobre bono y WTI. La reversión de corto plazo no generaliza; el carry de funding queda fuera (usa spot).
+
 - **r49 cerrada** sin candidata: la tendencia sobre 3–4 activos no sostiene Q80 en historia larga.
 - **Objetivo r50:** varios motores con perfiles distintos, sin dar ninguno por sentado:
   - M1 tendencia v2;

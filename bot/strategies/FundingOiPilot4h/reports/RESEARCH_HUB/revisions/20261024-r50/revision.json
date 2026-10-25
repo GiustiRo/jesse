@@ -1,11 +1,11 @@
 {
   "format_version": 1,
   "id": "20261024-r50",
-  "updated_at_utc": "2026-10-25 21:20:00 UTC",
+  "updated_at_utc": "2026-10-25 23:15:00 UTC",
   "objective": "Varios motores con perfiles distintos (tendencia v2, reversión de corto plazo, corto con régimen, valor relativo ETH/BTC) sobre un núcleo de 7 activos operables en Binance USDT-M, validados con motores congelados en 3 activos no vistos. Se mantiene la ambición r9 de cartera (CAGR 30%, DD 20%, M65, Q80) y se reporta en cada fase qué tan lejos queda.",
-  "latest": "F1g: cambio de mes, reversión EE.UU. y pánico de volatilidad son descorrelacionados (ρ 0,04–0,18) pero sin ventaja (Sharpe largo 0,11–0,19); ninguna pasa. Mejor operable sigue siendo P1 = R1 + C6. N=98.",
-  "next": "Decisión del usuario: confirmar P1, seguir explorando, o cerrar r50.",
-  "blockers": "Decisión del usuario tras F1g.",
+  "latest": "r50 cerrada. Candidata final P1 = R1 (7 activos) + C6 (rupturas cripto), 100% futuros, congelada en 5caf4a53: 2018-09+ CAGR 36,9% / DD −14,3% / Sharpe 1,60 / DSR 0,99 (6/8 metas r9); 2021–25 24,6% / 1,44 (3/8). Nunca se alcanzan M65/Q80. Revalidación en activos de validación ya usados (opción c, no independiente): Sharpe 1,40–1,56. N=98, 0/10 Jesse.",
+  "next": "r51 a definir con el usuario: F4 (Jesse) y validación independiente de P1 con activos operables nuevos y 2026; decisión sobre bono y WTI; paper trading con autorización.",
+  "blockers": "Ninguno. F4 y la validación independiente pasan a r51.",
   "counts": {
     "r50": {
       "n_declared_start": 57,
@@ -28,10 +28,13 @@
       "phase1f_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1F_RESULTS_20261025.md",
       "n_declared_after_f1f": 94,
       "phase1g_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1G_RESULTS_20261025.md",
-      "n_declared_after_f1g": 98
+      "n_declared_after_f1g": 98,
+      "close_report": "strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md",
+      "n_final": 98
     }
   },
   "decisions": [
+    "2026-10-25 r50 cerrada por decisión del usuario: candidata P1 = R1 + C6 (congelada 5caf4a53), revalidada en activos ya usados (opción c); validación con activos nuevos y F4 pasan a la próxima ronda.",
     "2026-10-25 r50 F1g: las anomalías de calendario/pánico en acciones no tienen ventaja sostenida; la diversificación con ventaja está dentro de R1 (7 activos) + C6.",
     "2026-10-25 r50 F1f: ampliar la tendencia a todo el universo TradFi operable no mejora; la ventaja fuerte está en cripto.",
     "2026-10-25 r50: toda la operativa debe funcionar en futuros USDT-M de Binance (usuario). Spot solo como proxy de datos. K1/K1r y P3 quedan fuera de alcance; la candidata operable es P1 = R1 + C6.",
@@ -247,11 +250,19 @@
     {
       "label": "r50 F1g: resultados",
       "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1G_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50: congelamiento de P1",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/P1_FREEZE.md"
+    },
+    {
+      "label": "r50: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md"
     }
   ],
   "current_stage": {
     "stage": "r50_multimotor",
-    "execution_status": "f1g_closed_awaiting_user",
+    "execution_status": "r50_closed",
     "current_focus": "Infraestructura: arnés validado y descargas del universo de 10 activos",
     "permitted": [
       "Scripts en research_scripts.",
@@ -268,6 +279,6 @@
     "new_experiments_authorized": true,
     "authorization_scope": "Plan r50 aprobado por el usuario el 2026-10-24; reportar al cerrar cada fase y no pasar a F2 sin reportar F1.",
     "economic_status": "no_candidate_promoted",
-    "goal_status": "active"
+    "goal_status": "closed"
   }
 }
