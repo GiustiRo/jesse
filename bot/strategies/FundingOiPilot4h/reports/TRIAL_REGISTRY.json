@@ -1918,11 +1918,127 @@
       },
       "decision": "pasa",
       "selection_note": null
+    },
+    {
+      "id": "R50_F2_PORTFOLIO",
+      "hypothesis": "Cartera de componentes F1b/F1c con pesos de riesgo inverso expansivos, vol 17%, k<=8, inclusión greedy C0→C6→N4.",
+      "harness": "research_scripts/r50_f2.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE2_PROTOCOL.md",
+      "round": "r50",
+      "phase": "F2",
+      "date_utc": "2026-10-25",
+      "jesse_session": null,
+      "components": [
+        "C0",
+        "C6"
+      ],
+      "inclusion_log": [
+        {
+          "add": "C6",
+          "to": [
+            "C0"
+          ],
+          "improves": true,
+          "long_veto": false,
+          "sharpe_with": 1.8135254396887612,
+          "sharpe_without": 1.772882560230564,
+          "q_with": 0.75,
+          "q_without": 0.65
+        },
+        {
+          "add": "N4",
+          "to": [
+            "C0",
+            "C6"
+          ],
+          "improves": false,
+          "long_veto": false,
+          "sharpe_with": 1.6907319896915012,
+          "sharpe_without": 1.8135254396887612,
+          "q_with": 0.75,
+          "q_without": 0.75
+        }
+      ],
+      "metrics": {
+        "common": {
+          "from": "2021-02-28",
+          "to": "2025-12-31",
+          "cagr": 0.34214817886759796,
+          "max_dd": -0.1448491632840081,
+          "sharpe": 1.8135254396887612,
+          "vol_realized": 0.17014942291289373,
+          "pf_trades": 2.7372988552890005,
+          "months_pos": 0.559322033898305,
+          "quarters_pos": 0.75,
+          "median_month": 0.004610518905455496,
+          "without_best2_months": 1.6394960787682478,
+          "dsr": 0.9603602895478509,
+          "k_mean": 5.022083214770563,
+          "by_year": {
+            "2021": 0.5227,
+            "2022": -0.028,
+            "2023": 0.5611,
+            "2024": 0.4261,
+            "2025": 0.2614
+          },
+          "gates": {
+            "cagr_ge_30": true,
+            "dd_le_20": true,
+            "dd_le_25_ceiling": true,
+            "pf_ge_1_2": true,
+            "months_ge_65": false,
+            "quarters_ge_80": false,
+            "median_month_pos": true,
+            "positive_without_best2": true,
+            "dsr_ge_0_95": true
+          },
+          "all_r9_pass": false
+        },
+        "long": {
+          "from": "2018-09-30",
+          "to": "2025-12-31",
+          "cagr": 0.3899420226987773,
+          "max_dd": -0.15029941377852352,
+          "sharpe": 1.7164775105194694,
+          "vol_realized": 0.20301596107498152,
+          "pf_trades": 2.7623923085264233,
+          "months_pos": 0.6363636363636364,
+          "quarters_pos": 0.7666666666666667,
+          "median_month": 0.006764965885550089,
+          "without_best2_months": 5.110918710541569,
+          "dsr": 0.9975664418242551,
+          "k_mean": 4.504652870018391,
+          "by_year": {
+            "2018": -0.1048,
+            "2019": 0.9105,
+            "2020": 0.3063,
+            "2021": 0.5243,
+            "2022": 0.0176,
+            "2023": 0.5053,
+            "2024": 0.5667,
+            "2025": 0.3348
+          },
+          "gates": {
+            "cagr_ge_30": true,
+            "dd_le_20": true,
+            "dd_le_25_ceiling": true,
+            "pf_ge_1_2": true,
+            "months_ge_65": false,
+            "quarters_ge_80": false,
+            "median_month_pos": true,
+            "positive_without_best2": true,
+            "dsr_ge_0_95": true
+          },
+          "all_r9_pass": false
+        }
+      },
+      "decision": "no pasa r9 (M65 y Q80); pasa CAGR, DD, PF, mediana, sin 2 mejores y DSR",
+      "note": "C0 elegido mirando F1/F1b (in-sample). La ventana larga de la cartera final cubre 2018-09→2025 (intersección con C6)."
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 80,
+    "declared": 81,
     "sensitivity": [
       20,
       200
@@ -1933,7 +2049,8 @@
     "phase2c_note": "+2 por la decisión de lado de WTI y su inclusión; las corridas largas son validación (2026-10-24).",
     "r50_f1_note": "+6 por M1, M2a, M2b, M3, M3-nr y M4 (2026-10-25). Ninguna pasa F1.",
     "r50_f1b_note": "+10 por R1–R6 y N1–N4 de F1b (2026-10-25). Solo N4 pasa.",
-    "r50_f1c_note": "+7 por C0–C6 de F1c (2026-10-25). Pasan C0 y C6."
+    "r50_f1c_note": "+7 por C0–C6 de F1c (2026-10-25). Pasan C0 y C6.",
+    "r50_f2_note": "+1 por la construcción y la regla de inclusión de F2 (2026-10-25)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
