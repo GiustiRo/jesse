@@ -1,11 +1,11 @@
 {
   "format_version": 1,
   "id": "20261024-r50",
-  "updated_at_utc": "2026-10-25 17:45:00 UTC",
+  "updated_at_utc": "2026-10-25 18:45:00 UTC",
   "objective": "Varios motores con perfiles distintos (tendencia v2, reversión de corto plazo, corto con régimen, valor relativo ETH/BTC) sobre un núcleo de 7 activos operables en Binance USDT-M, validados con motores congelados en 3 activos no vistos. Se mantiene la ambición r9 de cartera (CAGR 30%, DD 20%, M65, Q80) y se reporta en cada fase qué tan lejos queda.",
-  "latest": "F3 no pasa: motor×activo 10/21 Sharpe>0 con 7 derrumbes, todos de reversión (M2a, N1); regla de clase falla en EWJ (−0,34) y EWY (−0,01). La tendencia generaliza (R1/R2/R3 positivos en 10 de 13), la reversión no (2 de 10).",
-  "next": "Decisión del usuario: cerrar r50, cartera solo-tendencia (sin validación independiente salvo 2026 u otros activos) o F4 como control técnico de C6 y R1.",
-  "blockers": "Decisión del usuario tras F3.",
+  "latest": "F1d cerrada sin pasar a confirmación: cartera R1+C6 cumple todo en 2018-09+ (36,9% / −14,3% / Sharpe 1,60 / DSR 0,99) pero falla en 2021–25 (24,6%, mediana 0, DSR 0,76). X1 pasa como manga pero no suma; K1 carry de funding Sharpe ~7 falla solo top-5. PBO 0,28. N=90.",
+  "next": "Decisión del usuario: compuertas de carry para K1 (+ confirmación), aceptar P1 tal cual, o cerrar r50.",
+  "blockers": "Decisión del usuario tras F1d.",
   "counts": {
     "r50": {
       "n_declared_start": 57,
@@ -20,10 +20,13 @@
       "n_declared_after_f1c": 80,
       "phase2_report": "strategies/FundingOiPilot4h/reports/R50_PHASE2_RESULTS_20261025.md",
       "n_declared_after_f2": 81,
-      "phase3_report": "strategies/FundingOiPilot4h/reports/R50_PHASE3_RESULTS_20261025.md"
+      "phase3_report": "strategies/FundingOiPilot4h/reports/R50_PHASE3_RESULTS_20261025.md",
+      "phase1d_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1D_RESULTS_20261025.md",
+      "n_declared_after_f1d": 90
     }
   },
   "decisions": [
+    "2026-10-25 r50 F1d: M65/Q80 pasan a seguimiento y 2026 autorizado solo para confirmar R1/R2/R3 (usuario). La cartera R1+C6 no pasa en la ventana común; no se avanza a confirmación.",
     "2026-10-25 r50 F3: no pasa; no se re-ajusta. M2a y N1 refutados fuera del núcleo; R1, R2 y R3 generalizan.",
     "2026-10-25 r50 F2: cartera final C0+C6 (N4 no mejora); pasa CAGR, DD, PF, mediana, sin 2 mejores y DSR; fallan M65 (56%) y Q80 (75%).",
     "2026-10-25 r50 F1c: pasan C0 (cartera por clase) y C6 (rupturas cripto); la asignación de C0 se eligió mirando F1/F1b y se declara in-sample; F3 es la prueba honesta para acciones y metales.",
@@ -86,6 +89,13 @@
       "state": "completada: 7/9 puertas r9 (fallan M65 y Q80)",
       "depends": "F1 reportada al usuario",
       "gate": "Puertas r9 y DSR de cartera en las dos ventanas."
+    },
+    {
+      "order": 2.5,
+      "title": "F1d agenda cerrada",
+      "state": "completada: la cartera final no pasa en la ventana común",
+      "depends": "F3 y aprobación del usuario",
+      "gate": "PHASE1D_PROTOCOL.md §3"
     },
     {
       "order": 3,
@@ -174,11 +184,19 @@
     {
       "label": "r50 F3: resultados",
       "path": "strategies/FundingOiPilot4h/reports/R50_PHASE3_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1d: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1D_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1d: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1D_RESULTS_20261025.md"
     }
   ],
   "current_stage": {
     "stage": "r50_multimotor",
-    "execution_status": "f3_failed_awaiting_user",
+    "execution_status": "f1d_closed_awaiting_user",
     "current_focus": "Infraestructura: arnés validado y descargas del universo de 10 activos",
     "permitted": [
       "Scripts en research_scripts.",
