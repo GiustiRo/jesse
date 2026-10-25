@@ -22,6 +22,9 @@ class Position:
     _funding_rate: float = None
     _next_funding_timestamp: int = None
     _liquidation_price: float = None
+    # Backtest only: collateral that funding debits took out of the isolated
+    # margin after the free balance ran out (Binance USD-M semantics).
+    funding_margin_drawn: float = 0
     exchange_name: str = None
     exchange = None
     symbol: str = None
@@ -283,9 +286,9 @@ class Position:
 
         elif self.mode == 'isolated':
             if self.type == 'long':
-                return self.entry_price * (1 - self._initial_margin_rate + 0.004)
+                return self.entry_price * (1 - self._initial_margin_rate + 0.004) + self._funding_price_shift
             elif self.type == 'short':
-                return self.entry_price * (1 + self._initial_margin_rate - 0.004)
+                return self.entry_price * (1 + self._initial_margin_rate - 0.004) - self._funding_price_shift
             else:
                 return np.nan
 
@@ -297,11 +300,19 @@ class Position:
         return 1 / self.leverage
 
     @property
+    def _funding_price_shift(self) -> float:
+        # Drawn isolated margin brings both thresholds closer to the market by
+        # drawn / size; zero unless funding outran the free balance.
+        if not self.funding_margin_drawn:
+            return 0
+        return self.funding_margin_drawn / abs(self.qty)
+
+    @property
     def bankruptcy_price(self) -> Union[float, np.float64]:
         if self.type == 'long':
-            return self.entry_price * (1 - self._initial_margin_rate)
+            return self.entry_price * (1 - self._initial_margin_rate) + self._funding_price_shift
         elif self.type == 'short':
-            return self.entry_price * (1 + self._initial_margin_rate)
+            return self.entry_price * (1 + self._initial_margin_rate) - self._funding_price_shift
         else:
             return np.nan
 

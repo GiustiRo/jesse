@@ -163,9 +163,23 @@ requested window; other instruments may use sparse timestamp replay. Missing
 funding coverage, duplicate/effective timestamps, conflicting history, and gaps
 above the explicit eight-hour coverage gate (plus timestamp jitter) of any
 dataset are refused. No fabricated zero
-payments. A historical debit that exhausts available margin raises an explicit
-error: Jesse does not simulate venue-specific funding consumption of isolated
-collateral after free margin is gone.
+payments.
+
+Margin follows Binance USD-M: funding is paid from the available balance first.
+With `futures_leverage_mode: isolated`, the part a debit cannot cover is taken
+from that position's isolated margin. The wallet is debited in full either way.
+Isolated unrealized PnL does not count as available balance. The consumed
+collateral moves the position's liquidation and bankruptcy prices toward the
+market by `drawn / |qty|`. Price liquidation then happens at the shifted level.
+Reducing the position releases the consumed part pro rata, so the liquidation
+price does not move. The run still stops with `InsufficientMargin` in two cases:
+- a settlement would put an isolated position past its shifted liquidation
+  price, because liquidation at a funding settlement is not simulated;
+- in cross mode, a debit exceeds the available margin. Cross liquidation is not
+  modeled.
+
+Long, low-turnover isolated holds (e.g. perpetual buy & hold) therefore run to
+completion while their equity stays above maintenance.
 
 ## Strategy access
 
