@@ -4074,7 +4074,7 @@
   "regime_trials": {
     "note": "N_régimen (r56+): configuraciones de detectores de régimen evaluadas contra etiquetas fijadas en F0, sin PnL. Es un contador aparte: no suma a n_effective.declared (N de estrategias = 140). Cada configuración se especifica aquí antes de correrla.",
     "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md",
-    "n_regime": 33,
+    "n_regime": 38,
     "ceiling": 40,
     "declared_plan": [
       {
@@ -5245,7 +5245,19 @@
         ],
         "model": "logit",
         "spec": "HExp agrupado: MCO de log RV(t+1..t+20) − (media de 365 días de log RV + ln 20) sobre las EWMA de log RV diaria con centros de masa 1, 5, 25 y 125 días, centradas por la media de 365 días de la moneda; filas de desarrollo con la ventana cerrada antes del embargo. Variables z a los terciles como V1. Logística. Estado operable con el estabilizador St2 (histéresis) de F7. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1312,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.2078,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "H2",
@@ -5257,7 +5269,19 @@
         ],
         "model": "logit",
         "spec": "HExpGl: H1 más el factor de vol global (media transversal de la EWMA centrada de 25 días sobre las monedas elegibles de U50, rezagada un día) como regresor. Logística. St2. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1316,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.2081,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "K1",
@@ -5269,7 +5293,19 @@
         ],
         "model": "logit",
         "spec": "Combinación: logística sobre las variables de T1 (Chronos-Bolt) y de H2 (HExpGl), 6 variables; la logística hace de recalibración afín. St2. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1266,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.2219,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "O1",
@@ -5281,7 +5317,19 @@
         ],
         "model": "ordinal",
         "spec": "Ordinal: logit acumulado (statsmodels OrderedModel, BFGS) sobre las mismas 6 variables de K1, respetando el orden compresión < media < alta. St2. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1119,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.1816,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "T3",
@@ -5293,6 +5341,66 @@
         ],
         "model": "logit",
         "spec": "Chronos-2 zero-shot con covariables pasadas: log RV diaria de BTC y vol global (media de log RV de las monedas de U50 con dato), mismo contexto y horizonte que T2. Variables como T1. Logística. St2. Solo Y_vol.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "P1",
+        "phase": "F9",
+        "n_regime_after": 34,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol40"
+        ],
+        "model": "logit",
+        "spec": "Y_vol a 40 días con T1: Chronos-Bolt zero-shot con trayectoria de 40 pasos (log de la suma de la mediana como pronóstico de log RV(t+1..t+40)), z a los terciles de las sumas de 40 días del año previo; σ de residuos del pliegue; embargo 80 días. Logística. St2.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "P2",
+        "phase": "F9",
+        "n_regime_after": 35,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol40"
+        ],
+        "model": "logit",
+        "spec": "Y_vol a 40 días con K1 (la mejor de F8 sin T3; enmienda F9-1): variables de P1 más HExpGl ajustado sobre el objetivo de 40 días (base m365 + ln 40). Logística. St2.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "P3",
+        "phase": "F9",
+        "n_regime_after": 36,
+        "registered": "2026-10-26",
+        "axes": [
+          "trend40"
+        ],
+        "model": "logit",
+        "spec": "Y_trend a 40 días (eficiencia ≥ 0,25) con las variables de A3 (A1 + A2). Logística, embargo 80 días. St2.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "P4",
+        "phase": "F9",
+        "n_regime_after": 37,
+        "registered": "2026-10-26",
+        "axes": [
+          "trend40"
+        ],
+        "model": "logit",
+        "spec": "Y_trend a 40 días con las distancias Wasserstein de C3 (mismos pliegues de F2). Logística, embargo 80 días. St2.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "P5",
+        "phase": "F9",
+        "n_regime_after": 38,
+        "registered": "2026-10-26",
+        "axes": [
+          "range40"
+        ],
+        "model": "logit",
+        "spec": "Y_range a 40 días (caja ±4,0·ATR20) con las variables de A3. Logística, embargo 80 días. St2.",
         "status": "registrada, sin resultado"
       }
     ],

@@ -230,3 +230,10 @@ Las probabilidades no se tocan, así que el BSS es el del modelo base.
   - sobre N2, con modelos entrenados solo en las monedas de desarrollo;
   - el holdout de 16 alts se reporta como **segunda mirada declarada**.
 - **Puente:** el veredicto se toma sobre N2, con todos los criterios y el 4a enmendado. El SPA final cubre las 38 configuraciones.
+
+### Enmienda F9-1 (2026-10-26, antes de ver T3 y antes de correr F9)
+**Problema:** T3 (Chronos-2 con covariables) avanza a ~5 pronósticos por segundo, porque comparte la CPU con otros cálculos. Le quedan ~4 horas, y una versión a 40 días tardaría otro tanto.
+
+**Cambio:** la «mejor de F8» que usa F9 (configuración P2) se elige entre H1, H2, K1 y O1, sin T3, por BSS promedio de desarrollo y 2024. Resulta K1 (0,174). T3 se evalúa igual dentro de F8 y entra en el SPA y en la selección de F10.
+
+**Estabilizador de F8 y F9:** St2 (histéresis), que es el de mejor exactitud balanceada en desarrollo dentro del tope (Z2V), según la regla fija.

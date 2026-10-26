@@ -390,6 +390,7 @@ LAM_DEFAULT = 50.0
 INNER_DAYS = 365
 CJM_STEP = {2: 0.05, 3: 0.1}
 FOLD_LOG = {}
+CHRONOS_SFX = ''      # '_panel70' in r56 F10, where the forecasts cover the N2 coins too
 
 
 def _fold_cache(cid, qi, build):
@@ -598,21 +599,23 @@ SPECS.update({
 # ----------------------------------------------------------------------------------------------
 # F3: volatility forecasts (V), geometry (E) and signatures (S)
 # ----------------------------------------------------------------------------------------------
-def har_inputs():
-    """Log daily, weekly (5) and monthly (22) mean RV; the target log RV(t+1..t+20); the coin's
-    1/3 and 2/3 quantiles of past 20-day RV sums (windows ending in the last 365 days, min 180)."""
-    if 'har' in _CTX:
-        return _CTX['har']
+def har_inputs(hz=20):
+    """Log daily, weekly (5) and monthly (22) mean RV; the target log RV(t+1..t+hz); the coin's
+    1/3 and 2/3 quantiles of past hz-day RV sums (windows ending in the last 365 days, min 180).
+    'l_20' is the log of the current hz-day sum (hz = 40 only in r56-B F9)."""
+    key = 'har' if hz == 20 else f'har{hz}'
+    if key in _CTX:
+        return _CTX[key]
     P = ctx()['P']
     rv = P['rv']
-    rv20 = pn._roll_sum(rv, 20)
+    rv20 = pn._roll_sum(rv, hz)
     out = {'l_d': np.log(rv), 'l_w': np.log(pn._roll_sum(rv, 5) / 5), 'l_m': np.log(pn._roll_sum(rv, 22) / 22),
            'l_20': np.log(rv20)}
     R = ft._df(rv20).rolling(365, min_periods=180)
     out['thr_lo'], out['thr_hi'] = np.log(R.quantile(1 / 3).values), np.log(R.quantile(2 / 3).values)
-    out['target'] = np.log(pn._shift(rv20, 20))
-    _CTX['har'] = {k: np.where(np.isfinite(v), v, np.nan) for k, v in out.items()}
-    return _CTX['har']
+    out['target'] = np.log(pn._shift(rv20, hz))
+    _CTX[key] = {k: np.where(np.isfinite(v), v, np.nan) for k, v in out.items()}
+    return _CTX[key]
 
 
 def _har_z(q0, extra=None):
@@ -787,14 +790,14 @@ def global_feats(qi, q0):
     return np.concatenate([_CTX['g_static']] + folds, axis=2)
 
 
-def chronos_feats(cid, kind):
+def chronos_feats(cid, kind, hz=20):
     def f(qi, q0):
         def build():
             c = ctx()
-            h = har_inputs()
-            pred = np.load(os.path.join(OUT, f'chronos_{kind}.npy')).astype(float)
+            h = har_inputs(hz)
+            pred = np.load(os.path.join(OUT, f'chronos_{kind}{CHRONOS_SFX}.npy')).astype(float)
             di = np.arange(pred.shape[0])[:, None]
-            tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - EMBARGO) & np.isfinite(pred)
+            tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - 2 * hz) & np.isfinite(pred)
                   & np.isfinite(h['target']))
             sig = float(np.std(h['target'][tr] - pred[tr]))
             FOLD_LOG[f'{cid}_{qi}'] = {'sigma': round(sig, 4), 'bias': round(float(np.mean(h['target'][tr] - pred[tr])), 4)}
@@ -1153,17 +1156,17 @@ def hexp_inputs():
     return _CTX['hexp']
 
 
-def _hexp_z(q0, glob):
+def _hexp_z(q0, glob, hz=20):
     c = ctx()
-    h = har_inputs()
+    h = har_inputs(hz)
     cols, m365 = hexp_inputs()
     names = [f'ew{x}' for x in HEXP_COM] + (['glob25'] if glob else [])
     X = np.stack([cols[k] for k in names], -1)
-    base = m365 + np.log(20)
+    base = m365 + np.log(hz)
     y = h['target'] - base
     D = X.shape[0]
     di = np.arange(D)[:, None]
-    tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - EMBARGO) & np.isfinite(X).all(-1)
+    tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - 2 * hz) & np.isfinite(X).all(-1)
           & np.isfinite(y))
     A = np.column_stack([np.ones(int(tr.sum())), X[tr]])
     beta, *_ = np.linalg.lstsq(A, y[tr], rcond=None)
@@ -1172,10 +1175,10 @@ def _hexp_z(q0, glob):
     return np.stack([(h['thr_lo'] - pred) / sig, (h['thr_hi'] - pred) / sig, pred - h['l_20']], -1), beta
 
 
-def hexp_feats(cid, glob):
+def hexp_feats(cid, glob, hz=20):
     def f(qi, q0):
         def build():
-            Z, beta = _hexp_z(q0, glob)
+            Z, beta = _hexp_z(q0, glob, hz)
             FOLD_LOG[f'{cid}_{qi}'] = {'beta': [round(float(b), 4) for b in beta]}
             return Z
         return _fold_cache(cid, qi, build)
@@ -1206,6 +1209,33 @@ SPECS.update({
 })
 
 STATIC_FAMS.update({'H1': [fam_hexp], 'H2': [fam_hexp]})
+
+# ----------------------------------------------------------------------------------------------
+# r56-B F9: 40-day horizon
+# ----------------------------------------------------------------------------------------------
+def combo40_feats(qi, q0):
+    """P2: K1 (best F8 configuration without T3, amendment F9-1) rebuilt at 40 days: Chronos-Bolt
+    40-step forecasts next to HExpGl fitted on the 40-day target."""
+    return np.concatenate([chronos_feats('P1', 'bolt40', hz=40)(qi, q0), hexp_feats('P2h', True, hz=40)(qi, q0)], axis=-1)
+
+
+SPECS.update({
+    'P1': {'phase': 'F9', 'axes': ['vol40'], 'stabiliser': F8_STABILISER,
+           'spec': 'Y_vol a 40 días con T1: Chronos-Bolt zero-shot con trayectoria de 40 pasos (log de la suma de la mediana como pronóstico de log RV(t+1..t+40)), z a los terciles de las sumas de 40 días del año previo; σ de residuos del pliegue; embargo 80 días. Logística. St2.',
+           'feats': lambda: chronos_feats('P1', 'bolt40', hz=40)},
+    'P2': {'phase': 'F9', 'axes': ['vol40'], 'stabiliser': F8_STABILISER,
+           'spec': 'Y_vol a 40 días con K1 (la mejor de F8 sin T3; enmienda F9-1): variables de P1 más HExpGl ajustado sobre el objetivo de 40 días (base m365 + ln 40). Logística. St2.',
+           'feats': lambda: combo40_feats},
+    'P3': {'phase': 'F9', 'axes': ['trend40'], 'stabiliser': F8_STABILISER,
+           'spec': 'Y_trend a 40 días (eficiencia ≥ 0,25) con las variables de A3 (A1 + A2). Logística, embargo 80 días. St2.',
+           'feats': lambda: static_feats((ft.fam_A1, 'A1'), (ft.fam_A2, 'A2'))},
+    'P4': {'phase': 'F9', 'axes': ['trend40'], 'stabiliser': F8_STABILISER,
+           'spec': 'Y_trend a 40 días con las distancias Wasserstein de C3 (mismos pliegues de F2). Logística, embargo 80 días. St2.',
+           'feats': lambda: wk_feats('C3')},
+    'P5': {'phase': 'F9', 'axes': ['range40'], 'stabiliser': F8_STABILISER,
+           'spec': 'Y_range a 40 días (caja ±4,0·ATR20) con las variables de A3. Logística, embargo 80 días. St2.',
+           'feats': lambda: static_feats((ft.fam_A1, 'A1'), (ft.fam_A2, 'A2'))},
+})
 
 
 def main():

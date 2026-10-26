@@ -30,7 +30,9 @@ import torch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'data', 'r56')
-MODELS = {'bolt': 'amazon/chronos-bolt-small', 'chronos2': 'amazon/chronos-2', 'chronos2cov': 'amazon/chronos-2'}
+MODELS = {'bolt': 'amazon/chronos-bolt-small', 'chronos2': 'amazon/chronos-2', 'chronos2cov': 'amazon/chronos-2',
+          'bolt40': 'amazon/chronos-bolt-small'}
+HORIZONS = {'bolt40': 40}    # r56-B F9: the 40-day label needs a 40-step path
 CONTEXT, HORIZON, MIN_HIST, BATCH = 512, 20, 60, 256
 
 
@@ -67,7 +69,8 @@ def run(kind, limit=None, panel='panel'):
                                                  'glob': glob[a:t + 1].astype(np.float32)}})
         else:
             ctxs = [torch.tensor(lrv[max(0, t - CONTEXT + 1):t + 1, j], dtype=torch.float32) for t, j in chunk]
-        q, mean = pipe.predict_quantiles(ctxs, prediction_length=HORIZON, quantile_levels=[0.5])
+        q, mean = pipe.predict_quantiles(ctxs, prediction_length=HORIZONS.get(kind, HORIZON), quantile_levels=[0.5],
+                                         **({'limit_prediction_length': False} if kind in HORIZONS else {}))
         # Chronos-Bolt returns one (batch, horizon, q) tensor; Chronos-2 a list of
         # (variates, horizon, q) tensors, one per series.
         med = (np.stack([x[0, :, 0].numpy() for x in q]) if isinstance(q, list) else q[..., 0].numpy())
