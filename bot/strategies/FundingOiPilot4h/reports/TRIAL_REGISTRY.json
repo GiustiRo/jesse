@@ -4074,7 +4074,7 @@
   "regime_trials": {
     "note": "N_régimen (r56+): configuraciones de detectores de régimen evaluadas contra etiquetas fijadas en F0, sin PnL. Es un contador aparte: no suma a n_effective.declared (N de estrategias = 140). Cada configuración se especifica aquí antes de correrla.",
     "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md",
-    "n_regime": 5,
+    "n_regime": 11,
     "ceiling": 30,
     "declared_plan": [
       {
@@ -4111,37 +4111,37 @@
         "id": "C1a",
         "phase": "F2",
         "description": "Jump model continuo online, 2 estados",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "C1b",
         "phase": "F2",
         "description": "Jump model continuo online, 3 estados",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "C2",
         "phase": "F2",
         "description": "Sparse jump model",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "C3",
         "phase": "F2",
         "description": "Wasserstein k-means 1D",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "C4",
         "phase": "F2",
         "description": "HMM gaussiano agrupado, solo filtrado (vara)",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "D1",
         "phase": "F2",
         "description": "BOCPD sobre retornos y log-RV",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "V1",
@@ -4440,6 +4440,90 @@
             }
           }
         }
+      },
+      {
+        "id": "C1a",
+        "phase": "F2",
+        "n_regime_after": 6,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Jump model continuo, 2 estados, agrupado sobre las monedas de desarrollo con datos < inicio del pliegue. Entradas (estandarizadas en el ajuste): sobre retornos normalizados por la vol de 365 días, EWMA de retorno, log-vol y log-downside con vida media 5 y 21, más drawdown desde el máximo de 60 días (7 variables). Centros por coordinate descent (JM discreto, 3 reinicios k-means++, 20 iteraciones). Probabilidades filtradas por el DP del CJM (grilla del símplex con paso 0,05). λ en {10, 50, 200} por log-loss sumada de los tres ejes en el año previo al embargo (λ = 50 si no hay un año de ajuste interno). Logística sobre las probabilidades.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "C1b",
+        "phase": "F2",
+        "n_regime_after": 7,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Igual que C1a con 3 estados (grilla del símplex con paso 0,1).",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "C2",
+        "phase": "F2",
+        "n_regime_after": 8,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Sparse jump model, 3 estados, sobre las entradas de C1 más ADX, ER20/60, T20/60, percentil de ancho BB, squeeze, Donchian/ATR, choppiness, percentil de RV20, VR5 y AC1_60 (19 variables). Pesos Witten–Tibshirani (norma 2 ≤ 1, norma 1 ≤ κ = 3) alternados con el ajuste del JM 5 veces. λ = 50 fijo. Probabilidades filtradas por el CJM con los pesos (paso 0,1). Logística sobre las probabilidades.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "C3",
+        "phase": "F2",
+        "n_regime_after": 9,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Wasserstein k-means 1D (p = 2), k = 3, sobre ventanas de 20 días de retornos de 4h normalizados por la vol diaria de 365 días/√6 (120 observaciones, recortadas a ±10). Ajuste sobre ventanas de las monedas de desarrollo antes del pliegue, una cada 5 días (10 reinicios). Variables: distancias W2² de la ventana actual a los 3 centroides. Logística sobre las distancias.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "C4",
+        "phase": "F2",
+        "n_regime_after": 10,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Vara: HMM gaussiano de 3 regímenes (statsmodels MarkovRegression, media y varianza conmutadas, search_reps = 5), ajustado sobre los retornos normalizados (±10) concatenados de las monedas de desarrollo antes del pliegue. Probabilidades solo filtradas por moneda con los parámetros ajustados, ordenadas por varianza. Logística sobre las probabilidades.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "D1",
+        "phase": "F2",
+        "n_regime_after": 11,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "BOCPD (Adams–MacKay, Normal–Gamma, hazard 1/60, run length truncado en 400) sobre retornos normalizados por la vol de 365 días y sobre la log-RV diaria estandarizada con media/desvío de 365 días: log(1 + run length esperado) y masa posterior en run lengths < 5 (4 variables). Logística.",
+        "status": "registrada, sin resultado"
       }
     ]
   },

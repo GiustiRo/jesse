@@ -347,8 +347,221 @@ SPECS = {
            'spec': 'Logística sobre Hurst DFA-1 de 128 días (escalas 4/8/16/32) de retornos y de |retornos| (2 variables).',
            'feats': lambda: static_feats((ft.fam_B2, 'B2'))},
 }
+# ----------------------------------------------------------------------------------------------
+# Fitted families (F2): state models refitted at each fold on development coins before d0
+# ----------------------------------------------------------------------------------------------
+LAM_GRID = (10.0, 50.0, 200.0)
+LAM_DEFAULT = 50.0
+INNER_DAYS = 365
+CJM_STEP = {2: 0.05, 3: 0.1}
+FOLD_LOG = {}
+
+
+def _fold_cache(cid, qi, build):
+    path = os.path.join(OUT, f'fold_{cid}_{qi}.npy')
+    if os.path.exists(path):
+        return np.load(path)
+    X = build().astype(np.float32)
+    np.save(path, X)
+    return X
+
+
+def _panel_inputs(name, fn):
+    """Stacked (D, M, p) inputs and their names, computed once per process."""
+    if name not in _CTX:
+        _CTX[name] = ft._stack(fn(ctx()['P']))
+    return _CTX[name]
+
+
+def _cjm_probs(X, fit_valid, all_valid, k, lam, w=None):
+    obj, mu, s = ft.jm_fit_panel(X, fit_valid, k, lam, w=w)
+    return ft.cjm_online_panel(X, all_valid, mu, lam, CJM_STEP[k], w=w)
+
+
+def _inner_lambda(Xs, valid, k, q0):
+    """Pick lambda by summed log-loss over the three axes on the year before the embargo."""
+    c = ctx()
+    D = len(c['days'])
+    di = np.arange(D)[:, None]
+    split = q0 - INNER_DAYS
+    first = int(np.argmax(valid.any(1)))
+    if split - first < 365:
+        return LAM_DEFAULT, None
+    dev = (~c['is_hold'])[None, :]
+    scores = {}
+    for lam in LAM_GRID:
+        Pk = _cjm_probs(Xs, valid & dev & (di < split), valid, k, lam)
+        tot = 0.0
+        for axis in AXES:
+            y = c['L'][f'y_{axis}']
+            base = c['P']['elig'] & np.isfinite(y) & dev & np.isfinite(Pk).all(-1)
+            tr = base & (di <= split - EMBARGO)
+            va = base & (di > split) & (di <= q0 - EMBARGO)
+            prep = _prep(Pk[tr])
+            mdl = LogisticRegression(C=1.0, max_iter=3000).fit(prep(Pk[tr]), y[tr].astype(int))
+            pr = np.full((int(va.sum()), AXES[axis]), 1e-12)
+            pr[:, mdl.classes_.astype(int)] = mdl.predict_proba(prep(Pk[va]))
+            tot += float(-np.log(np.clip(pr[np.arange(len(pr)), y[va].astype(int)], 1e-12, 1)).mean())
+        scores[str(lam)] = round(tot, 5)
+    return float(min(scores, key=scores.get)), scores
+
+
+def cjm_feats(cid, k):
+    def f(qi, q0):
+        def build():
+            c = ctx()
+            X, _ = _panel_inputs('jm_X', ft.jm_inputs)
+            di = np.arange(X.shape[0])[:, None]
+            valid = np.isfinite(X).all(-1)
+            fit = valid & (~c['is_hold'])[None, :] & (di < q0)
+            Xs = np.where(valid[..., None], ft.standardise(X, fit), 0.0)
+            lam, sc = _inner_lambda(Xs, valid, k, q0)
+            FOLD_LOG[f'{cid}_{qi}'] = {'lambda': lam, 'inner_logloss': sc}
+            return _cjm_probs(Xs, fit, valid, k, lam)
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+SJM_LAM, SJM_KAPPA, SJM_ROUNDS = 50.0, 3.0, 5
+
+
+def sjm_feats(cid, k=3):
+    def f(qi, q0):
+        def build():
+            c = ctx()
+            X, names = _panel_inputs('sjm_X', ft.sjm_inputs)
+            p = X.shape[2]
+            di = np.arange(X.shape[0])[:, None]
+            valid = np.isfinite(X).all(-1)
+            fit = valid & (~c['is_hold'])[None, :] & (di < q0)
+            Xs = np.where(valid[..., None], ft.standardise(X, fit), 0.0)
+            w = np.ones(p) / np.sqrt(p)
+            for _ in range(SJM_ROUNDS):
+                obj, mu, s = ft.jm_fit_panel(Xs, fit, k, SJM_LAM, w=w)
+                w = ft.sparse_weights(Xs, fit, s, k, SJM_KAPPA)
+            obj, mu, s = ft.jm_fit_panel(Xs, fit, k, SJM_LAM, w=w)
+            FOLD_LOG[f'{cid}_{qi}'] = {'weights': {n: round(float(x), 4) for n, x in zip(names, w) if x > 0}}
+            return ft.cjm_online_panel(Xs, valid, mu, SJM_LAM, CJM_STEP[k], w=w)
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+def returns_4h():
+    """(D, M, 6) 4h log returns per UTC day from the r52 1h klines, cut at 2024-12-31."""
+    if 'r4' in _CTX:
+        return _CTX['r4']
+    c = ctx()
+    D, M = len(c['days']), len(c['syms'])
+    t0 = int(c['days'][0])
+    out = np.full((D * 6, M), np.nan)
+    for j, sname in enumerate(c['syms']):
+        a = np.load(os.path.join(pn.SRC, f'{sname}_1h.npy'))
+        a = a[(a[:, 0] >= t0) & (a[:, 0] <= pn.CUT_MS)]
+        hr = ((a[:, 0] - t0) // 3_600_000).astype(int)
+        cl = np.full(D * 24, np.nan)
+        cl[hr] = a[:, 4]
+        c4 = cl.reshape(D * 6, 4)[:, -1]
+        out[1:, j] = np.diff(np.log(c4))
+    _CTX['r4'] = out.reshape(D, 6, M).transpose(0, 2, 1)
+    return _CTX['r4']
+
+
+WK_K, WK_DAYS, WK_EVERY = 3, 20, 5
+
+
+def wk_windows():
+    """(D, M, 120) vol-normalised 4h returns of days t-19..t (NaN rows where any is missing)."""
+    if 'wk' in _CTX:
+        return _CTX['wk']
+    c = ctx()
+    r4 = returns_4h()
+    D, M, _ = r4.shape
+    sd = ft._shift(ft._std(ft._lr(c['P']), 365, 90), -1) / np.sqrt(6)
+    z = r4 / sd[..., None]
+    W = np.full((D, M, WK_DAYS * 6), np.nan, dtype=np.float32)
+    for t in range(WK_DAYS - 1, D):
+        W[t] = z[t - WK_DAYS + 1:t + 1].transpose(1, 0, 2).reshape(M, -1)
+    _CTX['wk'] = W
+    return W
+
+
+def wk_feats(cid):
+    import r56_models as md
+
+    def f(qi, q0):
+        def build():
+            c = ctx()
+            W = wk_windows()
+            D = W.shape[0]
+            valid = np.isfinite(W).all(-1)
+            di = np.arange(D)[:, None]
+            fit = valid & (~c['is_hold'])[None, :] & (di < q0) & (di % WK_EVERY == 0)
+            lab, C = md.wk_means(np.clip(W[fit], -10, 10), WK_K)
+            Q = np.sort(np.clip(np.where(valid[..., None], W, 0), -10, 10), axis=-1)
+            d2 = np.stack([((Q - C[j]) ** 2).mean(-1) for j in range(WK_K)], axis=-1)
+            d2[~valid] = np.nan
+            return d2
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+def hmm_feats(cid, k=3):
+    from statsmodels.tsa.regime_switching.markov_regression import MarkovRegression
+
+    def f(qi, q0):
+        def build():
+            c = ctx()
+            z = np.clip(ft._vol_norm_returns(c['P']), -10, 10)
+            D, M = z.shape
+            segs = []
+            for j in np.where(~c['is_hold'])[0]:
+                x = z[:q0, j]
+                ok = np.where(np.isfinite(x))[0]
+                if len(ok) > 60:
+                    segs.append(np.nan_to_num(x[ok[0]:]))
+            mdl = MarkovRegression(np.concatenate(segs), k_regimes=k, trend='c', switching_variance=True)
+            res = mdl.fit(disp=False, maxiter=300, search_reps=5)
+            params = np.asarray(res.params)
+            FOLD_LOG[f'{cid}_{qi}'] = {'params': [round(float(x), 5) for x in params]}
+            out = np.full((D, M, k), np.nan)
+            for j in range(M):
+                x = z[:, j]
+                ok = np.where(np.isfinite(x))[0]
+                if len(ok) < 30:
+                    continue
+                a = ok[0]
+                fm = MarkovRegression(np.nan_to_num(x[a:]), k_regimes=k, trend='c', switching_variance=True)
+                pr = np.asarray(fm.filter(params).filtered_marginal_probabilities)
+                out[a:, j] = pr if pr.shape[-1] == k else pr.T
+            # Regimes sorted by variance so the columns mean the same in every fold.
+            return out[..., np.argsort(params[-k:])]
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+SPECS.update({
+    'C1a': {'phase': 'F2', 'axes': list(AXES),
+            'spec': 'Jump model continuo, 2 estados, agrupado sobre las monedas de desarrollo con datos < inicio del pliegue. Entradas (estandarizadas en el ajuste): sobre retornos normalizados por la vol de 365 días, EWMA de retorno, log-vol y log-downside con vida media 5 y 21, más drawdown desde el máximo de 60 días (7 variables). Centros por coordinate descent (JM discreto, 3 reinicios k-means++, 20 iteraciones). Probabilidades filtradas por el DP del CJM (grilla del símplex con paso 0,05). λ en {10, 50, 200} por log-loss sumada de los tres ejes en el año previo al embargo (λ = 50 si no hay un año de ajuste interno). Logística sobre las probabilidades.',
+            'feats': lambda: cjm_feats('C1a', 2)},
+    'C1b': {'phase': 'F2', 'axes': list(AXES),
+            'spec': 'Igual que C1a con 3 estados (grilla del símplex con paso 0,1).',
+            'feats': lambda: cjm_feats('C1b', 3)},
+    'C2': {'phase': 'F2', 'axes': list(AXES),
+           'spec': 'Sparse jump model, 3 estados, sobre las entradas de C1 más ADX, ER20/60, T20/60, percentil de ancho BB, squeeze, Donchian/ATR, choppiness, percentil de RV20, VR5 y AC1_60 (19 variables). Pesos Witten–Tibshirani (norma 2 ≤ 1, norma 1 ≤ κ = 3) alternados con el ajuste del JM 5 veces. λ = 50 fijo. Probabilidades filtradas por el CJM con los pesos (paso 0,1). Logística sobre las probabilidades.',
+           'feats': lambda: sjm_feats('C2', 3)},
+    'C3': {'phase': 'F2', 'axes': list(AXES),
+           'spec': 'Wasserstein k-means 1D (p = 2), k = 3, sobre ventanas de 20 días de retornos de 4h normalizados por la vol diaria de 365 días/√6 (120 observaciones, recortadas a ±10). Ajuste sobre ventanas de las monedas de desarrollo antes del pliegue, una cada 5 días (10 reinicios). Variables: distancias W2² de la ventana actual a los 3 centroides. Logística sobre las distancias.',
+           'feats': lambda: wk_feats('C3')},
+    'C4': {'phase': 'F2', 'axes': list(AXES),
+           'spec': 'Vara: HMM gaussiano de 3 regímenes (statsmodels MarkovRegression, media y varianza conmutadas, search_reps = 5), ajustado sobre los retornos normalizados (±10) concatenados de las monedas de desarrollo antes del pliegue. Probabilidades solo filtradas por moneda con los parámetros ajustados, ordenadas por varianza. Logística sobre las probabilidades.',
+           'feats': lambda: hmm_feats('C4', 3)},
+    'D1': {'phase': 'F2', 'axes': list(AXES),
+           'spec': 'BOCPD (Adams–MacKay, Normal–Gamma, hazard 1/60, run length truncado en 400) sobre retornos normalizados por la vol de 365 días y sobre la log-RV diaria estandarizada con media/desvío de 365 días: log(1 + run length esperado) y masa posterior en run lengths < 5 (4 variables). Logística.',
+           'feats': lambda: static_feats((ft.fam_D1, 'D1'))},
+})
+
 STATIC_FAMS = {'T90': [ft.fam_T90], 'A1': [ft.fam_A1], 'A2': [ft.fam_A2], 'A3': [], 'B1': [ft.fam_B1],
-               'B2': [ft.fam_B2]}
+               'B2': [ft.fam_B2], 'D1': [ft.fam_D1]}
 
 
 # ----------------------------------------------------------------------------------------------
@@ -409,6 +622,7 @@ def run(phase):
                 ev[period], gd = evaluate(preds, axis, 'dev', period)
                 series[f'{axis}_{period}'] = gd
             out['axes'][axis] = ev
+        out['fold_log'] = {k: v for k, v in FOLD_LOG.items() if k.startswith(cid + '_')}
         out['seconds'] = round(time.time() - t0, 1)
         np.savez(os.path.join(OUT, f'gain_{cid}.npz'), **series)
         res[cid] = out
