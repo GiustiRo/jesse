@@ -3458,11 +3458,35 @@
       "phase": "M1",
       "date_utc": "2026-10-26",
       "decision": "no pasa (AUC OOS 0,425; canasta alts -0,09 Sharpe; P1 -0,065)"
+    },
+    {
+      "id": "R55_F1_E1",
+      "hypothesis": "C6 como núcleo: P1 sin R1/BTC ni R1/ETH, construcción recalculada",
+      "round": "r55",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
+    },
+    {
+      "id": "R55_F1_E2",
+      "hypothesis": "R1/BTC y R1/ETH escalados por el estado B (x1 alcista, x0,5 lateral, x0 bajista)",
+      "round": "r55",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
+    },
+    {
+      "id": "R55_F1_E3",
+      "hypothesis": "Seguro corto BTC en estado B bajista, -0,25*0,17/sigma30 (techo 0,5x), overlay sobre P1",
+      "round": "r55",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 125,
+    "declared": 128,
     "sensitivity": [
       20,
       200
@@ -3482,7 +3506,8 @@
     "r51_note": "+10 por A1–A5, B1–B3, T1–T2 (2026-10-25). P2 = P1, no suma.",
     "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario.",
     "r53_note": "+7: Y1–Y6, C6q (2026-10-26).",
-    "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma."
+    "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma.",
+    "r55_note": "+3: E1-E3 (2026-10-26), registrados antes de correr. Techo r55: 143."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
