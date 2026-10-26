@@ -35,7 +35,16 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r51, 2026-10-25)
+## Decisiones vigentes (r52, 2026-10-26)
+
+- **r52 cerrada (2026-10-26)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r52/PROTOCOL_R52.md), [handoff a r53](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r52/HANDOFF_R53.md)): universo de 50 perpetuos cripto activos (sin deslistados, decisión del usuario).
+  - Ninguna manga nueva pasa; P1 sigue sin cambios; 2025 sellado sin abrir. N = 116, sin techo por decisión del usuario.
+  - El ranking ML tiene IC semanal 0,106 (t 5,6), pero las colas de la pata corta anulan el spread medio.
+  - El reloj del flujo (QOI) replica (t 2,9), pero no paga costos solo. El jump model no mejora a P1.
+  - Datos: `research_scripts/r52_download.py` (host; el DNS del contenedor cayó).
+- Mandato del usuario: investigación autónoma, rondas siguientes en sesiones nuevas.
+
+## Decisiones r51 (2026-10-25)
 
 - **r51 cerrada (2026-10-25)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R51_CLOSE_20261025.md)): P1 sigue sin cambios, ahora confirmada en Jesse (10/10 corridas). En 2021–25 la curva R1/bono se toma de Jesse. Ninguna de las 10 mangas nuevas pasa (cortos, bono/WTI propios, pronósticos Carver). A3 (spread Brent–WTI, Sharpe 1,21) quedó vetado por el DD de 2013 y es la hipótesis a preregistrar en r52. N = 108.
 - r51 (2026-10-25), plan aprobado por el usuario:

@@ -3289,11 +3289,90 @@
       "sharpe_veto": 0.291,
       "rho_p1": 0.565,
       "decision": "no reemplaza a R1 en P1 (Sharpe 2018-09+ -0,08)"
+    },
+    {
+      "id": "R52_F1_X0",
+      "hypothesis": "Ranking momentum 1/4/12 semanas, L/S quintiles, U50",
+      "round": "r52",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.372,
+      "sharpe_val2024": -0.431,
+      "ic_dev": -0.051,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos, val2024_pos"
+    },
+    {
+      "id": "R52_F1_X1",
+      "hypothesis": "Ranking elastic net CTREND, L/S quintiles, U50",
+      "round": "r52",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.016,
+      "sharpe_val2024": -0.297,
+      "ic_dev": 0.106,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos, val2024_pos"
+    },
+    {
+      "id": "R52_F1_X2",
+      "hypothesis": "Ranking gradient boosting, L/S quintiles, U50",
+      "round": "r52",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": 0.17,
+      "sharpe_val2024": 0.242,
+      "ic_dev": 0.083,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos"
+    },
+    {
+      "id": "R52_F1_X3",
+      "hypothesis": "X2 solo largo, cubierto con BTC/ETH por beta",
+      "round": "r52",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": 0.151,
+      "sharpe_val2024": -0.04,
+      "ic_dev": null,
+      "decision": "no pasa: sharpe_ge_0_5, val2024_pos"
+    },
+    {
+      "id": "R52_F2_Q1",
+      "hypothesis": "IC del QOI (cuarto de hora) vs retorno 8h, BTC/ETH",
+      "round": "r52",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "t_nw": 2.94,
+      "decision": "pasa (t>=2)"
+    },
+    {
+      "id": "R52_F2_Q2",
+      "hypothesis": "Regla 4h QOI z>1/<-1, 8h, BTC/ETH",
+      "round": "r52",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.473,
+      "decision": "no pasa"
+    },
+    {
+      "id": "R52_F2_Q3",
+      "hypothesis": "Q2 congelada en 20 alts",
+      "round": "r52",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -1.722,
+      "decision": "no pasa"
+    },
+    {
+      "id": "R52_F3_J1",
+      "hypothesis": "Jump model BTC, mitad de tamaño cripto en riesgo",
+      "round": "r52",
+      "phase": "F3",
+      "date_utc": "2026-10-26",
+      "decision": "no pasa (dSharpe 2018-09..2024 -0,06)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 108,
+    "declared": 116,
     "sensitivity": [
       20,
       200
@@ -3310,7 +3389,8 @@
     "r50_f1e_note": "+2 por K1r y P3 (2026-10-25).",
     "r50_f1f_note": "+2 por R1 amplio y P4 (2026-10-25).",
     "r50_f1g_note": "+4 por G1, G2, G3 y P5 (2026-10-25).",
-    "r51_note": "+10 por A1–A5, B1–B3, T1–T2 (2026-10-25). P2 = P1, no suma."
+    "r51_note": "+10 por A1–A5, B1–B3, T1–T2 (2026-10-25). P2 = P1, no suma.",
+    "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -3735,5 +3815,17 @@
     "dsr_common": 0.73,
     "report": "strategies/FundingOiPilot4h/reports/R51_CLOSE_20261025.md",
     "notable": "A3 (spread Brent–WTI) Sharpe 1,21 / 1,18 y ρ −0,05, vetado por DD de la lente larga en 2013; queda para r52 como hipótesis nueva preregistrada."
+  },
+  "r52_closed": {
+    "date": "2026-10-26",
+    "candidate": "P1 sin cambios",
+    "n_final": 116,
+    "sealed_2025": "sin abrir (ninguna manga nueva pasó)",
+    "findings": [
+      "Ranking ML con IC semanal 0,106 (t 5,6) pero spread medio ~0 por colas de la pata corta",
+      "Reversión semanal: momentum 1/4/12 con IC -0,051 (t -2,9)",
+      "Reloj del flujo (QOI) replica t 2,9 pero no paga costos solo",
+      "Jump model no mejora P1"
+    ]
   }
 }
