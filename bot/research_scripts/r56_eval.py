@@ -55,24 +55,36 @@ def ms(day):
     return int(pd.Timestamp(day, tz='UTC').value // 10**6)
 
 
+MODE70 = False   # r56 F10: the 70-coin panel (U50 + N2); every cache gets the CACHE_SFX suffix
+CACHE_SFX = ''
+
+
+def src_of(sym):
+    """Folder holding a coin's raw r52-format files (N2 coins live in data/r56/n2)."""
+    p = os.path.join(pn.N2_DIR, f'{sym}_1h.npy')
+    return pn.N2_DIR if os.path.exists(p) else pn.SRC
+
+
 def ctx():
     if _CTX:
         return _CTX
-    z = np.load(os.path.join(OUT, 'panel.npz'))
+    z = np.load(os.path.join(OUT, 'panel70.npz' if MODE70 else 'panel.npz'))
     P = {k: z[k] for k in ('o', 'h', 'l', 'c', 'rv', 'qv', 'atr')}
     P['elig'] = z['elig']
     days, syms = z['day_ms'], [str(s) for s in z['syms']]
-    L = dict(np.load(os.path.join(OUT, 'labels.npz')))
+    L = dict(np.load(os.path.join(OUT, 'labels70.npz' if MODE70 else 'labels.npz')))
     hold = json.load(open(os.path.join(OUT, 'holdout.json')))['holdout']
     is_hold = np.array([s in hold for s in syms])
+    is_n2 = z['is_n2'] if MODE70 else np.zeros(len(syms), bool)
     q = pd.date_range(EVAL_FROM, '2024-10-01', freq='QS', tz='UTC')
     qidx = [int(np.searchsorted(days, t.value // 10**6)) for t in q] + [len(days)]
     years = pd.to_datetime(days, unit='ms', utc=True).year.values
     L.update(exit_labels(P, L, days))
     h40 = os.path.join(OUT, 'labels_h40.npz')
-    if os.path.exists(h40):
+    if os.path.exists(h40) and not MODE70:
         L.update({f'{k}40': v for k, v in np.load(h40).items()})
-    _CTX.update(P=P, days=days, syms=syms, L=L, is_hold=is_hold, qidx=qidx, years=years)
+    _CTX.update(P=P, days=days, syms=syms, L=L, is_hold=is_hold, is_n2=is_n2, is_dev=~is_hold & ~is_n2,
+                qidx=qidx, years=years)
     return _CTX
 
 
@@ -99,7 +111,7 @@ def eval_mask(axis, coins='dev'):
     L = c['L']
     m = (c['P']['elig'] & np.isfinite(L[f'y_{axis}']) & np.isfinite(L[f'persist_{axis}'])
          & np.isfinite(L[f'clim_{axis}']).all(-1) & (c['days'] >= ms(EVAL_FROM))[:, None])
-    cm = ~c['is_hold'] if coins == 'dev' else c['is_hold']
+    cm = {'dev': c['is_dev'], 'hold': c['is_hold'], 'n2': c['is_n2']}[coins]
     return m & cm[None, :]
 
 
@@ -146,7 +158,7 @@ def fit_predict(feats, axis, coins='dev', kind='logit'):
     D, M = y.shape
     preds = np.full((D, M, n_cls), np.nan)
     test_all = eval_mask(axis, coins)
-    train_base = c['P']['elig'] & np.isfinite(y) & (~c['is_hold'])[None, :]
+    train_base = c['P']['elig'] & np.isfinite(y) & c['is_dev'][None, :]
     di = np.arange(D)[:, None]
     emb = 2 * HORIZON[axis]       # the label window plus the same again, as in the protocol
     for qi in range(len(c['qidx']) - 1):
@@ -173,7 +185,7 @@ def fit_predict(feats, axis, coins='dev', kind='logit'):
 
 def static(fam_fn, name):
     """Cache a static family to data/r56/feat_<name>.npz; returns (array, names)."""
-    path = os.path.join(OUT, f'feat_{name}.npz')
+    path = os.path.join(OUT, f'feat_{name}{CACHE_SFX}.npz')
     if os.path.exists(path):
         z = np.load(path)
         names = [str(s) for s in z['names']]
@@ -190,7 +202,7 @@ def truncation_test(fam_fn, seed=56):
     c = ctx()
     P = c['P']
     rng = np.random.default_rng(seed)
-    dev_cols = np.where(~c['is_hold'])[0]
+    dev_cols = np.where(c['is_dev'])[0]
     cols = np.sort(rng.choice(dev_cols, TRUNC_COINS, replace=False))
     D = len(c['days'])
     taus = np.sort(rng.choice(np.arange(400, D), TRUNC_DATES, replace=False))
@@ -394,7 +406,7 @@ CHRONOS_SFX = ''      # '_panel70' in r56 F10, where the forecasts cover the N2 
 
 
 def _fold_cache(cid, qi, build):
-    path = os.path.join(OUT, f'fold_{cid}_{qi}.npy')
+    path = os.path.join(OUT, f'fold_{cid}_{qi}{CACHE_SFX}.npy')
     if os.path.exists(path):
         return np.load(path)
     X = build().astype(np.float32)
@@ -423,7 +435,7 @@ def _inner_lambda(Xs, valid, k, q0):
     first = int(np.argmax(valid.any(1)))
     if split - first < 365:
         return LAM_DEFAULT, None
-    dev = (~c['is_hold'])[None, :]
+    dev = c['is_dev'][None, :]
     scores = {}
     for lam in LAM_GRID:
         Pk = _cjm_probs(Xs, valid & dev & (di < split), valid, k, lam)
@@ -449,7 +461,7 @@ def cjm_feats(cid, k):
             X, _ = _panel_inputs('jm_X', ft.jm_inputs)
             di = np.arange(X.shape[0])[:, None]
             valid = np.isfinite(X).all(-1)
-            fit = valid & (~c['is_hold'])[None, :] & (di < q0)
+            fit = valid & c['is_dev'][None, :] & (di < q0)
             Xs = np.where(valid[..., None], ft.standardise(X, fit), 0.0)
             lam, sc = _inner_lambda(Xs, valid, k, q0)
             FOLD_LOG[f'{cid}_{qi}'] = {'lambda': lam, 'inner_logloss': sc}
@@ -469,7 +481,7 @@ def sjm_feats(cid, k=3):
             p = X.shape[2]
             di = np.arange(X.shape[0])[:, None]
             valid = np.isfinite(X).all(-1)
-            fit = valid & (~c['is_hold'])[None, :] & (di < q0)
+            fit = valid & c['is_dev'][None, :] & (di < q0)
             Xs = np.where(valid[..., None], ft.standardise(X, fit), 0.0)
             w = np.ones(p) / np.sqrt(p)
             for _ in range(SJM_ROUNDS):
@@ -491,7 +503,7 @@ def returns_4h():
     t0 = int(c['days'][0])
     out = np.full((D * 6, M), np.nan)
     for j, sname in enumerate(c['syms']):
-        a = np.load(os.path.join(pn.SRC, f'{sname}_1h.npy'))
+        a = np.load(os.path.join(src_of(sname), f'{sname}_1h.npy'))
         a = a[(a[:, 0] >= t0) & (a[:, 0] <= pn.CUT_MS)]
         hr = ((a[:, 0] - t0) // 3_600_000).astype(int)
         cl = np.full(D * 24, np.nan)
@@ -531,7 +543,7 @@ def wk_feats(cid):
             D = W.shape[0]
             valid = np.isfinite(W).all(-1)
             di = np.arange(D)[:, None]
-            fit = valid & (~c['is_hold'])[None, :] & (di < q0) & (di % WK_EVERY == 0)
+            fit = valid & c['is_dev'][None, :] & (di < q0) & (di % WK_EVERY == 0)
             lab, C = md.wk_means(np.clip(W[fit], -10, 10), WK_K)
             Q = np.sort(np.clip(np.where(valid[..., None], W, 0), -10, 10), axis=-1)
             d2 = np.stack([((Q - C[j]) ** 2).mean(-1) for j in range(WK_K)], axis=-1)
@@ -550,7 +562,7 @@ def hmm_feats(cid, k=3):
             z = np.clip(ft._vol_norm_returns(c['P']), -10, 10)
             D, M = z.shape
             segs = []
-            for j in np.where(~c['is_hold'])[0]:
+            for j in np.where(c['is_dev'])[0]:
                 x = z[:q0, j]
                 ok = np.where(np.isfinite(x))[0]
                 if len(ok) > 60:
@@ -627,7 +639,7 @@ def _har_z(q0, extra=None):
     X = np.stack(cols, -1)
     D = X.shape[0]
     di = np.arange(D)[:, None]
-    tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - EMBARGO) & np.isfinite(X).all(-1)
+    tr = (c['P']['elig'] & c['is_dev'][None, :] & (di <= q0 - EMBARGO) & np.isfinite(X).all(-1)
           & np.isfinite(h['target']))
     A = np.column_stack([np.ones(int(tr.sum())), X[tr]])
     beta, *_ = np.linalg.lstsq(A, h['target'][tr], rcond=None)
@@ -669,13 +681,13 @@ def xs_inputs():
     fund = np.zeros((D, M))
     imb_num, imb_den = np.full((D, M), np.nan), np.full((D, M), np.nan)
     for j, s in enumerate(c['syms']):
-        f = np.load(os.path.join(pn.SRC, f'{s}_funding.npy'))
+        f = np.load(os.path.join(src_of(s), f'{s}_funding.npy'))
         if len(f):
             f = f[f[:, 0] <= pn.CUT_MS]
             d = ((f[:, 0] - t0) // DAY).astype(int)
             ok = (d >= 0) & (d < D)
             np.add.at(fund[:, j], d[ok], f[ok, 1])
-        a = np.load(os.path.join(pn.SRC, f'{s}_1h.npy'))
+        a = np.load(os.path.join(src_of(s), f'{s}_1h.npy'))
         a = a[(a[:, 0] >= t0) & (a[:, 0] <= pn.CUT_MS)]
         d = ((a[:, 0] - t0) // DAY).astype(int)
         v, tb = np.zeros(D), np.zeros(D)
@@ -718,7 +730,7 @@ def ms_har_feats(cid):
             z = np.clip((lrv - m365) / s365, -6, 6)
             D, M = z.shape
             segs = []
-            for j in np.where(~c['is_hold'])[0]:
+            for j in np.where(c['is_dev'])[0]:
                 x = z[:q0, j]
                 ok = np.where(np.isfinite(x))[0]
                 if len(ok) > 60:
@@ -785,7 +797,7 @@ def global_feats(qi, q0):
         _CTX['g_static'] = np.concatenate([static(f, n)[0] for n, f in G_STATIC], axis=2)
     folds = []
     for cid in G_FOLD:
-        X = np.load(os.path.join(OUT, f'fold_{cid}_{qi}.npy'))
+        X = np.load(os.path.join(OUT, f'fold_{cid}_{qi}{CACHE_SFX}.npy'))
         folds.append(X[..., -1:] if cid == 'V3' else X)
     return np.concatenate([_CTX['g_static']] + folds, axis=2)
 
@@ -797,7 +809,7 @@ def chronos_feats(cid, kind, hz=20):
             h = har_inputs(hz)
             pred = np.load(os.path.join(OUT, f'chronos_{kind}{CHRONOS_SFX}.npy')).astype(float)
             di = np.arange(pred.shape[0])[:, None]
-            tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - 2 * hz) & np.isfinite(pred)
+            tr = (c['P']['elig'] & c['is_dev'][None, :] & (di <= q0 - 2 * hz) & np.isfinite(pred)
                   & np.isfinite(h['target']))
             sig = float(np.std(h['target'][tr] - pred[tr]))
             FOLD_LOG[f'{cid}_{qi}'] = {'sigma': round(sig, 4), 'bias': round(float(np.mean(h['target'][tr] - pred[tr])), 4)}
@@ -1144,7 +1156,8 @@ def fam_hexp(P):
     for com in HEXP_COM:
         cols[f'ew{com}'] = ft._df(lrv).ewm(com=com, min_periods=min(com, 20)).mean().values - m365
     with np.errstate(all='ignore'):
-        g = np.nanmean(np.where(P['elig'], cols['ew25'], np.nan), axis=1)
+        # Over the first 50 columns (U50) only, so N2 coins never move the factor in F10.
+        g = np.nanmean(np.where(P['elig'][:, :50], cols['ew25'][:, :50], np.nan), axis=1)
     cols['glob25'] = np.repeat(pn._shift(g[:, None], -1), lrv.shape[1], axis=1)
     return {k: np.where(np.isfinite(v), v, np.nan) for k, v in cols.items()}
 
@@ -1166,7 +1179,7 @@ def _hexp_z(q0, glob, hz=20):
     y = h['target'] - base
     D = X.shape[0]
     di = np.arange(D)[:, None]
-    tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - 2 * hz) & np.isfinite(X).all(-1)
+    tr = (c['P']['elig'] & c['is_dev'][None, :] & (di <= q0 - 2 * hz) & np.isfinite(X).all(-1)
           & np.isfinite(y))
     A = np.column_stack([np.ones(int(tr.sum())), X[tr]])
     beta, *_ = np.linalg.lstsq(A, y[tr], rcond=None)
@@ -1237,6 +1250,115 @@ SPECS.update({
            'feats': lambda: static_feats((ft.fam_A1, 'A1'), (ft.fam_A2, 'A2'))},
 })
 
+# ----------------------------------------------------------------------------------------------
+# r56-B F10: one-time validation on the fresh N2 coins and the amended bridge
+# ----------------------------------------------------------------------------------------------
+F10_AXES = ('vol', 'trend', 'range', 'vol40', 'trend40', 'range40')
+PHASE_FILES = ('f1', 'f2', 'f3', 'f4', 'f7', 'f8', 'f9')
+
+
+def _phase_results():
+    out = {}
+    for ph in PHASE_FILES:
+        p = os.path.join(OUT, f'{ph}.json')
+        if os.path.exists(p):
+            out.update(json.load(open(p)))
+    return out
+
+
+_LSW = {}
+
+
+def _label_switches(axis, period):
+    """Label switches on the evaluation rows (F1-F4 results predate the stored figure)."""
+    key = (axis, period, MODE70)
+    if key not in _LSW:
+        m = eval_mask(axis, 'dev') & period_rows(period)[:, None]
+        _LSW[key] = _switches(np.where(m, ctx()['L'][f'y_{axis}'], -1), m)
+    return _LSW[key]
+
+
+def _cap_ok(ev, axis, period=None):
+    base = axis[:-2] if axis.endswith('40') else axis
+    lsw = ev.get('label_switches_per_year') or _label_switches(axis, period)
+    return ev['switches_per_year'] <= f_mkt(base, HORIZON[axis]) * lsw
+
+
+def select_f10():
+    """Per bridge axis and horizon, the configuration with the best mean of development and 2024
+    BSS, both > 0, whose operable state meets the amended criterion 4a in both periods."""
+    picks = {}
+    for cid, r in _phase_results().items():
+        if SPECS.get(cid, {}).get('baseline'):
+            continue
+        for axis, ev in r['axes'].items():
+            if axis not in F10_AXES:
+                continue
+            d, v = ev['dev'], ev['val']
+            if d['bss'] > 0 and v['bss'] > 0 and _cap_ok(d, axis, 'dev') and _cap_ok(v, axis, 'val'):
+                sc = (d['bss'] + v['bss']) / 2
+                if axis not in picks or sc > picks[axis][1]:
+                    picks[axis] = (cid, sc)
+    return {a: c for a, (c, _) in picks.items()}
+
+
+def apply_picks(preds, kind, picks):
+    """Stabilised states with the per-quarter parameters chosen on development coins."""
+    c = ctx()
+    out = np.full(preds.shape[:2], -1, dtype=int)
+    runs = {p: stabilise(preds, kind, p) for p in set(picks)}
+    for qi, p in enumerate(picks):
+        q0, q1 = c['qidx'][qi], c['qidx'][qi + 1]
+        out[q0:q1] = runs[p][q0:q1]
+    return out
+
+
+def bridge_v2(axis, cid, dev_ev, val_ev, ev, spa_p):
+    lead = ev['lead_median']
+    yrs = [v for k, v in ev['bss_by_year'].items() if k in ('2021', '2022', '2023', '2024')]
+    checks = {
+        '1_dev_bss>=0.05': dev_ev['bss'] >= 0.05, '1_spa_p<0.05': spa_p < 0.05,
+        '2_val_bss>0': val_ev['bss'] > 0, '2_n2_bss>0': ev['bss'] > 0, '2_n2_dm_p<0.10': ev['dm_p'] < 0.10,
+        '3_n2_coins_pos>=0.6': (ev['coin_bss_pos_share'] or 0) >= 0.6,
+        '3_years_pos>=3of4': sum(x > 0 for x in yrs) >= 3,
+        '4a_switches<=f_mkt*label': _cap_ok(ev, axis),
+        '4b_lead>=persist+3': (lead['model'] - lead['persistence']) >= 3,
+        '4c_calibration_0.7-1.3': all(0.7 <= x <= 1.3 for x in ev['calibration_slopes']),
+    }
+    return {'config': cid, 'axis': axis, 'checks': checks, 'passes': all(checks.values())}
+
+
+def run_f10():
+    global MODE70, CACHE_SFX, CHRONOS_SFX
+    picks = select_f10()
+    results = _phase_results()
+    spa_dev = spa('dev')                       # over every registered configuration (U50 gains)
+    MODE70, CACHE_SFX, CHRONOS_SFX = True, '_70', '_panel70'
+    _CTX.clear()
+    c = ctx()
+    assert c['is_n2'].sum() == 20 and (c['is_dev'] == (~c['is_hold'] & ~c['is_n2'])).all()
+    out = {'selection': picks, 'spa_dev': spa_dev, 'axes': {}}
+    for axis, cid in picks.items():
+        sp = SPECS[cid]
+        base = SPECS[sp['stab'][0]] if 'stab' in sp else sp
+        kind = sp['stab'][1] if 'stab' in sp else sp.get('stabiliser')
+        qpicks = results[cid].get('picks', {}).get(axis)
+        feats = base['feats']()
+        res_axis = {'config': cid}
+        for coins in ('n2', 'hold'):
+            preds = fit_predict(feats, axis, coins=coins, kind=base.get('model', 'logit'))
+            np.save(os.path.join(OUT, f'pred_{coins}_{cid}_{axis}.npy'), preds.astype(np.float32))
+            states = apply_picks(preds, kind, qpicks) if kind else None
+            res_axis[coins] = {p: evaluate(preds, axis, coins, p, states=states)[0] for p in ('all', 'dev', 'val')}
+        r = results[cid]['axes'][axis]
+        sp_axis = spa_dev.get(axis, {}).get('spa_p', 1.0)
+        res_axis['bridge'] = bridge_v2(axis, cid, r['dev'], r['val'], res_axis['n2']['all'], sp_axis)
+        res_axis['bridge_hold_second_look'] = bridge_v2(axis, cid, r['dev'], r['val'], res_axis['hold']['all'], sp_axis)
+        out['axes'][axis] = res_axis
+        print(axis, cid, json.dumps(res_axis['bridge']), flush=True)
+    json.dump(out, open(os.path.join(OUT, 'f10.json'), 'w'), indent=2)
+    return out
+
 
 def main():
     a = sys.argv[1:]
@@ -1246,6 +1368,10 @@ def main():
         run(a[1])
     elif a and a[0] == 'selftest_stab':
         selftest_stab()
+    elif a and a[0] == 'f10':
+        run_f10()
+    elif a and a[0] == 'f10_select':
+        print(select_f10())
     elif a and a[0] == 'f5':
         run_f5()
     elif a and a[0] == 'spa':

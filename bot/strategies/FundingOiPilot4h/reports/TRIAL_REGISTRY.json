@@ -5353,7 +5353,19 @@
         ],
         "model": "logit",
         "spec": "Y_vol a 40 días con T1: Chronos-Bolt zero-shot con trayectoria de 40 pasos (log de la suma de la mediana como pronóstico de log RV(t+1..t+40)), z a los terciles de las sumas de 40 días del año previo; σ de residuos del pliegue; embargo 80 días. Logística. St2.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol40": {
+            "dev": {
+              "bss": 0.1581,
+              "dm_p": 0.004
+            },
+            "val": {
+              "bss": 0.1917,
+              "dm_p": 0.002
+            }
+          }
+        }
       },
       {
         "id": "P2",
@@ -5365,7 +5377,19 @@
         ],
         "model": "logit",
         "spec": "Y_vol a 40 días con K1 (la mejor de F8 sin T3; enmienda F9-1): variables de P1 más HExpGl ajustado sobre el objetivo de 40 días (base m365 + ln 40). Logística. St2.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol40": {
+            "dev": {
+              "bss": 0.1285,
+              "dm_p": 0.0065
+            },
+            "val": {
+              "bss": 0.1977,
+              "dm_p": 0.003
+            }
+          }
+        }
       },
       {
         "id": "P3",
@@ -5377,7 +5401,19 @@
         ],
         "model": "logit",
         "spec": "Y_trend a 40 días (eficiencia ≥ 0,25) con las variables de A3 (A1 + A2). Logística, embargo 80 días. St2.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "trend40": {
+            "dev": {
+              "bss": -0.0222,
+              "dm_p": 0.8765
+            },
+            "val": {
+              "bss": 0.0734,
+              "dm_p": 0.004
+            }
+          }
+        }
       },
       {
         "id": "P4",
@@ -5389,7 +5425,19 @@
         ],
         "model": "logit",
         "spec": "Y_trend a 40 días con las distancias Wasserstein de C3 (mismos pliegues de F2). Logística, embargo 80 días. St2.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "trend40": {
+            "dev": {
+              "bss": 0.0517,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.0486,
+              "dm_p": 0.0245
+            }
+          }
+        }
       },
       {
         "id": "P5",
@@ -5401,7 +5449,19 @@
         ],
         "model": "logit",
         "spec": "Y_range a 40 días (caja ±4,0·ATR20) con las variables de A3. Logística, embargo 80 días. St2.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "range40": {
+            "dev": {
+              "bss": 0.1371,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.1626,
+              "dm_p": 0.0305
+            }
+          }
+        }
       }
     ],
     "ceiling_history": [
