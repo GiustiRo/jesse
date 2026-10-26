@@ -12,7 +12,6 @@ and are skipped. Output: data/r52/<SYMBOL>_1h.npy, _funding.npy, _q15.npy plus m
     python research_scripts/r52_download.py [--workers 8]
 """
 import argparse
-import csv
 import hashlib
 import io
 import json
@@ -52,8 +51,9 @@ def fetch(url):
     raise RuntimeError(f'failed after {RETRIES} tries: {url}')
 
 
-def zip_rows(url):
-    """CSV rows of a checksum-verified monthly ZIP (header row dropped if present)."""
+def zip_frame(url):
+    """DataFrame of a checksum-verified monthly ZIP (no header; header row dropped if present)."""
+    import pandas as pd
     raw = fetch(url)
     if raw is None:
         return None
@@ -63,35 +63,37 @@ def zip_rows(url):
         if hashlib.sha256(raw).hexdigest() != want:
             raise RuntimeError(f'checksum mismatch: {url}')
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
-        text = z.read(z.namelist()[0]).decode()
-    rows = list(csv.reader(io.StringIO(text)))
-    if rows and not rows[0][0].lstrip('-').isdigit():
-        rows = rows[1:]
-    return rows
+        df = pd.read_csv(z.open(z.namelist()[0]), header=None, low_memory=False)
+    if not str(df.iat[0, 0]).lstrip('-').isdigit():
+        df = df.iloc[1:]
+    return df.apply(pd.to_numeric, errors='coerce')
 
 
-def klines(sym, interval):
-    out = []
+def klines(sym, interval, reduce=None):
+    """Monthly klines as [open_time, open, high, low, close, volume, quote_volume, taker_buy
+    volume]; `reduce` maps each month's array to a smaller one (1m -> quarter hours) so the
+    raw minutes never sit in memory all at once."""
+    parts = []
     for m in MONTHS:
-        rows = zip_rows(f'{BASE}/klines/{sym}/{interval}/{sym}-{interval}-{m}.zip')
-        if rows:
-            out.extend(rows)
-    if not out:
-        return np.zeros((0, 8))
-    # open_time, open, high, low, close, volume, quote_volume, taker_buy_volume
-    a = np.array([[float(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5]),
-                   float(r[7]), float(r[9])] for r in out])
+        df = zip_frame(f'{BASE}/klines/{sym}/{interval}/{sym}-{interval}-{m}.zip')
+        if df is None or not len(df):
+            continue
+        a = df.iloc[:, [0, 1, 2, 3, 4, 5, 7, 9]].to_numpy(dtype=float)
+        a = a[np.argsort(a[:, 0])]
+        parts.append(reduce(a) if reduce else a)
+    if not parts:
+        return np.zeros((0, 5 if reduce else 8))
+    a = np.vstack(parts)
     a = a[np.argsort(a[:, 0])]
-    keep = np.r_[True, np.diff(a[:, 0]) > 0]
-    return a[keep]
+    return a[np.r_[True, np.diff(a[:, 0]) > 0]]
 
 
 def funding(sym):
     out = []
     for m in MONTHS:
-        rows = zip_rows(f'{BASE}/fundingRate/{sym}/{sym}-fundingRate-{m}.zip')
-        if rows:
-            out.extend([float(r[0]), float(r[2])] for r in rows)
+        df = zip_frame(f'{BASE}/fundingRate/{sym}/{sym}-fundingRate-{m}.zip')
+        if df is not None and len(df):
+            out.extend(df.iloc[:, [0, 2]].to_numpy(dtype=float).tolist())
     a = np.array(out) if out else np.zeros((0, 2))
     return a[np.argsort(a[:, 0])] if len(a) else a
 
@@ -131,8 +133,7 @@ def one(item):
     if need_q:
         pq = os.path.join(OUT, f'{sym}_q15.npy')
         if not os.path.exists(pq):
-            m1 = klines(sym, '1m')
-            np.save(pq, quarter_hours(m1) if len(m1) else np.zeros((0, 5)))
+            np.save(pq, klines(sym, '1m', reduce=quarter_hours))
         res['q15_rows'] = int(len(np.load(pq)))
     log(json.dumps(res))
     return res

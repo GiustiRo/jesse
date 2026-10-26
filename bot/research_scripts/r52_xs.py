@@ -174,7 +174,10 @@ def weekly_weights(S, score, mode, lr):
         n = len(g)
         q = max(1, int(math.ceil(n / 5)))
         g = g.sort_values('score')
-        inv = 1 / g['vol30_raw'].clip(lower=1e-4)
+        # A coin with a data hole has no 30-day vol; it takes the week's median (bug fix found
+        # by the F0 synthetic check, before any F1 result).
+        vol = g['vol30_raw'].fillna(g['vol30_raw'].median())
+        inv = 1 / vol.clip(lower=1e-4)
         top, bot = g.tail(q), g.head(q)
         w = {}
         if mode == 'ls':
@@ -202,7 +205,7 @@ def weekly_weights(S, score, mode, lr):
 def simulate(weights, C, F, cost_mult=1.0):
     """Daily returns from the weekly weights: price return minus funding, minus turnover cost
     on the rebalance day."""
-    ret = C.pct_change()
+    ret = C.pct_change(fill_method=None)
     days, rets = [], []
     prev = {}
     ks = sorted(weights)
@@ -230,7 +233,7 @@ def stats(r, frm, to):
     eq = np.cumprod(1 + x.values)
     sd = x.std(ddof=1)
     yrs = len(x) / 365
-    q = (1 + x).groupby(x.index.to_period('Q')).prod() - 1
+    q = (1 + x).groupby([x.index.year, x.index.quarter]).prod() - 1
     return {'from': str(x.index[0].date()), 'to': str(x.index[-1].date()),
             'sharpe': float(x.mean() / sd * math.sqrt(365)) if sd > 0 else 0.0,
             'cagr': float(eq[-1] ** (1 / yrs) - 1), 'max_dd': float((eq / np.maximum.accumulate(eq) - 1).min()),
