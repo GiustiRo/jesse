@@ -3482,11 +3482,43 @@
       "phase": "F1",
       "date_utc": "2026-10-26",
       "decision": "no pasa: DD +1,2 pp (2018-09+) y -0,4 pp (2021-24), pide +1,5 pp en ambas; seguro solo -3,5%"
+    },
+    {
+      "id": "R55_F2_ML1",
+      "hypothesis": "Largo top-10 por X1 con controles de salto (decil vol, cola p90, tope 15%), cubierto solo con BTC por beta 60d",
+      "round": "r55",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
+    },
+    {
+      "id": "R55_F2_ML2",
+      "hypothesis": "ML1 plano cuando el estado B es bajista",
+      "round": "r55",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
+    },
+    {
+      "id": "R55_F2_ML3",
+      "hypothesis": "C6 en alts solo si la moneda está en el top-10 de X1; reemplaza la mitad del riesgo de C6 en P1",
+      "round": "r55",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
+    },
+    {
+      "id": "R55_F2_ML4",
+      "hypothesis": "C6 en alts con riesgo 1%*clip(1+2r,0,5,1,5) por rango X1; reemplaza la mitad del riesgo de C6 en P1",
+      "round": "r55",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "decision": "pendiente (registrado antes de correr)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 128,
+    "declared": 132,
     "sensitivity": [
       20,
       200
@@ -3507,7 +3539,7 @@
     "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario.",
     "r53_note": "+7: Y1–Y6, C6q (2026-10-26).",
     "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma.",
-    "r55_note": "+3: E1-E3 (2026-10-26), registrados antes de correr. Techo r55: 143."
+    "r55_note": "+7: E1-E3 y ML1-ML4 (2026-10-26), registrados antes de correr. Techo r55: 143."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {

@@ -189,3 +189,36 @@ Aprobada por el usuario después de ver F0 (`R55_PHASE0_RESULTS_20261026.md`), q
    - **Post-hoc, declarado:** el bono resta en 22 reglas probadas (r50–r51), y en F0 el resto de R1 resta en los laterales.
    - El WTI no se incluye.
    - Presupuesto: F4 pasa a 8 ensayos y la reserva a 2. **El techo sigue en 143.**
+
+## Enmienda 2026-10-26: detalles de implementación de F2 (antes de correr ML1–ML4)
+El protocolo no los definía. Se fijan antes de cualquier resultado de F2 y no suman a N.
+
+**Cuándo rige el puntaje.** El puntaje X1 de la semana k se calcula al cierre del domingo y rige desde el lunes 00:00 UTC hasta el domingo siguiente.
+
+**ML1 y ML2**
+- **Orden de los filtros:** primero se excluyen las monedas del decil superior de vol a 30 días, después las que fallan `tail_ok` (cola p90), y recién ahí se toma el top-10.
+- Si quedan menos de 10 monedas elegibles (`MIN_ELIGIBLE`), se mantienen los pesos de la semana anterior, como en r53.
+- **Tope por moneda:** 15% del bruto largo, aplicado de forma iterativa, con el exceso repartido en proporción a los pesos de las demás.
+- **Cobertura:** −β60 en BTC, con β de la canasta larga contra BTC calculado sobre los 60 días previos. Si BTC está en la pata larga, se netea.
+- **Régimen en ML2:** el estado B que se usa es el calculado al cierre del domingo del rebalanceo.
+
+**Puertas de régimen de ML1 y ML2.** Se exige suma ≥ 0 en los trimestres bajistas **y**, por separado, en los laterales, dentro del desarrollo.
+
+**Top-5 semanas.** La suma de las 5 mejores semanas de desarrollo tiene que ser < 60% de la suma de todas las semanas. Si la suma total es ≤ 0, falla.
+
+**Monedas antiguas.** Las mismas 20 de r52 (`old20`), con la misma regla aplicada solo sobre ellas.
+
+**ML3 y ML4 (C6 en alts)**
+- El top-10 y el rango centrado salen de todas las monedas elegibles de la semana, BTC y ETH incluidas.
+- Se evalúan en la vela de llenado de la entrada.
+- **Moneda sin puntaje esa semana**, por no ser elegible o porque X1 todavía no predice:
+  - en ML3 no entra;
+  - en ML4 usa multiplicador 1, igual que V1.
+- Implementación: se escala `risk_qty` en la entrada. Con multiplicador 0, no hay trade.
+- **Reemplazo del bloque C6 en P1:**
+  - C6' = 0,5 · C6(BTC/ETH) + 0,5 · C6-alts × (σ_C6 / σ_alts);
+  - las σ son desvíos diarios expansivos al cierre del mes anterior, con un mínimo de 90 días de C6-alts;
+  - antes de ese mínimo, C6' = C6.
+  - Así C6-alts toma la mitad del riesgo de C6 sin sumar riesgo cripto.
+- **Puerta «Sharpe de la canasta en alts ≥ V1 + 0,1»:** se mide desde la primera semana con puntaje X1 hasta el 2024-12-31, para V1 y para la variante en la misma ventana.
+- **Reproducción:** con multiplicador 1 en todas las entradas, se tiene que obtener exacta la canasta V1.
