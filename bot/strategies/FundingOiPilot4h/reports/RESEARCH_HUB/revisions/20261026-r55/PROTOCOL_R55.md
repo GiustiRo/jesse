@@ -172,3 +172,20 @@ Cada ensayo es un **reemplazo** dentro de P1.
 ## Informes
 - Un informe por fase vía MCP: `R55_PHASE0…4_RESULTS_*.md` y `R55_CLOSE_*.md`.
 - Al cierre de cada fase, se reporta al usuario.
+
+## Enmienda 2026-10-26 (después de F0, antes de cualquier ensayo)
+Aprobada por el usuario después de ver F0 (`R55_PHASE0_RESULTS_20261026.md`), que es descriptivo y no mide ningún ensayo.
+
+**Sin cambios:**
+- **Las definiciones de régimen A y B.** B coincide poco con A en los bajistas (36%) y cambia de estado ~23 veces por año. Ajustar su umbral, su ventana o su histéresis para acercarlo a A sería sobreajustar al mismo período. El retraso es inherente a una señal causal.
+- **E1, E2, E3 y F2–F3.** E3 se mantiene por decisión del usuario, con una expectativa previa baja y declarada: B marca como bajista el 37% de los días de los trimestres laterales, así que el seguro va a estar activo en mercados laterales.
+
+**Cambios:**
+1. **Puerta de régimen 2 (laterales), más estricta para E1, E2, ML3, ML4 y F4.1.** Además de la condición en 2018-09 → 2024, la suma de los retornos de los trimestres laterales de **2021 → 2024** tiene que superar a la de P1 en esa ventana (P1: −2,3%). No aplica a E3, que conserva sus puertas propias.
+2. **Vista mensual.** Junto a cada puerta de régimen se reporta la misma tabla con la etiqueta mensual. Es informativa: con 5 trimestres bajistas y 11 laterales, un solo trimestre puede definir una puerta.
+3. **F4: ensayo nuevo, «R1 sin bono»**, tomado de la reserva.
+   - Sobre la cartera vigente en ese paso de F4, se prueba quitar la manga R1/bono.
+   - Entra con la regla de inclusión de r51 en las dos ventanas.
+   - **Post-hoc, declarado:** el bono resta en 22 reglas probadas (r50–r51), y en F0 el resto de R1 resta en los laterales.
+   - El WTI no se incluye.
+   - Presupuesto: F4 pasa a 8 ensayos y la reserva a 2. **El techo sigue en 143.**
