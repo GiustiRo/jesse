@@ -4074,38 +4074,38 @@
   "regime_trials": {
     "note": "N_régimen (r56+): configuraciones de detectores de régimen evaluadas contra etiquetas fijadas en F0, sin PnL. Es un contador aparte: no suma a n_effective.declared (N de estrategias = 140). Cada configuración se especifica aquí antes de correrla.",
     "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md",
-    "n_regime": 0,
+    "n_regime": 5,
     "ceiling": 30,
     "declared_plan": [
       {
         "id": "A1",
         "phase": "F1",
         "description": "Clásicos de tendencia: ADX, eficiencia de Kaufman, T90 a 20/60/90",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "A2",
         "phase": "F1",
         "description": "Clásicos de compresión: ancho de Bollinger en percentil, squeeze BB/KC, Donchian/ATR, choppiness",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "A3",
         "phase": "F1",
         "description": "A1 + A2",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "B1",
         "phase": "F1",
         "description": "Memoria: varianza relativa y autocorrelación multi-escala",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "B2",
         "phase": "F1",
         "description": "Memoria: Hurst por DFA",
-        "status": "declarada, sin especificación final"
+        "status": "especificada en trials"
       },
       {
         "id": "C1a",
@@ -4210,7 +4210,78 @@
         "status": "declarada, sin especificación final"
       }
     ],
-    "trials": []
+    "trials": [
+      {
+        "id": "A1",
+        "phase": "F1",
+        "n_regime_after": 1,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Logística sobre ADX(14, Wilder), eficiencia de Kaufman 10/20/60 y T-score ln(P/P-n)/(sd_n*sqrt(n)) a 20/60/90, firmados y absolutos (10 variables).",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "A2",
+        "phase": "F1",
+        "n_regime_after": 2,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Logística sobre ancho de Bollinger(20, 2) y su percentil de 252 días, squeeze = ancho BB / ancho Keltner(1,5 ATR20), Donchian20/ATR20, choppiness(14), percentil de la RV20 en el año de la moneda y ln(RV5/RV20) (7 variables).",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "A3",
+        "phase": "F1",
+        "n_regime_after": 3,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Logística sobre A1 + A2 (17 variables).",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "B1",
+        "phase": "F1",
+        "n_regime_after": 4,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Logística sobre VR(5) y VR(10) en 60 días, autocorrelación lag 1 de retornos (20 y 60 días) y de |retornos| (60 días) (5 variables).",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "B2",
+        "phase": "F1",
+        "n_regime_after": 5,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol",
+          "trend",
+          "range"
+        ],
+        "model": "logit",
+        "spec": "Logística sobre Hurst DFA-1 de 128 días (escalas 4/8/16/32) de retornos y de |retornos| (2 variables).",
+        "status": "registrada, sin resultado"
+      }
+    ]
   },
   "r56_f0": {
     "date": "2026-10-26",
