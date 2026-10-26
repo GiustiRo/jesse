@@ -224,9 +224,10 @@ def spa_pvalue(G):
     omega = np.sqrt(n) * gb.std(0)
     omega = np.where(omega > 0, omega, 1e-12)
     T = max(float((np.sqrt(n) * gbar / omega).max()), 0.0)
-    keep = np.sqrt(n) * gbar / omega >= -np.sqrt(2 * np.log(np.log(n)))
-    mu = gbar * keep
-    Tb = np.maximum((np.sqrt(n) * (gb - gbar + mu) / omega).max(1), 0.0)
+    # Z* = d* - g_c(dbar): configurations that are not clearly worse are recentred at the null
+    # boundary (zero); clearly worse ones keep their negative mean and barely enter the maximum.
+    very_neg = np.sqrt(n) * gbar / omega < -np.sqrt(2 * np.log(np.log(n)))
+    Tb = np.maximum((np.sqrt(n) * (gb - gbar + gbar * very_neg) / omega).max(1), 0.0)
     return float((Tb >= T).mean())
 
 
