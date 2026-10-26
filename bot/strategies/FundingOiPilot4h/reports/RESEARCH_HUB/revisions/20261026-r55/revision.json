@@ -3,19 +3,20 @@
   "id": "20261026-r55",
   "updated_at_utc": "2026-10-26 18:00:00 UTC",
   "objective": "Motor cripto para todos los regímenes (regímenes de BTC definidos antes de sumar N), monetización del ranking ML, Brent–WTI con veto de quiebre e integración por aporte marginal.",
-  "latest": "F3 cerrada: A3 v2 no pasa (N=133). El veto AR(1) evita 2013, pero deja un DD de −16,1% en 2015 y bloquea 2018–19 (Sharpe de decisión 1,18 → 0,88; 28 trades). A3 no entra ni como provisional.",
-  "next": "F4: activos marginales (Nasdaq, plata, cobre, EWY, EWJ), R1 sin bono y cartera final, sobre P1.",
+  "latest": "F4 cerrada (N=140): ningún activo marginal entra (el Nasdaq suma +0,018 en 2018-09+ y pierde un trimestre). R1 sin bono entra (2021–24 Sharpe 1,605 → 1,723). P-r55 = P1 sin bono, congelada en P55_FREEZE.md.",
+  "next": "F5: decisión del usuario sobre la mirada a 2025 (no informativa para P-r55) y cierre de r55.",
   "blockers": "Ninguno.",
   "counts": {
     "r55": {
       "n_declared_start": 125,
       "n_ceiling": 143,
-      "n_current": 133
+      "n_current": 140
     }
   },
   "decisions": [
     "2026-10-26 r55: plan aprobado por el usuario; tuning anidado de GBM fuera de r55; regímenes y presupuesto commiteados antes de cualquier ensayo.",
-    "2026-10-26 r55: enmienda post-F0 (97bbc3da): puerta lateral también en 2021–24, vista mensual, ensayo R1 sin bono en F4; E3 se mantiene."
+    "2026-10-26 r55: enmienda post-F0 (97bbc3da): puerta lateral también en 2021–24, vista mensual, ensayo R1 sin bono en F4; E3 se mantiene.",
+    "2026-10-26 r55 F4: R1 sin bono entra (post-hoc declarado); Nasdaq, plata, cobre, EWY y EWJ no entran."
   ],
   "supersedes": "20261026-r54",
   "roadmap": [
@@ -50,7 +51,7 @@
     {
       "order": 4,
       "title": "F4 integración",
-      "state": "pendiente",
+      "state": "completada: P-r55 = P1 sin bono",
       "depends": "F1–F3",
       "gate": "PROTOCOL_R55 F4"
     },
@@ -83,12 +84,20 @@
     {
       "label": "r55 F3: Brent–WTI v2",
       "path": "strategies/FundingOiPilot4h/reports/R55_PHASE3_RESULTS_20261026.md"
+    },
+    {
+      "label": "r55 F4: integración",
+      "path": "strategies/FundingOiPilot4h/reports/R55_PHASE4_RESULTS_20261026.md"
+    },
+    {
+      "label": "r55: congelamiento P-r55",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/P55_FREEZE.md"
     }
   ],
   "current_stage": {
     "stage": "r55_preregistro",
     "execution_status": "r55_preregistered",
-    "current_focus": "F4",
+    "current_focus": "F5 (decisión del usuario)",
     "permitted": [
       "Scripts en research_scripts.",
       "Push."
@@ -100,7 +109,7 @@
     ],
     "new_experiments_authorized": true,
     "authorization_scope": "Plan r55 aprobado por el usuario 2026-10-26.",
-    "economic_status": "no_candidate_promoted",
+    "economic_status": "P-r55 congelada (P1 sin bono)",
     "goal_status": "open"
   }
 }

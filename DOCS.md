@@ -48,6 +48,10 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
     - U50 tiene sesgo de supervivencia, que favorece a los libros largos;
     - A3 y los activos de validación ya tienen 2025 visto, así que A3 v2 solo puede entrar como provisional.
   - 2025 se abre una sola vez, sobre la cartera congelada y con autorización del usuario. 2026 sigue reservado.
+  - **Estado tras F4:** F1 (E1–E3), F2 (ML1–ML4) y F3 (A3 v2) no pasan.
+    - ML3 (C6 solo en las alts del top-10 de X1) cumple la inclusión, pero falla la puerta bajista.
+    - En F4 no entra ningún activo marginal y sí «R1 sin bono».
+  - **P-r55 = P1 sin bono**, congelada en [`P55_FREEZE.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/P55_FREEZE.md): 2018-09→2024 Sharpe 1,677; 2021–24 1,723. N = 140.
 
 ## Decisiones r54 (2026-10-26)
 
