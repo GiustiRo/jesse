@@ -15,7 +15,7 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| **[r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md)** | **Ronda vigente: regímenes de BTC, motor cripto por régimen, monetización del ranking ML, Brent–WTI con veto de quiebre e integración.** |
+| **[r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md)** | **Última ronda (cerrada): regímenes de BTC, motor cripto, ranking ML, Brent–WTI e integración. Candidata P-r55; agenda en el [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md).** |
 | [r51 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md) | Cortos, bono y WTI con reglas propias y pronósticos continuos sobre P1. Reglas y puertas en [`PROTOCOL_R51.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md). |
 | [r50 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md) | Varios motores, universo de 10 activos, dos lentes; cerrada con P1 ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)). |
 | [r49 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PLAN.md) | Puertas, riesgo y costes heredados por r50; r49 cerrada sin candidata ([cierre](bot/strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md)). |
@@ -38,7 +38,10 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 
 ## Decisiones vigentes (r55, 2026-10-26)
 
-- **r55 preregistrada (2026-10-26)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md)), con el plan aprobado por el usuario.
+- **r55 cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R55_CLOSE_20261026.md), [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md)).
+  - Candidata: **P-r55 = P1 sin bono**.
+  - 2025 sigue sellado por decisión del usuario: queda reservado para un candidato nuevo preregistrado (ML3 es el propuesto). N = 140.
+- r55 preregistrada (2026-10-26) ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md)), con el plan aprobado por el usuario.
   - **Regímenes de BTC**, fijados antes de sumar N, con un solo parámetro k = 0,5:
     - etiqueta trimestral ex post (±k·σ anual previa·√0,25) para juzgar;
     - estado diario causal T90 (±0,5) para operar.
