@@ -30,7 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'data', 'r52')
 BASE = 'https://data.binance.vision/data/futures/um/monthly'
 MONTHS = [f'{y}-{m:02d}' for y in range(2020, 2026) for m in range(1, 13)]
-RETRIES = 6
+RETRIES = 10
 
 
 def log(msg):
@@ -41,14 +41,14 @@ def fetch(url):
     """Bytes of a URL, None on 404; retries transient errors with backoff."""
     for k in range(RETRIES):
         try:
-            with urllib.request.urlopen(url, timeout=60) as r:
+            with urllib.request.urlopen(url, timeout=300) as r:
                 return r.read()
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 return None
-            time.sleep(2 ** k)
+            time.sleep(min(2 ** k, 120))
         except Exception:
-            time.sleep(2 ** k)
+            time.sleep(min(2 ** k, 120))
     raise RuntimeError(f'failed after {RETRIES} tries: {url}')
 
 
@@ -148,8 +148,16 @@ def main():
     q = {'BTCUSDT', 'ETHUSDT', *alts}
     # 1m-heavy symbols first so the long downloads start early.
     items = sorted(((s, s in q) for s in syms), key=lambda x: not x[1])
+    def safe(item):
+        # One symbol failing (network) must not abort the others; a re-run resumes from the
+        # saved files.
+        try:
+            return one(item)
+        except Exception as e:
+            log(json.dumps({'symbol': item[0], 'error': str(e)}))
+            return {'symbol': item[0], 'error': str(e)}
     with ThreadPoolExecutor(args.workers) as ex:
-        res = list(ex.map(one, items))
+        res = list(ex.map(safe, items))
     json.dump({'symbols': res, 'q_basket_alts': alts, 'months': [MONTHS[0], MONTHS[-1]]},
               open(os.path.join(OUT, 'manifest.json'), 'w'), indent=1)
     log('done')
