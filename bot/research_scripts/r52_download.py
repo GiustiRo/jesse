@@ -142,11 +142,13 @@ def one(item):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--workers', type=int, default=8)
+    # r53: the QOI feature needs quarter-hour rows for all 50 symbols, not only line 2's 22.
+    ap.add_argument('--q-all', action='store_true')
     args = ap.parse_args()
     uni = json.load(open(os.path.join(OUT, 'universe50.json')))
     syms = [u['symbol'] for u in uni]
     alts = [s for s in syms if s not in ('BTCUSDT', 'ETHUSDT')][:20]
-    q = {'BTCUSDT', 'ETHUSDT', *alts}
+    q = set(syms) if args.q_all else {'BTCUSDT', 'ETHUSDT', *alts}
     # 1m-heavy symbols first so the long downloads start early.
     items = sorted(((s, s in q) for s in syms), key=lambda x: not x[1])
     def safe(item):
