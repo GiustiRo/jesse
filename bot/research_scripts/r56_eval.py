@@ -14,6 +14,7 @@
     python research_scripts/r56_eval.py register F1   # write the phase's specs to the registry
     python research_scripts/r56_eval.py run F1        # fit, score, save data/r56/<phase>.json
     python research_scripts/r56_eval.py spa           # SPA over every configuration scored so far
+    python research_scripts/r56_eval.py f5            # one-time holdout scoring and the bridge
 """
 import json
 import os
@@ -36,7 +37,8 @@ H = pn.H
 EVAL_FROM, DEV_TO, VAL_FROM = '2021-07-01', '2023-12-31', '2024-01-01'
 EMBARGO = 2 * H
 AXES = pn.AXES
-TARGET = {'vol': 2, 'trend': 1, 'range': 0}   # transition class for the lead-time metric
+NCLS = {**AXES, 'exit': 2}   # 'exit' is the F4 range-exit direction label (X1)
+TARGET = {'vol': 2, 'trend': 1, 'range': 0, 'exit': 1}   # transition class for the lead-time metric
 N_BOOT, BLOCK = 2000, 20
 TRUNC_DATES, TRUNC_COINS = 20, 6
 
@@ -65,8 +67,27 @@ def ctx():
     q = pd.date_range(EVAL_FROM, '2024-10-01', freq='QS', tz='UTC')
     qidx = [int(np.searchsorted(days, t.value // 10**6)) for t in q] + [len(days)]
     years = pd.to_datetime(days, unit='ms', utc=True).year.values
+    L.update(exit_labels(P, L, days))
     _CTX.update(P=P, days=days, syms=syms, L=L, is_hold=is_hold, qidx=qidx, years=years)
     return _CTX
+
+
+def exit_labels(P, L, days):
+    """X1 label: on days whose past window was a range (persist_range = 1, box c[t-20] +- k*ATR20[t-20]),
+    the direction of the first close outside that box in t+1..t+20 (1 up, 0 down, NaN without exit).
+    Baselines: the coin's last exit direction known at t (window closed by t) and its climatology."""
+    k = json.load(open(os.path.join(OUT, 'f0_labels.json')))['thresholds']['k']
+    C, A = P['c'], P['atr']
+    box = L['persist_range'] == 1
+    anchor, half = pn._shift(C, -H), k * pn._shift(A, -H)
+    hi, lo = anchor + half, anchor - half
+    y = np.full(C.shape, np.nan)
+    for s in range(1, H + 1):
+        fut = pn._shift(C, s)
+        new = box & np.isnan(y)
+        y = np.where(new & (fut > hi), 1.0, np.where(new & (fut < lo), 0.0, y))
+    known = pd.DataFrame(pn._shift(y, -H)).ffill().values
+    return {'y_exit': y, 'persist_exit': known, 'clim_exit': pn.climatology(y, 2, days, H)}
 
 
 def eval_mask(axis, coins='dev'):
@@ -116,11 +137,11 @@ def _model(kind, n_cls):
 def fit_predict(feats, axis, coins='dev', kind='logit'):
     """feats: callable(qi, q0) -> (D, M, f) array for that fold. Returns (D, M, n_cls) predictions."""
     c = ctx()
-    n_cls = AXES[axis] if axis in AXES else 2
-    y = c['L'][f'y_{axis}'] if axis in AXES else c['L'][axis]
+    n_cls = NCLS[axis]
+    y = c['L'][f'y_{axis}']
     D, M = y.shape
     preds = np.full((D, M, n_cls), np.nan)
-    test_all = eval_mask(axis, coins) if axis in AXES else xmask(coins)
+    test_all = eval_mask(axis, coins)
     train_base = c['P']['elig'] & np.isfinite(y) & (~c['is_hold'])[None, :]
     di = np.arange(D)[:, None]
     for qi in range(len(c['qidx']) - 1):
@@ -264,7 +285,7 @@ def _switches(s, mask):
 def evaluate(preds, axis, coins='dev', period='dev'):
     c = ctx()
     L = c['L']
-    n = AXES[axis]
+    n = NCLS[axis]
     m = eval_mask(axis, coins) & period_rows(period)[:, None] & np.isfinite(preds).all(-1)
     y = L[f'y_{axis}']
     oh = onehot(y, n)
@@ -560,8 +581,235 @@ SPECS.update({
            'feats': lambda: static_feats((ft.fam_D1, 'D1'))},
 })
 
+# ----------------------------------------------------------------------------------------------
+# F3: volatility forecasts (V), geometry (E) and signatures (S)
+# ----------------------------------------------------------------------------------------------
+def har_inputs():
+    """Log daily, weekly (5) and monthly (22) mean RV; the target log RV(t+1..t+20); the coin's
+    1/3 and 2/3 quantiles of past 20-day RV sums (windows ending in the last 365 days, min 180)."""
+    if 'har' in _CTX:
+        return _CTX['har']
+    P = ctx()['P']
+    rv = P['rv']
+    rv20 = pn._roll_sum(rv, 20)
+    out = {'l_d': np.log(rv), 'l_w': np.log(pn._roll_sum(rv, 5) / 5), 'l_m': np.log(pn._roll_sum(rv, 22) / 22),
+           'l_20': np.log(rv20)}
+    R = ft._df(rv20).rolling(365, min_periods=180)
+    out['thr_lo'], out['thr_hi'] = np.log(R.quantile(1 / 3).values), np.log(R.quantile(2 / 3).values)
+    out['target'] = np.log(pn._shift(rv20, 20))
+    _CTX['har'] = {k: np.where(np.isfinite(v), v, np.nan) for k, v in out.items()}
+    return _CTX['har']
+
+
+def _har_z(q0, extra=None):
+    """Pooled HAR OLS on development rows with a closed target window before the embargo; returns
+    the forecast's z-distance to the coin's tercile thresholds and the forecast minus log RV20."""
+    c = ctx()
+    h = har_inputs()
+    cols = [h['l_d'], h['l_w'], h['l_m']] + (extra or [])
+    X = np.stack(cols, -1)
+    D = X.shape[0]
+    di = np.arange(D)[:, None]
+    tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - EMBARGO) & np.isfinite(X).all(-1)
+          & np.isfinite(h['target']))
+    A = np.column_stack([np.ones(int(tr.sum())), X[tr]])
+    beta, *_ = np.linalg.lstsq(A, h['target'][tr], rcond=None)
+    sig = float(np.std(h['target'][tr] - A @ beta))
+    pred = beta[0] + (X * beta[1:]).sum(-1)
+    return np.stack([(h['thr_lo'] - pred) / sig, (h['thr_hi'] - pred) / sig, pred - h['l_20']], -1), beta
+
+
+def har_feats(cid):
+    def f(qi, q0):
+        def build():
+            Z, beta = _har_z(q0)
+            FOLD_LOG[f'{cid}_{qi}'] = {'beta': [round(float(b), 4) for b in beta]}
+            return Z
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+def xs_inputs():
+    """Cross-section (same value for every coin) and coin flow features, causal:
+    BTC log RV22, 20-day mean cross-sectional std of daily returns, 60-day mean pairwise
+    correlation proxy var(mean r) / mean(var r), cross-sectional median of 7-day funding sums,
+    the coin's 7-day funding sum and its 7-day taker buy imbalance 2*tbv/v - 1."""
+    if 'xs' in _CTX:
+        return _CTX['xs']
+    c = ctx()
+    P = c['P']
+    D, M = P['c'].shape
+    r = ft._lr(P)
+    elig = P['elig']
+    re = np.where(elig, r, np.nan)
+    h = har_inputs()
+    btc = c['syms'].index('BTCUSDT')
+    disp = ft._df(np.nanstd(re, axis=1)[:, None]).rolling(20, min_periods=15).mean().values[:, 0]
+    mean_r = np.nanmean(re, axis=1)
+    var_mean = ft._df(mean_r[:, None]).rolling(60, min_periods=40).var().values[:, 0]
+    mean_var = np.nanmean(ft._df(re).rolling(60, min_periods=40).var().values, axis=1)
+    t0 = int(c['days'][0])
+    fund = np.zeros((D, M))
+    imb_num, imb_den = np.full((D, M), np.nan), np.full((D, M), np.nan)
+    for j, s in enumerate(c['syms']):
+        f = np.load(os.path.join(pn.SRC, f'{s}_funding.npy'))
+        if len(f):
+            f = f[f[:, 0] <= pn.CUT_MS]
+            d = ((f[:, 0] - t0) // DAY).astype(int)
+            ok = (d >= 0) & (d < D)
+            np.add.at(fund[:, j], d[ok], f[ok, 1])
+        a = np.load(os.path.join(pn.SRC, f'{s}_1h.npy'))
+        a = a[(a[:, 0] >= t0) & (a[:, 0] <= pn.CUT_MS)]
+        d = ((a[:, 0] - t0) // DAY).astype(int)
+        v, tb = np.zeros(D), np.zeros(D)
+        np.add.at(v, d, a[:, 5])
+        np.add.at(tb, d, a[:, 7])
+        has = np.bincount(d, minlength=D) > 0
+        imb_num[has, j], imb_den[has, j] = tb[has], v[has]
+    fund = np.where(np.isfinite(P['c']), fund, np.nan)
+    fund7 = pn._roll_sum(fund, 7)
+    imb7 = 2 * pn._roll_sum(imb_num, 7) / pn._roll_sum(imb_den, 7) - 1
+    med_f7 = np.nanmedian(np.where(elig, fund7, np.nan), axis=1)
+    rep = lambda v: np.repeat(np.asarray(v, dtype=float)[:, None], M, axis=1)
+    out = {'btc_lrv22': rep(h['l_m'][:, btc]), 'xs_disp20': rep(disp), 'xs_corr60': rep(var_mean / mean_var),
+           'xs_fund7_med': rep(med_f7), 'fund7': fund7, 'imb7': imb7}
+    _CTX['xs'] = {k: np.where(np.isfinite(v), v, np.nan) for k, v in out.items()}
+    return _CTX['xs']
+
+
+def har_xs_feats(cid):
+    def f(qi, q0):
+        def build():
+            Z, beta = _har_z(q0)
+            xs = xs_inputs()
+            FOLD_LOG[f'{cid}_{qi}'] = {'beta': [round(float(b), 4) for b in beta]}
+            return np.concatenate([Z, np.stack([xs[k] for k in sorted(xs)], -1)], -1)
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+def ms_har_feats(cid):
+    from statsmodels.tsa.regime_switching.markov_regression import MarkovRegression
+
+    def f(qi, q0):
+        def build():
+            c = ctx()
+            h = har_inputs()
+            lrv = h['l_d']
+            m365 = ft._shift(ft._df(lrv).rolling(365, min_periods=90).mean().values, -1)
+            s365 = ft._shift(ft._std(lrv, 365, 90), -1)
+            z = np.clip((lrv - m365) / s365, -6, 6)
+            D, M = z.shape
+            segs = []
+            for j in np.where(~c['is_hold'])[0]:
+                x = z[:q0, j]
+                ok = np.where(np.isfinite(x))[0]
+                if len(ok) > 60:
+                    xx = np.nan_to_num(x[ok[0]:])
+                    segs.append(xx)
+            endog = np.concatenate([s[1:] for s in segs])
+            lag = np.concatenate([s[:-1] for s in segs])
+            res = MarkovRegression(endog, k_regimes=2, exog=lag[:, None], switching_exog=False,
+                                   switching_variance=True).fit(disp=False, maxiter=300, search_reps=5)
+            params = np.asarray(res.params)
+            FOLD_LOG[f'{cid}_{qi}'] = {'params': [round(float(x), 5) for x in params]}
+            hi = int(np.argmax(params[:2]))   # regime with the higher intercept = high-vol state
+            prob = np.full((D, M), np.nan)
+            for j in range(M):
+                x = z[:, j]
+                ok = np.where(np.isfinite(x))[0]
+                if len(ok) < 30:
+                    continue
+                xx = np.nan_to_num(x[ok[0]:])
+                fm = MarkovRegression(xx[1:], k_regimes=2, exog=xx[:-1, None], switching_exog=False,
+                                      switching_variance=True)
+                pr = np.asarray(fm.filter(params).filtered_marginal_probabilities)
+                pr = pr if pr.shape[-1] == 2 else pr.T
+                prob[ok[0] + 1:, j] = pr[:, hi]
+            Z, beta = _har_z(q0)
+            return np.concatenate([Z, prob[..., None]], -1)
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+SPECS.update({
+    'V1': {'phase': 'F3', 'axes': ['vol'],
+           'spec': 'HAR-RV agrupado: MCO de log RV(t+1..t+20) sobre constante, log RV diaria, log media de 5 días y log media de 22 días (RV desde 1h), en filas de desarrollo con ventana cerrada antes del embargo. Variables: (umbral_tercil_bajo − pronóstico)/σ, (umbral_tercil_alto − pronóstico)/σ y pronóstico − log RV20; los umbrales son los cuantiles 1/3 y 2/3 de las sumas de RV de 20 días del año previo de la moneda. Logística. Solo Y_vol.',
+           'feats': lambda: har_feats('V1')},
+    'V2': {'phase': 'F3', 'axes': ['vol'],
+           'spec': 'V1 más sección transversal y flujo: log RV22 de BTC, desvío transversal de retornos (media de 20 días), proxy de correlación media de 60 días var(media r)/media(var r), mediana transversal del funding de 7 días, funding de 7 días de la moneda y desbalance agresor de 7 días 2·tbv/v − 1 (9 variables). Logística. Solo Y_vol.',
+           'feats': lambda: har_xs_feats('V2')},
+    'V3': {'phase': 'F3', 'axes': ['vol'],
+           'spec': 'V1 más la probabilidad filtrada del régimen de vol alta de un modelo de Markov de 2 regímenes (statsmodels MarkovRegression, intercepto y varianza conmutados, rezago 1 no conmutado, search_reps = 5) sobre la log-RV diaria estandarizada con media/desvío de 365 días (±6), ajustado sobre las monedas de desarrollo antes del pliegue (4 variables). Logística. Solo Y_vol.',
+           'feats': lambda: ms_har_feats('V3')},
+    'E1': {'phase': 'F3', 'axes': list(AXES),
+           'spec': 'Canal: pendiente de la regresión de log-precio a 20 y 50 días dividida por el desvío diario, y R². Caja: Donchian50/ATR20, toques de la banda de ±0,25 ATR del máximo/mínimo de 20 días en los últimos 20 días, posición en la caja de 20 días (7 variables). Logística.',
+           'feats': lambda: static_feats((ft.fam_E1, 'E1'))},
+    'E2': {'phase': 'F3', 'axes': list(AXES),
+           'spec': 'Banderín: impulso (C[t−10] − C[t−20])/ATR[t−10], razón de consolidación (rango de 10 días / rango de los 10 previos), bandera = (|impulso| ≥ 2 y razón < 0,5) con el signo del impulso, pendiente del rango diario/ATR en 10 días. Wyckoff-lite: drawdown desde el máximo de 90 días, caja (Donchian20/ATR ≤ 4), spring (mínimo de los últimos 3 días bajo el piso de 20 días previo y cierre por encima), wyckoff = drawdown ≤ −25% y caja y spring, días desde el último spring (tope 20) (9 variables). Logística.',
+           'feats': lambda: static_feats((ft.fam_E2, 'E2'))},
+    'S1': {'phase': 'F3', 'axes': list(AXES),
+           'spec': 'Signatures truncadas en nivel 3 (Chen, numpy) de caminos de 20 y 60 días de (tiempo en [0, 1], log-precio desde el inicio / (desvío diario de la ventana·√n), log-RV diaria menos su media en la ventana): 39 variables por ventana, 78 en total. Logística.',
+           'feats': lambda: static_feats((ft.fam_S1, 'S1'))},
+})
+
+# ----------------------------------------------------------------------------------------------
+# F4: global models, range-exit direction and zero-shot foundation models
+# ----------------------------------------------------------------------------------------------
+G_STATIC = (('A1', ft.fam_A1), ('A2', ft.fam_A2), ('B1', ft.fam_B1), ('B2', ft.fam_B2), ('D1', ft.fam_D1),
+            ('E1', ft.fam_E1), ('E2', ft.fam_E2), ('S1', ft.fam_S1))
+G_FOLD = ('C1a', 'C1b', 'C2', 'C3', 'C4', 'V2', 'V3')
+
+
+def global_feats(qi, q0):
+    """Every family: the static ones plus the fold-fitted state probabilities, BOCPD and the HAR
+    forecasts (V2 carries V1's z-distances and the cross-section; V3 adds its Markov probability)."""
+    if 'g_static' not in _CTX:
+        _CTX['g_static'] = np.concatenate([static(f, n)[0] for n, f in G_STATIC], axis=2)
+    folds = []
+    for cid in G_FOLD:
+        X = np.load(os.path.join(OUT, f'fold_{cid}_{qi}.npy'))
+        folds.append(X[..., -1:] if cid == 'V3' else X)
+    return np.concatenate([_CTX['g_static']] + folds, axis=2)
+
+
+def chronos_feats(cid, kind):
+    def f(qi, q0):
+        def build():
+            c = ctx()
+            h = har_inputs()
+            pred = np.load(os.path.join(OUT, f'chronos_{kind}.npy')).astype(float)
+            di = np.arange(pred.shape[0])[:, None]
+            tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - EMBARGO) & np.isfinite(pred)
+                  & np.isfinite(h['target']))
+            sig = float(np.std(h['target'][tr] - pred[tr]))
+            FOLD_LOG[f'{cid}_{qi}'] = {'sigma': round(sig, 4), 'bias': round(float(np.mean(h['target'][tr] - pred[tr])), 4)}
+            return np.stack([(h['thr_lo'] - pred) / sig, (h['thr_hi'] - pred) / sig, pred - h['l_20']], -1)
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+SPECS.update({
+    'G1': {'phase': 'F4', 'axes': list(AXES),
+           'spec': 'Global: logística (C = 1) sobre todas las variables: estáticas A1, A2, B1, B2, D1, E1, E2 y S1, más las del pliegue C1a, C1b, C2, C3, C4, V2 (z de HAR y sección transversal) y la probabilidad de Markov de V3 (~148 variables).',
+           'feats': lambda: global_feats},
+    'G2': {'phase': 'F4', 'axes': list(AXES), 'model': 'gbm',
+           'spec': 'Global: HistGradientBoostingClassifier con hiperparámetros fijos (200 iteraciones, learning rate 0,05, 15 hojas como máximo, mínimo 200 por hoja, L2 = 1, random_state 0, sin tuning) sobre las mismas variables que G1.',
+           'feats': lambda: global_feats},
+    'X1': {'phase': 'F4', 'axes': ['exit'],
+           'spec': 'Y_exit: en los días cuya ventana pasada fue rango (persistencia de Y_range = 1, caja c[t−20] ± 3·ATR20[t−20]), la etiqueta es la dirección del primer cierre fuera de esa caja en t+1..t+20 (1 arriba, 0 abajo; sin salida queda excluido). Varas: climatología de las salidas conocidas de la moneda (365 días) y la última dirección de salida conocida (persistencia). Modelo: la logística de G1 sobre las mismas variables. Transición objetivo para la anticipación: salida hacia arriba.',
+           'feats': lambda: global_feats},
+    'T1': {'phase': 'F4', 'axes': ['vol'],
+           'spec': 'Chronos-Bolt small (amazon/chronos-bolt-small), zero-shot: contexto de hasta 512 días de log-RV diaria hasta t, pronóstico de 20 días; log de la suma de la trayectoria mediana como pronóstico de log RV(t+1..t+20) (r56_chronos.py). σ = desvío de los residuos en las filas de entrenamiento del pliegue. Variables como V1: z a los terciles y pronóstico − log RV20. Logística. Solo Y_vol.',
+           'feats': lambda: chronos_feats('T1', 'bolt')},
+    'T2': {'phase': 'F4', 'axes': ['vol'],
+           'spec': 'Igual que T1 con Chronos-2 (amazon/chronos-2).',
+           'feats': lambda: chronos_feats('T2', 'chronos2')},
+})
+
 STATIC_FAMS = {'T90': [ft.fam_T90], 'A1': [ft.fam_A1], 'A2': [ft.fam_A2], 'A3': [], 'B1': [ft.fam_B1],
-               'B2': [ft.fam_B2], 'D1': [ft.fam_D1]}
+               'B2': [ft.fam_B2], 'D1': [ft.fam_D1],
+               'E1': [ft.fam_E1], 'E2': [ft.fam_E2], 'S1': [ft.fam_S1]}
 
 
 # ----------------------------------------------------------------------------------------------
@@ -644,7 +892,7 @@ def spa(period='dev'):
     d = _reg_load()
     ids = [t['id'] for t in d['regime_trials']['trials'] if t['status'] == 'evaluada']
     out = {}
-    for axis in AXES:
+    for axis in NCLS:
         cols, names = [], []
         for cid in ids:
             p = os.path.join(OUT, f'gain_{cid}.npz')
@@ -662,6 +910,62 @@ def spa(period='dev'):
     print(json.dumps(out, indent=2))
     return out
 
+# ----------------------------------------------------------------------------------------------
+# F5: one-time holdout scoring and the bridge to r57 (PROTOCOL_R56 sections 5 and 6)
+# ----------------------------------------------------------------------------------------------
+def select_f5():
+    """Best configuration per bridge axis by the mean of development and 2024 BSS, both > 0 (at most
+    one per axis, so at most 3; amendment F5-1). Baselines and X1 (not a bridge axis) are excluded."""
+    picks = {}
+    for ph in ('F1', 'F2', 'F3', 'F4'):
+        p = os.path.join(OUT, f'{ph.lower()}.json')
+        if not os.path.exists(p):
+            continue
+        for cid, r in json.load(open(p)).items():
+            if SPECS.get(cid, {}).get('baseline'):
+                continue
+            for axis, ev in r['axes'].items():
+                if axis not in AXES:
+                    continue
+                d, v = ev['dev']['bss'], ev['val']['bss']
+                if d > 0 and v > 0 and (axis not in picks or (d + v) / 2 > picks[axis][1]):
+                    picks[axis] = (cid, (d + v) / 2)
+    return {a: c for a, (c, _) in picks.items()}
+
+
+def bridge(axis, cid, dev_ev, val_ev, hold_ev, spa_p):
+    lead = hold_ev['lead_median']
+    slopes = hold_ev['calibration_slopes']
+    yrs = [v for k, v in hold_ev['bss_by_year'].items() if k in ('2021', '2022', '2023', '2024')]
+    checks = {
+        '1_dev_bss>=0.05': dev_ev['bss'] >= 0.05, '1_spa_p<0.05': spa_p < 0.05,
+        '2_val_bss>0': val_ev['bss'] > 0, '2_hold_bss>0': hold_ev['bss'] > 0, '2_hold_dm_p<0.10': hold_ev['dm_p'] < 0.10,
+        '3_hold_coins_pos>=0.6': (hold_ev['coin_bss_pos_share'] or 0) >= 0.6,
+        '3_years_pos>=3of4': sum(x > 0 for x in yrs) >= 3,
+        '4_switches<=12': hold_ev['switches_per_year'] <= 12,
+        '4_lead>=persist+3': (lead['model'] - lead['persistence']) >= 3,
+        '4_calibration_0.7-1.3': all(0.7 <= x <= 1.3 for x in slopes),
+    }
+    return {'config': cid, 'axis': axis, 'checks': checks, 'passes': all(checks.values())}
+
+
+def run_f5():
+    picks = select_f5()
+    spa_dev = spa('dev')
+    res = {'selection': picks, 'spa_dev': spa_dev, 'axes': {}}
+    for axis, cid in picks.items():
+        sp = SPECS[cid]
+        feats = sp['feats']()
+        preds = fit_predict(feats, axis, coins='hold', kind=sp.get('model', 'logit'))
+        np.save(os.path.join(OUT, f'pred_hold_{cid}_{axis}.npy'), preds.astype(np.float32))
+        hold = {p: evaluate(preds, axis, 'hold', p)[0] for p in ('all', 'dev', 'val')}
+        res_ph = json.load(open(os.path.join(OUT, f"{sp['phase'].lower()}.json")))[cid]['axes'][axis]
+        b = bridge(axis, cid, res_ph['dev'], res_ph['val'], hold['all'], spa_dev[axis]['spa_p'])
+        res['axes'][axis] = {'config': cid, 'holdout': hold, 'bridge': b}
+        print(axis, cid, json.dumps(b), flush=True)
+    json.dump(res, open(os.path.join(OUT, 'f5.json'), 'w'), indent=2)
+    return res
+
 
 def main():
     a = sys.argv[1:]
@@ -669,6 +973,8 @@ def main():
         register(a[1])
     elif len(a) >= 2 and a[0] == 'run':
         run(a[1])
+    elif a and a[0] == 'f5':
+        run_f5()
     elif a and a[0] == 'spa':
         spa(a[1] if len(a) > 1 else 'dev')
     else:
