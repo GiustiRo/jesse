@@ -222,3 +222,22 @@ El protocolo no los definía. Se fijan antes de cualquier resultado de F2 y no s
   - Así C6-alts toma la mitad del riesgo de C6 sin sumar riesgo cripto.
 - **Puerta «Sharpe de la canasta en alts ≥ V1 + 0,1»:** se mide desde la primera semana con puntaje X1 hasta el 2024-12-31, para V1 y para la variante en la misma ventana.
 - **Reproducción:** con multiplicador 1 en todas las entradas, se tiene que obtener exacta la canasta V1.
+
+## Enmienda 2026-10-26: F4 (antes de correr cualquier ensayo de F4)
+Ninguna pieza de F1, F2 ni F3 pasó, así que F4 parte de P1. Se fijan estos puntos antes de medir.
+
+1. **F4.1 (motor cripto armado) no se corre** porque no tiene piezas. No suma a N.
+
+2. **«R1 sin bono»: la regla de r51 era degenerada.**
+   - En la ventana 2018-09+, P1 no tiene bono: no hay datos de bono antes de ~2019-03 (r50). Quitarlo deja esa ventana idéntica (ΔSharpe 0, Δtrimestres 0), así que la regla de r51 no podría aprobarlo nunca.
+   - Para esta baja se decide **solo en 2021–24**: entra si el Sharpe sube ≥ +0,05, o si suma ≥ +1 trimestre positivo sin bajar el Sharpe.
+   - En 2018-09+ se exige que no empeore, lo que se cumple por construcción. Se reporta igual.
+
+3. **Activos marginales**
+   - Curvas R1 con la configuración de r50 (`r50_f3.VAL`: R1 en 4h con la configuración del oro para plata y cobre, la del SPX para el Nasdaq, y R1 diario para los ETF EWJ y EWY), cargadas con `r50_f3.load`.
+   - Cada activo se suma al canasto R1 (media diaria de las mangas disponibles), como en la opción c de r50.
+   - «Sharpe propio en la lente larga» es el de la ventana `long` de `r50_f3.load`, desde su `mfrom` y cortada al 2024-12-31.
+
+4. **Cartera final:** si no entra nada, P-r55 = P1. En ese caso no suma a N y no hay congelamiento nuevo ni corridas Jesse.
+
+5. **Registro:** se registran ahora 6 ensayos (los 5 activos y R1 sin bono). N pasa a 139.
