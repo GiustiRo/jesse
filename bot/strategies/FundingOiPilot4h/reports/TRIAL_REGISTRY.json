@@ -4727,7 +4727,19 @@
         ],
         "model": "logit",
         "spec": "HAR-RV agrupado: MCO de log RV(t+1..t+20) sobre constante, log RV diaria, log media de 5 días y log media de 22 días (RV desde 1h), en filas de desarrollo con ventana cerrada antes del embargo. Variables: (umbral_tercil_bajo − pronóstico)/σ, (umbral_tercil_alto − pronóstico)/σ y pronóstico − log RV20; los umbrales son los cuantiles 1/3 y 2/3 de las sumas de RV de 20 días del año previo de la moneda. Logística. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1142,
+              "dm_p": 0.004
+            },
+            "val": {
+              "bss": 0.2101,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "V2",
@@ -4739,7 +4751,19 @@
         ],
         "model": "logit",
         "spec": "V1 más sección transversal y flujo: log RV22 de BTC, desvío transversal de retornos (media de 20 días), proxy de correlación media de 60 días var(media r)/media(var r), mediana transversal del funding de 7 días, funding de 7 días de la moneda y desbalance agresor de 7 días 2·tbv/v − 1 (9 variables). Logística. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.0129,
+              "dm_p": 0.529
+            },
+            "val": {
+              "bss": 0.2796,
+              "dm_p": 0.0
+            }
+          }
+        }
       },
       {
         "id": "V3",
@@ -4751,7 +4775,19 @@
         ],
         "model": "logit",
         "spec": "V1 más la probabilidad filtrada del régimen de vol alta de un modelo de Markov de 2 regímenes (statsmodels MarkovRegression, intercepto y varianza conmutados, rezago 1 no conmutado, search_reps = 5) sobre la log-RV diaria estandarizada con media/desvío de 365 días (±6), ajustado sobre las monedas de desarrollo antes del pliegue (4 variables). Logística. Solo Y_vol.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1156,
+              "dm_p": 0.0035
+            },
+            "val": {
+              "bss": 0.2106,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "E1",
@@ -4765,7 +4801,39 @@
         ],
         "model": "logit",
         "spec": "Canal: pendiente de la regresión de log-precio a 20 y 50 días dividida por el desvío diario, y R². Caja: Donchian50/ATR20, toques de la banda de ±0,25 ATR del máximo/mínimo de 20 días en los últimos 20 días, posición en la caja de 20 días (7 variables). Logística.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": -0.0286,
+              "dm_p": 0.8715
+            },
+            "val": {
+              "bss": 0.0344,
+              "dm_p": 0.2775
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0058,
+              "dm_p": 0.436
+            },
+            "val": {
+              "bss": 0.0231,
+              "dm_p": 0.0185
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0287,
+              "dm_p": 0.126
+            },
+            "val": {
+              "bss": 0.0742,
+              "dm_p": 0.0375
+            }
+          }
+        }
       },
       {
         "id": "E2",
@@ -4779,7 +4847,39 @@
         ],
         "model": "logit",
         "spec": "Banderín: impulso (C[t−10] − C[t−20])/ATR[t−10], razón de consolidación (rango de 10 días / rango de los 10 previos), bandera = (|impulso| ≥ 2 y razón < 0,5) con el signo del impulso, pendiente del rango diario/ATR en 10 días. Wyckoff-lite: drawdown desde el máximo de 90 días, caja (Donchian20/ATR ≤ 4), spring (mínimo de los últimos 3 días bajo el piso de 20 días previo y cierre por encima), wyckoff = drawdown ≤ −25% y caja y spring, días desde el último spring (tope 20) (9 variables). Logística.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": -0.0444,
+              "dm_p": 0.8935
+            },
+            "val": {
+              "bss": 0.0537,
+              "dm_p": 0.0945
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0035,
+              "dm_p": 0.495
+            },
+            "val": {
+              "bss": 0.0236,
+              "dm_p": 0.0055
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0244,
+              "dm_p": 0.17
+            },
+            "val": {
+              "bss": 0.0663,
+              "dm_p": 0.011
+            }
+          }
+        }
       },
       {
         "id": "S1",
@@ -4793,7 +4893,39 @@
         ],
         "model": "logit",
         "spec": "Signatures truncadas en nivel 3 (Chen, numpy) de caminos de 20 y 60 días de (tiempo en [0, 1], log-precio desde el inicio / (desvío diario de la ventana·√n), log-RV diaria menos su media en la ventana): 39 variables por ventana, 78 en total. Logística.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": -0.0623,
+              "dm_p": 0.9635
+            },
+            "val": {
+              "bss": 0.0567,
+              "dm_p": 0.2465
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": -0.0112,
+              "dm_p": 0.8125
+            },
+            "val": {
+              "bss": 0.0323,
+              "dm_p": 0.138
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0427,
+              "dm_p": 0.1355
+            },
+            "val": {
+              "bss": 0.1259,
+              "dm_p": 0.04
+            }
+          }
+        }
       }
     ]
   },
