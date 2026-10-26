@@ -1,0 +1,88 @@
+{
+  "format_version": 1,
+  "id": "20261026-r55",
+  "updated_at_utc": "2026-10-26 18:00:00 UTC",
+  "objective": "Motor cripto para todos los regímenes (regímenes de BTC definidos antes de sumar N), monetización del ranking ML, Brent–WTI con veto de quiebre e integración por aporte marginal.",
+  "latest": "Protocolo preregistrado; ningún ensayo corrido. N=125, techo 143.",
+  "next": "F0 descriptivo (mapa de regímenes y atribución de P1), luego F1–F3 en paralelo.",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r55": {
+      "n_declared_start": 125,
+      "n_ceiling": 143
+    }
+  },
+  "decisions": [
+    "2026-10-26 r55: plan aprobado por el usuario; tuning anidado de GBM fuera de r55; regímenes y presupuesto commiteados antes de cualquier ensayo."
+  ],
+  "supersedes": "20261026-r54",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 regímenes de BTC y presupuesto",
+      "state": "preregistrado",
+      "depends": "-",
+      "gate": "no suma a N"
+    },
+    {
+      "order": 1,
+      "title": "F1 motor cripto E1–E3",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "puertas de régimen + regla r51"
+    },
+    {
+      "order": 2,
+      "title": "F2 ranking ML1–ML4",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R55 F2"
+    },
+    {
+      "order": 3,
+      "title": "F3 A3 v2 Brent–WTI",
+      "state": "pendiente",
+      "depends": "-",
+      "gate": "r51 F6 + veto larga"
+    },
+    {
+      "order": 4,
+      "title": "F4 integración",
+      "state": "pendiente",
+      "depends": "F1–F3",
+      "gate": "PROTOCOL_R55 F4"
+    },
+    {
+      "order": 5,
+      "title": "F5 mirada única 2025",
+      "state": "pendiente",
+      "depends": "F4 + autorización",
+      "gate": "Sharpe > 0, sin derrumbe"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r55: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r55_preregistro",
+    "execution_status": "r55_preregistered",
+    "current_focus": "F0 descriptivo",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Push."
+    ],
+    "excluded": [
+      "Live/paper/Pi.",
+      "2026.",
+      "Abrir 2025 sin cartera congelada y autorización."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r55 aprobado por el usuario 2026-10-26.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "open"
+  }
+}
