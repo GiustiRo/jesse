@@ -1,0 +1,94 @@
+{
+  "format_version": 1,
+  "id": "20261026-r56",
+  "updated_at_utc": "2026-10-26 20:00:00 UTC",
+  "objective": "Detección de régimen cripto como pronóstico probabilístico de estados (vol, tendencia, rango) sobre las 50 monedas de U50, evaluado sin PnL contra etiquetas fijadas en F0.",
+  "latest": "F0 cerrada: panel, etiquetas (enmienda F0-1: vol por nivel), varas, holdout de 16 alts y pruebas sintéticas que pasan. N_régimen = 0; N de estrategias = 140.",
+  "next": "F1: clásicos (A1–A3) y memoria (B1–B2), cada uno especificado en regime_trials antes de correr.",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r56": {
+      "n_regime": 0,
+      "n_regime_ceiling": 30,
+      "n_strategies": 140
+    }
+  },
+  "decisions": [
+    "2026-10-26 r56: plan aprobado por el usuario; exclusión HMM/LightGBM levantada solo para r56 en formato agrupado; autorizada la instalación de torch + chronos-forecasting para la familia T.",
+    "2026-10-26 r56 F0: enmienda F0-1, la etiqueta de vol pasa de cociente a nivel porque el cociente anticorrelaciona la persistencia por construcción."
+  ],
+  "supersedes": "20261026-r55",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 panel, etiquetas, varas, holdout y pruebas sintéticas",
+      "state": "completada",
+      "depends": "-",
+      "gate": "no suma a N_régimen"
+    },
+    {
+      "order": 1,
+      "title": "F1 clásicos y memoria (A1–A3, B1–B2)",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 2,
+      "title": "F2 modelos de estados y quiebres (C1a, C1b, C2, C3, C4, D1)",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 3,
+      "title": "F3 vol, geometría y signatures (V1–V3, E1–E2, S1)",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 4,
+      "title": "F4 modelos globales, Y_exit y fundacional (G1, G2, X1, T1–T2)",
+      "state": "pendiente",
+      "depends": "F1–F3",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 5,
+      "title": "F5 holdout de monedas y puente a r57",
+      "state": "pendiente",
+      "depends": "F4",
+      "gate": "PROTOCOL_R56 §6"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r56: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md"
+    },
+    {
+      "label": "r56 F0: etiquetas y varas",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE0_RESULTS_20261026.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r56_f0_cerrada",
+    "execution_status": "r56_running",
+    "current_focus": "F1 clásicos y memoria",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Instalar torch + chronos-forecasting en el contenedor de investigación (familia T)."
+    ],
+    "excluded": [
+      "PnL y N de estrategias.",
+      "Live/paper/Pi.",
+      "2025 y 2026."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r56 aprobado por el usuario 2026-10-26.",
+    "economic_status": "P-r55 congelada (sin cambios en r56)",
+    "goal_status": "running"
+  }
+}

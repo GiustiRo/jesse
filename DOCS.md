@@ -15,7 +15,8 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| **[r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md)** | **Última ronda (cerrada): regímenes de BTC, motor cripto, ranking ML, Brent–WTI e integración. Candidata P-r55; agenda en el [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md).** |
+| **[r56 `PROTOCOL_R56.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md)** | **Ronda en curso: detección de régimen cripto como pronóstico de estados (vol, tendencia, rango), sin PnL, con contador N_régimen aparte (techo 30) y puente fijo a r57.** |
+| [r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md) | Ronda cerrada: regímenes de BTC, motor cripto, ranking ML, Brent–WTI e integración. Candidata P-r55; agenda en el [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md). |
 | [r51 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md) | Cortos, bono y WTI con reglas propias y pronósticos continuos sobre P1. Reglas y puertas en [`PROTOCOL_R51.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md). |
 | [r50 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md) | Varios motores, universo de 10 activos, dos lentes; cerrada con P1 ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)). |
 | [r49 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/PLAN.md) | Puertas, riesgo y costes heredados por r50; r49 cerrada sin candidata ([cierre](bot/strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md)). |
@@ -36,7 +37,20 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r55, 2026-10-26)
+## Decisiones vigentes (r56, 2026-10-26)
+
+- **r56 en curso** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md)), con el plan aprobado por el usuario:
+  - **Objetivo:** pronosticar el régimen de cada moneda de U50 a 20 días en tres ejes (vol por nivel, tendencia y rango), sin PnL. Las estrategias por régimen quedan para r57, solo si se cumple el puente del protocolo (§6).
+  - **N_régimen** es un contador aparte, con techo de 30, en `TRIAL_REGISTRY.json → regime_trials`. **La N de estrategias sigue en 140.**
+  - **Exclusión levantada solo en r56 y en formato agrupado:** HMM (filtrado, como vara) y GBM vía sklearn.
+  - **Autorizado** instalar `torch` + `chronos-forecasting` en el contenedor de investigación para la familia T.
+  - **Holdout:** 16 alts intocables hasta F5. 2025 sellado y 2026 reservado.
+  - **F0 cerrada:**
+    - etiquetas fijadas, con la enmienda F0-1: la vol pasa de cociente a nivel;
+    - la persistencia solo tiene contenido en la vol;
+    - tendencia y rango cambian ~40 veces por año, así que su vara es la climatología.
+
+## Decisiones r55 (2026-10-26)
 
 - **r55 cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R55_CLOSE_20261026.md), [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md)).
   - Candidata: **P-r55 = P1 sin bono**.

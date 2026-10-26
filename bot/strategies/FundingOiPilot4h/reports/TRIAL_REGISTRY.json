@@ -4070,5 +4070,177 @@
     "n_final": 125,
     "sealed_2025": "sin abrir",
     "finding": "C6 generaliza fuera de muestra (32/48 alts, canasta Sharpe 1,03, t 2,05; SOL/XRP/BNB positivas), pero sumarlo a P1 no diversifica."
+  },
+  "regime_trials": {
+    "note": "N_régimen (r56+): configuraciones de detectores de régimen evaluadas contra etiquetas fijadas en F0, sin PnL. Es un contador aparte: no suma a n_effective.declared (N de estrategias = 140). Cada configuración se especifica aquí antes de correrla.",
+    "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md",
+    "n_regime": 0,
+    "ceiling": 30,
+    "declared_plan": [
+      {
+        "id": "A1",
+        "phase": "F1",
+        "description": "Clásicos de tendencia: ADX, eficiencia de Kaufman, T90 a 20/60/90",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "A2",
+        "phase": "F1",
+        "description": "Clásicos de compresión: ancho de Bollinger en percentil, squeeze BB/KC, Donchian/ATR, choppiness",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "A3",
+        "phase": "F1",
+        "description": "A1 + A2",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "B1",
+        "phase": "F1",
+        "description": "Memoria: varianza relativa y autocorrelación multi-escala",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "B2",
+        "phase": "F1",
+        "description": "Memoria: Hurst por DFA",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "C1a",
+        "phase": "F2",
+        "description": "Jump model continuo online, 2 estados",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "C1b",
+        "phase": "F2",
+        "description": "Jump model continuo online, 3 estados",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "C2",
+        "phase": "F2",
+        "description": "Sparse jump model",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "C3",
+        "phase": "F2",
+        "description": "Wasserstein k-means 1D",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "C4",
+        "phase": "F2",
+        "description": "HMM gaussiano agrupado, solo filtrado (vara)",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "D1",
+        "phase": "F2",
+        "description": "BOCPD sobre retornos y log-RV",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "V1",
+        "phase": "F3",
+        "description": "HAR-RV agrupado (solo Y_vol)",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "V2",
+        "phase": "F3",
+        "description": "HAR-RV + sección transversal (solo Y_vol)",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "V3",
+        "phase": "F3",
+        "description": "HAR con cambio de régimen de Markov (solo Y_vol)",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "E1",
+        "phase": "F3",
+        "description": "Geometría: canal y caja de rango",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "E2",
+        "phase": "F3",
+        "description": "Geometría: banderín y Wyckoff-lite",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "S1",
+        "phase": "F3",
+        "description": "Path signatures nivel 3",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "G1",
+        "phase": "F4",
+        "description": "Global: logística con todas las variables",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "G2",
+        "phase": "F4",
+        "description": "Global: HistGradientBoosting con hiperparámetros fijos",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "X1",
+        "phase": "F4",
+        "description": "Y_exit: dirección de salida de rango",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "T1",
+        "phase": "F4",
+        "description": "Chronos-Bolt zero-shot sobre log-RV (solo Y_vol)",
+        "status": "declarada, sin especificación final"
+      },
+      {
+        "id": "T2",
+        "phase": "F4",
+        "description": "Chronos-2 zero-shot sobre log-RV (solo Y_vol)",
+        "status": "declarada, sin especificación final"
+      }
+    ],
+    "trials": []
+  },
+  "r56_f0": {
+    "date": "2026-10-26",
+    "n_regime_added": 0,
+    "n_strategies_added": 0,
+    "labels": {
+      "H": 20,
+      "vol": "nivel, terciles de la RV futura contra el año previo (enmienda F0-1)",
+      "trend_er": 0.3,
+      "range_k_atr": 3.0,
+      "volchg_ratio": 1.5
+    },
+    "holdout": [
+      "AAVEUSDT",
+      "ADAUSDT",
+      "ARUSDT",
+      "COMPUSDT",
+      "DASHUSDT",
+      "EGLDUSDT",
+      "GTCUSDT",
+      "ICPUSDT",
+      "IOSTUSDT",
+      "LINKUSDT",
+      "OPUSDT",
+      "QNTUSDT",
+      "RLCUSDT",
+      "UNIUSDT",
+      "XRPUSDT",
+      "ZENUSDT"
+    ],
+    "selftest": "pasa (data/r56/f0_selftest.json)"
   }
 }
