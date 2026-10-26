@@ -47,3 +47,12 @@ Continúa r53 bajo el mandato autónomo del usuario. N parte de 123. Rigen las c
 - Si M1 pasa, su versión de P1 tiene la mirada única a 2025.
 - Si nada pasa, P1 sigue sin cambios y 2025 sigue sellado.
 - Informe de cierre y handoff.
+
+## Enmienda 2026-10-26: W1, C6 ampliado como manga de cartera
+Se fijó después de ver V1, que pasa (32/48 positivas, canasta Sharpe 1,03 con t 2,05), y antes de medir cualquier cartera.
+- **W1:** P1 más una manga nueva, «C6alts»: la canasta equiponderada de C6 congelado en las 48 alts, con las curvas de V1.
+- Se evalúa con la regla de inclusión de r51, con las ventanas de P1 cortadas al 2024-12-31:
+  - lente 2018-09+: C6alts existe desde 2020-10, así que se compara con la misma regla de días comunes que usa `r51_f6.compare`;
+  - lente 2021+.
+- Suma 1 a N.
+- Si pasa, W1 tiene la mirada única a 2025 (puertas de F3), y se arma también la variante con M1 si M1 pasa.
