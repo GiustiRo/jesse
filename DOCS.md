@@ -41,7 +41,7 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
   - C6 congelado generaliza en 48 alts: 32 positivas, canasta con Sharpe 1,03 y t 2,05 en 2021–24. SOL, XRP y BNB positivas.
   - Sumarlo a P1 no diversifica (W1 rechazado) y el meta-labeling no aporta (AUC 0,43).
   - P1 sin cambios; 2025 sellado. N = 125.
-- Pendiente: el puerto 9200 del host no responde. Los informes R52–R54 se guardan por MCP cuando vuelva (texto en las notas compartidas).
+- Los informes R52–R54 se guardaron por MCP el 2026-10-26, tras reiniciar Docker Desktop (la red de Docker se había caído).
 
 ## Decisiones r53 (2026-10-26)
 
