@@ -47,7 +47,8 @@ BTC and ETH stay in development. The holdout is not touched until r56 F5.
 
     python research_scripts/r56_panel.py run
 
-writes data/r56/panel.npz, labels.npz, holdout.json and f0_labels.json.
+writes data/r56/panel.npz, labels.npz, holdout.json and f0_labels.json. r56-B adds `h40`
+(labels_h40.npz, f6_labels_h40.json), `panel70` (panel70.npz, labels70.npz with N2) and `check`.
 """
 import json
 import math
@@ -87,22 +88,39 @@ def universe():
     return json.load(open(os.path.join(SRC, 'universe50.json')))
 
 
-def load_panel():
-    """Daily (days x coins) arrays: O, H, L, C, RV, QV, ATR and the eligibility mask."""
-    uni = universe()
-    syms = [u['symbol'] for u in uni]
+def load_panel(syms=None, srcs=None, offset_hours=0, rv_mode='1h'):
+    """Daily (days x coins) arrays: O, H, L, C, RV, QV, ATR and the eligibility mask.
+
+    Defaults give the official U50 panel. r56-B uses the other arguments: `syms`/`srcs` add the
+    fresh N2 coins (srcs maps symbol -> data folder); `offset_hours` = 12 cuts days at 12:00 UTC and
+    `rv_mode` = '2h_even'/'2h_odd' measures RV from 2h returns ending on even/odd hours. Those two
+    are second measurements of the same quantities, used only by r56_noise.py.
+    """
+    if syms is None:
+        syms = [u['symbol'] for u in universe()]
+    srcs = srcs or {}
     days = pd.date_range(FIRST_DAY, CUT, freq='D', tz='UTC')
     fields = {f: {} for f in ('o', 'h', 'l', 'c', 'rv', 'qv')}
     for s in syms:
-        a = np.load(os.path.join(SRC, f'{s}_1h.npy'))
+        a = np.load(os.path.join(srcs.get(s, SRC), f'{s}_1h.npy'))
         a = a[a[:, 0] <= CUT_MS]
         df = pd.DataFrame(a[:, :7], columns=['t', 'o', 'h', 'l', 'c', 'v', 'qv'])
         df['lr2'] = np.log(df['c']).diff() ** 2
-        df['day'] = pd.to_datetime(df['t'], unit='ms', utc=True).dt.floor('D')
+        hours = (df['t'] // 3_600_000).astype(np.int64)
+        min_rv = MIN_HOURS - 1
+        if rv_mode != '1h':
+            # 2h returns between consecutive same-parity hours; the others carry no return.
+            par = 0 if rv_mode == '2h_even' else 1
+            sel = (hours % 2 == par) & hours.diff().fillna(0).ge(0)
+            c2 = df['c'].where(sel)
+            lag = c2.shift(2).where(hours.diff(2) == 2)
+            df['lr2'] = (np.log(c2) - np.log(lag)) ** 2
+            min_rv = MIN_HOURS // 2 - 1
+        df['day'] = pd.to_datetime(df['t'] - offset_hours * 3_600_000, unit='ms', utc=True).dt.floor('D')
         g = df.groupby('day')
         ok = g.size() >= MIN_HOURS
         agg = pd.DataFrame({'o': g['o'].first(), 'h': g['h'].max(), 'l': g['l'].min(), 'c': g['c'].last(),
-                            'rv': g['lr2'].sum(min_count=MIN_HOURS - 1), 'qv': g['qv'].sum()})
+                            'rv': g['lr2'].sum(min_count=min_rv), 'qv': g['qv'].sum()})
         agg[~ok] = np.nan
         for f in fields:
             fields[f][s] = agg[f]
@@ -339,9 +357,101 @@ def run():
     print(json.dumps(report, indent=2))
 
 
+# ----------------------------------------------------------------------------------------------
+# r56-B (F6): 40-day labels, the 70-coin panel with the fresh N2 set, reproduction check
+# ----------------------------------------------------------------------------------------------
+N2_DIR = os.path.join(OUT, 'n2')
+
+
+def label_set(P, day_ms, h, a, e, k, suffix=''):
+    """y_/persist_/clim_ arrays of the three bridge axes at horizon h with fixed thresholds."""
+    S = raw_scores(P, h)
+    Y, Yp = classify(S, a, e, k, 'fut'), classify(S, a, e, k, 'past')
+    out = {}
+    for ax, n in AXES.items():
+        out[f'y_{ax}{suffix}'] = Y[ax]
+        out[f'persist_{ax}{suffix}'] = Yp[ax]
+        out[f'clim_{ax}{suffix}'] = climatology(Y[ax], n, day_ms, h)
+        last = np.where(~np.isnan(Y[ax]).any(axis=1))[0].max()
+        assert day_ms[last] + h * 86_400_000 <= CUT_MS, 'a label window passes the 2024 cut'
+    return out, S
+
+
+def _official():
+    z = np.load(os.path.join(OUT, 'panel.npz'))
+    P = {f: z[f] for f in ('o', 'h', 'l', 'c', 'rv', 'qv', 'atr', 'elig')}
+    return z['day_ms'], [str(x) for x in z['syms']], P
+
+
+def run_h40():
+    """40-day labels on U50 with the F0 rule (same grids and share targets), fixed from the base
+    rates of development coins whose label windows close by 2023-12-31; baselines reported."""
+    h = 40
+    day_ms, syms, P = _official()
+    hold = json.load(open(os.path.join(OUT, 'holdout.json')))['holdout']
+    dev_cols = np.array([x not in hold for x in syms])
+    label_end_ms = int(pd.Timestamp(DEV_LABEL_END, tz='UTC').value // 10**6)
+    M = P['elig'] & dev_cols[None, :] & ((day_ms + h * 86_400_000) <= label_end_ms)[:, None]
+    S = raw_scores(P, h)
+    tf = M & ~np.isnan(S['er_fut'])
+    e, sh_e = nearest(GRID_E, lambda g: (S['er_fut'][tf] >= g).mean(), TARGET_TREND)
+    rf = M & ~np.isnan(S['dev_fut'])
+    k, sh_k = nearest(GRID_K + (4.5, 5.0, 5.5, 6.0), lambda g: (S['dev_fut'][rf] <= g).mean(), TARGET_RANGE)
+    a = json.load(open(os.path.join(OUT, 'f0_labels.json')))['thresholds']['a']
+    labels, _ = label_set(P, day_ms, h, a, e, k)
+    report = {'thresholds': {'e': e, 'k': k, 'H': h}, 'grid_shares': {'e': sh_e, 'k': sh_k}, 'axes': {}}
+    for ax, n in AXES.items():
+        y, yp, clim = labels[f'y_{ax}'], labels[f'persist_{ax}'], labels[f'clim_{ax}']
+        m = M & ~np.isnan(y)
+        mb = m & ~np.isnan(yp) & ~np.isnan(clim).any(axis=-1)
+        report['axes'][ax] = {
+            'class_share': {str(c): round(float((y[m] == c).mean()), 4) for c in range(n)},
+            'label_switches_per_year': round(switches_per_year(y, m), 2),
+            'persistence': {'balanced_accuracy': round(balanced_accuracy(yp[mb], y[mb], n), 4),
+                            'switches_per_year': round(switches_per_year(yp, mb), 2)},
+            'climatology': {'brier': round(float(brier(clim, y, n)[mb].mean()), 4)}}
+    np.savez_compressed(os.path.join(OUT, 'labels_h40.npz'), **labels)
+    json.dump(report, open(os.path.join(OUT, 'f6_labels_h40.json'), 'w'), indent=2)
+    print(json.dumps(report, indent=2))
+
+
+def run_panel70():
+    """U50 + the fresh N2 coins in one panel, with H = 20 and H = 40 labels at the fixed thresholds.
+    N2 rows are only scored in r56 F10."""
+    n2 = [u['symbol'] for u in json.load(open(os.path.join(N2_DIR, 'universe_n2.json')))['selected']]
+    syms = [u['symbol'] for u in universe()] + n2
+    day_ms, syms, P = load_panel(syms, {x: N2_DIR for x in n2})
+    t20 = json.load(open(os.path.join(OUT, 'f0_labels.json')))['thresholds']
+    t40 = json.load(open(os.path.join(OUT, 'f6_labels_h40.json')))['thresholds']
+    L20, _ = label_set(P, day_ms, 20, t20['a'], t20['e'], t20['k'])
+    L40, _ = label_set(P, day_ms, 40, t20['a'], t40['e'], t40['k'], suffix='40')
+    np.savez_compressed(os.path.join(OUT, 'panel70.npz'), day_ms=day_ms, syms=np.array(syms),
+                        is_n2=np.array([x in n2 for x in syms]),
+                        **{f: P[f] for f in ('o', 'h', 'l', 'c', 'rv', 'qv', 'atr', 'elig')})
+    np.savez_compressed(os.path.join(OUT, 'labels70.npz'), **L20, **L40)
+    print('panel70:', len(syms), 'coins,', len(n2), 'fresh')
+
+
+def check():
+    """The parametrised loader with defaults must reproduce the committed panel exactly."""
+    day_ms, syms, P = load_panel()
+    d0, s0, P0 = _official()
+    ok = np.array_equal(day_ms, d0) and syms == s0 and all(
+        np.array_equal(P[f], P0[f], equal_nan=(f != 'elig')) for f in P0)
+    print('panel reproduction:', ok)
+    assert ok
+
+
 def main():
-    if len(sys.argv) > 1 and sys.argv[1] == 'run':
+    cmd = sys.argv[1] if len(sys.argv) > 1 else ''
+    if cmd == 'run':
         run()
+    elif cmd == 'h40':
+        run_h40()
+    elif cmd == 'panel70':
+        run_panel70()
+    elif cmd == 'check':
+        check()
     else:
         print(__doc__)
 

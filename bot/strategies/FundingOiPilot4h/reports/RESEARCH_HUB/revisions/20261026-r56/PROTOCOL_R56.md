@@ -152,3 +152,81 @@ El §5 decía «las ≤ 3 mejores configuraciones», pero no aclaraba si se cuen
 - X1 (dirección de salida) no es un eje del puente: se reporta, pero no va al holdout.
 
 Así se evita que un solo eje ocupe los tres lugares. Implementación: `r56_eval.select_f5` y `run_f5`.
+
+## Extensión r56-B (2026-10-26). Estabilizar y mejorar el pronóstico antes de r57
+Plan aprobado por el usuario. Se commitea antes de cualquier corrida de r56-B. Decisiones del usuario:
+- techo de **N_régimen de 30 a 40**;
+- **descargar un set nuevo N2** como validación final intocada;
+- **Docker sin cambios** (ya tiene los 22 hilos), con un máximo de 2 trabajos pesados en paralelo.
+
+### Puente enmendado (criterio 4a), con el factor de mercado
+El tope fijo de 12 cambios por año queda reemplazado por: **cambios por año del estado operable ≤ f_mkt × cambios por año de la etiqueta del mismo eje y horizonte**, medidos en la misma muestra.
+
+**De dónde sale f_mkt** (`r56_noise.py`, `data/r56/f6_noise.json`): no interviene ningún detector. Cada etiqueta se mide por segunda vez con los mismos datos de mercado:
+- en vol, la RV sale de retornos de 2h en horas pares e impares;
+- en tendencia y rango, los días se cortan a las 12 UTC.
+
+f_mkt es la mediana, sobre las monedas de desarrollo hasta 2023, del cociente entre los cambios de la segunda medición y los de la oficial.
+
+| Horizonte | vol | tendencia | rango |
+|---|---|---|---|
+| 20 días | 1,048 | 0,987 → **1,0** | 1,000 |
+| 40 días | 1,058 | 1,000 | 1,001 |
+
+**Piso de 1,0:** un tope menor que la etiqueta haría fallar incluso a un pronosticador perfecto.
+
+**Qué cuenta como «estado operable»:** puede ser el estado estabilizado de F7. Los demás criterios del puente no cambian.
+
+**Advertencia declarada:** esta enmienda se hace después de ver los resultados de r56. El factor sale de un procedimiento que no usa ningún detector, pero la decisión de enmendar sí es posterior a esos resultados.
+
+### Etiquetas H = 40 (`r56_panel.py h40`, `data/r56/f6_labels_h40.json`)
+- **Regla de F0:** terciles de vol; eficiencia con objetivo de 35%; caja ATR con objetivo de 40%. Se fijaron mirando solo las tasas base de desarrollo hasta 2023.
+- **Grilla de k ampliada hasta 6,0:** con la grilla de F0, el máximo (4,0) ya quedaba cerca del objetivo, y la sensibilidad H = 40 de F0 (23% con k = 3) mostraba que la grilla original se quedaba corta.
+- **Resultado:** e = 0,25 (26,5% de tendencia) y k = 4,0 (39,7% de rango).
+- **Cambios por año de la etiqueta** (desarrollo): vol 9,0, tendencia 29,4 y rango 28,3.
+
+### Set nuevo N2 (`r56_fresh.py`, `data/r56/n2/universe_n2.json`)
+**Regla de selección:**
+- perpetuos USDT-M en estado TRADING, listados antes del 2022-07-01, fuera de U50, sin stablecoins;
+- los 20 de mayor volumen de 24h al 2026-10-26.
+
+**Lista:** CHZ, COTI, RSR, VET, CELO, KAVA, RUNE, DUSK, OGN, ONE, DYDX, RVN, PEOPLE, JASMY, MANA, GRT, TRB, ENS, THETA y IOTX.
+
+**Descarga:** velas de 1h y funding de 2020-01 a 2024-12, con verificación SHA-256. 2025 ni siquiera se descarga.
+
+N2 se usa **una sola vez**, en F10.
+
+### Configuraciones de r56-B (N_régimen de 22 a 38; techo 40)
+**F7, estabilizadores** sobre las predicciones fuera de muestra de T1 y V1 en Y_vol a 20 días (6 configuraciones):
+- **St1, confirmación:** el estado cambia solo si el nuevo argmax se mantiene d días seguidos (d de 1 a 10).
+- **St2, histéresis:** el estado cambia solo si p(nuevo) − p(actual) ≥ m (m de 0 a 0,40, cada 0,05).
+- **St3, decodificador con penalización:** DP hacia adelante con costo −log p más λ por cada cambio, quedándose con el último estado (λ en {0,1; 0,2; 0,5; 1; 2; 5; 10}).
+
+**Cómo se elige el hiperparámetro, sin mirar el futuro:**
+- en cada trimestre, con las predicciones fuera de muestra de los 4 trimestres anteriores;
+- se maximiza la exactitud balanceada del estado, sujeta a cambios ≤ f_mkt × los de la etiqueta en esas filas;
+- si ninguno cumple, se toma el que menos cambia;
+- si hay menos de 4 trimestres previos, se usan d = 3, m = 0,15 y λ = 1.
+
+Las probabilidades no se tocan, así que el BSS es el del modelo base.
+
+**F8, mejor pronóstico de vol** (5 configuraciones):
+- **H1, HExp agrupado:** EWMA de la log-RV con centros de masa 1, 5, 25 y 125, centradas por la media de 365 días de la moneda. Variables z a los terciles, como V1.
+- **H2, HExpGl:** H1 más un factor de vol global (media transversal de la EWMA de 25 días, rezagada un día).
+- **K1:** logística sobre las variables de T1 + H2.
+- **O1:** logit acumulado ordinal (statsmodels OrderedModel) sobre las variables de K1.
+- **T3:** Chronos-2 con covariables pasadas (log-RV de BTC y vol global media).
+
+**F9, horizonte de 40 días** (5 configuraciones):
+- vol40 con T1 y con la mejor de F8;
+- trend40 con A3 y C3;
+- range40 con A3.
+
+**Estabilizador en F8 y F9:** a cada configuración se le aplica el estabilizador de F7 con mejor exactitud balanceada en desarrollo dentro del tope. Es una regla fija y no suma configuraciones.
+
+### F10, validación final (no suma N_régimen)
+- **Selección:** por eje y horizonte, la mejor configuración (con su estabilizador) según el BSS promedio entre desarrollo y 2024, que además cumpla en desarrollo y 2024 el criterio 4a enmendado.
+- **Corrida única:**
+  - sobre N2, con modelos entrenados solo en las monedas de desarrollo;
+  - el holdout de 16 alts se reporta como **segunda mirada declarada**.
+- **Puente:** el veredicto se toma sobre N2, con todos los criterios y el 4a enmendado. El SPA final cubre las 38 configuraciones.
