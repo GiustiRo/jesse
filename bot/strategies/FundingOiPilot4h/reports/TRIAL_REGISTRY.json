@@ -3129,11 +3129,171 @@
       "phase": "F1g",
       "date_utc": "2026-10-25",
       "decision": "igual a P1 (ninguna G pasa)"
+    },
+    {
+      "id": "R51_F3_A1",
+      "hypothesis": "Tendencia lenta L/S 3/6/12m común en WTI, gas y bono",
+      "round": "r51",
+      "phase": "F3",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": -0.308,
+        "cagr": -0.0328,
+        "max_dd": -0.3704
+      },
+      "sharpe_c21": -0.522,
+      "sharpe_veto": -0.475,
+      "rho_p1": 0.096,
+      "decision": "no pasa: g1_sharpe_ge_0_3, g3_no_veto"
+    },
+    {
+      "id": "R51_F3_A2",
+      "hypothesis": "A1 en bono con largo solo si corr126(SPX,bono)<0",
+      "round": "r51",
+      "phase": "F3",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": -0.305,
+        "cagr": -0.0478,
+        "max_dd": -0.3955
+      },
+      "sharpe_c21": -0.331,
+      "sharpe_veto": -0.364,
+      "rho_p1": -0.032,
+      "decision": "no pasa: g1_sharpe_ge_0_3, g3_no_veto"
+    },
+    {
+      "id": "R51_F3_A3",
+      "hypothesis": "Spread Brent–WTI, reversión z60 >2, salida z=0/20 d/|z|>4",
+      "round": "r51",
+      "phase": "F3",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": 1.214,
+        "cagr": 0.0836,
+        "max_dd": -0.05
+      },
+      "sharpe_c21": 1.182,
+      "sharpe_veto": 0.798,
+      "rho_p1": -0.049,
+      "decision": "no pasa: g3_no_veto"
+    },
+    {
+      "id": "R51_F3_A4",
+      "hypothesis": "Bono largo los últimos 3 días hábiles del mes (maker)",
+      "round": "r51",
+      "phase": "F3",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": -0.214,
+        "cagr": -0.0154,
+        "max_dd": -0.166
+      },
+      "sharpe_c21": -0.288,
+      "sharpe_veto": -0.349,
+      "rho_p1": 0.012,
+      "decision": "no pasa: g1_sharpe_ge_0_3, g2_bear_pnl_pos, g3_no_veto, g5_trades_top5"
+    },
+    {
+      "id": "R51_F3_A5",
+      "hypothesis": "A1 en WTI con largo vetado si EURUSD 63d < 0",
+      "round": "r51",
+      "phase": "F3",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": 0.108,
+        "cagr": 0.0058,
+        "max_dd": -0.263
+      },
+      "sharpe_c21": -0.193,
+      "sharpe_veto": 0.359,
+      "rho_p1": -0.031,
+      "decision": "no pasa: g1_sharpe_ge_0_3"
+    },
+    {
+      "id": "R51_F4_B1",
+      "hypothesis": "Corto cripto 4h espejo de R2 con régimen bajista diario, 0,5% riesgo",
+      "round": "r51",
+      "phase": "F4",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": 0.234,
+        "cagr": 0.0024,
+        "max_dd": -0.019
+      },
+      "sharpe_c21": -0.069,
+      "sharpe_veto": 0.234,
+      "rho_p1": -0.026,
+      "decision": "no pasa: g1_sharpe_ge_0_3, g5_trades_top5"
+    },
+    {
+      "id": "R51_F4_B2",
+      "hypothesis": "Corto-o-plano de crisis en SPX, oro y BTC (r252<0 y <SMA200)",
+      "round": "r51",
+      "phase": "F4",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": -0.25,
+        "cagr": -0.0166,
+        "max_dd": -0.1695
+      },
+      "sharpe_c21": -0.204,
+      "sharpe_veto": -0.117,
+      "rho_p1": -0.264,
+      "decision": "no pasa: g1_sharpe_ge_0_3, g3_no_veto"
+    },
+    {
+      "id": "R51_F4_B3",
+      "hypothesis": "Momentum 12-1 entre los 7 del núcleo, 2 largos / 2 cortos",
+      "round": "r51",
+      "phase": "F4",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": 0.025,
+        "cagr": -0.0032,
+        "max_dd": -0.2162
+      },
+      "sharpe_c21": 0.047,
+      "sharpe_veto": 0.215,
+      "rho_p1": 0.106,
+      "decision": "no pasa: g1_sharpe_ge_0_3"
+    },
+    {
+      "id": "R51_F5_T1",
+      "hypothesis": "Pronósticos Carver (EWMAC x3 + ruptura 80) en lugar de R1",
+      "round": "r51",
+      "phase": "F5",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": 1.116,
+        "cagr": 0.0911,
+        "max_dd": -0.092
+      },
+      "sharpe_c21": 0.937,
+      "sharpe_veto": 0.181,
+      "rho_p1": 0.535,
+      "decision": "no reemplaza a R1 en P1 (Sharpe 2018-09+ -0,07)"
+    },
+    {
+      "id": "R51_F5_T2",
+      "hypothesis": "T1 con atenuación por percentil de vol",
+      "round": "r51",
+      "phase": "F5",
+      "date_utc": "2026-10-25",
+      "metrics_decision": {
+        "sharpe": 1.187,
+        "cagr": 0.1229,
+        "max_dd": -0.1245
+      },
+      "sharpe_c21": 0.908,
+      "sharpe_veto": 0.291,
+      "rho_p1": 0.565,
+      "decision": "no reemplaza a R1 en P1 (Sharpe 2018-09+ -0,08)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 98,
+    "declared": 108,
     "sensitivity": [
       20,
       200
@@ -3149,7 +3309,8 @@
     "r50_f1d_note": "+9 por F1d (2026-10-25). PBO 0,28 sobre 20 canastas 2011–25; N efectivo estimado ~57 por correlación media 0,37.",
     "r50_f1e_note": "+2 por K1r y P3 (2026-10-25).",
     "r50_f1f_note": "+2 por R1 amplio y P4 (2026-10-25).",
-    "r50_f1g_note": "+4 por G1, G2, G3 y P5 (2026-10-25)."
+    "r50_f1g_note": "+4 por G1, G2, G3 y P5 (2026-10-25).",
+    "r51_note": "+10 por A1–A5, B1–B3, T1–T2 (2026-10-25). P2 = P1, no suma."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -3564,5 +3725,15 @@
     },
     "results_file": "research_scripts/data/r51/f1_confirm.json",
     "report": "strategies/FundingOiPilot4h/reports/R51_PHASE1_RESULTS_20261025.md"
+  },
+  "r51_closed": {
+    "date": "2026-10-25",
+    "candidate": "P1 sin cambios (5caf4a53), con la curva Jesse del bono en 2021–25",
+    "n_final": 108,
+    "jesse_runs_used": 10,
+    "dsr_long": 0.986,
+    "dsr_common": 0.73,
+    "report": "strategies/FundingOiPilot4h/reports/R51_CLOSE_20261025.md",
+    "notable": "A3 (spread Brent–WTI) Sharpe 1,21 / 1,18 y ρ −0,05, vetado por DD de la lente larga en 2013; queda para r52 como hipótesis nueva preregistrada."
   }
 }

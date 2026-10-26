@@ -141,7 +141,8 @@ def main():
         print(__doc__)
         return 1
     trials, curves = load_trials()
-    n_final = ex.N_BEFORE + len(trials) + 1   # +1: the final portfolio P2 is a trial
+    # The trials themselves; a P2 different from P1 would add one more (protocol F6).
+    n_final = ex.N_BEFORE + len(trials)
     p1, p1_tr = {}, []
     for w in ('long', 'common'):
         comps, trades, _ = lib.p1_components(w)

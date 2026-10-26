@@ -37,7 +37,8 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 
 ## Decisiones vigentes (r51, 2026-10-25)
 
-- **r51 abierta (2026-10-25):** plan aprobado por el usuario.
+- **r51 cerrada (2026-10-25)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R51_CLOSE_20261025.md)): P1 sigue sin cambios, ahora confirmada en Jesse (10/10 corridas). En 2021–25 la curva R1/bono se toma de Jesse. Ninguna de las 10 mangas nuevas pasa (cortos, bono/WTI propios, pronósticos Carver). A3 (spread Brent–WTI, Sharpe 1,21) quedó vetado por el DD de 2013 y es la hipótesis a preregistrar en r52. N = 108.
+- r51 (2026-10-25), plan aprobado por el usuario:
   - Cortos como prioridad central y reglas propias para bono, WTI y gas.
   - Pronósticos continuos estilo Carver como enfoque transversal; ML diferido.
   - SOL/XRP/BNB diferidos a r52; paper fuera de alcance; 2026 sigue reservado.
