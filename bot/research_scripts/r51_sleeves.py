@@ -115,14 +115,28 @@ def align(src_bars, dst_bars, values):
     return out
 
 
+# Data gaps longer than this (e.g. WTI 2020-04..07, excluded for negative prices; the bond's
+# 2018 holes) are not tradable periods: sleeves go flat at the last bar before the gap, so the
+# price jump across it is never booked. Amendment 2026-10-25, after B3's -51% on 2020-08-04
+# exposed the artifact; it applies to every r51 rule, none of P1's frozen sleeves.
+MAX_GAP_DAYS = 6
+
+
+def gap_ahead(bars):
+    nxt = np.r_[np.diff(bars[:, T]), 0.0]
+    return nxt > MAX_GAP_DAYS * DAY_MS
+
+
 def continuous_decider(bars, x_target, warm=252):
     """Rebalance to the signed exposure x_target[i] (multiples of equity), r49 25% band."""
     c = bars[:, C]
+    gap = gap_ahead(bars)
 
     def decide(i, acct, ts):
         if i < warm or not np.isfinite(x_target[i]):
             return
-        rebalance(acct, acct.equity(c[i]) * float(x_target[i]) / c[i], c[i], ts)
+        x = 0.0 if gap[i] else float(x_target[i])
+        rebalance(acct, acct.equity(c[i]) * x / c[i], c[i], ts)
     return decide
 
 
@@ -187,10 +201,11 @@ def a4_decider(bars):
             j = i
         nxt[i] = j
     st = {'limit': None}
+    gap = gap_ahead(bars)
 
     def decide(i, acct, ts):
         if acct.is_open:
-            if last_of_month[i]:
+            if last_of_month[i] or gap[i]:
                 _trade(acct, -acct.qty, c[i], ts, TAKER)
             return
         if st['limit'] is not None:
@@ -201,7 +216,7 @@ def a4_decider(bars):
                 if last_of_month[i]:
                     _trade(acct, -acct.qty, c[i], ts, TAKER)
                 return
-        if i >= 30 and nxt[i] - i == 3 and np.isfinite(vol[i]) and vol[i] > 0:
+        if i >= 30 and nxt[i] - i == 3 and not gap[i:i + 4].any() and np.isfinite(vol[i]) and vol[i] > 0:
             st['limit'] = (c[i], acct.equity(c[i]) * min(MAX_X, TARGET_VOL / vol[i]) / c[i])
     return decide
 
@@ -224,15 +239,16 @@ def a3_pair(brent, wti, start_ms):
         ts = int(b[i, T]) + DAY_MS
         pb, pw = b[i, C], w[i, C]
         eq = ab.equity(pb) + aw.equity(pw)
+        gap = i + 1 < len(b) and b[i + 1, T] - b[i, T] > MAX_GAP_DAYS * DAY_MS
         if st['side'] != 0:
             st['held'] += 1
             crossed = np.isfinite(z[i]) and np.sign(z[i]) != np.sign(st['z0'])
-            if crossed or st['held'] >= 20 or (np.isfinite(z[i]) and abs(z[i]) > 4):
+            if crossed or gap or st['held'] >= 20 or (np.isfinite(z[i]) and abs(z[i]) > 4):
                 _trade(ab, -ab.qty, pb, ts, TAKER)
                 _trade(aw, -aw.qty, pw, ts, TAKER)
                 trades.append({'closed': ts, 'pnl': ab.balance + aw.balance - st['bal0']})
                 st.update(side=0, held=0)
-        elif i >= 60 and np.isfinite(z[i]) and abs(z[i]) > 2 and np.isfinite(dx_vol[i]) and dx_vol[i] > 0:
+        elif not gap and i >= 60 and np.isfinite(z[i]) and abs(z[i]) > 2 and np.isfinite(dx_vol[i]) and dx_vol[i] > 0:
             notional = eq * min(1.0, TARGET_VOL / dx_vol[i])
             side = -1 if z[i] > 2 else 1   # +1 = long Brent / short WTI
             st.update(side=side, held=0, z0=z[i], bal0=ab.balance + aw.balance)
@@ -332,7 +348,16 @@ def b3_curve(lens, start_ms):
         cl = np.where(idx >= 0, b[np.clip(idx, 0, None), C], np.nan)
         first = b[0, T]
         close[n] = np.where(days >= first, cl, np.nan)
-    rets = {n: np.r_[np.nan, close[n][1:] / close[n][:-1] - 1] for n in close}
+    rets = {}
+    for n, b in bars.items():
+        idx = np.searchsorted(b[:, T], days, side='right') - 1
+        last_t = np.where(idx >= 0, b[np.clip(idx, 0, None), T], np.nan)
+        step = np.r_[np.nan, np.diff(last_t)]
+        r = np.r_[np.nan, close[n][1:] / close[n][:-1] - 1]
+        # A return spanning a data gap (MAX_GAP_DAYS) is not booked, and the asset is not ranked
+        # while its last bar is stale.
+        rets[n] = np.where(step > MAX_GAP_DAYS * DAY_MS, np.nan, r)
+        close[n] = np.where(days - last_t > MAX_GAP_DAYS * DAY_MS, np.nan, close[n])
     vol60 = {n: en.rolling_std(np.log(close[n]) - np.log(np.r_[np.nan, close[n][:-1]]), 60)
              * math.sqrt(252 if is_cfd(n) else 365) for n in close}
     fund = {}
