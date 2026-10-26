@@ -6,6 +6,12 @@ environment stays untouched:
 
     /opt/chronos-venv/bin/python research_scripts/r56_chronos.py bolt     # T1, amazon/chronos-bolt-small
     /opt/chronos-venv/bin/python research_scripts/r56_chronos.py chronos2 # T2, amazon/chronos-2
+    /opt/chronos-venv/bin/python research_scripts/r56_chronos.py chronos2cov  # T3 (r56-B), covariates
+    ... [panel70]    # same forecasts on the 70-coin panel (U50 + N2) for r56 F10
+
+T3 gives Chronos-2 two past covariates over the same context: BTC's daily log RV and the global
+vol, the mean daily log RV over the U50 coins with data that day (always the first 50 columns, so
+the covariate is identical with or without N2).
 
 For every coin and day t with at least 60 valid days of history, the context is the coin's daily
 log RV (from 1h returns) over the last 512 days up to and including t (missing days as NaN), and
@@ -24,17 +30,20 @@ import torch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'data', 'r56')
-MODELS = {'bolt': 'amazon/chronos-bolt-small', 'chronos2': 'amazon/chronos-2'}
+MODELS = {'bolt': 'amazon/chronos-bolt-small', 'chronos2': 'amazon/chronos-2', 'chronos2cov': 'amazon/chronos-2'}
 CONTEXT, HORIZON, MIN_HIST, BATCH = 512, 20, 60, 256
 
 
-def run(kind, limit=None):
+def run(kind, limit=None, panel='panel'):
     from chronos import BaseChronosPipeline
     torch.manual_seed(0)
     pipe = BaseChronosPipeline.from_pretrained(MODELS[kind], device_map='cpu', torch_dtype=torch.float32)
-    z = np.load(os.path.join(OUT, 'panel.npz'))
+    z = np.load(os.path.join(OUT, f'{panel}.npz'))
     lrv = np.log(z['rv'])
     lrv[~np.isfinite(lrv)] = np.nan
+    syms = [str(x) for x in z['syms']]
+    btc = lrv[:, syms.index('BTCUSDT')]
+    glob = np.nanmean(lrv[:, :50], axis=1)
     D, M = lrv.shape
     jobs = []
     for j in range(M):
@@ -49,7 +58,15 @@ def run(kind, limit=None):
     t0 = time.time()
     for b in range(0, len(jobs), BATCH):
         chunk = jobs[b:b + BATCH]
-        ctxs = [torch.tensor(lrv[max(0, t - CONTEXT + 1):t + 1, j], dtype=torch.float32) for t, j in chunk]
+        if kind == 'chronos2cov':
+            ctxs = []
+            for t, j in chunk:
+                a = max(0, t - CONTEXT + 1)
+                ctxs.append({'target': lrv[a:t + 1, j].astype(np.float32),
+                             'past_covariates': {'btc': btc[a:t + 1].astype(np.float32),
+                                                 'glob': glob[a:t + 1].astype(np.float32)}})
+        else:
+            ctxs = [torch.tensor(lrv[max(0, t - CONTEXT + 1):t + 1, j], dtype=torch.float32) for t, j in chunk]
         q, mean = pipe.predict_quantiles(ctxs, prediction_length=HORIZON, quantile_levels=[0.5])
         # Chronos-Bolt returns one (batch, horizon, q) tensor; Chronos-2 a list of
         # (variates, horizon, q) tensors, one per series.
@@ -62,11 +79,16 @@ def run(kind, limit=None):
     if limit:
         print('timing only:', len(jobs), 'forecasts in', round(time.time() - t0, 1), 's')
         return
-    np.save(os.path.join(OUT, f'chronos_{kind}.npy'), out.astype(np.float32))
+    sfx = '' if panel == 'panel' else f'_{panel}'
+    np.save(os.path.join(OUT, f'chronos_{kind}{sfx}.npy'), out.astype(np.float32))
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] in MODELS:
-        run(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else None)
+        extra = sys.argv[2:]
+        if extra and extra[0].startswith('panel'):
+            run(sys.argv[1], panel=extra[0])
+        else:
+            run(sys.argv[1], int(extra[0]) if extra else None)
     else:
         print(__doc__)

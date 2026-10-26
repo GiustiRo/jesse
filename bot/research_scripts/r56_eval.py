@@ -157,6 +157,12 @@ def fit_predict(feats, axis, coins='dev', kind='logit'):
         if not te.any():
             continue
         prep = _prep(F[tr])
+        if kind == 'ordinal':
+            # Cumulative logit over the ordered classes (r56-B O1).
+            from statsmodels.miscmodels.ordinal_model import OrderedModel
+            res = OrderedModel(y[tr].astype(int), prep(F[tr]), distr='logit').fit(method='bfgs', disp=False, maxiter=1000)
+            preds[te] = np.asarray(res.model.predict(res.params, exog=prep(F[te])))
+            continue
         mdl = _model(kind, n_cls)
         mdl.fit(prep(F[tr]), y[tr].astype(int))
         p = np.zeros((int(te.sum()), n_cls))
@@ -1116,6 +1122,90 @@ for _base in ('T1', 'V1'):
                      'Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al '
                      'inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; '
                      'si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.')}
+
+# ----------------------------------------------------------------------------------------------
+# r56-B F8: smoother and combined vol forecasts
+# ----------------------------------------------------------------------------------------------
+HEXP_COM = (1, 5, 25, 125)
+F8_STABILISER = 'hyst'   # F7's best development BA within the cap (Z2V), fixed before F8 runs
+
+
+def fam_hexp(P):
+    """Centred EWMAs of daily log RV (centres of mass 1/5/25/125 days; Bollerslev et al. 2018),
+    each minus the coin's 365-day mean log RV (m365), and the global factor: the cross-sectional
+    mean of the centred 25-day EWMA over the eligible coins of the panel, lagged one day."""
+    lrv = np.log(P['rv'])
+    lrv = np.where(np.isfinite(lrv), lrv, np.nan)
+    m365 = ft._df(lrv).rolling(365, min_periods=90).mean().values
+    cols = {'m365': m365}
+    for com in HEXP_COM:
+        cols[f'ew{com}'] = ft._df(lrv).ewm(com=com, min_periods=min(com, 20)).mean().values - m365
+    with np.errstate(all='ignore'):
+        g = np.nanmean(np.where(P['elig'], cols['ew25'], np.nan), axis=1)
+    cols['glob25'] = np.repeat(pn._shift(g[:, None], -1), lrv.shape[1], axis=1)
+    return {k: np.where(np.isfinite(v), v, np.nan) for k, v in cols.items()}
+
+
+def hexp_inputs():
+    if 'hexp' not in _CTX:
+        cols = fam_hexp(ctx()['P'])
+        _CTX['hexp'] = (cols, cols['m365'])
+    return _CTX['hexp']
+
+
+def _hexp_z(q0, glob):
+    c = ctx()
+    h = har_inputs()
+    cols, m365 = hexp_inputs()
+    names = [f'ew{x}' for x in HEXP_COM] + (['glob25'] if glob else [])
+    X = np.stack([cols[k] for k in names], -1)
+    base = m365 + np.log(20)
+    y = h['target'] - base
+    D = X.shape[0]
+    di = np.arange(D)[:, None]
+    tr = (c['P']['elig'] & (~c['is_hold'])[None, :] & (di <= q0 - EMBARGO) & np.isfinite(X).all(-1)
+          & np.isfinite(y))
+    A = np.column_stack([np.ones(int(tr.sum())), X[tr]])
+    beta, *_ = np.linalg.lstsq(A, y[tr], rcond=None)
+    sig = float(np.std(y[tr] - A @ beta))
+    pred = base + beta[0] + (X * beta[1:]).sum(-1)
+    return np.stack([(h['thr_lo'] - pred) / sig, (h['thr_hi'] - pred) / sig, pred - h['l_20']], -1), beta
+
+
+def hexp_feats(cid, glob):
+    def f(qi, q0):
+        def build():
+            Z, beta = _hexp_z(q0, glob)
+            FOLD_LOG[f'{cid}_{qi}'] = {'beta': [round(float(b), 4) for b in beta]}
+            return Z
+        return _fold_cache(cid, qi, build)
+    return f
+
+
+def combo_feats(qi, q0):
+    """K1/O1: T1's Chronos-Bolt z-distances next to H2's HExpGl z-distances."""
+    return np.concatenate([chronos_feats('T1', 'bolt')(qi, q0), hexp_feats('H2', True)(qi, q0)], axis=-1)
+
+
+SPECS.update({
+    'H1': {'phase': 'F8', 'axes': ['vol'], 'stabiliser': F8_STABILISER,
+           'spec': 'HExp agrupado: MCO de log RV(t+1..t+20) − (media de 365 días de log RV + ln 20) sobre las EWMA de log RV diaria con centros de masa 1, 5, 25 y 125 días, centradas por la media de 365 días de la moneda; filas de desarrollo con la ventana cerrada antes del embargo. Variables z a los terciles como V1. Logística. Estado operable con el estabilizador St2 (histéresis) de F7. Solo Y_vol.',
+           'feats': lambda: hexp_feats('H1', False)},
+    'H2': {'phase': 'F8', 'axes': ['vol'], 'stabiliser': F8_STABILISER,
+           'spec': 'HExpGl: H1 más el factor de vol global (media transversal de la EWMA centrada de 25 días sobre las monedas elegibles de U50, rezagada un día) como regresor. Logística. St2. Solo Y_vol.',
+           'feats': lambda: hexp_feats('H2', True)},
+    'K1': {'phase': 'F8', 'axes': ['vol'], 'stabiliser': F8_STABILISER,
+           'spec': 'Combinación: logística sobre las variables de T1 (Chronos-Bolt) y de H2 (HExpGl), 6 variables; la logística hace de recalibración afín. St2. Solo Y_vol.',
+           'feats': lambda: combo_feats},
+    'O1': {'phase': 'F8', 'axes': ['vol'], 'model': 'ordinal', 'stabiliser': F8_STABILISER,
+           'spec': 'Ordinal: logit acumulado (statsmodels OrderedModel, BFGS) sobre las mismas 6 variables de K1, respetando el orden compresión < media < alta. St2. Solo Y_vol.',
+           'feats': lambda: combo_feats},
+    'T3': {'phase': 'F8', 'axes': ['vol'], 'stabiliser': F8_STABILISER,
+           'spec': 'Chronos-2 zero-shot con covariables pasadas: log RV diaria de BTC y vol global (media de log RV de las monedas de U50 con dato), mismo contexto y horizonte que T2. Variables como T1. Logística. St2. Solo Y_vol.',
+           'feats': lambda: chronos_feats('T3', 'chronos2cov')},
+})
+
+STATIC_FAMS.update({'H1': [fam_hexp], 'H2': [fam_hexp]})
 
 
 def main():
