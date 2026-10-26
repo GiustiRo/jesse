@@ -5101,7 +5101,19 @@
         ],
         "model": "logit",
         "spec": "St1 confirmación: el estado cambia solo si el nuevo argmax se mantiene d días seguidos, d ∈ {1..10}, sobre las predicciones fuera de muestra de T1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1355,
+              "dm_p": 0.0005
+            },
+            "val": {
+              "bss": 0.2177,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "Z2T",
@@ -5113,7 +5125,19 @@
         ],
         "model": "logit",
         "spec": "St2 histéresis: el estado cambia solo si p(nuevo) − p(actual) ≥ m, m ∈ {0; 0,05; …; 0,40}, sobre las predicciones fuera de muestra de T1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1355,
+              "dm_p": 0.0005
+            },
+            "val": {
+              "bss": 0.2177,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "Z3T",
@@ -5125,7 +5149,19 @@
         ],
         "model": "logit",
         "spec": "St3 decodificador hacia adelante: costo −log p más λ por cambio, λ ∈ {0,1; 0,2; 0,5; 1; 2; 5; 10}, sobre las predicciones fuera de muestra de T1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1355,
+              "dm_p": 0.0005
+            },
+            "val": {
+              "bss": 0.2177,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "Z1V",
@@ -5137,7 +5173,19 @@
         ],
         "model": "logit",
         "spec": "St1 confirmación: el estado cambia solo si el nuevo argmax se mantiene d días seguidos, d ∈ {1..10}, sobre las predicciones fuera de muestra de V1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1142,
+              "dm_p": 0.004
+            },
+            "val": {
+              "bss": 0.2101,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "Z2V",
@@ -5149,7 +5197,19 @@
         ],
         "model": "logit",
         "spec": "St2 histéresis: el estado cambia solo si p(nuevo) − p(actual) ≥ m, m ∈ {0; 0,05; …; 0,40}, sobre las predicciones fuera de muestra de V1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1142,
+              "dm_p": 0.004
+            },
+            "val": {
+              "bss": 0.2101,
+              "dm_p": 0.0005
+            }
+          }
+        }
       },
       {
         "id": "Z3V",
@@ -5161,7 +5221,19 @@
         ],
         "model": "logit",
         "spec": "St3 decodificador hacia adelante: costo −log p más λ por cambio, λ ∈ {0,1; 0,2; 0,5; 1; 2; 5; 10}, sobre las predicciones fuera de muestra de V1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.1142,
+              "dm_p": 0.004
+            },
+            "val": {
+              "bss": 0.2101,
+              "dm_p": 0.0005
+            }
+          }
+        }
       }
     ],
     "ceiling_history": [
