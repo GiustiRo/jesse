@@ -3,14 +3,14 @@
   "id": "20261026-r55",
   "updated_at_utc": "2026-10-26 18:00:00 UTC",
   "objective": "Motor cripto para todos los regímenes (regímenes de BTC definidos antes de sumar N), monetización del ranking ML, Brent–WTI con veto de quiebre e integración por aporte marginal.",
-  "latest": "F2 cerrada: ML1–ML4 no pasan (N=132). ML3 (C6 solo en alts del top-10 de X1) cumple la inclusión (+0,059/+0,169) y su canasta da 1,31 contra 0,85 de V1, pero falla la puerta bajista; la mejora se concentra en 2024 y la manga va escalada ~10x. No se rescata.",
-  "next": "F3 (A3 v2); luego F4 (activos marginales, R1 sin bono, cartera final).",
+  "latest": "F3 cerrada: A3 v2 no pasa (N=133). El veto AR(1) evita 2013, pero deja un DD de −16,1% en 2015 y bloquea 2018–19 (Sharpe de decisión 1,18 → 0,88; 28 trades). A3 no entra ni como provisional.",
+  "next": "F4: activos marginales (Nasdaq, plata, cobre, EWY, EWJ), R1 sin bono y cartera final, sobre P1.",
   "blockers": "Ninguno.",
   "counts": {
     "r55": {
       "n_declared_start": 125,
       "n_ceiling": 143,
-      "n_current": 132
+      "n_current": 133
     }
   },
   "decisions": [
@@ -43,7 +43,7 @@
     {
       "order": 3,
       "title": "F3 A3 v2 Brent–WTI",
-      "state": "pendiente",
+      "state": "completada: no pasa",
       "depends": "-",
       "gate": "r51 F6 + veto larga"
     },
@@ -79,12 +79,16 @@
     {
       "label": "r55 F2: ranking ML",
       "path": "strategies/FundingOiPilot4h/reports/R55_PHASE2_RESULTS_20261026.md"
+    },
+    {
+      "label": "r55 F3: Brent–WTI v2",
+      "path": "strategies/FundingOiPilot4h/reports/R55_PHASE3_RESULTS_20261026.md"
     }
   ],
   "current_stage": {
     "stage": "r55_preregistro",
     "execution_status": "r55_preregistered",
-    "current_focus": "F3",
+    "current_focus": "F4",
     "permitted": [
       "Scripts en research_scripts.",
       "Push."
