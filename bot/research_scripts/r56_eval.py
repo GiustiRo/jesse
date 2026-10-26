@@ -37,8 +37,9 @@ H = pn.H
 EVAL_FROM, DEV_TO, VAL_FROM = '2021-07-01', '2023-12-31', '2024-01-01'
 EMBARGO = 2 * H
 AXES = pn.AXES
-NCLS = {**AXES, 'exit': 2}   # 'exit' is the F4 range-exit direction label (X1)
-TARGET = {'vol': 2, 'trend': 1, 'range': 0, 'exit': 1}   # transition class for the lead-time metric
+NCLS = {**AXES, 'exit': 2, 'vol40': 3, 'trend40': 2, 'range40': 2}   # exit = X1; *40 = r56-B F9
+TARGET = {'vol': 2, 'trend': 1, 'range': 0, 'exit': 1, 'vol40': 2, 'trend40': 1, 'range40': 0}
+HORIZON = {a: (40 if a.endswith('40') else H) for a in NCLS}
 N_BOOT, BLOCK = 2000, 20
 TRUNC_DATES, TRUNC_COINS = 20, 6
 
@@ -68,6 +69,9 @@ def ctx():
     qidx = [int(np.searchsorted(days, t.value // 10**6)) for t in q] + [len(days)]
     years = pd.to_datetime(days, unit='ms', utc=True).year.values
     L.update(exit_labels(P, L, days))
+    h40 = os.path.join(OUT, 'labels_h40.npz')
+    if os.path.exists(h40):
+        L.update({f'{k}40': v for k, v in np.load(h40).items()})
     _CTX.update(P=P, days=days, syms=syms, L=L, is_hold=is_hold, qidx=qidx, years=years)
     return _CTX
 
@@ -144,10 +148,11 @@ def fit_predict(feats, axis, coins='dev', kind='logit'):
     test_all = eval_mask(axis, coins)
     train_base = c['P']['elig'] & np.isfinite(y) & (~c['is_hold'])[None, :]
     di = np.arange(D)[:, None]
+    emb = 2 * HORIZON[axis]       # the label window plus the same again, as in the protocol
     for qi in range(len(c['qidx']) - 1):
         q0, q1 = c['qidx'][qi], c['qidx'][qi + 1]
         F = feats(qi, q0)
-        tr = train_base & (di <= q0 - EMBARGO)
+        tr = train_base & (di <= q0 - emb)
         te = test_all & (di >= q0) & (di < q1)
         if not te.any():
             continue
@@ -282,7 +287,7 @@ def _switches(s, mask):
     return float(np.mean(out)) if out else float('nan')
 
 
-def evaluate(preds, axis, coins='dev', period='dev'):
+def evaluate(preds, axis, coins='dev', period='dev', states=None):
     c = ctx()
     L = c['L']
     n = NCLS[axis]
@@ -301,6 +306,8 @@ def evaluate(preds, axis, coins='dev', period='dev'):
     pt = np.take_along_axis(np.where(m[..., None], preds, 1.0), yi[..., None], -1)[..., 0]
     logloss = float(-np.log(np.clip(pt[m], 1e-12, 1)).mean())
     s = np.where(m, np.nanargmax(np.where(m[..., None], preds, 0), -1), -1)
+    if states is not None:      # r56-B: a stabilised operable state replaces the argmax
+        s = np.where(m, states, -1)
     ba = pn.balanced_accuracy(s[m].astype(float), y[m], n)
     slopes = []
     for k in range(n):
@@ -332,6 +339,7 @@ def evaluate(preds, axis, coins='dev', period='dev'):
         'bss': round(float(bss), 4), 'logloss': round(logloss, 4), 'balanced_accuracy': round(ba, 4),
         'calibration_slopes': [round(x, 3) for x in slopes],
         'switches_per_year': round(_switches(s, m), 2),
+        'label_switches_per_year': round(_switches(np.where(m, y, -1), m), 2),
         'lead_median': {'model': lead_m, 'persistence': lead_p, 'n_transitions': n_tr},
         'bss_by_year': by_year,
         'coin_bss_pos_share': round(float(np.mean(np.array(coin_bss) > 0)), 4) if coin_bss else None,
@@ -859,15 +867,25 @@ def run(phase):
             ok, msg = truncation_test(fam)
             trunc[fam.__name__] = msg
             assert ok, f'truncation test failed for {fam.__name__}: {msg}'
-        feats = sp['feats']()
+        feats = sp['feats']() if 'feats' in sp else None
         out = {'truncation': trunc, 'axes': {}}
         series = {}
         for axis in sp['axes']:
-            preds = fit_predict(feats, axis, kind=sp.get('model', 'logit'))
-            np.save(os.path.join(OUT, f'pred_{cid}_{axis}.npy'), preds.astype(np.float32))
+            states = None
+            if 'stab' in sp:      # r56-B F7: a stabiliser over an earlier configuration's predictions
+                base, kind = sp['stab']
+                preds = np.load(os.path.join(OUT, f'pred_{base}_{axis}.npy')).astype(float)
+                states, picks = stab_states(preds, axis, kind)
+                out.setdefault('picks', {})[axis] = picks
+            else:
+                preds = fit_predict(feats, axis, kind=sp.get('model', 'logit'))
+                np.save(os.path.join(OUT, f'pred_{cid}_{axis}.npy'), preds.astype(np.float32))
+                if sp.get('stabiliser'):
+                    states, picks = stab_states(preds, axis, sp['stabiliser'])
+                    out.setdefault('picks', {})[axis] = picks
             ev = {}
             for period in ('dev', 'val'):
-                ev[period], gd = evaluate(preds, axis, 'dev', period)
+                ev[period], gd = evaluate(preds, axis, 'dev', period, states=states)
                 series[f'{axis}_{period}'] = gd
             out['axes'][axis] = ev
         out['fold_log'] = {k: v for k, v in FOLD_LOG.items() if k.startswith(cid + '_')}
@@ -966,6 +984,139 @@ def run_f5():
     json.dump(res, open(os.path.join(OUT, 'f5.json'), 'w'), indent=2)
     return res
 
+# ----------------------------------------------------------------------------------------------
+# r56-B F7: forward-only stabilisers of the operable state (probabilities untouched)
+# ----------------------------------------------------------------------------------------------
+STAB_GRID = {'confirm': list(range(1, 11)), 'hyst': [round(0.05 * i, 2) for i in range(9)],
+             'penalty': [0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0]}
+STAB_DEFAULT = {'confirm': 3, 'hyst': 0.15, 'penalty': 1.0}
+STAB_LOOKBACK_Q = 4
+
+
+def f_mkt(axis, h=20):
+    """Market switching tolerance of PROTOCOL_R56 r56-B (floored at 1.0)."""
+    f = json.load(open(os.path.join(OUT, 'f6_noise.json')))[str(h)][axis]['f_mkt']
+    return max(1.0, float(f))
+
+
+def stabilise(P, kind, param):
+    """(D, M) states from (D, M, n) probabilities, forward only; -1 where P is missing. A missing
+    day restarts the state at that day's argmax."""
+    D, M, n = P.shape
+    ok = np.isfinite(P).all(-1)
+    Pz = np.where(ok[..., None], P, 1.0 / n)
+    am = Pz.argmax(-1)
+    s = np.full((D, M), -1, dtype=int)
+    cur = am[0].copy()
+    cnt = np.zeros(M, dtype=int)
+    cand = cur.copy()
+    V = -np.log(np.clip(Pz[0], 1e-12, 1))
+    for t in range(D):
+        fresh = ok[t] & ((t == 0) | ~ok[max(t - 1, 0)])
+        if kind == 'confirm':
+            same = am[t] == cand
+            cnt = np.where(same, cnt + 1, 1)
+            cand = am[t]
+            cur = np.where((cand != cur) & (cnt >= param), cand, cur)
+        elif kind == 'hyst':
+            gain = Pz[t, np.arange(M), am[t]] - Pz[t, np.arange(M), cur]
+            cur = np.where(gain >= param, am[t], cur)
+        else:
+            L = -np.log(np.clip(Pz[t], 1e-12, 1))
+            if t > 0:
+                best = V.min(1, keepdims=True)
+                V = L + np.minimum(V, best + param)
+            else:
+                V = L
+            stay = V[np.arange(M), cur] <= V.min(1)
+            cur = np.where(stay, cur, V.argmin(1))
+        cur = np.where(fresh, am[t], cur)
+        cand = np.where(fresh, am[t], cand)
+        cnt = np.where(fresh, 1, cnt)
+        if kind == 'penalty':
+            V = np.where(fresh[:, None], -np.log(np.clip(Pz[t], 1e-12, 1)), V)
+        s[t] = np.where(ok[t], cur, -1)
+    return s
+
+
+def _ba_and_switches(s, y, mask, n):
+    ba = pn.balanced_accuracy(s[mask].astype(float), y[mask], n) if mask.any() else float('nan')
+    return ba, _switches(s, mask), _switches(np.where(mask, y, -1), mask)
+
+
+def stab_states(preds, axis, kind, labels=None):
+    """Quarter by quarter, the parameter is picked on the previous 4 quarters' out-of-sample rows
+    whose labels were known at the quarter start (max BA s.t. switches <= f_mkt x label switches)."""
+    c = ctx()
+    L = labels or c['L']
+    h = HORIZON[axis]
+    y = L[f'y_{axis}']
+    n = NCLS[axis]
+    D = preds.shape[0]
+    di = np.arange(D)[:, None]
+    runs = {p: stabilise(preds, kind, p) for p in STAB_GRID[kind]}
+    ok = np.isfinite(preds).all(-1) & np.isfinite(y)
+    out = np.full(preds.shape[:2], -1, dtype=int)
+    picks = []
+    fm = f_mkt(axis[:-2] if axis.endswith('40') else axis, h)
+    for qi in range(len(c['qidx']) - 1):
+        q0, q1 = c['qidx'][qi], c['qidx'][qi + 1]
+        if qi >= STAB_LOOKBACK_Q:
+            past = ok & (di >= c['qidx'][qi - STAB_LOOKBACK_Q]) & (di <= q0 - h)
+            best, best_any = None, None
+            for p, s in runs.items():
+                ba, sw, lsw = _ba_and_switches(s, y, past, n)
+                if best_any is None or sw < best_any[1]:
+                    best_any = (p, sw)
+                if sw <= fm * lsw and (best is None or ba > best[1]):
+                    best = (p, ba)
+            p = best[0] if best else best_any[0]
+        else:
+            p = STAB_DEFAULT[kind]
+        picks.append(p)
+        rows = slice(q0, q1)
+        out[rows] = runs[p][rows]
+    return out, picks
+
+
+def selftest_stab():
+    """Noisy probabilities around a persistent 3-state path: every stabiliser must cut switches
+    without losing accuracy against the plain argmax."""
+    rng = np.random.default_rng(57)
+    D, M = 1500, 20
+    true = np.zeros((D, M), dtype=int)
+    for t in range(1, D):
+        flip = rng.random(M) < 1 / 25
+        true[t] = np.where(flip, rng.integers(3, size=M), true[t - 1])
+    logit = 1.2 * np.eye(3)[true] + rng.normal(0, 0.9, (D, M, 3))
+    P = np.exp(logit) / np.exp(logit).sum(-1, keepdims=True)
+    mask = np.ones((D, M), bool)
+    am = P.argmax(-1)
+    base = (pn.balanced_accuracy(am.ravel().astype(float), true.ravel().astype(float), 3), _switches(am, mask))
+    out = {'true_switches': _switches(true, mask), 'argmax': base}
+    ok = True
+    for kind, p in (('confirm', 3), ('hyst', 0.15), ('penalty', 1.0)):
+        s = stabilise(P, kind, p)
+        r = (pn.balanced_accuracy(s.ravel().astype(float), true.ravel().astype(float), 3), _switches(s, mask))
+        out[kind] = r
+        ok &= r[1] < base[1] and r[0] >= base[0] - 0.02
+    out['pass'] = bool(ok)
+    print(json.dumps(out))
+    return out
+
+
+_STAB_TXT = {'confirm': 'St1 confirmación: el estado cambia solo si el nuevo argmax se mantiene d días seguidos, d ∈ {1..10}',
+             'hyst': 'St2 histéresis: el estado cambia solo si p(nuevo) − p(actual) ≥ m, m ∈ {0; 0,05; …; 0,40}',
+             'penalty': 'St3 decodificador hacia adelante: costo −log p más λ por cambio, λ ∈ {0,1; 0,2; 0,5; 1; 2; 5; 10}'}
+for _base in ('T1', 'V1'):
+    for _i, _kind in enumerate(('confirm', 'hyst', 'penalty'), 1):
+        SPECS[f'Z{_i}{_base[0]}'] = {
+            'phase': 'F7', 'axes': ['vol'], 'stab': (_base, _kind),
+            'spec': (f'{_STAB_TXT[_kind]}, sobre las predicciones fuera de muestra de {_base} (Y_vol, H = 20). '
+                     'Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al '
+                     'inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; '
+                     'si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.')}
+
 
 def main():
     a = sys.argv[1:]
@@ -973,6 +1124,8 @@ def main():
         register(a[1])
     elif len(a) >= 2 and a[0] == 'run':
         run(a[1])
+    elif a and a[0] == 'selftest_stab':
+        selftest_stab()
     elif a and a[0] == 'f5':
         run_f5()
     elif a and a[0] == 'spa':

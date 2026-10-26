@@ -4074,7 +4074,7 @@
   "regime_trials": {
     "note": "N_régimen (r56+): configuraciones de detectores de régimen evaluadas contra etiquetas fijadas en F0, sin PnL. Es un contador aparte: no suma a n_effective.declared (N de estrategias = 140). Cada configuración se especifica aquí antes de correrla.",
     "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md",
-    "n_regime": 22,
+    "n_regime": 28,
     "ceiling": 40,
     "declared_plan": [
       {
@@ -5090,6 +5090,78 @@
             }
           }
         }
+      },
+      {
+        "id": "Z1T",
+        "phase": "F7",
+        "n_regime_after": 23,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol"
+        ],
+        "model": "logit",
+        "spec": "St1 confirmación: el estado cambia solo si el nuevo argmax se mantiene d días seguidos, d ∈ {1..10}, sobre las predicciones fuera de muestra de T1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "Z2T",
+        "phase": "F7",
+        "n_regime_after": 24,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol"
+        ],
+        "model": "logit",
+        "spec": "St2 histéresis: el estado cambia solo si p(nuevo) − p(actual) ≥ m, m ∈ {0; 0,05; …; 0,40}, sobre las predicciones fuera de muestra de T1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "Z3T",
+        "phase": "F7",
+        "n_regime_after": 25,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol"
+        ],
+        "model": "logit",
+        "spec": "St3 decodificador hacia adelante: costo −log p más λ por cambio, λ ∈ {0,1; 0,2; 0,5; 1; 2; 5; 10}, sobre las predicciones fuera de muestra de T1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "Z1V",
+        "phase": "F7",
+        "n_regime_after": 26,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol"
+        ],
+        "model": "logit",
+        "spec": "St1 confirmación: el estado cambia solo si el nuevo argmax se mantiene d días seguidos, d ∈ {1..10}, sobre las predicciones fuera de muestra de V1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "Z2V",
+        "phase": "F7",
+        "n_regime_after": 27,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol"
+        ],
+        "model": "logit",
+        "spec": "St2 histéresis: el estado cambia solo si p(nuevo) − p(actual) ≥ m, m ∈ {0; 0,05; …; 0,40}, sobre las predicciones fuera de muestra de V1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
+        "status": "registrada, sin resultado"
+      },
+      {
+        "id": "Z3V",
+        "phase": "F7",
+        "n_regime_after": 28,
+        "registered": "2026-10-26",
+        "axes": [
+          "vol"
+        ],
+        "model": "logit",
+        "spec": "St3 decodificador hacia adelante: costo −log p más λ por cambio, λ ∈ {0,1; 0,2; 0,5; 1; 2; 5; 10}, sobre las predicciones fuera de muestra de V1 (Y_vol, H = 20). Parámetro elegido por trimestre con los 4 trimestres previos (filas con etiqueta conocida al inicio del trimestre): máxima exactitud balanceada con cambios ≤ f_mkt × los de la etiqueta; si ninguno cumple, el que menos cambia; por defecto d = 3, m = 0,15, λ = 1. Probabilidades sin tocar.",
+        "status": "registrada, sin resultado"
       }
     ],
     "ceiling_history": [
