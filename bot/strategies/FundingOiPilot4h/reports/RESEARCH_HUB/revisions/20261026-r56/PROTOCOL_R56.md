@@ -145,3 +145,10 @@ Advertencia: una buena clasificación no garantiza PnL. r57 tiene que preregistr
 - tuning por PnL;
 - tuning anidado de GBM;
 - live, paper y Pi.
+
+## Enmienda F5-1 (2026-10-26, antes de ver cualquier resultado de F4 y antes de abrir el holdout)
+El §5 decía «las ≤ 3 mejores configuraciones», pero no aclaraba si se cuentan en total o por eje. Como el puente (§6) se juzga por eje, F5 toma **la mejor configuración de cada eje del puente** (vol, tendencia y rango; como máximo 3):
+- el criterio es el BSS promedio entre desarrollo y 2024, con BSS > 0 en ambos;
+- X1 (dirección de salida) no es un eje del puente: se reporta, pero no va al holdout.
+
+Así se evita que un solo eje ocupe los tres lugares. Implementación: `r56_eval.select_f5` y `run_f5`.
