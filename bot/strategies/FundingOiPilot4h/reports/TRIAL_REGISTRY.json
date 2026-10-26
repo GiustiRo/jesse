@@ -4453,7 +4453,39 @@
         ],
         "model": "logit",
         "spec": "Jump model continuo, 2 estados, agrupado sobre las monedas de desarrollo con datos < inicio del pliegue. Entradas (estandarizadas en el ajuste): sobre retornos normalizados por la vol de 365 días, EWMA de retorno, log-vol y log-downside con vida media 5 y 21, más drawdown desde el máximo de 60 días (7 variables). Centros por coordinate descent (JM discreto, 3 reinicios k-means++, 20 iteraciones). Probabilidades filtradas por el DP del CJM (grilla del símplex con paso 0,05). λ en {10, 50, 200} por log-loss sumada de los tres ejes en el año previo al embargo (λ = 50 si no hay un año de ajuste interno). Logística sobre las probabilidades.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.001,
+              "dm_p": 0.631
+            },
+            "val": {
+              "bss": 0.0365,
+              "dm_p": 0.195
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0264,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.0273,
+              "dm_p": 0.0105
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0472,
+              "dm_p": 0.018
+            },
+            "val": {
+              "bss": 0.0182,
+              "dm_p": 0.342
+            }
+          }
+        }
       },
       {
         "id": "C1b",
@@ -4467,7 +4499,39 @@
         ],
         "model": "logit",
         "spec": "Igual que C1a con 3 estados (grilla del símplex con paso 0,1).",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.0391,
+              "dm_p": 0.2255
+            },
+            "val": {
+              "bss": 0.116,
+              "dm_p": 0.0105
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0214,
+              "dm_p": 0.0055
+            },
+            "val": {
+              "bss": 0.0275,
+              "dm_p": 0.0145
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0555,
+              "dm_p": 0.03
+            },
+            "val": {
+              "bss": 0.0245,
+              "dm_p": 0.34
+            }
+          }
+        }
       },
       {
         "id": "C2",
@@ -4481,7 +4545,39 @@
         ],
         "model": "logit",
         "spec": "Sparse jump model, 3 estados, sobre las entradas de C1 más ADX, ER20/60, T20/60, percentil de ancho BB, squeeze, Donchian/ATR, choppiness, percentil de RV20, VR5 y AC1_60 (19 variables). Pesos Witten–Tibshirani (norma 2 ≤ 1, norma 1 ≤ κ = 3) alternados con el ajuste del JM 5 veces. λ = 50 fijo. Probabilidades filtradas por el CJM con los pesos (paso 0,1). Logística sobre las probabilidades.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.0238,
+              "dm_p": 0.427
+            },
+            "val": {
+              "bss": 0.1296,
+              "dm_p": 0.014
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0059,
+              "dm_p": 0.485
+            },
+            "val": {
+              "bss": 0.03,
+              "dm_p": 0.011
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": -0.008,
+              "dm_p": 0.608
+            },
+            "val": {
+              "bss": 0.0028,
+              "dm_p": 0.5125
+            }
+          }
+        }
       },
       {
         "id": "C3",
@@ -4495,7 +4591,39 @@
         ],
         "model": "logit",
         "spec": "Wasserstein k-means 1D (p = 2), k = 3, sobre ventanas de 20 días de retornos de 4h normalizados por la vol diaria de 365 días/√6 (120 observaciones, recortadas a ±10). Ajuste sobre ventanas de las monedas de desarrollo antes del pliegue, una cada 5 días (10 reinicios). Variables: distancias W2² de la ventana actual a los 3 centroides. Logística sobre las distancias.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.0628,
+              "dm_p": 0.0395
+            },
+            "val": {
+              "bss": 0.1318,
+              "dm_p": 0.0225
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0403,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.0172,
+              "dm_p": 0.106
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0624,
+              "dm_p": 0.009
+            },
+            "val": {
+              "bss": 0.0102,
+              "dm_p": 0.4265
+            }
+          }
+        }
       },
       {
         "id": "C4",
@@ -4509,7 +4637,39 @@
         ],
         "model": "logit",
         "spec": "Vara: HMM gaussiano de 3 regímenes (statsmodels MarkovRegression, media y varianza conmutadas, search_reps = 5), ajustado sobre los retornos normalizados (±10) concatenados de las monedas de desarrollo antes del pliegue. Probabilidades solo filtradas por moneda con los parámetros ajustados, ordenadas por varianza. Logística sobre las probabilidades.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": 0.0572,
+              "dm_p": 0.051
+            },
+            "val": {
+              "bss": 0.0869,
+              "dm_p": 0.013
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.0356,
+              "dm_p": 0.0
+            },
+            "val": {
+              "bss": 0.0191,
+              "dm_p": 0.076
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.035,
+              "dm_p": 0.011
+            },
+            "val": {
+              "bss": 0.0,
+              "dm_p": 0.5455
+            }
+          }
+        }
       },
       {
         "id": "D1",
@@ -4523,7 +4683,39 @@
         ],
         "model": "logit",
         "spec": "BOCPD (Adams–MacKay, Normal–Gamma, hazard 1/60, run length truncado en 400) sobre retornos normalizados por la vol de 365 días y sobre la log-RV diaria estandarizada con media/desvío de 365 días: log(1 + run length esperado) y masa posterior en run lengths < 5 (4 variables). Logística.",
-        "status": "registrada, sin resultado"
+        "status": "evaluada",
+        "result": {
+          "vol": {
+            "dev": {
+              "bss": -0.0313,
+              "dm_p": 0.8805
+            },
+            "val": {
+              "bss": 0.007,
+              "dm_p": 0.4225
+            }
+          },
+          "trend": {
+            "dev": {
+              "bss": 0.023,
+              "dm_p": 0.001
+            },
+            "val": {
+              "bss": 0.024,
+              "dm_p": 0.009
+            }
+          },
+          "range": {
+            "dev": {
+              "bss": 0.0198,
+              "dm_p": 0.1865
+            },
+            "val": {
+              "bss": 0.0208,
+              "dm_p": 0.0765
+            }
+          }
+        }
       }
     ]
   },
