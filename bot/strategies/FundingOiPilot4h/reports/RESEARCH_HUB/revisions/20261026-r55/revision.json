@@ -3,14 +3,14 @@
   "id": "20261026-r55",
   "updated_at_utc": "2026-10-26 18:00:00 UTC",
   "objective": "Motor cripto para todos los regímenes (regímenes de BTC definidos antes de sumar N), monetización del ranking ML, Brent–WTI con veto de quiebre e integración por aporte marginal.",
-  "latest": "F1 cerrada: E1–E3 no pasan (N=128). E1 (sin R1 cripto) mejora bajistas/laterales y 2021–24 (+0,07 Sharpe), pero retiene 73% de los alcistas y baja 0,14 en 2018-09+. E2 da +0,044/+0,040, bajo la puerta. El seguro E3 pierde solo.",
-  "next": "F2 (ML1–ML4) y F3 (A3 v2).",
+  "latest": "F2 cerrada: ML1–ML4 no pasan (N=132). ML3 (C6 solo en alts del top-10 de X1) cumple la inclusión (+0,059/+0,169) y su canasta da 1,31 contra 0,85 de V1, pero falla la puerta bajista; la mejora se concentra en 2024 y la manga va escalada ~10x. No se rescata.",
+  "next": "F3 (A3 v2); luego F4 (activos marginales, R1 sin bono, cartera final).",
   "blockers": "Ninguno.",
   "counts": {
     "r55": {
       "n_declared_start": 125,
       "n_ceiling": 143,
-      "n_current": 128
+      "n_current": 132
     }
   },
   "decisions": [
@@ -36,7 +36,7 @@
     {
       "order": 2,
       "title": "F2 ranking ML1–ML4",
-      "state": "pendiente",
+      "state": "completada: no pasa (ML3 al borde, puerta bajista)",
       "depends": "F0",
       "gate": "PROTOCOL_R55 F2"
     },
@@ -75,12 +75,16 @@
     {
       "label": "r55 F1: motor cripto",
       "path": "strategies/FundingOiPilot4h/reports/R55_PHASE1_RESULTS_20261026.md"
+    },
+    {
+      "label": "r55 F2: ranking ML",
+      "path": "strategies/FundingOiPilot4h/reports/R55_PHASE2_RESULTS_20261026.md"
     }
   ],
   "current_stage": {
     "stage": "r55_preregistro",
     "execution_status": "r55_preregistered",
-    "current_focus": "F2–F3",
+    "current_focus": "F3",
     "permitted": [
       "Scripts en research_scripts.",
       "Push."
