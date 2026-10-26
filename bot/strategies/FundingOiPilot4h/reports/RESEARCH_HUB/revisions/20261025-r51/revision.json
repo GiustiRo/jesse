@@ -3,18 +3,20 @@
   "id": "20261025-r51",
   "updated_at_utc": "2026-10-25 23:59:00 UTC",
   "objective": "Cortos como prioridad, reglas propias para bono y WTI y pronósticos continuos transversales, sobre la base P1 (R1 + C6) confirmada en Jesse. Metas r9 de cartera; M65/Q80 en seguimiento.",
-  "latest": "r51 abierta: plan aprobado y protocolo preregistrado. F0 en curso.",
-  "next": "F1: confirmar P1 en Jesse (9 corridas nuevas, 1 de reserva).",
+  "latest": "F1 cerrada: P1 confirmada en Jesse (10/11 mangas en tolerancia; R1/bono se toma de Jesse). 10/10 corridas Jesse usadas. N=98.",
+  "next": "F2: diagnóstico de trimestres negativos de P1.",
   "blockers": "Ninguno.",
   "counts": {
     "r51": {
       "n_declared_start": 98,
       "n_cap": 115,
       "jesse_runs_budget": 10,
-      "jesse_runs_used": 0
+      "jesse_runs_used": 10,
+      "phase1_report": "strategies/FundingOiPilot4h/reports/R51_PHASE1_RESULTS_20261025.md"
     }
   },
   "decisions": [
+    "2026-10-25 r51 F1: P1 confirmada en Jesse; R1/bono fuera de tolerancia por feed CFD disperso, se usa la curva Jesse (42cdf4a0).",
     "2026-10-25 r51 aprobado por el usuario: cortos como prioridad central, reglas específicas para bono y WTI, SOL/XRP/BNB diferidos, paper fuera de alcance, enfoque transversal recomendado = pronósticos continuos estilo Carver; ML diferido.",
     "2026-10-25 r51: TLT diario 2002–2025 como lente larga del bono, solo veta (usuario). La decisión sigue en 2018-03 → 2025.",
     "2026-10-25 r51 F1: una manga por sesión Jesse (las rutas comparten billetera); R1 BTC y WTI se comparan con sesiones existentes."
@@ -24,14 +26,14 @@
     {
       "order": 0,
       "title": "F0 preparación",
-      "state": "en curso",
+      "state": "completada",
       "depends": "plan aprobado",
       "gate": "protocolo commiteado y datos descargados"
     },
     {
       "order": 1,
       "title": "F1 confirmación de P1 en Jesse",
-      "state": "pendiente",
+      "state": "completada: 10/11 en tolerancia, bono gana Jesse",
       "depends": "F0",
       "gate": "PROTOCOL_R51.md F1"
     },
@@ -95,6 +97,10 @@
     {
       "label": "Registro de ensayos",
       "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    },
+    {
+      "label": "r51 F1: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R51_PHASE1_RESULTS_20261025.md"
     }
   ],
   "current_stage": {
