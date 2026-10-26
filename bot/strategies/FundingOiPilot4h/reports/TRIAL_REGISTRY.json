@@ -3368,11 +3368,85 @@
       "phase": "F3",
       "date_utc": "2026-10-26",
       "decision": "no pasa (dSharpe 2018-09..2024 -0,06)"
+    },
+    {
+      "id": "R53_F1_Y1",
+      "hypothesis": "X1 con pesos por rango y filtro de cola p90",
+      "round": "r53",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.017,
+      "sharpe_val2024": -0.193,
+      "rho_p1": -0.048,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos, val2024_pos, beats_x1_0_2"
+    },
+    {
+      "id": "R53_F1_Y2",
+      "hypothesis": "Y1 con holding de 4 semanas escalonado",
+      "round": "r53",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.194,
+      "sharpe_val2024": 1.247,
+      "rho_p1": -0.065,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos, beats_x1_0_2"
+    },
+    {
+      "id": "R53_F1_Y3",
+      "hypothesis": "Objetivo retorno/vol, pesos por rango",
+      "round": "r53",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": 0.417,
+      "sharpe_val2024": -0.602,
+      "rho_p1": 0.16,
+      "decision": "no pasa: sharpe_ge_0_5, val2024_pos"
+    },
+    {
+      "id": "R53_F1_Y4",
+      "hypothesis": "Solo largo quintil superior por rango, filtro de cola, cubierto BTC/ETH",
+      "round": "r53",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": 0.492,
+      "sharpe_val2024": 0.267,
+      "rho_p1": -0.018,
+      "decision": "no pasa: sharpe_ge_0_5"
+    },
+    {
+      "id": "R53_F1_Y5",
+      "hypothesis": "Reversión semanal en las 25 más líquidas",
+      "round": "r53",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.538,
+      "sharpe_val2024": -0.6,
+      "rho_p1": -0.042,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos, val2024_pos"
+    },
+    {
+      "id": "R53_F1_Y6",
+      "hypothesis": "X1 + QOI 7/30 d como variables",
+      "round": "r53",
+      "phase": "F1",
+      "date_utc": "2026-10-26",
+      "sharpe_dev": -0.045,
+      "sharpe_val2024": -0.193,
+      "rho_p1": -0.054,
+      "decision": "no pasa: sharpe_ge_0_5, cost2_pos, val2024_pos, beats_x1_0_2"
+    },
+    {
+      "id": "R53_F2_C6q",
+      "hypothesis": "C6 solo con z(QOI)>0 en la vela de señal",
+      "round": "r53",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "decision": "no pasa (dSharpe 2018-09..2024 -0,12; 2021-24 -0,21)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 116,
+    "declared": 123,
     "sensitivity": [
       20,
       200
@@ -3390,7 +3464,8 @@
     "r50_f1f_note": "+2 por R1 amplio y P4 (2026-10-25).",
     "r50_f1g_note": "+4 por G1, G2, G3 y P5 (2026-10-25).",
     "r51_note": "+10 por A1–A5, B1–B3, T1–T2 (2026-10-25). P2 = P1, no suma.",
-    "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario."
+    "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario.",
+    "r53_note": "+7: Y1–Y6, C6q (2026-10-26)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -3827,5 +3902,12 @@
       "Reloj del flujo (QOI) replica t 2,9 pero no paga costos solo",
       "Jump model no mejora P1"
     ]
+  },
+  "r53_closed": {
+    "date": "2026-10-26",
+    "candidate": "P1 sin cambios",
+    "n_final": 123,
+    "sealed_2025": "sin abrir",
+    "notable": "Y4 (largo quintil superior por rango, filtro de cola, cubierto BTC/ETH): Sharpe desarrollo 0,49 (compuerta 0,5), costos x2 0,38, 2024 0,27, rho -0,02. No pasa; no se rescata."
   }
 }

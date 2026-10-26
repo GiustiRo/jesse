@@ -35,7 +35,13 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r52, 2026-10-26)
+## Decisiones vigentes (r53, 2026-10-26)
+
+- **r53 cerrada (2026-10-26)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r53/PROTOCOL_R53.md)): seis carteras alternativas del ranking y C6 filtrado por QOI.
+  - Ninguna pasa; P1 sin cambios; 2025 sigue sellado. N = 123.
+  - Y4 (largo en las mejores por rango, filtro de cola, cubierto con BTC/ETH) queda al borde: Sharpe 0,49 contra 0,5, 2024 +0,27, ρ −0,02.
+
+## Decisiones r52 (2026-10-26)
 
 - **r52 cerrada (2026-10-26)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r52/PROTOCOL_R52.md), [handoff a r53](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r52/HANDOFF_R53.md)): universo de 50 perpetuos cripto activos (sin deslistados, decisión del usuario).
   - Ninguna manga nueva pasa; P1 sigue sin cambios; 2025 sellado sin abrir. N = 116, sin techo por decisión del usuario.
