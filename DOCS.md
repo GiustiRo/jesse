@@ -35,7 +35,15 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r53, 2026-10-26)
+## Decisiones vigentes (r54, 2026-10-26)
+
+- **r54 cerrada (2026-10-26)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r54/PROTOCOL_R54.md)): primera validación independiente de C6.
+  - C6 congelado generaliza en 48 alts: 32 positivas, canasta con Sharpe 1,03 y t 2,05 en 2021–24. SOL, XRP y BNB positivas.
+  - Sumarlo a P1 no diversifica (W1 rechazado) y el meta-labeling no aporta (AUC 0,43).
+  - P1 sin cambios; 2025 sellado. N = 125.
+- Pendiente: el puerto 9200 del host no responde. Los informes R52–R54 se guardan por MCP cuando vuelva (texto en las notas compartidas).
+
+## Decisiones r53 (2026-10-26)
 
 - **r53 cerrada (2026-10-26)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r53/PROTOCOL_R53.md)): seis carteras alternativas del ranking y C6 filtrado por QOI.
   - Ninguna pasa; P1 sin cambios; 2025 sigue sellado. N = 123.

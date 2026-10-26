@@ -3442,11 +3442,27 @@
       "phase": "F2",
       "date_utc": "2026-10-26",
       "decision": "no pasa (dSharpe 2018-09..2024 -0,12; 2021-24 -0,21)"
+    },
+    {
+      "id": "R54_W1",
+      "hypothesis": "P1 + C6 congelado en las 48 alts de U50",
+      "round": "r54",
+      "phase": "F3",
+      "date_utc": "2026-10-26",
+      "decision": "no pasa (dSharpe -0.166 / -0.069, DD peor)"
+    },
+    {
+      "id": "R54_M1",
+      "hypothesis": "Meta-labeling logístico de C6, tamaño clip(2p,0,5,1,5), eventos agrupados de 50 monedas",
+      "round": "r54",
+      "phase": "M1",
+      "date_utc": "2026-10-26",
+      "decision": "no pasa (AUC OOS 0,425; canasta alts -0,09 Sharpe; P1 -0,065)"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 123,
+    "declared": 125,
     "sensitivity": [
       20,
       200
@@ -3465,7 +3481,8 @@
     "r50_f1g_note": "+4 por G1, G2, G3 y P5 (2026-10-25).",
     "r51_note": "+10 por A1–A5, B1–B3, T1–T2 (2026-10-25). P2 = P1, no suma.",
     "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario.",
-    "r53_note": "+7: Y1–Y6, C6q (2026-10-26)."
+    "r53_note": "+7: Y1–Y6, C6q (2026-10-26).",
+    "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -3909,5 +3926,28 @@
     "n_final": 123,
     "sealed_2025": "sin abrir",
     "notable": "Y4 (largo quintil superior por rango, filtro de cola, cubierto BTC/ETH): Sharpe desarrollo 0,49 (compuerta 0,5), costos x2 0,38, 2024 0,27, rho -0,02. No pasa; no se rescata."
+  },
+  "r54_v1_validation": {
+    "date": "2026-10-26",
+    "what": "C6 congelado (5caf4a53) en 48 alts de U50, 2021–2024",
+    "alts_positive": 32,
+    "alts": 48,
+    "collapses": 4,
+    "basket_sharpe": 1.027,
+    "basket_t": 2.05,
+    "pass": true,
+    "sol_xrp_bnb_sharpe": {
+      "SOLUSDT": 0.616,
+      "XRPUSDT": 0.469,
+      "BNBUSDT": 0.593
+    },
+    "n_added": 0
+  },
+  "r54_closed": {
+    "date": "2026-10-26",
+    "candidate": "P1 sin cambios",
+    "n_final": 125,
+    "sealed_2025": "sin abrir",
+    "finding": "C6 generaliza fuera de muestra (32/48 alts, canasta Sharpe 1,03, t 2,05; SOL/XRP/BNB positivas), pero sumarlo a P1 no diversifica."
   }
 }

@@ -1,0 +1,67 @@
+{
+  "format_version": 1,
+  "id": "20261026-r54",
+  "updated_at_utc": "2026-10-26 12:00:00 UTC",
+  "objective": "Validar C6 congelado fuera de muestra en 48 alts y probar meta-labeling de C6 con eventos agrupados.",
+  "latest": "r54 cerrada: V1 pasa, C6 generaliza (32/48 alts, canasta Sharpe 1,03, t 2,05; SOL 0,62, XRP 0,47, BNB 0,59). W1 (P1+C6alts) y M1 (meta-labeling) no pasan. P1 sin cambios; 2025 sellado. N=125.",
+  "next": "A decidir con el usuario.",
+  "blockers": "Puerto 9200 del host caído: informes R52–R54 pendientes de guardar por MCP.",
+  "counts": {
+    "r54": {
+      "n_declared_start": 123,
+      "n_final": 125
+    }
+  },
+  "decisions": [
+    "2026-10-26 r54: V1 pasa (primera validación independiente de C6); W1 y M1 rechazados; P1 sin cambios."
+  ],
+  "supersedes": "20261026-r53",
+  "roadmap": [
+    {
+      "order": 1,
+      "title": "V1 C6 en 48 alts",
+      "state": "completada: pasa",
+      "depends": "r52 datos",
+      "gate": "P1_FREEZE"
+    },
+    {
+      "order": 2,
+      "title": "W1 P1+C6alts",
+      "state": "completada: no pasa",
+      "depends": "V1",
+      "gate": "regla r51"
+    },
+    {
+      "order": 3,
+      "title": "M1 meta-labeling",
+      "state": "completada: no pasa",
+      "depends": "V1",
+      "gate": "PROTOCOL_R54 M1"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r54: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r54/PROTOCOL_R54.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r54_validacion",
+    "execution_status": "r54_closed",
+    "current_focus": "esperando decisión del usuario",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Push."
+    ],
+    "excluded": [
+      "Live/paper/Pi.",
+      "2026.",
+      "Abrir 2025 sin candidata."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Mandato autónomo del usuario 2026-10-25.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "closed"
+  }
+}
