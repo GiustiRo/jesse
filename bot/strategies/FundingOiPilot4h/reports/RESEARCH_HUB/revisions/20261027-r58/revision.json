@@ -1,14 +1,14 @@
 {
   "format_version": 1,
   "id": "20261027-r58",
-  "updated_at_utc": "2026-10-27 00:00:00 UTC",
+  "updated_at_utc": "2026-10-27 23:59:00 UTC",
   "objective": "Qué distingue una ruptura buena de C6 de una mala: barrido de diagnóstico en las alts de U50 (≤2024), como máximo 3 filtros confirmados juntos una sola vez en N2 ∪ N3, e integración a P-r55 solo si pasan.",
-  "latest": "r58 F2 cerrada (2026-10-27): la regla compresión ∧ p(rango) bajo confirma en N2 ∪ N3 (D +0,60, p10 +0,26; N2 +0,40, N3 +0,77; canasta 0,455 vs 0,132; aguanta costos ×2). N 144.",
-  "next": "F3: integración ML3 dentro de P-r55 con puertas r51 + r55 + costos ×2 (N 145).",
+  "latest": "r58 cerrada (2026-10-27): el filtro compresión ∧ p(rango) bajo confirma en N2 ∪ N3, pero dentro de P-r55 resta (−0,04/−0,04; fallan bajista, lateral e inclusión). P-r55 sin cambios. N=145.",
+  "next": "r59: ver HANDOFF_R59.md.",
   "blockers": "Ninguno.",
   "counts": {
     "r58": {
-      "n_strategies": 144,
+      "n_strategies": 145,
       "n_ceiling": 146,
       "n_regime": 38,
       "n_tematica": 19
@@ -19,7 +19,8 @@
     "2026-10-27 r58 F0: V5b (OI) descartada por cobertura (alts desde 2021-12-01); N3 excluye contratos índice (BTCDOM) antes de bajar.",
     "2026-10-27 r58 F0 cerrada; enmienda E1 (corte p(rango) 0,3874, el 0,447 de r57 era transcripción).",
     "2026-10-27 r58 F1 cerrada: seleccionadas V2 y V1; regla compuesta AND.",
-    "2026-10-27 r58 F2: el usuario autorizó correr con poder 0,30; pasa 5/5."
+    "2026-10-27 r58 F2: el usuario autorizó correr con poder 0,30; pasa 5/5.",
+    "2026-10-27 r58 cerrada: P-r55 sin cambios; 2025 sellado."
   ],
   "supersedes": "20261026-r57",
   "roadmap": [
@@ -47,7 +48,7 @@
     {
       "order": 3,
       "title": "F3 integración a P-r55",
-      "state": "pendiente",
+      "state": "completada: no pasa",
       "depends": "F2",
       "gate": "PROTOCOL_R58 §4"
     }
@@ -69,12 +70,24 @@
     {
       "label": "r58 F2: confirmación",
       "path": "strategies/FundingOiPilot4h/reports/R58_PHASE2_CONFIRM_20261027.md"
+    },
+    {
+      "label": "r58 F3: integración",
+      "path": "strategies/FundingOiPilot4h/reports/R58_PHASE3_INTEGRATE_20261027.md"
+    },
+    {
+      "label": "r58: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R58_CLOSE_20261027.md"
+    },
+    {
+      "label": "r58: handoff a r59",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/HANDOFF_R59.md"
     }
   ],
   "current_stage": {
-    "stage": "r58_f0",
-    "execution_status": "r58_running",
-    "current_focus": "F3",
+    "stage": "r58_cerrada",
+    "execution_status": "r58_closed",
+    "current_focus": "agenda r59 a decisión del usuario",
     "permitted": [
       "Scripts en research_scripts.",
       "Bajar N3 (1h + funding) de data.binance.vision hasta 2024-12-31."
@@ -87,6 +100,6 @@
     "new_experiments_authorized": true,
     "authorization_scope": "Plan r58 aprobado por el usuario 2026-10-27.",
     "economic_status": "P-r55 congelada",
-    "goal_status": "open"
+    "goal_status": "closed"
   }
 }
