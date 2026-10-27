@@ -15,7 +15,7 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| **[r56 `PROTOCOL_R56.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md)** | **Última ronda (cerrada): detección de régimen cripto como pronóstico de estados. Ningún detector pasa el puente; Chronos-Bolt es el mejor pronóstico de vol. [Cierre](bot/strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md) y [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md).** |
+| **[r56 `PROTOCOL_R56.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md)** | **Última ronda (cerrada, con extensión r56-B): detección de régimen cripto como pronóstico de estados. Ninguna configuración pasa el puente en N2; T3 (Chronos-2 + covariables) es el mejor pronóstico de vol. [Cierre r56-B](bot/strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md), [cierre r56](bot/strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md) y [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md).** |
 | [r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md) | Ronda cerrada: regímenes de BTC, motor cripto, ranking ML, Brent–WTI e integración. Candidata P-r55; agenda en el [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md). |
 | [r51 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md) | Cortos, bono y WTI con reglas propias y pronósticos continuos sobre P1. Reglas y puertas en [`PROTOCOL_R51.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md). |
 | [r50 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md) | Varios motores, universo de 10 activos, dos lentes; cerrada con P1 ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)). |
@@ -39,6 +39,19 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 
 ## Decisiones vigentes (r56, 2026-10-26)
 
+- **r56-B cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md), [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md)). Extensión de r56 con:
+  - tope de cambios relativo al mercado (f_mkt × los cambios de la etiqueta);
+  - estabilizadores;
+  - HExp;
+  - Chronos-2 con covariables;
+  - horizonte de 40 días;
+  - validación única en 20 monedas nuevas (N2).
+  - **Puente en N2:** no lo pasa ninguna configuración. T3 (vol) y P5 (rango a 40 días) fallan solo la anticipación.
+    - T3 en N2: BSS +0,195, 20/20 monedas, bien calibrado.
+  - **Hallazgo:** la vol se puede pronosticar y transfiere a monedas nuevas; el valor está en la probabilidad continua, no en el cambio de estado.
+  - **Pendiente del usuario:** usos continuos U1–U3 en r57.
+  - **Cálculos pesados:** fuera de Docker, en la Intel Arc (5 a 9 veces más rápido).
+  - **Contadores:** N_régimen = 38 (techo de 40); N de estrategias = 140. 2025 sellado.
 - **r56 cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md), [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md)):
   - **Puente:** no lo pasa ningún detector. T1 (Chronos-Bolt zero-shot, vol) es el mejor: holdout de 16 alts con BSS +0,176, positivo los 4 años y en 16/16 monedas. Falla solo el límite de ≤ 12 cambios por año (da 26).
   - **Hallazgos:**
