@@ -27,7 +27,10 @@ _DIRS = (os.path.join(DATA, 'r56', 'n2'), os.path.join(DATA, 'r58', 'n3'))
 _FILES = tuple(os.path.join(DATA, *p) for p in (
     ('r58', 'f0_bars_n2.npz'), ('r58', 'f0_bars_n3.npz'), ('r58', 'pred_n3_P5_range40.npy'),
     ('r58', 'f2_trades_n2n3.csv'), ('r56', 'panel70.npz'), ('r56', 'labels70.npz'),
-    ('r56', 'panel_n3.npz'), ('r56', 'labels_n3.npz')))
+    ('r56', 'panel_n3.npz'), ('r56', 'labels_n3.npz'),
+    # Added at the F1 close: r57's state file mixes U50 columns with n2_* predictions (T3 states,
+    # p(range)) over N2. F1's f1_q read only its U50 fields; from F2 on it is protected whole.
+    ('r57', 'f0_states.npz')))
 _PATTERNS = ((os.path.join(DATA, 'r56'), 'feat_', '_70.npz'), (os.path.join(DATA, 'r56'), 'feat_', '_n3.npz'),
              (os.path.join(DATA, 'r56'), 'chronos_', '_panel70.npy'), (os.path.join(DATA, 'r56'), 'pred_n2_', '.npy'))
 # The manifest files that only list N2/N3 symbols carry no outcomes and stay readable.

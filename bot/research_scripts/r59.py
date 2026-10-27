@@ -714,10 +714,84 @@ def f1_audit():
     json.dump(res, open(os.path.join(OUT, 'f1_audit.json'), 'w'), indent=1)
 
 
+# ----------------------------------------------------------------------------------------------
+# §3 + E1 F2 prefilter (D only, no oracle query) and q1's power
+# ----------------------------------------------------------------------------------------------
+P1_MIN_SAT = 5                      # E1: test folds need >= 5 saturated-funding trades (V5a = 0, 7% of trades)
+P2_ALPHA = 0.20
+Q1_BOOT = 5000                      # §3 (a): 5,000 weekly-block draws
+Z95 = 1.6448536269514722            # one-sided 5%: (a) asks the bootstrap p5 > 0
+
+
+def f2_prefilter():
+    import math as m_
+    import warnings
+    warnings.simplefilter('ignore')
+    import r59_oracle as orc
+    df = u50_trades()
+    R, v5, pe = df['R'].values, df['V5a'].values.astype(float), df['persist'].values.astype(float)
+    ok = np.isfinite(v5) & np.isfinite(pe)
+    f1 = json.load(open(os.path.join(r58.OUT, 'f1_diag.json')))['variables']['V5a']
+    obs = stat_cond(R, v5, pe)
+    assert abs(obs - f1['D_cond_V1']) < 1e-9, (obs, f1['D_cond_V1'])    # E1: this is r58's +0.79
+    res = {'protocol': 'PROTOCOL_R59.md §3 + E1', 'n_added': 0, 'D_cond_V1_u50': obs, 'n_valid_u50': int(ok.sum())}
+    # (p1) the fixed statistic in each coin-group x year test fold (no selection: the hypothesis is set).
+    G, folds = load_groups(), []
+    for g, members in G.items():
+        for y in YEARS:
+            te = df['sym'].isin(members).values & (df['year'].values == y) & ok
+            n_sat, n_ok = int((v5[te] == 0).sum()), int((v5[te] == 1).sum())
+            d = stat_cond(R[te], v5[te], pe[te]) if n_sat >= P1_MIN_SAT and n_ok >= P1_MIN_SAT else None
+            folds.append({'group': g, 'year': y, 'n': int(te.sum()), 'n_sat': n_sat,
+                          'D_cond': None if d is None or not np.isfinite(d) else float(d)})
+    ds = np.array([f['D_cond'] for f in folds if f['D_cond'] is not None], float)
+    res['p1'] = {'folds': folds, 'folds_qualifying': int(len(ds)), 'median': float(np.median(ds)) if len(ds) else None,
+                 'pos_share': float((ds > 0).mean()) if len(ds) else None}
+    res['p1']['pass'] = bool(len(ds) and np.median(ds) > 0)
+    log(f"p1: {len(ds)} folds with >= {P1_MIN_SAT} saturated; median D_cond {res['p1']['median']}, "
+        f"positive {res['p1']['pos_share']}")
+    # (p2) rotation of V5a's 4h series per coin, persist_vol held at each trade's own value.
+    grid = bar_grid(df, 'V5a')
+    lab = grid.labels()
+    both = np.isfinite(lab) & np.isfinite(v5)
+    agree = float((lab[both] == v5[both]).mean())
+    o2, p2, null = rotation_p(grid, R, N_ROT, SEED + 59, strata=pe)
+    res['p2'] = {'label_agreement_with_r58': agree, 'D_cond_grid': o2, 'p_rotation': p2,
+                 'null_p5_p95': np.percentile(null, [5, 95]).tolist(), 'pass': bool(p2 < P2_ALPHA)}
+    log(f"p2: agree {agree:.4f} D_cond {o2:+.3f} p {p2:.4f}")
+    res['prefilter_pass'] = bool(res['p1']['pass'] and res['p2']['pass'])
+    # Power (E1): U50 bootstrap SE of D_cond scaled by sqrt(n_U50 / n_H expected); n_H from the U50
+    # trade rate per compression-labelled coin-day (2021-07-02..2024) times H's labelled coin-days,
+    # which the oracle counts from daily states only (no trades, prices or returns of H).
+    week = df['week'].values
+    old = r57.N_BOOT
+    r57.N_BOOT = Q1_BOOT
+    try:
+        bs = r57.block_boot(week[ok], lambda ix: (r58._cond(R[ok][ix], v5[ok][ix] == 1, pe[ok][ix]),),
+                            np.random.default_rng(SEED + 591))[:, 0]
+    finally:
+        r57.N_BOOT = old
+    se = float(np.nanstd(bs, ddof=1))
+    cnt = orc.count_q1()
+    conf = df['opened'].values >= r58.CONF_FROM
+    rate = (ok & conf).sum() / cnt['u50']['v1_days']
+    n_h = rate * (cnt['n2']['v1_days'] + cnt['n3']['v1_days'])
+    se_h = se * m_.sqrt(ok.sum() / n_h)
+    phi = lambda x: 0.5 * (1 + m_.erf(x / m_.sqrt(2)))
+    res['power'] = {'se_u50': se, 'se_r58': f1['D_cond_V1_se'], 'counts': cnt, 'u50_rate_per_v1_day': float(rate),
+                    'n_h_expected': float(n_h), 'se_h': se_h,
+                    'power_full_effect': phi(obs / se_h - Z95), 'power_half_effect': phi(obs / 2 / se_h - Z95)}
+    res['power']['report_before_query'] = bool(res['power']['power_half_effect'] < 0.4)
+    log(f"power: se U50 {se:.3f}, n_H ~{n_h:.0f}, se_H {se_h:.3f}; full {res['power']['power_full_effect']:.2f} "
+        f"half {res['power']['power_half_effect']:.2f}; prefilter {'PASA' if res['prefilter_pass'] else 'NO PASA'}")
+    json.dump(res, open(os.path.join(OUT, 'f2_prefilter.json'), 'w'), indent=1, default=float)
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     fn = {'groups': groups, 'cv': cv, 'rotation': rotation, 'series_test': series_test, 'spa_test': spa_test,
-          'f1_q': f1_q, 'f1_build': f1_build, 'f1_audit': f1_audit}.get(cmd)
+          'f1_q': f1_q, 'f1_build': f1_build, 'f1_audit': f1_audit,
+          'f2_prefilter': f2_prefilter}.get(cmd)
     if fn is None:
         print(__doc__)
         return 1
