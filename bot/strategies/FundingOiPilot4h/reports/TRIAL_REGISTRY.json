@@ -3586,11 +3586,27 @@
       "phase": "F2",
       "date_utc": "2026-10-26",
       "decision": "no pasa: Sharpe 1,677→1,648 (largo), 1,723→1,685 (común); costos ×2 −0,038; falla g1, g2, g4 y costos"
+    },
+    {
+      "id": "R57_Q1",
+      "hypothesis": "M2a congelada en 48 alts, sin condición (vara contrafáctica), C6'' = 0,5 C6 + 0,5 Q",
+      "round": "r57",
+      "phase": "F4",
+      "date_utc": "2026-10-26",
+      "decision": "vara, no candidata: canasta U50 Sharpe 0,06, N2 0,30; en P-r55 1,509 / 1,387"
+    },
+    {
+      "id": "R57_Q2",
+      "hypothesis": "M2a en alts solo con p(rango 40d, P5) ≥ 0,447; C6'' = 0,5 C6 + 0,5 Q",
+      "round": "r57",
+      "phase": "F4",
+      "date_utc": "2026-10-26",
+      "decision": "no pasa: canasta U50 −0,03 (< Q1), N2 0,36; en P-r55 1,482 / 1,326; falla g1, g2, g4"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 141,
+    "declared": 143,
     "sensitivity": [
       20,
       200
@@ -3612,7 +3628,7 @@
     "r53_note": "+7: Y1–Y6, C6q (2026-10-26).",
     "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma.",
     "r55_note": "+15: E1-E3, ML1-ML4, A3v2, 5 activos marginales, R1 sin bono y cartera final (2026-10-26). Techo r55: 143.",
-    "r57_note": "+1 por U1 (F2). F1 diagnóstico N+0; F3 no corre (regla F1)."
+    "r57_note": "+1 por U1 (F2) y +2 por Q1/Q2 (F4). F1 diagnóstico N+0; F3 no corre (regla F1); Q3 no corre (Q2 no pasa)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {

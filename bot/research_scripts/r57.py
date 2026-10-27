@@ -462,8 +462,205 @@ def u1():
     json.dump(res, open(os.path.join(OUT, 'f2_u1.json'), 'w'), indent=2, default=float)
 
 
+# ----------------------------------------------------------------------------------------------
+# F4: M2a on the alts, Q1 (unconditional) and Q2 (p(range) >= cut)
+# ----------------------------------------------------------------------------------------------
+REV_FROM = '2021-07-01'
+WARM_DAYS = 210                       # SMA200 needs 200 closed days
+
+
+def m2a_decider(bars, allow):
+    """Copy of r50_engines.m2_decider(bars, cfd=False, 'a') with an entry gate allow(i) on the signal
+    day; allow = always reproduces it exactly (checked in rev())."""
+    import r50_engines as en
+    from r50_harness import C, H, L
+    c, h, l = bars[:, C], bars[:, H], bars[:, L]
+    s200, s5 = en.sma(c, 200), en.sma(c, 5)
+    r2 = en.rsi2(c)
+    vol = en.ann_vol(c, False)
+    st = {'limit': None, 'held': 0}
+
+    def signal(i):
+        return np.isfinite(s200[i]) and c[i] > s200[i] and np.isfinite(r2[i]) and r2[i] < 10
+
+    def exit_now(i):
+        return st['held'] >= 5 or (np.isfinite(s5[i]) and c[i] > s5[i])
+
+    def decide(i, acct, ts):
+        if acct.is_open:
+            st['held'] += 1
+            if exit_now(i):
+                en._trade(acct, -acct.qty, c[i], ts, en.TAKER)
+            return
+        if st['limit'] is not None:
+            px, qty = st['limit']
+            st['limit'] = None
+            if l[i] < px:
+                en._trade(acct, qty, px, ts, en.MAKER)
+                st['held'] = 1
+                if exit_now(i):
+                    en._trade(acct, -acct.qty, c[i], ts, en.TAKER)
+                return
+        if signal(i) and np.isfinite(vol[i]) and vol[i] > 0 and allow(i):
+            x = min(en.MAX_X, en.TARGET_VOL / vol[i])
+            st['limit'] = (c[i], acct.equity(c[i]) * x / c[i])
+    return decide
+
+
+def daily_bars(h1):
+    from r50_harness import T, O, C, H, L, V
+    b = (h1[:, 0] // DAY * DAY).astype(np.int64)
+    cut = np.flatnonzero(np.diff(b)) + 1
+    s, e = np.r_[0, cut], np.r_[cut, len(h1)]
+    out = np.empty((len(s), 6))
+    out[:, T], out[:, O], out[:, C] = b[s], h1[s, 1], h1[e - 1, 4]
+    out[:, H] = np.maximum.reduceat(h1[:, 2], s)
+    out[:, L] = np.minimum.reduceat(h1[:, 3], s)
+    out[:, V] = np.add.reduceat(h1[:, 5], s)
+    keep = out[:, T] < CUT_MS
+    return out[keep]
+
+
+def sim_daily(bars, start_ms, decide, fcur):
+    """r54_v1.simulate on daily bars (close = open + 1 day)."""
+    import r50_engines as en
+    from r50_harness import T, C
+    acct = en.Account(en.BALANCE, en.TAKER, en.LEVERAGE)
+    k0 = int(np.searchsorted(bars[:, T], start_ms, side='left'))
+    ts_out, eq_out = [], []
+    for i in range(k0, len(bars)):
+        close_ts = int(bars[i, T]) + DAY
+        en._pay(acct, fcur, close_ts)
+        decide(i, acct, close_ts)
+        ts_out.append(close_ts)
+        eq_out.append(acct.equity(bars[i, C]))
+    return np.array(ts_out, dtype=np.int64), np.array(eq_out), acct
+
+
+def rev_book(syms, src, p_of, gated, check_identity=False):
+    """M2a curves per coin ({sym: (days, vals)}) and trade count; gated uses p_of(sym)(i, bars)."""
+    import r50_engines as en
+    import r54_v1 as v1
+    from r50_harness import T
+    old = v1.DATA
+    v1.DATA = src
+    curves, n_tr, n_sig_blocked = {}, 0, 0
+    try:
+        for sym in syms:
+            h1 = np.load(os.path.join(src, f'{sym}_1h.npy'))
+            bars = daily_bars(h1)
+            if len(bars) <= WARM_DAYS + 30:
+                continue
+            start = max(v1.SIM_FROM, int(bars[WARM_DAYS, T]))
+            if start >= CUT_MS:
+                continue
+            allow = p_of(sym, bars) if gated else (lambda i: True)
+            dec = m2a_decider(bars, allow)
+            if check_identity:
+                ref = en.m2_decider(bars, False, 'a')
+                _, e1, _ = sim_daily(bars, start, ref, v1.funding_cursor(sym, h1, int(bars[0, T])))
+                _, e2, _ = sim_daily(bars, start, m2a_decider(bars, lambda i: True),
+                                     v1.funding_cursor(sym, h1, int(bars[0, T])))
+                assert np.allclose(e1, e2), f'm2a copy differs on {sym}'
+                check_identity = False
+            ts, eq, acct = sim_daily(bars, start, dec, v1.funding_cursor(sym, h1, int(bars[0, T])))
+            n_tr += len(acct.trades)
+            cv = en.calendar(ts, eq, datetime_date(start), '2026-01-01')
+            curves[sym] = v1.trim(cv, '2025-01-01')
+    finally:
+        v1.DATA = old
+    return curves, n_tr
+
+
+def datetime_date(ms_):
+    return pd.Timestamp(int(ms_), unit='ms').strftime('%Y-%m-%d')
+
+
+def p_gate(days, P, syms, cut):
+    """allow(i) for coin sym: p(range) of the signal day's row (known at its close) >= cut."""
+    from r50_harness import T
+    col = {x: j for j, x in enumerate(syms)}
+
+    def of(sym, bars):
+        j = col[sym]
+
+        def allow(i):
+            r = int(np.searchsorted(days, int(bars[i, T])))
+            if r >= len(days) or days[r] != int(bars[i, T]):
+                return False
+            assert days[r] + DAY <= int(bars[i, T]) + DAY
+            p = P[r, j]
+            return bool(np.isfinite(p) and p >= cut)
+        return allow
+    return of
+
+
+def basket_from(curves, frm):
+    import r50_f1b as fb
+    meas = {s: _trim_from(cv, frm) for s, cv in curves.items()}
+    meas = {s: cv for s, cv in meas.items() if len(cv[0]) > 2}
+    return fb.basket(meas, list(meas))
+
+
+def _trim_from(cv, frm):
+    d, v = cv
+    k = max(int(np.searchsorted(d, ev.ms(frm))) - 1, 0)
+    return d[k:], v[k:]
+
+
+def rev():
+    warnings.simplefilter('ignore')
+    import r50_engines as en
+    import r54_v1 as v1
+    import r55_engine as eg
+    import r55_ml as ml
+    eg.N_DECLARED = 143
+    s = load_states()
+    base, qlab, mlab = p55_base()
+    ev_base = {w: evaluate(b['comps'], b['start'], qlab, mlab) for w, b in base.items()}
+    for w in ev_base:
+        assert abs(ev_base[w]['sharpe'] - P55_REF[w]) < 0.0015
+    uni = [u['symbol'] for u in json.load(open(os.path.join(v1.DATA, 'universe50.json')))]
+    alts = [x for x in uni if x not in ('BTCUSDT', 'ETHUSDT')]
+    n2_dir = os.path.join(R56, 'n2')
+    n2 = [u['symbol'] for u in json.load(open(os.path.join(n2_dir, 'universe_n2.json')))['selected']]
+    assert sorted(n2) == sorted(s['n2_syms'])
+    gate_u50 = p_gate(s['days'], s['p_rng'], s['syms'], s['cut'])
+    gate_n2 = p_gate(s['days'], s['n2_p_rng'], s['n2_syms'], s['cut'])
+    res = {'protocol': 'PROTOCOL_R57.md §4 (208ea238)', 'n_declared': 143, 'P55': ev_base, 'from': REV_FROM}
+    books = {}
+    for name, gated in (('Q1', False), ('Q2', True)):
+        cur, ntr = rev_book(alts, v1.DATA, gate_u50, gated, check_identity=not gated)
+        cur_n2, ntr_n2 = rev_book(n2, n2_dir, gate_n2, gated)
+        b, b2 = basket_from(cur, REV_FROM), basket_from(cur_n2, REV_FROM)
+        books[name] = b
+        m, m2 = en.metrics(b[0], b[1], [], REV_FROM), en.metrics(b2[0], b2[1], [], REV_FROM)
+        evs = {}
+        for w, bb in base.items():
+            c6p, _ = ml.c6_prime(bb['comps']['C6'], b, ev.ms(REV_FROM))
+            evs[w] = evaluate({'R1': bb['comps']['R1'], 'C6': c6p}, bb['start'], qlab, mlab)
+        gt = eg.gates(name, ev_base, evs)
+        rp = pd.Series(en.daily_returns(*b))
+        res[name] = {'basket_u50': {k: m.get(k) for k in ('from', 'to', 'sharpe', 'cagr', 'max_dd', 'by_year')},
+                     'basket_n2': {k: m2.get(k) for k in ('from', 'to', 'sharpe', 'cagr', 'max_dd', 'by_year')},
+                     'coins_u50': len(cur), 'coins_n2': len(cur_n2), 'trades_u50': ntr, 'trades_n2': ntr_n2,
+                     'coin_sharpe_pos_u50': int(sum(en.metrics(*_trim_from(cv, REV_FROM), [], REV_FROM)['sharpe'] > 0
+                                                    for cv in cur.values() if len(_trim_from(cv, REV_FROM)[0]) > 30)),
+                     'in_p55': evs, **gt}
+        print(name, 'u50', round(m['sharpe'], 3), 'n2', round(m2['sharpe'], 3), 'trades', ntr, ntr_n2,
+              'gates', gt['gates'], {k: round(x, 4) for k, x in gt['deltas'].items()}, flush=True)
+    q1, q2 = res['Q1'], res['Q2']
+    q2['gates']['q2_gt_q1_u50'] = q2['basket_u50']['sharpe'] > q1['basket_u50']['sharpe']
+    q2['gates']['n2_q2_pos_and_gt_q1'] = (q2['basket_n2']['sharpe'] > 0
+                                          and q2['basket_n2']['sharpe'] > q1['basket_n2']['sharpe'])
+    q2['pass'] = bool(all(q2['gates'].values()))
+    q1['candidate'] = False                    # protocol §4: Q1 is the counterfactual only
+    print('Q2', 'PASS' if q2['pass'] else 'no', q2['gates'])
+    json.dump(res, open(os.path.join(OUT, 'f4_rev.json'), 'w'), indent=2, default=float)
+
+
 def main():
-    cmds = {'states': states, 'diag': diag, 'u1': u1}
+    cmds = {'states': states, 'diag': diag, 'u1': u1, 'rev': rev}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         print(__doc__)
         return 1
