@@ -146,3 +146,18 @@ Este archivo se commitea **antes de escribir o correr cualquier código de r59**
     - con ruido puro, SPA p < 0,10 en a lo sumo el 20% de las réplicas, y PBO medio entre 0,35 y 0,65;
     - con Sharpe 2 entre 29 series de ruido, SPA p < 0,05 en al menos el 80% de las réplicas.
   - La auditoría real sigue usando 2.000 bootstraps con semilla 59.
+- **E3 (2026-10-27, en F1, con las series reconstruidas y antes de calcular cualquier SPA o PBO). Cómo se arma cada matriz y cómo se reconstruyó cada serie.**
+  - **Reconstrucción.** `r59_capture.py` registra cada llamada a las funciones de métricas con las variables locales del script (`cand`, `window`, `eng`, …). El mapa ensayo → curva (`r59.py: F1_P, F1_S`) se escribió leyendo esas llamadas y el código, no los valores de las series.
+    - Cada entrada se verifica con el Sharpe que el script registró antes de 2025, que tiene que coincidir con el número commiteado del ensayo, o con las variables de la llamada.
+    - Los libros medidos como dev 2021-05→2023 más validación 2024 (r52_xs, r53_xs, r55_ml y r52_q) se unen en el tiempo.
+    - R57_Q1 y R57_Q2 se reconstruyen con `r59.py f1_q`, solo con U50. `r57 rev` arma el libro de N2 antes de evaluarlos, y la guarda lo corta ahí. Los Sharpe coinciden con `f4_rev.json` a 1e-4.
+    - R52_F2_Q1 es una prueba de IC y no tiene serie: queda como faltante.
+  - **Ventana 2021–24.** Se usa la intersección de los días que tienen todos los miembros. En P eso arranca el 2021-03-01; en S, donde empiece el miembro más tardío.
+    - En S se agrega una sensibilidad sobre la unión de días: un día sin serie cuenta como retorno 0, porque esa estrategia estaba fuera del mercado (en cash).
+  - **Ventana 2018-09→24.** Entran solo los miembros cuya serie larga empieza a más tardar el 2018-10-01. Sobre ellos se usa la intersección.
+  - **Vara R1** (= P-r55 sin C6, `eg.portfolio({'R1'})`): P usa la R1 de su propia lente. S usa la R1 de la lente larga, porque es la única que cubre la ventana completa.
+  - **Duplicados:** R55_F4_NOBOND y R55_F4_PFINAL son la misma serie por construcción. Los dos quedan en P, como se commiteó.
+  - **Fuera de alcance:** el registro marca `fuera_de_alcance_spot` a R50_F1E_P3, R50_F1D_K1 y R50_F1E_K1r. Las dos últimas son carry de funding con Sharpe de 7 a 8, y dominan cualquier SPA contra cash.
+    - La corrida principal es la familia como se commiteó.
+    - Como sensibilidad, P y S se corren de nuevo sin esos tres.
+  - **Recorte de inicio:** cada serie arranca donde la midió su script (`frm` de `en.metrics`). Por ejemplo, R54_M1 arranca el 2022-01-01, después de su año de entrenamiento.

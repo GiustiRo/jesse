@@ -444,9 +444,280 @@ def spa_test():
     log(json.dumps(out))
 
 
+def f1_q():
+    """R57_Q1 / R57_Q2 inside P-r55, rebuilt from U50 only. r57.rev builds the N2 book before it
+    evaluates the U50 one, so a capture of it stops at the guard; this repeats its U50 steps
+    (same functions, same order) and checks the committed in_p55 Sharpes (pre-2025) to 1e-4."""
+    import r50_engines as en
+    import r54_v1 as v1
+    import r55_ml as ml
+    import r55_engine as eg
+    ev = r57.ev
+    s = r57.load_states()                     # U50 fields only; the n2_* arrays are not read here
+    base, qlab, mlab = r57.p55_base()
+    out = {}
+    for w, bb in base.items():                # §2 assertion, and the R1 benchmark (P-r55 without C6)
+        days, vals = eg.portfolio(bb['comps'], bb['start'])
+        m = eg.evaluate(days, vals, qlab, mlab)
+        assert abs(m['sharpe'] - r57.P55_REF[w]) < 0.0015, (w, m['sharpe'])
+        out[f'P55_{w}'] = (days, vals)
+        out[f'R1_{w}'] = eg.portfolio({'R1': bb['comps']['R1']}, bb['start'])
+    uni = [u['symbol'] for u in json.load(open(os.path.join(v1.DATA, 'universe50.json')))]
+    alts = [x for x in uni if x not in ('BTCUSDT', 'ETHUSDT')]
+    gate_u50 = r57.p_gate(s['days'], s['p_rng'], s['syms'], s['cut'])
+    ref = json.load(open(os.path.join(r57.OUT, 'f4_rev.json')))
+    for name, gated in (('Q1', False), ('Q2', True)):
+        cur, _ = r57.rev_book(alts, v1.DATA, gate_u50, gated)
+        b = r57.basket_from(cur, r57.REV_FROM)
+        mb = en.metrics(b[0], b[1], [], r57.REV_FROM)
+        assert abs(mb['sharpe'] - ref[name]['basket_u50']['sharpe']) < 1e-4, (name, mb['sharpe'])
+        out[f'{name}_book'] = b
+        for w, bb in base.items():
+            c6p, _ = ml.c6_prime(bb['comps']['C6'], b, ev.ms(r57.REV_FROM))
+            days, vals = eg.portfolio({'R1': bb['comps']['R1'], 'C6': c6p}, bb['start'])
+            m = eg.evaluate(days, vals, qlab, mlab)
+            assert abs(m['sharpe'] - ref[name]['in_p55'][w]['sharpe']) < 1e-4, (name, w, m['sharpe'])
+            out[f'{name}_{w}'] = (days, vals)
+    np.savez_compressed(os.path.join(OUT, 'capture', 'r59_q.npz'),
+                        **{f'{k}__days': v[0] for k, v in out.items()}, **{f'{k}__vals': v[1] for k, v in out.items()})
+    log('f1_q: Q1/Q2 in P-r55 reproduced (U50 only) ' + ', '.join(out))
+
+
+# ----------------------------------------------------------------------------------------------
+# §2 F1: trial -> captured curve, series store, SPA/PBO
+# ----------------------------------------------------------------------------------------------
+# Each family member maps to its captured curves (data/r59/capture/<tag>.npz, written by
+# r59_capture.py; r59_q.npz by f1_q). A source is (tag, i, check): i is a curve index, a list of
+# indexes joined in time (the books measured as dev 2021-05..2023 plus validation 2024), or a
+# key of r59_q.npz. check is either the Sharpe the capture logged for that call (pre-2025 metrics
+# only; it must match the trial's committed number) or ctx pairs the call's locals must carry.
+# Indexes were read from the call logs (loop variables), never from series values.
+def _pv(tag, c, l, sc=None, sl=None):
+    return {'common': (tag, c, sc), 'long': None if l is None else (tag, l, sl)}
+
+
+F1_P = {
+    'R50_F2_PORTFOLIO': _pv('r50_f2', 6, 7, {'n': 'C6', 'w': 'common'}, {'n': 'C6', 'w': 'long'}),
+    'R50_F1D_P1': _pv('r50_f1d', 16, 17, {'w': 'common', 's': 'V1'}, {'w': 'long', 's': 'V1'}),
+    'R50_F1D_T4': _pv('r50_f1d', 20, 21, {'w': 'common'}, {'w': 'long'}),
+    'R50_F1E_P3': _pv('r50_f1e', 2, 3, {'window': 'common'}, {'window': 'long'}),
+    'R50_F1F_P4': _pv('r50_f1f', 24, 48, {'window': 'common'}, {'window': 'long'}),
+    'R51_F5_T1': _pv('r51_f6', 3, 1, {'w': 'common', 't': 'T1'}, {'w': 'long', 't': 'T1'}),
+    'R51_F5_T2': _pv('r51_f6', 5, 4, {'w': 'common', 't': 'T2'}, {'w': 'long', 't': 'T2'}),
+    'R52_F3_J1': _pv('r52_j1', 3, 1, 1.6203, 1.6133),
+    'R53_F2_C6q': _pv('r53_c6q', 9, 7, 1.399, 1.555),
+    'R54_W1': _pv('r54_w1', 3, None, 1.536),            # its "long" lens also starts 2021-02-28
+    'R55_F1_E1': _pv('r55_engine', 6, 1, 1.672, 1.541),
+    'R55_F1_E2': _pv('r55_engine', 7, 2, 1.645, 1.721),
+    'R55_F1_E3': _pv('r55_engine', 8, 3, 1.563, 1.658),
+    'R55_F2_ML3': _pv('r55_ml', 13, 12, 1.774, 1.736),
+    'R55_F2_ML4': _pv('r55_ml', 16, 15, 1.554, 1.637),
+    'R55_F4_NDX': _pv('r55_portfolio', 4, 3, 1.690, 1.695),
+    'R55_F4_XAG': _pv('r55_portfolio', 7, 6, 1.500, 1.618),
+    'R55_F4_COPPER': _pv('r55_portfolio', 10, 9, 1.553, 1.671),
+    'R55_F4_EWY': _pv('r55_portfolio', 13, 12, 1.461, 1.628),
+    'R55_F4_EWJ': _pv('r55_portfolio', 16, 15, 1.506, 1.604),
+    'R55_F4_NOBOND': _pv('r55_portfolio', 17, 0, 1.723, 1.677),
+    'R55_F4_PFINAL': _pv('r55_portfolio', 17, 0, 1.723, 1.677),   # = NOBOND by construction (P55_FREEZE)
+    'R57_U1': _pv('r57_u1', 13, 5, 1.685, 1.648),
+    'R57_Q2': _pv('r59_q', 'Q2_common', 'Q2_long'),
+    'R58_F3_I1': _pv('r58_integrate', 4, 3, 1.682, 1.638),
+}
+_ENG = {'M1': (68, 74), 'M2a': (69, 75), 'M2b': (70, 76), 'M3': (71, 77), 'M3nr': (72, 78)}
+_F1B = {'R1': (61, 124), 'R2': (62, 125), 'R3': (63, 126), 'R4': (64, 127), 'R5': (65, 128),
+        'N1': (66, 129), 'N2': (67, 130), 'N3': (68, 131)}
+_F1C = {'C0': (49, 95), 'C1': (39, 85), 'C2': (41, 87), 'C3': (43, 89), 'C4': (45, 91), 'C5': (47, 93),
+        'C6': (48, 94)}
+F1_S = {
+    **{f'R50_F1_{e}': _pv('r50_engines', c, l, {'eng': e, 'window': 'common'}, {'eng': e, 'window': 'long'})
+       for e, (c, l) in _ENG.items()},
+    'R50_F1_M4': _pv('r50_engines', 66, 67, {'window': 'common'}, {'window': 'long'}),
+    **{f'R50_F1B_{k}': _pv('r50_f1b', c, l, {'cand': k, 'window': 'common'}, {'cand': k, 'window': 'long'})
+       for k, (c, l) in _F1B.items()},
+    'R50_F1B_R6': _pv('r50_f1b', 70, 133, {'window': 'common'}, {'window': 'long'}),
+    'R50_F1B_N4': _pv('r50_f1b', 71, 134, {'window': 'common'}, {'window': 'long'}),
+    **{f'R50_F1C_{k}': _pv('r50_f1c', c, l, {'cand': k, 'window': 'common'}, {'cand': k, 'window': 'long'})
+       for k, (c, l) in _F1C.items()},
+    **{f'R50_F1D_{k}': _pv('r50_f1d', c, l, {'window': 'common'}, {'window': 'long'})
+       for k, (c, l) in {'T1': (2, 10), 'T2': (3, 11), 'T3': (4, 12), 'K1': (7, 15), 'X1': (5, 13),
+                         'V1': (6, 14)}.items()},
+    'R50_F1E_K1r': _pv('r50_f1e', 0, None, {'frm': '2020-02-15'}),
+    'R50_F1F_R1_BROAD': _pv('r50_f1f', 22, 46, {'window': 'common'}, {'window': 'long'}),
+    **{f'R50_F1G_{g}': _pv('r50_f1g', c, l, {'g': g, 'window': 'common'}, {'g': g, 'window': 'long'})
+       for g, (c, l) in {'G1': (20, 43), 'G2': (21, 44), 'G3': (22, 45)}.items()},
+    # r51 explore: the decision lens (2018-09-01 -> 2024-12-31) serves both windows.
+    **{f'R51_F3_{t}': _pv('r51_A', i, i, {'trial': t, 'lens': 'dec'}, {'trial': t, 'lens': 'dec'})
+       for t, i in {'A1': 9, 'A2': 15, 'A3': 21, 'A4': 27, 'A5': 33}.items()},
+    **{f'R51_F4_{t}': _pv('r51_B', i, i, {'trial': t, 'lens': 'dec'}, {'trial': t, 'lens': 'dec'})
+       for t, i in {'B1': 4, 'B2': 14, 'B3': 20}.items()},
+    **{f'R52_F1_{t}': _pv('r52_xs', ij, None, s) for t, ij, s in (
+        ('X0', [0, 2], -0.372), ('X1', [4, 6], -0.016), ('X2', [8, 10], 0.170), ('X3', [12, 14], 0.151))},
+    'R52_F2_Q2': _pv('r52_q', [4, 5], None, -0.473),
+    'R52_F2_Q3': _pv('r52_q', [26, 27], None, -1.722),
+    **{f'R53_F1_{t}': _pv('r53_xs', ij, None, s) for t, ij, s in (
+        ('Y1', [0, 2], -0.017), ('Y2', [3, 5], -0.194), ('Y3', [9, 11], 0.417), ('Y4', [6, 8], 0.492),
+        ('Y5', [12, 14], -0.538))},
+    'R53_F1_Y6': _pv('r53_xs_y6', [0, 2], None, -0.045),
+    'R54_M1': _pv('r54_m1', 1, None, 0.557),
+    'R55_F2_ML1': _pv('r55_ml', [0, 2], None, 0.241),
+    'R55_F2_ML2': _pv('r55_ml', [4, 6], None, -0.455),
+    'R55_F3_A3v2': _pv('r55_a3', 0, None, {'lens': 'dec', 'tag': 'v2'}),
+    'R57_Q1': _pv('r59_q', 'Q1_book', None),
+}
+F1_SCOPE_OUT = ('R50_F1E_P3', 'R50_F1D_K1', 'R50_F1E_K1r')     # registry: fuera_de_alcance_spot
+F1_MISSING = {'R52_F2_Q1': 'prueba de IC del QOI: no tiene serie de retornos'}
+CAPTURE = os.path.join(OUT, 'capture')
+W_COMMON, W_LONG = ('2021-01-01', '2024-12-31'), ('2018-09-01', '2024-12-31')
+
+
+def _day(ms_):
+    return np.datetime_as_string(np.datetime64(int(ms_), 'ms'), unit='D')
+
+
+def _cap(tag):
+    z = np.load(os.path.join(CAPTURE, f'{tag}.npz'))
+    if tag == 'r59_q':
+        return z, None
+    idx = json.load(open(os.path.join(CAPTURE, f'{tag}.json')))
+    return z, {c['i']: c for c in idx['calls'] if 'i' in c}
+
+
+def _merged_ctx(call):
+    out = {}
+    for fr in call['ctx']:                        # innermost frame first: it wins
+        for k, v in fr.items():
+            out.setdefault(k, v)
+    return out
+
+
+def _source_returns(src):
+    """(days, simple returns) of one source after its checks; first day of each curve is the base."""
+    tag, sel, chk = src
+    z, calls = _cap(tag)
+    parts = sel if isinstance(sel, list) else [sel]
+    days, rets = [], []
+    for k, i in enumerate(parts):
+        d, v = (z[f'{i}__days'], z[f'{i}__vals']) if calls is None else (z[f'c{i}__days'], z[f'c{i}__vals'])
+        if calls is not None:
+            c = calls[i]
+            if k == 0 and isinstance(chk, float):
+                assert c['sharpe'] is not None and abs(c['sharpe'] - chk) < 6e-4, (tag, i, c['sharpe'], chk)
+            if isinstance(chk, dict):
+                ctx = _merged_ctx(c)
+                assert all(ctx.get(a) == b for a, b in chk.items()), (tag, i, chk, ctx)
+            if c['kind'] in ('xs_stats', 'q_stats'):  # equity = cumprod(1 + r): the first value holds a return
+                days.append(d), rets.append(v / np.r_[1.0, v[:-1]] - 1)
+                continue
+            if c['kind'] == 'metrics' and c['extra']:
+                # en.metrics measures from its frm (e.g. R54_M1 from 2022-01-01, after its training
+                # year; F1d sleeves from 2021-01-01 on a curve built from 2020-10-15): same days here.
+                m0 = int(np.searchsorted(d, r58.ms(c['extra'][0])))
+                d, v = d[m0:], v[m0:]
+        days.append(d[1:]), rets.append(v[1:] / v[:-1] - 1)
+    d, r = np.concatenate(days), np.concatenate(rets)
+    assert (np.diff(d) > 0).all(), (tag, sel)
+    keep = d < r58.CUT_MS
+    return d[keep], r[keep]
+
+
+def f1_build():
+    """Writes every family member's series to the store and data/r59/f1_series.json (coverage)."""
+    fam = json.load(open(os.path.join(OUT, 'spa_families.json')))
+    maps = {**F1_P, **F1_S}
+    assert set(maps) | set(F1_MISSING) == set(fam['P']) | set(fam['S']), 'map differs from the committed families'
+    cov = {}
+    for tid, spec in maps.items():
+        rnd = tid.split('_')[0].lower()
+        for lens, src in spec.items():
+            if src is None:
+                continue
+            d, r = _source_returns(src)
+            key = tid if lens == 'common' else f'{tid}@long'
+            meta = save_series(rnd, key, d, r, f'r59.py f1_build <- capture/{src[0]}', lens)
+            cov[key] = {'from': _day(int(d[0])), 'n_days': meta['n_days'],
+                        'sharpe': float(r.mean() / r.std(ddof=1) * math.sqrt(365))}
+    z = np.load(os.path.join(CAPTURE, 'r59_q.npz'))
+    for k in ('P55_common', 'P55_long', 'R1_common', 'R1_long'):
+        d, v = z[f'{k}__days'], z[f'{k}__vals']
+        d, r = d[1:], v[1:] / v[:-1] - 1
+        keep = d < r58.CUT_MS
+        save_series('r59', f'BENCH_{k}', d[keep], r[keep], 'r59.py f1_q (r57.p55_base)', k.split('_')[1])
+    out = {'protocol': 'PROTOCOL_R59.md §2', 'families': {'P': len(fam['P']), 'S': len(fam['S'])},
+           'with_series': len(maps), 'missing': F1_MISSING, 'excluded': {**fam['excluded_duplicates'], **fam['excluded_holdout']},
+           'coverage_of_N145': f'{len(maps)} de 145 ensayos con serie', 'series': cov}
+    json.dump(out, open(os.path.join(OUT, 'f1_series.json'), 'w'), indent=1)
+    log(f'f1_build: {len(cov)} series ({len(maps)} trials), missing {list(F1_MISSING)}')
+
+
+def _matrix(ids, lens, window, fill):
+    """days x members of daily returns in window. fill=False: days every member has (intersection);
+    fill=True: union of days with a missing member's day set to 0 (out of the market = cash)."""
+    lo, hi = r58.ms(window[0]), r58.ms(window[1]) + DAY
+    ser = {}
+    for tid in ids:
+        key = tid if lens == 'common' else f'{tid}@long'
+        try:
+            d, r = load_series(key)
+        except KeyError:
+            continue
+        m = (d >= lo) & (d < hi)
+        ser[tid] = dict(zip(d[m].tolist(), r[m].tolist()))
+    if lens == 'long':                               # long window: only members that cover it
+        ser = {t: s for t, s in ser.items() if s and min(s) <= lo + 31 * DAY}
+    sets = [set(s) for s in ser.values()]
+    days = sorted(set.union(*sets) if fill else set.intersection(*sets))
+    cols = list(ser)
+    M = np.array([[ser[t].get(x, 0.0) for t in cols] for x in days])
+    return np.array(days), cols, M
+
+
+def _bench(days, lens):
+    d, r = load_series(f'BENCH_R1_{lens}')
+    s = dict(zip(d.tolist(), r.tolist()))
+    return np.array([s.get(x, np.nan) for x in days.tolist()])
+
+
+def f1_audit():
+    fam = json.load(open(os.path.join(OUT, 'spa_families.json')))
+    res = {'protocol': 'PROTOCOL_R59.md §2 + amendment E3', 'seed': SEED, 'n_boot': SPA_BOOT, 'block': SPA_BLOCK,
+           'runs': {}}
+    plan = [('P', 'common', W_COMMON, False), ('P', 'long', W_LONG, False),
+            ('S', 'common', W_COMMON, False), ('S', 'common', W_COMMON, True), ('S', 'long', W_LONG, False)]
+    plan += [(f, lens, w, fill, True) for f, lens, w, fill in plan]   # E3: without the out-of-scope trials
+    for f, lens, window, fill, *noscope in plan:
+        ids = [t for t in fam[f] if not (noscope and t in F1_SCOPE_OUT)]
+        days, cols, M = _matrix(ids, lens, window, fill)
+        # R1 benchmark: P members use the R1 of their own lens; S members the long-lens R1, which
+        # covers both windows (the common-lens R1 starts 2021-02-28).
+        b = _bench(days, lens if f == 'P' else 'long')
+        ok = np.isfinite(b)
+        days, M, b = days[ok], M[ok], b[ok]
+        sd = M.std(0, ddof=1)
+        sharpe = M.mean(0) / np.where(sd > 0, sd, np.nan) * math.sqrt(365)
+        G_r1 = M - b[:, None] * (sd / b.std(ddof=1))[None, :]
+        p_cash, best_cash = spa_pvalue(M)
+        p_r1, best_r1 = spa_pvalue(G_r1)
+        order = list(np.argsort(-np.nan_to_num(sharpe, nan=-9)))
+        run = {'family': f, 'lens': lens, 'window': [_day(int(days[0])), _day(int(days[-1]))],
+               'days': int(len(days)), 'fill_cash': fill, 'members': len(cols),
+               'spa_cash': {'p': p_cash, 'best': cols[best_cash]}, 'spa_r1': {'p': p_r1, 'best': cols[best_r1]},
+               'r1_sharpe': float(b.mean() / b.std(ddof=1) * math.sqrt(365)),
+               'sharpe': {cols[k]: round(float(sharpe[k]), 4) for k in order}}
+        if 'R55_F4_PFINAL' in cols:
+            run['pfinal_rank'] = 1 + order.index(cols.index('R55_F4_PFINAL'))
+        if f == 'P':
+            run['pbo'], run['pbo_combinations'] = pbo(M)
+        name = f'{f}_{lens}' + ('_fill' if fill else '') + ('_inscope' if noscope else '')
+        res['runs'][name] = run
+        log(f"{name}: {len(cols)} x {len(days)} SPA cash p={p_cash:.3f} "
+            f"({cols[best_cash]}), vs R1 p={p_r1:.3f} ({cols[best_r1]})" + (f", PBO {run['pbo']:.3f}" if f == 'P' else ''))
+    json.dump(res, open(os.path.join(OUT, 'f1_audit.json'), 'w'), indent=1)
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
-    fn = {'groups': groups, 'cv': cv, 'rotation': rotation, 'series_test': series_test, 'spa_test': spa_test}.get(cmd)
+    fn = {'groups': groups, 'cv': cv, 'rotation': rotation, 'series_test': series_test, 'spa_test': spa_test,
+          'f1_q': f1_q, 'f1_build': f1_build, 'f1_audit': f1_audit}.get(cmd)
     if fn is None:
         print(__doc__)
         return 1
