@@ -9,6 +9,8 @@ Research container:
     python research_scripts/r58.py states        # F0: per-bar and per-day partitions, before any join
     python research_scripts/r58.py selftest      # F0: cuts, reconciliation and reproduction checks
     python research_scripts/r58.py diag          # F1: sweep on the U50-alt C6 trades (N + 0)
+    python research_scripts/r58.py commit_b      # F2: rule and power, before C6 runs on N2/N3
+    python research_scripts/r58.py confirm       # F2: the single confirmation on N2 ∪ N3 (N 144)
 
 No C6 trade is read before `states` has written data/r58/f0_cuts.json and f0_bars_*.npz. Every
 array stops at 2024-12-31; 2025 is sealed (the r54 event file holds 544 trades of 2025, dropped at
@@ -627,10 +629,264 @@ def diag():
     log(json.dumps(res['b_btc_eth'], default=float))
 
 
+# ----------------------------------------------------------------------------------------------
+# F2: commit B (rule + power, before any C6 run on N2/N3) and the single confirmation
+# ----------------------------------------------------------------------------------------------
+CONF_FROM = 1625184000000                 # 2021-07-02: first day with P5 on every bank (r57 DIAG_FROM)
+Z90 = 1.2815515655446004                  # one-sided 10%: the pass test is the bootstrap's 10th percentile
+
+
+def rule_mask(df):
+    """The composite rule fixed by F1 (§3): V1 AND V2, on trades where both exist."""
+    ok = df['V1'].notna() & df['V2'].notna()
+    return ok.values, ((df['V1'] == 1) & (df['V2'] == 1)).values
+
+
+def _valid_coin_days(bank):
+    """Coin-days 2021-07-02..2024 with both daily states, from f0_days only (no outcomes)."""
+    d = np.load(os.path.join(OUT, 'f0_days.npz'))
+    days = d[f'{bank}__days']
+    rows = (days >= CONF_FROM) & (days < CUT_MS)
+    return int((np.isfinite(d[f'{bank}__persist']) & np.isfinite(d[f'{bank}__p_rng']))[rows].sum())
+
+
+def commit_b():
+    """Power of the single confirmation, written before C6 ever runs on N2 or N3. The expected trade
+    count scales U50's rate of rule-evaluable trades per evaluable coin-day to each bank's coin-days;
+    the SE of D scales U50's weekly-block bootstrap SE by sqrt(n_U50 / n_bank)."""
+    import pandas as pd
+    from statistics import NormalDist
+    import r57
+    f1 = json.load(open(os.path.join(OUT, 'f1_diag.json')))
+    assert f1['selected'] == ['V2', 'V1']
+    df = pd.read_csv(os.path.join(OUT, 'f1_trades_u50.csv'))
+    ok, g = rule_mask(df)
+    sub = df[ok].reset_index(drop=True)
+    R, gs = sub['R'].values, g[ok]
+    old = r57.N_BOOT
+    r57.N_BOOT = N_BOOT
+    try:
+        bs = r57.block_boot(sub['week'].values, lambda ix: (_d(R[ix], gs[ix]),), np.random.default_rng(SEED))[:, 0]
+    finally:
+        r57.N_BOOT = old
+    d_u50, se_u50 = _d(R, gs), float(np.nanstd(bs))
+    cd = {b: _valid_coin_days(b) for b in ('u50', 'n2', 'n3')}
+    rate = len(sub) / cd['u50']
+    n_exp = {b: rate * cd[b] for b in ('n2', 'n3')}
+    n_union = n_exp['n2'] + n_exp['n3']
+    se = se_u50 * math.sqrt(len(sub) / n_union)
+    N = NormalDist()
+    power = {f'vs_{k}': N.cdf(eff / se - Z90) for k, eff in (('full_D', d_u50), ('half_D', d_u50 / 2))}
+    power_n2_only_half = N.cdf((d_u50 / 2) / (se_u50 * math.sqrt(len(sub) / n_exp['n2'])) - Z90)
+    out = {'protocol': 'PROTOCOL_R58.md §3, commit B', 'rule': 'persist_vol == 0 AND p_range40 < 0.3874 (last closed day before the signal close)',
+           'composite': 'AND (retains 51.6% >= 25% in U50)', 'u50': {'n_evaluable': int(len(sub)), 'D': d_u50, 'D_se_boot': se_u50,
+           'retained': float(gs.mean())}, 'evaluable_coin_days': cd, 'expected_trades': n_exp, 'expected_union': n_union,
+           'D_se_union_expected': se, 'power_one_sided_10pct': power, 'power_n2_only_vs_half_D': power_n2_only_half,
+           'report_before_continuing': power['vs_half_D'] < 0.4,
+           'pass_criteria': {
+               'a_D_union_p10_gt_0': 'D on N2 ∪ N3 evaluable trades > 0 and the 10th percentile of the weekly-block bootstrap > 0',
+               'b_D_pos_each_bank': 'D > 0 on N2 and on N3 separately',
+               'c_basket': 'Sharpe of the gated C6 basket >= Sharpe of the unconditional basket, N2 ∪ N3 equal weight, '
+                           '2021-07-02..2024-12-31; the rule gates entries only (risk_qty x 0), nothing else changes',
+               'd_cost2': 'a and c again with fees and stop slippage x2'},
+           'measurement_window': '2021-07-02..2024-12-31 (P5 exists on every bank from 2021-07-01)'}
+    json.dump(out, open(os.path.join(OUT, 'f2_commit_b.json'), 'w'), indent=1, default=float)
+    log(json.dumps(out, default=float))
+
+
+class _Costs:
+    """Fees and stop slippage x k for C6 (cost stress): Account.trade sees fee x k, the stop fill
+    5 bp becomes 5k bp. risk_qty keeps the 1x fee so position sizes do not change."""
+    def __init__(self, k):
+        self.k = k
+
+    def __enter__(self):
+        import r50_f1b as fb
+        import r50_harness as hz
+        self.orig_trade, self.orig_slip = hz.Account.trade, fb.STOP_SLIP
+        if self.k != 1:
+            k, orig = self.k, self.orig_trade
+
+            def trade(acct, dqty, price, ts, slippage=False):
+                f = acct.fee
+                acct.fee = f * k
+                try:
+                    orig(acct, dqty, price, ts, slippage)
+                finally:
+                    acct.fee = f
+            hz.Account.trade = trade
+            fb.STOP_SLIP = self.orig_slip * k
+        return self
+
+    def __exit__(self, *a):
+        import r50_f1b as fb
+        import r50_harness as hz
+        hz.Account.trade, fb.STOP_SLIP = self.orig_trade, self.orig_slip
+
+
+def c6_bank(bank, gate=None, cost_x=1):
+    """Frozen C6 (R2 + R3) per coin of a bank, data cut at 2024-12-31, r54 V1 loop. `gate(sym, sig_ts)`
+    -> bool blocks an entry by sizing it to 0 (R3 asks at its fill bar for the signal bar 4h before).
+    Returns curves per coin and trade events with R over the 1% risk budget at entry."""
+    import r50_engines as en
+    import r50_f1b as fb
+    import r50_f1c as fc
+    import r54_v1 as v1
+    from r50_harness import T
+    syms, src = banks()[bank]
+    orig = fb.risk_qty
+    curves, events = {}, []
+    v1_data = v1.DATA
+    try:
+        with _Costs(cost_x):
+            v1.DATA = src
+            for sym in syms:
+                bars, _, h1 = h4_bars(src, sym)
+                start = max(SIM_FROM, int(bars[min(v1.WARM_BARS, len(bars) - 1), T]))
+                if start >= CUT_MS:
+                    continue
+                frm = pd_date(start)
+                sleeves = []
+                for retest in (False, True):
+                    ctx = {'ts': 0}
+                    dec = fb.r2_r3_decider(bars, retest)
+
+                    def wrapped(i, acct, ts, dec=dec, ctx=ctx):
+                        ctx['ts'] = ts
+                        return dec(i, acct, ts)
+                    if gate is not None:
+                        fb.risk_qty = (lambda acct, price, dist, ctx=ctx, sym=sym, rt=retest:
+                                       orig(acct, price, dist) if gate(sym, ctx['ts'] - (H4 if rt else 0)) else 0.0)
+                    ts, eq, acct = v1.simulate(bars, start, wrapped, v1.funding_cursor(sym, h1, int(bars[0, T])))
+                    fb.risk_qty = orig
+                    sleeves.append(en.calendar(ts, eq, frm, '2025-01-01'))
+                    for t in acct.trades:
+                        k = int(np.searchsorted(ts, t['opened'], side='left'))
+                        eq0 = eq[k - 1] if k > 0 else en.BALANCE
+                        events.append({'sym': sym, 'sleeve': 'R3' if retest else 'R2', 'opened': int(t['opened']),
+                                       'closed': int(t['closed']), 'pnl': float(t['pnl']), 'R': float(t['pnl'] / (0.01 * eq0))})
+                curves[sym] = fc.mean_curve(sleeves)
+    finally:
+        fb.risk_qty, v1.DATA = orig, v1_data
+    return curves, events
+
+
+def pd_date(ms_):
+    from datetime import datetime, timezone
+    return datetime.fromtimestamp(ms_ / 1000, tz=timezone.utc).date().isoformat()
+
+
+def make_gate(bank, cut):
+    import r57
+    syms, _, days = load_bank(bank)
+    col = {s: j for j, s in enumerate(syms)}
+
+    def gate(sym, sig):
+        r = r57.row_for(days['days'], sig)
+        if r < 0:
+            return False
+        j = col[sym]
+        pe, pr = days['persist'][r, j], days['p_rng'][r, j]
+        return bool(np.isfinite(pe) and np.isfinite(pr) and pe == 0 and pr < cut)
+    return gate
+
+
+def basket_metrics(curves, frm):
+    import r50_engines as en
+    import r50_f1b as fb
+    b = fb.basket(curves, list(curves))
+    return en.metrics(b[0], b[1], [], frm)
+
+
+def r54_gates(curves):
+    """r54 V1 validation gates on unconditional C6 (metrics from 2021-01-01 or the coin's start)."""
+    import r50_engines as en
+    per = {}
+    for s, (d, v) in curves.items():
+        m = en.metrics(d, v, [], max('2021-01-01', pd_date(int(d[0]))))
+        if m:
+            per[s] = {'sharpe': m['sharpe'], 'max_dd': m['max_dd'], 'collapse': m['sharpe'] < -0.5 or m['max_dd'] < -0.30}
+    bm = basket_metrics(curves, '2021-01-01')
+    n, pos, col = len(per), sum(m['sharpe'] > 0 for m in per.values()), sum(m['collapse'] for m in per.values())
+    return {'coins': n, 'positive': pos, 'collapses': col, 'basket_sharpe_2021_24': bm['sharpe'], 'basket_cagr': bm['cagr'],
+            'basket_max_dd': bm['max_dd'],
+            'gates': {'majority_pos': pos > n / 2, 'collapses_le_10pct': col <= 0.10 * n, 'basket_sharpe_pos': bm['sharpe'] > 0},
+            'per_coin': per}
+
+
+def _d_stats(df):
+    import r57
+    ok, g = rule_mask(df)
+    sub = df[ok & (df['opened'].values >= CONF_FROM)].reset_index(drop=True)
+    R, gs = sub['R'].values, ((sub['V1'] == 1) & (sub['V2'] == 1)).values
+    old = r57.N_BOOT
+    r57.N_BOOT = N_BOOT
+    try:
+        bs = r57.block_boot(sub['week'].values, lambda ix: (_d(R[ix], gs[ix]),), np.random.default_rng(SEED))[:, 0]
+    finally:
+        r57.N_BOOT = old
+    top = R >= np.quantile(R, 0.9)
+    return {'n': int(len(sub)), 'n_kept': int(gs.sum()), 'retained': float(gs.mean()), 'mean_R_kept': float(R[gs].mean()),
+            'mean_R_excluded': float(R[~gs].mean()), 'D': _d(R, gs), 'D_p10': float(np.nanpercentile(bs, 10)),
+            'D_ci90': np.nanpercentile(bs, [5, 95]).tolist(), 'top_decile_lost': float((top & ~gs).sum() / top.sum())}
+
+
+def confirm():
+    """The single look at N2 ∪ N3 (§3): unconditional C6 (r54-type validation, no N), then the
+    composite rule on the same trades and as an entry gate, at 1x and 2x costs."""
+    import warnings
+    import pandas as pd
+    warnings.simplefilter('ignore')
+    cb = json.load(open(os.path.join(OUT, 'f2_commit_b.json')))
+    cuts = json.load(open(os.path.join(OUT, 'f0_cuts.json')))
+    cut = cuts['p_range_cut']
+    res = {'protocol': 'PROTOCOL_R58.md §3', 'commit_b': cb['power_one_sided_10pct'], 'n_added': 1}
+    runs = {}
+    for cx in (1, 2):
+        for bank in ('n2', 'n3'):
+            cu, eu = c6_bank(bank, cost_x=cx)
+            cg, _ = c6_bank(bank, gate=make_gate(bank, cut), cost_x=cx)
+            runs[(cx, bank)] = (cu, eu, cg)
+            log(f'cost x{cx} {bank}: {len(cu)} coins, {len(eu)} trades')
+    for cx in (1, 2):
+        tag = f'cost{cx}'
+        dfs = {b: trade_table(runs[(cx, b)][1], b, cuts) for b in ('n2', 'n3')}
+        dfs['union'] = pd.concat([dfs['n2'], dfs['n3']], ignore_index=True)
+        if cx == 1:
+            dfs['union'].to_csv(os.path.join(OUT, 'f2_trades_n2n3.csv'), index=False)
+        r = {'D': {b: _d_stats(dfs[b]) for b in dfs}}
+        cu_all = {**runs[(cx, 'n2')][0], **runs[(cx, 'n3')][0]}
+        cg_all = {**runs[(cx, 'n2')][2], **runs[(cx, 'n3')][2]}
+        frm = pd_date(CONF_FROM)
+        r['basket'] = {'unconditional': basket_metrics(cu_all, frm), 'gated': basket_metrics(cg_all, frm),
+                       'by_bank': {b: {'unconditional': basket_metrics(runs[(cx, b)][0], frm)['sharpe'],
+                                       'gated': basket_metrics(runs[(cx, b)][2], frm)['sharpe']} for b in ('n2', 'n3')}}
+        if cx == 1:
+            r['r54_validation'] = {b: r54_gates(runs[(1, b)][0]) for b in ('n2', 'n3')}
+            r['r54_validation']['union'] = {k: v for k, v in r54_gates(cu_all).items() if k != 'per_coin'}
+        res[tag] = r
+    c1, c2 = res['cost1'], res['cost2']
+    crit = {'a_D_union_p10_gt_0': c1['D']['union']['D'] > 0 and c1['D']['union']['D_p10'] > 0,
+            'b_D_pos_each_bank': c1['D']['n2']['D'] > 0 and c1['D']['n3']['D'] > 0,
+            'c_basket_gated_ge_unconditional': c1['basket']['gated']['sharpe'] >= c1['basket']['unconditional']['sharpe'],
+            'd_cost2_a': c2['D']['union']['D'] > 0 and c2['D']['union']['D_p10'] > 0,
+            'd_cost2_c': c2['basket']['gated']['sharpe'] >= c2['basket']['unconditional']['sharpe']}
+    res['criteria'], res['pass'] = crit, bool(all(crit.values()))
+    json.dump(res, open(os.path.join(OUT, 'f2_confirm.json'), 'w'), indent=1, default=float)
+    for cx in ('cost1', 'cost2'):
+        log(cx + ' D ' + json.dumps({b: {k: round(v, 3) if isinstance(v, float) else v for k, v in res[cx]['D'][b].items()}
+                                       for b in res[cx]['D']}, default=float))
+        bk = res[cx]['basket']
+        log(cx + f" basket uncond {bk['unconditional']['sharpe']:.3f} gated {bk['gated']['sharpe']:.3f} by_bank {bk['by_bank']}")
+    log('r54 ' + json.dumps({b: {k: v for k, v in res['cost1']['r54_validation'][b].items() if k != 'per_coin'}
+                             for b in ('n2', 'n3', 'union')}, default=float))
+    log('criteria ' + json.dumps(crit) + f" pass {res['pass']}")
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     fn = {'oi_probe': oi_probe, 'n3_select': n3_select, 'n3_download': n3_download, 'n3_panel': n3_panel,
-          'states': states, 'selftest': selftest, 'diag': diag}.get(cmd)
+          'states': states, 'selftest': selftest, 'diag': diag, 'commit_b': commit_b, 'confirm': confirm}.get(cmd)
     if fn is None:
         print(__doc__)
         return 1

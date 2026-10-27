@@ -127,3 +127,12 @@ Se commitea:
 - **E1 (2026-10-27, antes de cualquier unión con trades).** El corte de p(rango) commiteado en r57 (`9f3df218`, `data/r57/f0_cuts.json`) es **0,3874**. Con ese valor corrieron r57 F1 (`f1_diag.json`) y Q2.
   - El «0,447» de los informes de r57 (F1, F4 y el cierre) y de la versión anterior de este protocolo es un **error de transcripción**.
   - r58 usa el valor commiteado, que es el que produjo el hallazgo −0,19 R / +0,41 R.
+- **Commit B (2026-10-27, antes de correr C6 en N2 o N3; `data/r58/f2_commit_b.json`).**
+  - **Regla:** `persist_vol` = 0 **y** p(rango a 40 días) < 0,3874, los dos del último día cerrado antes del cierre de la vela de señal. Es el AND, porque retiene el 51,6% en U50.
+  - **Ventana de medición:** del 2021-07-02 al 2024-12-31.
+  - **Costos ×2:** comisiones y deslizamiento del stop ×2. El tamaño no cambia.
+  - **Poder:**
+    - en U50, D = +0,82 con EE bootstrap 0,51 (1.392 trades evaluables);
+    - se esperan ~528 trades en N2 y ~741 en N3 (1.269 en total), con un EE esperado de 0,54;
+    - poder unilateral al 10%: **0,60 contra el D completo y 0,30 contra la mitad**. Con N2 sola sería 0,22.
+  - **La mitad queda por debajo de 0,4,** así que, según el §3, se reporta al usuario antes de correr la confirmación.
