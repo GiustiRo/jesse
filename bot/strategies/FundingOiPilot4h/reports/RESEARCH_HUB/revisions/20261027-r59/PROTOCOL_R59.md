@@ -140,3 +140,9 @@ Este archivo se commitea **antes de escribir o correr cualquier código de r59**
     - **poder:** el EE bootstrap del D condicionado a V1 de U50, escalado por la raíz del cociente entre los trades de U50 con V5a y `persist_vol` válidos y los esperados en H. Se estima con la tasa de U50 por moneda-día con `persist_vol` válido;
     - **criterio (a):** el percentil 5 del bootstrap semanal del D condicionado a V1 es mayor que 0. (b) y (c) no cambian.
   - El D dentro de la compresión queda solo como descriptivo, sellado junto con q1.
+- **E2 (2026-10-27, en F1, antes de reconstruir cualquier serie real). La verificación sintética del SPA/PBO pasa a 20 réplicas.**
+  - **Por qué:** con una sola réplica, la familia de ruido dio SPA p 0,114 y PBO 0,26. Bajo la nula el p del SPA es casi uniforme y el PBO de un solo conjunto es ruidoso, así que un único valor no verifica la herramienta.
+  - **Criterio nuevo, en 20 réplicas con 500 bootstraps cada una:**
+    - con ruido puro, SPA p < 0,10 en a lo sumo el 20% de las réplicas, y PBO medio entre 0,35 y 0,65;
+    - con Sharpe 2 entre 29 series de ruido, SPA p < 0,05 en al menos el 80% de las réplicas.
+  - La auditoría real sigue usando 2.000 bootstraps con semilla 59.

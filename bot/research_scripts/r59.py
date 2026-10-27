@@ -380,9 +380,73 @@ def series_test():
     log(json.dumps(out))
 
 
+# ----------------------------------------------------------------------------------------------
+# §2 SPA (Hansen 2005, SPA_c) and PBO (CSCV)
+# ----------------------------------------------------------------------------------------------
+SPA_BLOCK, SPA_BOOT = 20, 2000              # stationary bootstrap: mean block 20 days, 2,000 draws (§2)
+
+
+def stationary_idx(n, rng, block=SPA_BLOCK):
+    idx = np.empty(n, dtype=int)
+    idx[0] = rng.integers(n)
+    jump = rng.random(n) < 1 / block
+    starts = rng.integers(n, size=n)
+    for t in range(1, n):
+        idx[t] = starts[t] if jump[t] else (idx[t - 1] + 1) % n
+    return idx
+
+
+def spa_pvalue(G, n_boot=SPA_BOOT, seed=SEED):
+    """Hansen's SPA_c p-value for H0: no column of G (days x models of benchmark differentials) has a
+    positive mean. Same recentring as r56_eval.spa_pvalue, with r59's seed."""
+    G = G[np.isfinite(G).all(1)]
+    n = len(G)
+    rng = np.random.default_rng(seed)
+    I = np.array([stationary_idx(n, rng) for _ in range(n_boot)])
+    gbar = G.mean(0)
+    gb = np.stack([G[I, k].mean(1) for k in range(G.shape[1])], axis=1)
+    omega = np.sqrt(n) * gb.std(0)
+    omega = np.where(omega > 0, omega, 1e-12)
+    T = max(float((np.sqrt(n) * gbar / omega).max()), 0.0)
+    very_neg = np.sqrt(n) * gbar / omega < -np.sqrt(2 * np.log(np.log(n)))
+    Tb = np.maximum((np.sqrt(n) * (gb - gbar + gbar * very_neg) / omega).max(1), 0.0)
+    return float((Tb >= T).mean()), int(np.argmax(gbar / np.where(gb.std(0) > 0, gb.std(0), 1e-12)))
+
+
+def pbo(M, s=16):
+    import r50_f1d
+    return r50_f1d.pbo(M, s)
+
+
+def spa_test():
+    """§2 verification on synthetic families of known outcome."""
+    # Amendment E2: one draw of a null family is a coin flip (SPA p ~ uniform, PBO of one dataset is
+    # noisy), so the check runs 20 replicas and tests the rates instead of a single value.
+    n, reps = 1461, 20                                 # 2021-01-01..2024-12-31
+    rows = []
+    for k in range(reps):
+        rng = np.random.default_rng(SEED + k)
+        noise = rng.normal(0, 0.01, (n, 30))
+        p_noise, _ = spa_pvalue(noise, n_boot=500, seed=SEED + k)
+        pbo_noise, _ = pbo(noise)
+        strong = noise.copy()
+        strong[:, 0] = rng.normal(2.0 * 0.01 / math.sqrt(365), 0.01, n)   # Sharpe 2 (annualised over 365 days)
+        p_strong, best = spa_pvalue(strong, n_boot=500, seed=SEED + k)
+        rows.append((p_noise, pbo_noise, p_strong, best))
+    A = np.array(rows, float)
+    out = {'protocol': 'PROTOCOL_R59.md §2 (verification, amendment E2)', 'reps': reps, 'n_boot': 500,
+           'noise30': {'share_spa_p_lt_0_10': float((A[:, 0] < 0.10).mean()), 'pbo_mean': float(A[:, 1].mean()),
+                       'pbo_range': [float(A[:, 1].min()), float(A[:, 1].max())]},
+           'sharpe2_plus_29_noise': {'share_spa_p_lt_0_05': float((A[:, 2] < 0.05).mean()), 'share_best_is_col0': float((A[:, 3] == 0).mean())}}
+    out['pass'] = bool(out['noise30']['share_spa_p_lt_0_10'] <= 0.20 and 0.35 <= out['noise30']['pbo_mean'] <= 0.65
+                       and out['sharpe2_plus_29_noise']['share_spa_p_lt_0_05'] >= 0.8)
+    json.dump(out, open(os.path.join(OUT, 'f1_spa_test.json'), 'w'), indent=1)
+    log(json.dumps(out))
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
-    fn = {'groups': groups, 'cv': cv, 'rotation': rotation, 'series_test': series_test}.get(cmd)
+    fn = {'groups': groups, 'cv': cv, 'rotation': rotation, 'series_test': series_test, 'spa_test': spa_test}.get(cmd)
     if fn is None:
         print(__doc__)
         return 1
