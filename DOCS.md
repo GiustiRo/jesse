@@ -15,7 +15,8 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| **[r56 `PROTOCOL_R56.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md)** | **Última ronda (cerrada, con extensión r56-B): detección de régimen cripto como pronóstico de estados. Ninguna configuración pasa el puente en N2; T3 (Chronos-2 + covariables) es el mejor pronóstico de vol. [Cierre r56-B](bot/strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md), [cierre r56](bot/strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md) y [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md).** |
+| **[r57 `PROTOCOL_R57.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/PROTOCOL_R57.md)** | **Última ronda (cerrada): usos continuos de los pronósticos de r56 sobre P-r55. Ninguno pasa; P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R57_CLOSE_20261026.md) y [handoff a r58](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/HANDOFF_R58.md).** |
+| [r56 `PROTOCOL_R56.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md) | Ronda cerrada, con extensión r56-B: detección de régimen cripto como pronóstico de estados. Ninguna configuración pasa el puente en N2; T3 (Chronos-2 + covariables) es el mejor pronóstico de vol. [Cierre r56-B](bot/strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md), [cierre r56](bot/strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md) y [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md). |
 | [r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md) | Ronda cerrada: regímenes de BTC, motor cripto, ranking ML, Brent–WTI e integración. Candidata P-r55; agenda en el [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md). |
 | [r51 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md) | Cortos, bono y WTI con reglas propias y pronósticos continuos sobre P1. Reglas y puertas en [`PROTOCOL_R51.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md). |
 | [r50 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md) | Varios motores, universo de 10 activos, dos lentes; cerrada con P1 ([cierre](bot/strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md)). |
@@ -37,7 +38,17 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r56, 2026-10-26)
+## Decisiones vigentes (r57, 2026-10-26)
+
+- **r57 cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R57_CLOSE_20261026.md), [handoff a r58](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/HANDOFF_R58.md)). Plan aprobado por el usuario, ejecución autónoma.
+  - **Candidata sin cambios: P-r55.** 2025 sellado y 2026 reservado. N = 143 (techo 146); N_régimen = 38.
+  - **F1, diagnóstico sin N:** el pronóstico de vol T3 no separa los trades de C6 en alts, así que F3 no corre. La vol *pasada* en compresión sí los separa (+0,61 R contra −0,08). Con p(rango) alto, los retornos revierten (AC −0,079) y C6 pierde (−0,19 R).
+  - **U1, vol pronosticada en el tamaño de R1-BTC/ETH:** no pasa, el Sharpe baja 0,03 y 0,04. Achica la posición cuando la ruptura paga.
+  - **Q2, M2a en alts con p(rango) alto:** no pasa. Su canasta queda en ~0 y reemplazar media manga de C6 cuesta 0,4 de Sharpe.
+  - **DVOL de Deribit:** bajado BTC/ETH diario del 2021-03-24 al 2024-12-31, limpio (`data/r58/`, gitignore; `r57_dvol_probe.py`).
+  - **Agenda r58:** filtros de C6 por compresión de la vol pasada y por p(rango), confirmados una sola vez en N2; DVOL.
+
+## Decisiones r56 (2026-10-26)
 
 - **r56-B cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md), [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md)). Extensión de r56 con:
   - tope de cambios relativo al mercado (f_mkt × los cambios de la etiqueta);

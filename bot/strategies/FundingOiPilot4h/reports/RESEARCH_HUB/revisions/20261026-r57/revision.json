@@ -1,62 +1,63 @@
 {
   "format_version": 1,
   "id": "20261026-r57",
-  "updated_at_utc": "2026-10-26 23:30:00 UTC",
+  "updated_at_utc": "2026-10-26 23:59:00 UTC",
   "objective": "Usos continuos de los pronósticos de r56 (vol T3, rango P5) sobre P-r55: diagnóstico de atribución, U1 en el tamaño de R1 cripto, C6 con selección de monedas y reversión condicionada; DVOL como insumo de r58.",
-  "latest": "r57 preregistrada (2026-10-26). N=140, techo 146.",
-  "next": "F1 diagnóstico de atribución.",
+  "latest": "r57 cerrada (2026-10-26): ningún uso continuo pasa. U1 −0,03/−0,04 de Sharpe; F3 no corre (T3 no separa C6 en alts); Q2 no pasa. DVOL factible. N=143.",
+  "next": "r58: C6 en alts filtrado por compresión de vol pasada y por p(rango), confirmado en N2; DVOL. Ver HANDOFF_R58.md.",
   "blockers": "Ninguno.",
   "counts": {
     "r57": {
-      "n_strategies": 140,
+      "n_strategies": 143,
       "n_ceiling": 146,
       "n_regime": 38
     }
   },
   "decisions": [
-    "2026-10-26 r57: plan aprobado por el usuario; ejecución autónoma autorizada; usos continuos habilitados como enmienda del puente."
+    "2026-10-26 r57: plan aprobado por el usuario; ejecución autónoma autorizada; usos continuos habilitados como enmienda del puente.",
+    "2026-10-26 r57 cerrada: P-r55 sin cambios; 2025 sellado."
   ],
   "supersedes": "20261026-r56",
   "roadmap": [
     {
       "order": 0,
       "title": "F0 protocolo y particiones",
-      "state": "en curso",
+      "state": "completada",
       "depends": "-",
       "gate": "no suma N"
     },
     {
       "order": 1,
       "title": "F1 diagnóstico de atribución",
-      "state": "pendiente",
+      "state": "completada: F3 no sigue, F4 sigue",
       "depends": "F0",
       "gate": "PROTOCOL_R57 §1"
     },
     {
       "order": 2,
       "title": "F2 U1 vol pronosticada en R1 cripto",
-      "state": "pendiente",
+      "state": "completada: no pasa",
       "depends": "F0",
       "gate": "PROTOCOL_R57 §2"
     },
     {
       "order": 3,
       "title": "F3 C6 con selección de monedas",
-      "state": "pendiente",
+      "state": "no corre (regla F1)",
       "depends": "F1",
       "gate": "PROTOCOL_R57 §3"
     },
     {
       "order": 4,
       "title": "F4 reversión condicionada a p(rango)",
-      "state": "pendiente",
+      "state": "completada: Q2 no pasa; Q3 no corre",
       "depends": "F1",
       "gate": "PROTOCOL_R57 §4"
     },
     {
       "order": 5,
       "title": "DVOL de Deribit (factibilidad)",
-      "state": "pendiente",
+      "state": "completada: factible",
       "depends": "-",
       "gate": "no suma N"
     }
@@ -66,12 +67,32 @@
     {
       "label": "r57: protocolo",
       "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/PROTOCOL_R57.md"
+    },
+    {
+      "label": "r57 F1: diagnóstico",
+      "path": "strategies/FundingOiPilot4h/reports/R57_PHASE1_DIAG_20261026.md"
+    },
+    {
+      "label": "r57 F2: U1",
+      "path": "strategies/FundingOiPilot4h/reports/R57_PHASE2_U1_20261026.md"
+    },
+    {
+      "label": "r57 F4: reversión",
+      "path": "strategies/FundingOiPilot4h/reports/R57_PHASE4_REV_20261026.md"
+    },
+    {
+      "label": "r57: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R57_CLOSE_20261026.md"
+    },
+    {
+      "label": "r57: handoff a r58",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/HANDOFF_R58.md"
     }
   ],
   "current_stage": {
-    "stage": "r57_F0",
-    "execution_status": "running",
-    "current_focus": "F1 diagnóstico",
+    "stage": "r57_cerrada",
+    "execution_status": "r57_closed",
+    "current_focus": "agenda r58 a decisión del usuario",
     "permitted": [
       "Scripts en research_scripts.",
       "Bajar DVOL de Deribit hasta 2024-12-31."
@@ -84,6 +105,6 @@
     "new_experiments_authorized": true,
     "authorization_scope": "Plan r57 aprobado por el usuario 2026-10-26, ejecución autónoma.",
     "economic_status": "P-r55 congelada",
-    "goal_status": "open"
+    "goal_status": "closed"
   }
 }
