@@ -5659,7 +5659,8 @@
         "R54_M1": 8,
         "r57_F1": 3
       },
-      "definition": "Cada variable o partición cruzada con el resultado de los trades de C6; aparte de N y de N_régimen."
+      "definition": "Cada variable o partición cruzada con el resultado de los trades de C6; aparte de N y de N_régimen.",
+      "after_F1": 19
     },
     "variables": {
       "V1": "persist_vol clase 0 (réplica r57)",
@@ -5697,6 +5698,27 @@
       "poder bajo en N2 sola; N3 agregado",
       "R54_W1 y ML3: integración con prior bajo",
       "sesgo de supervivencia"
-    ]
+    ],
+    "f1_result": {
+      "n_trades": 1910,
+      "eligible": [
+        "V2",
+        "V1"
+      ],
+      "selected": [
+        "V2",
+        "V1"
+      ],
+      "composite": "V1 AND V2 (retiene 51,6% en U50; D +0,82 R)",
+      "D": {
+        "V1": 0.677,
+        "V2": 0.697,
+        "V3": 0.448,
+        "V4": 0.196,
+        "V5a": 0.292,
+        "V6": -2.942
+      },
+      "report": "strategies/FundingOiPilot4h/reports/R58_PHASE1_DIAG_20261027.md"
+    }
   }
 }

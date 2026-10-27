@@ -8,6 +8,7 @@ Research container:
     python research_scripts/r58.py n3_panel      # F0: panel U50 + N3, H20/H40 labels, P5 on N3
     python research_scripts/r58.py states        # F0: per-bar and per-day partitions, before any join
     python research_scripts/r58.py selftest      # F0: cuts, reconciliation and reproduction checks
+    python research_scripts/r58.py diag          # F1: sweep on the U50-alt C6 trades (N + 0)
 
 No C6 trade is read before `states` has written data/r58/f0_cuts.json and f0_bars_*.npz. Every
 array stops at 2024-12-31; 2025 is sealed (the r54 event file holds 544 trades of 2025, dropped at
@@ -441,10 +442,195 @@ def selftest():
     assert ok
 
 
+# ----------------------------------------------------------------------------------------------
+# F1: diagnostic sweep on the U50-alt C6 trades (PROTOCOL_R58.md §2), N + 0
+# ----------------------------------------------------------------------------------------------
+SEED, N_BOOT = 58, 5000
+YEARS = ('2021', '2022', '2023', '2024')
+CANDIDATES = ('V1', 'V2', 'V3', 'V4', 'V5a', 'V6')
+RETAIN_MIN, TOP_LOSS_X, COND_SHARE = 0.40, 1.5, 0.50      # eligibility rules 4, 5 and 3
+
+
+def load_bank(bank):
+    z = np.load(os.path.join(OUT, f'f0_bars_{bank}.npz'))
+    d = np.load(os.path.join(OUT, 'f0_days.npz'))
+    syms = banks()[bank][0]
+    bars = {s: (z[f'{s}__ts'], z[f'{s}__x']) for s in syms}
+    days = {k.split('__')[1]: d[k] for k in d.files if k.startswith(bank + '__')}
+    return syms, bars, days
+
+
+def trade_table(events, bank, cuts):
+    """One row per trade: R, dates and the variables of its signal bar / previous closed day.
+    V* is 1 favourable, 0 rest, NaN while the variable does not exist yet."""
+    import pandas as pd
+    import r57
+    syms, bars, days = load_bank(bank)
+    col = {s: j for j, s in enumerate(syms)}
+    c = cuts['tercile_cuts_u50_alt_bars']
+    rows = []
+    for e in events:
+        sig = e['opened'] - (H4 if e['sleeve'] == 'R3' else 0)
+        ts, x = bars[e['sym']]
+        k = int(np.searchsorted(ts, sig))
+        assert k < len(ts) and ts[k] == sig, (e, sig)
+        relvol, taker, sig30, _, _, rnd, _, fpct = x[k]
+        r = r57.row_for(days['days'], sig)
+        j = col[e['sym']]
+        pe, pr = days['persist'][r, j], days['p_rng'][r, j]
+        f = lambda ok, v: float(ok) if np.isfinite(v) else np.nan
+        rows.append({'sym': e['sym'], 'sleeve': e['sleeve'], 'opened': e['opened'], 'closed': e['closed'], 'R': e['R'],
+                     'year': pd.Timestamp(e['opened'], unit='ms').strftime('%Y'),
+                     'week': r57._week(e['opened']), 'cweek': r57._week(e['closed']), 'persist': pe,
+                     'sig30_t': float(np.searchsorted(c['sigma30'], sig30)) if np.isfinite(sig30) else np.nan,
+                     'V1': f(pe == 0, pe), 'V2': f(pr < cuts['p_range_cut'], pr),
+                     'V3': f(relvol >= c['relvol'][1], relvol), 'V4': f(taker >= c['taker'][1], taker),
+                     'V5a': f(fpct < FUND_SAT, fpct), 'V6': f(rnd >= ROUND_ATR, rnd)})
+    return pd.DataFrame(rows)
+
+
+def _d(R, g):
+    return float(R[g].mean() - R[~g].mean()) if g.any() and (~g).any() else np.nan
+
+
+def _cond(R, g, strata):
+    """n-weighted mean of the within-stratum differences (strata holding both classes only)."""
+    num = den = 0.0
+    for s in np.unique(strata[np.isfinite(strata)]):
+        m = strata == s
+        if g[m].any() and (~g[m]).any():
+            num += m.sum() * _d(R[m], g[m])
+            den += m.sum()
+    return num / den if den else np.nan
+
+
+def _weekly_sharpe(df, keep):
+    """Approximate basket Sharpe (declared in §2): weekly sum of R by closing week, annualised."""
+    import pandas as pd
+    wk = df['cweek'].values
+    s = pd.Series(np.where(keep, df['R'].values, 0.0)).groupby(wk).sum().values
+    return float(s.mean() / s.std() * math.sqrt(52)) if s.std() > 0 else np.nan
+
+
+def sweep(df, names):
+    """Per variable: D, D by year, D conditional on V1 and on sigma30 (weekly-block bootstrap CIs),
+    retention, top-decile loss, the approximate weekly-R Sharpe and the §2 eligibility rule."""
+    import r57
+    R = df['R'].values
+    vals = {v: (np.isfinite(df[v].values), df[v].values == 1) for v in names}
+    pe, st = df['persist'].values, df['sig30_t'].values.astype(float)
+
+    def stat(ix):
+        out = []
+        for v in names:
+            ok, g = vals[v]
+            m = ix[ok[ix]]
+            out += [_d(R[m], g[m]), _cond(R[m], g[m], pe[m]) if v != 'V1' else np.nan, _cond(R[m], g[m], st[m])]
+        return tuple(out)
+    old = r57.N_BOOT
+    r57.N_BOOT = N_BOOT
+    try:
+        bs = r57.block_boot(df['week'].values, stat, np.random.default_rng(SEED))
+    finally:
+        r57.N_BOOT = old
+    yrs = df['year'].values
+    res = {}
+    for i, v in enumerate(names):
+        ok, g = vals[v]
+        Rm, gm, ym = R[ok], g[ok], yrs[ok]
+        b = bs[:, 3 * i:3 * i + 3]
+        top = Rm >= np.quantile(Rm, 0.9)
+        retain = float(gm.mean())
+        e = {'n': int(ok.sum()), 'n_fav': int(gm.sum()), 'mean_R_fav': float(Rm[gm].mean()), 'mean_R_rest': float(Rm[~gm].mean()),
+             'win_fav': float((Rm[gm] > 0).mean()), 'win_rest': float((Rm[~gm] > 0).mean()),
+             'D': _d(Rm, gm), 'D_ci90': np.nanpercentile(b[:, 0], [5, 95]).tolist(), 'D_se': float(np.nanstd(b[:, 0])),
+             'D_by_year': {y: _d(Rm[ym == y], gm[ym == y]) for y in YEARS},
+             'D_cond_V1': None if v == 'V1' else _cond(Rm, gm, pe[ok]),
+             'D_cond_V1_ci90': None if v == 'V1' else np.nanpercentile(b[:, 1], [5, 95]).tolist(),
+             'D_cond_V1_se': None if v == 'V1' else float(np.nanstd(b[:, 1])),
+             'D_cond_sigma30': _cond(Rm, gm, st[ok]), 'D_cond_sigma30_ci90': np.nanpercentile(b[:, 2], [5, 95]).tolist(),
+             'retained': retain, 'top_decile_lost': float((top & ~gm).sum() / top.sum()),
+             'weekly_sharpe_fav': _weekly_sharpe(df[ok], gm),
+             'weekly_sharpe_all_valid': _weekly_sharpe(df[ok], np.ones(len(gm), bool))}
+        rule = {'1_D_pos_ci90': bool(e['D'] > 0 and e['D_ci90'][0] > 0),
+                '2_years_pos_ge_3': sum(1 for x in e['D_by_year'].values() if x == x and x > 0) >= 3,
+                '3_cond_V1': True if v == 'V1' else bool(e['D_cond_V1'] > 0 and e['D_cond_V1'] >= COND_SHARE * e['D']),
+                '4_retained_ge_40': retain >= RETAIN_MIN,
+                '5_top_decile': e['top_decile_lost'] <= TOP_LOSS_X * (1 - retain)}
+        e['rule'], e['eligible'] = rule, bool(all(rule.values()))
+        e['score'] = e['D'] / e['D_se'] if v == 'V1' else e['D_cond_V1'] / e['D_cond_V1_se']
+        res[v] = e
+    return res
+
+
+def c6_btc_eth_v7():
+    """Descriptive (b): frozen C6 on P-r55's BTC/ETH (common window, bars cut at 2024-12-31), R per
+    trade by V1, V3 and V7 (DVOL - RV below the median), trades opened 2021-03-25..2024."""
+    import r50_engines as en
+    import r50_f1b as fb
+    import r57
+    import r56_eval as ev
+    from r50_harness import T, V
+    cuts = json.load(open(os.path.join(OUT, 'f0_cuts.json')))
+    syms = [str(s) for s in np.load(os.path.join(ev.OUT, 'panel.npz'))['syms']]
+    L = np.load(os.path.join(ev.OUT, 'labels.npz'))
+    dv = np.load(os.path.join(OUT, 'f0_dvol.npz'))
+    out = {}
+    for name in ('BTC', 'ETH'):
+        d = fb.load_both(name, 'common')
+        h4 = d['h4'][d['h4'][:, T] + H4 <= CUT_MS]
+        close = h4[:, T] + H4
+        rows = []
+        for retest in (False, True):
+            ts, eq, acct = en.simulate(h4, d['start_ms'], fb.r2_r3_decider(h4, retest), name, d['funding'], fb.H4_MS)
+            for t in acct.trades:
+                if t['opened'] < ms('2021-03-25') or t['opened'] >= CUT_MS:
+                    continue
+                k = int(np.searchsorted(ts, t['opened'], side='left'))
+                Rt = t['pnl'] / (0.01 * (eq[k - 1] if k > 0 else en.BALANCE))
+                i = int(np.searchsorted(close, t['opened'] - (H4 if retest else 0)))
+                ref = np.median(h4[max(0, i - RELVOL_BARS):i, V]) if i >= RELVOL_MIN else np.nan
+                r = r57.row_for(dv['days'], int(close[i]))
+                rows.append((Rt, L['persist_vol'][r, syms.index(f'{name}USDT')], h4[i, V] / ref, dv[name][r]))
+        A = np.array(rows, dtype=float)
+        part = {'V1_compression': (A[:, 1] == 0, np.isfinite(A[:, 1])),
+                'V3_relvol_top': (A[:, 2] >= cuts['tercile_cuts_u50_alt_bars']['relvol'][1], np.isfinite(A[:, 2])),
+                'V7_dvol_minus_rv_low': (A[:, 3] < cuts['dvol_minus_rv_median'], np.isfinite(A[:, 3]))}
+        out[name] = {'n': int(len(A)), 'mean_R': float(A[:, 0].mean())}
+        for k, (g, ok) in part.items():
+            out[name][k] = {'n_valid': int(ok.sum()), 'n_fav': int((g & ok).sum()),
+                            'mean_R_fav': float(A[g & ok, 0].mean()) if (g & ok).any() else None,
+                            'mean_R_rest': float(A[~g & ok, 0].mean()) if (~g & ok).any() else None}
+    return out
+
+
+def diag():
+    import warnings
+    warnings.simplefilter('ignore')
+    cuts = json.load(open(os.path.join(OUT, 'f0_cuts.json')))
+    events, dropped = load_events()
+    events = [e for e in events if e['opened'] >= SIM_FROM]
+    df = trade_table(events, 'u50', cuts)
+    res = {'protocol': 'PROTOCOL_R58.md §2', 'n_added': 0, 'n_tematica': {'before': 12, 'added': 7, 'after': 19},
+           'n_trades': int(len(df)), 'dropped_2025': dropped, 'mean_R_all': float(df['R'].mean()),
+           'variables': sweep(df, CANDIDATES)}
+    el = sorted((v for v in CANDIDATES if res['variables'][v]['eligible']), key=lambda v: -res['variables'][v]['score'])
+    res['eligible'], res['selected'] = el, el[:3]
+    res['b_btc_eth'] = c6_btc_eth_v7()
+    df.to_csv(os.path.join(OUT, 'f1_trades_u50.csv'), index=False)
+    json.dump(res, open(os.path.join(OUT, 'f1_diag.json'), 'w'), indent=1, default=float)
+    for v in CANDIDATES:
+        e = res['variables'][v]
+        log(f"{v} n={e['n']} fav={e['n_fav']} D={e['D']:+.3f} ci={np.round(e['D_ci90'], 3)} condV1={e['D_cond_V1']} "
+            f"condS={e['D_cond_sigma30']:+.3f} ret={e['retained']:.2f} top={e['top_decile_lost']:.2f} rule={e['rule']}")
+    log(f"eligible {el} selected {res['selected']}")
+    log(json.dumps(res['b_btc_eth'], default=float))
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     fn = {'oi_probe': oi_probe, 'n3_select': n3_select, 'n3_download': n3_download, 'n3_panel': n3_panel,
-          'states': states, 'selftest': selftest}.get(cmd)
+          'states': states, 'selftest': selftest, 'diag': diag}.get(cmd)
     if fn is None:
         print(__doc__)
         return 1
