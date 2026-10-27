@@ -57,6 +57,9 @@ def ms(day):
 
 MODE70 = False   # r56 F10: the 70-coin panel (U50 + N2); every cache gets the CACHE_SFX suffix
 CACHE_SFX = ''
+# r58: the same fresh-coin mode on another panel (U50 + N3) written as panel_n3.npz / labels_n3.npz;
+# its fresh columns still go through the is_n2 flag. The default keeps r56/r57 unchanged.
+PANEL70, LABELS70 = 'panel70', 'labels70'
 
 
 def src_of(sym):
@@ -68,11 +71,11 @@ def src_of(sym):
 def ctx():
     if _CTX:
         return _CTX
-    z = np.load(os.path.join(OUT, 'panel70.npz' if MODE70 else 'panel.npz'))
+    z = np.load(os.path.join(OUT, f'{PANEL70}.npz' if MODE70 else 'panel.npz'))
     P = {k: z[k] for k in ('o', 'h', 'l', 'c', 'rv', 'qv', 'atr')}
     P['elig'] = z['elig']
     days, syms = z['day_ms'], [str(s) for s in z['syms']]
-    L = dict(np.load(os.path.join(OUT, 'labels70.npz' if MODE70 else 'labels.npz')))
+    L = dict(np.load(os.path.join(OUT, f'{LABELS70}.npz' if MODE70 else 'labels.npz')))
     hold = json.load(open(os.path.join(OUT, 'holdout.json')))['holdout']
     is_hold = np.array([s in hold for s in syms])
     is_n2 = z['is_n2'] if MODE70 else np.zeros(len(syms), bool)
