@@ -131,4 +131,12 @@ Este archivo se commitea **antes de escribir o correr cualquier código de r59**
 6. **La F1 sobre BTC/ETH se descarta.** r58 F3 ya registró (descriptivo) ΔSharpe −0,13 / −0,20 y fallan g1, g2 y g4. Correrla de nuevo sería post hoc, y el oráculo de alts no responde por BTC/ETH.
 
 ## 5. Enmiendas
-(ninguna)
+- **E1 (2026-10-27, en F0, antes de calcular cualquier cosa sobre V5a en r59). El estadístico de q1 es el de r58, no «D dentro de la compresión».**
+  - El +0,79 R [+0,31, +1,30] de r58 F1 (`f1_diag.json → V5a.D_cond_V1`) es el **D condicionado a V1**: el promedio, ponderado por n, de los D de V5a dentro de cada estado de `persist_vol` (0, 1 y 2), calculado con `r58._cond`. No es el D restringido a los trades en compresión.
+  - El texto del §3 («dentro de las rupturas que salen de compresión», «D(V5a | V1 = 1)») transcribe mal ese hallazgo. Se corrige así:
+    - **hipótesis:** controlando por el estado de la vol pasada (V1), las rupturas con funding no saturado pagan más;
+    - **(p1):** mediana del D condicionado a V1 en los pliegues de prueba de la validación cruzada. Cuentan los pliegues con al menos 5 trades de funding saturado (V5a = 0), porque esa clase es solo el 7% de los trades;
+    - **(p2):** rotación de V5a con `persist_vol` fija, sobre todos los trades de U50 con V5a y `persist_vol` válidos, usando el D condicionado a V1 como estadístico;
+    - **poder:** el EE bootstrap del D condicionado a V1 de U50, escalado por la raíz del cociente entre los trades de U50 con V5a y `persist_vol` válidos y los esperados en H. Se estima con la tasa de U50 por moneda-día con `persist_vol` válido;
+    - **criterio (a):** el percentil 5 del bootstrap semanal del D condicionado a V1 es mayor que 0. (b) y (c) no cambian.
+  - El D dentro de la compresión queda solo como descriptivo, sellado junto con q1.
