@@ -5789,5 +5789,45 @@
     "open": [
       "funding no saturado condicionado a compresión (+0,79 R U50), sin banco limpio"
     ]
+  },
+  "r59_plan": {
+    "date": "2026-10-27",
+    "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/PROTOCOL_R59.md",
+    "n_start": 145,
+    "n_ceiling": 146,
+    "n_regime": 38,
+    "n_tematica": 19,
+    "holdout": {
+      "bank": "N2 ∪ N3 (50 monedas)",
+      "development": "48 alts de U50",
+      "budget_queries": 5,
+      "alpha": {
+        "q0": 0.1,
+        "q1_q4": 0.05
+      },
+      "q0": "r58 F2 (R58_F2_CONF), registrada hacia atrás, PASA, revelada"
+    },
+    "variants": [
+      {
+        "id": "R59_F0_INFRA",
+        "n": 0,
+        "what": "Guarda del holdout, oráculo, CV grupo × año, rotación, almacén de series."
+      },
+      {
+        "id": "R59_F1_SPA",
+        "n": 0,
+        "what": "SPA/PBO de P-r55 sobre las variantes r50–r58 reconstruidas (descriptivo)."
+      },
+      {
+        "id": "R59_F2_Q1",
+        "n": 1,
+        "what": "Funding no saturado | compresión en C6, consulta q1 al oráculo sobre H.",
+        "conditional": "pasa el prefiltro (p1, p2) en U50"
+      }
+    ],
+    "discarded": [
+      "F1 BTC/ETH del enfoque original: ya medida descriptiva en r58 F3 (−0,13/−0,20)",
+      "permutación moneda × semana: sin contenido (≤1% de trades con etiqueta mixta)"
+    ]
   }
 }
