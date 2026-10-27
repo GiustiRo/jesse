@@ -1,0 +1,89 @@
+{
+  "format_version": 1,
+  "id": "20261026-r57",
+  "updated_at_utc": "2026-10-26 23:30:00 UTC",
+  "objective": "Usos continuos de los pronósticos de r56 (vol T3, rango P5) sobre P-r55: diagnóstico de atribución, U1 en el tamaño de R1 cripto, C6 con selección de monedas y reversión condicionada; DVOL como insumo de r58.",
+  "latest": "r57 preregistrada (2026-10-26). N=140, techo 146.",
+  "next": "F1 diagnóstico de atribución.",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r57": {
+      "n_strategies": 140,
+      "n_ceiling": 146,
+      "n_regime": 38
+    }
+  },
+  "decisions": [
+    "2026-10-26 r57: plan aprobado por el usuario; ejecución autónoma autorizada; usos continuos habilitados como enmienda del puente."
+  ],
+  "supersedes": "20261026-r56",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 protocolo y particiones",
+      "state": "en curso",
+      "depends": "-",
+      "gate": "no suma N"
+    },
+    {
+      "order": 1,
+      "title": "F1 diagnóstico de atribución",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R57 §1"
+    },
+    {
+      "order": 2,
+      "title": "F2 U1 vol pronosticada en R1 cripto",
+      "state": "pendiente",
+      "depends": "F0",
+      "gate": "PROTOCOL_R57 §2"
+    },
+    {
+      "order": 3,
+      "title": "F3 C6 con selección de monedas",
+      "state": "pendiente",
+      "depends": "F1",
+      "gate": "PROTOCOL_R57 §3"
+    },
+    {
+      "order": 4,
+      "title": "F4 reversión condicionada a p(rango)",
+      "state": "pendiente",
+      "depends": "F1",
+      "gate": "PROTOCOL_R57 §4"
+    },
+    {
+      "order": 5,
+      "title": "DVOL de Deribit (factibilidad)",
+      "state": "pendiente",
+      "depends": "-",
+      "gate": "no suma N"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r57: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/PROTOCOL_R57.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r57_F0",
+    "execution_status": "running",
+    "current_focus": "F1 diagnóstico",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Bajar DVOL de Deribit hasta 2024-12-31."
+    ],
+    "excluded": [
+      "Live/paper/Pi.",
+      "2025 y 2026.",
+      "Interruptores duros por régimen."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r57 aprobado por el usuario 2026-10-26, ejecución autónoma.",
+    "economic_status": "P-r55 congelada",
+    "goal_status": "open"
+  }
+}

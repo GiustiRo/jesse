@@ -5543,5 +5543,64 @@
     "holdout_second_look": "T3 pasa todos los criterios (declarado, no decide)",
     "finding": "La vol a 20 días se puede pronosticar y transfiere a monedas nuevas; el rango a 40 días también (P5). Ninguno anticipa cambios mejor que la persistencia de forma robusta: el valor está en la probabilidad continua.",
     "report": "strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md"
+  },
+  "r57_plan": {
+    "date": "2026-10-26",
+    "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/PROTOCOL_R57.md",
+    "n_start": 140,
+    "n_ceiling": 146,
+    "variants": [
+      {
+        "id": "R57_F1_DIAG",
+        "n": 0,
+        "what": "Diagnóstico de atribución: trades C6 en 48 alts por estado T3 vs persistencia; autocorrelación por p(rango P5). Decide F3 y F4."
+      },
+      {
+        "id": "R57_U1",
+        "n": 1,
+        "what": "R1-BTC/ETH con rv = σ30 · clip(sqrt(exp(pred − l20 + b_q)), 0.5, 2) desde 2021-01-01 (Chronos-2 + cov)."
+      },
+      {
+        "id": "R57_S1",
+        "n": 1,
+        "what": "C6 en alts solo en el tercil superior de p(vol alta) T3; construcción ML3; confirmación N2.",
+        "conditional": "regla F3"
+      },
+      {
+        "id": "R57_S2",
+        "n": 1,
+        "what": "Igual con el tercil superior de pred − l20 (compresión→expansión).",
+        "conditional": "regla F3"
+      },
+      {
+        "id": "R57_Q1",
+        "n": 1,
+        "what": "M2a congelada en 48 alts sin condición (vara contrafáctica, no candidata).",
+        "conditional": "regla F4"
+      },
+      {
+        "id": "R57_Q2",
+        "n": 1,
+        "what": "M2a en alts solo con p(rango 40d) ≥ corte; C6'' = 0,5 C6 + 0,5 Q.",
+        "conditional": "regla F4"
+      },
+      {
+        "id": "R57_Q3",
+        "n": 1,
+        "what": "Reparto suave w = clip(p̄ rango, 0,2, 0,8).",
+        "conditional": "Q2 pasa"
+      }
+    ],
+    "f1_rules": {
+      "F3": "D_T3 > 0 con IC90 > 0, D_T3 > 0 en >= 3 de 4 años (2021S2, 22, 23, 24) y D_T3 > D_pers",
+      "F4": "AC(alto) = suma lags 1-5 < 0 con IC90 < 0 y AC(alto) < AC(bajo)"
+    },
+    "declared_risks": [
+      "Chronos-2 pudo ver cripto 2021-24 en el preentrenamiento",
+      "U1 de bajo poder",
+      "alts de U50 ya miradas; N2 es la confirmación limpia",
+      "sesgo de supervivencia",
+      "F3 hermana de ML3"
+    ]
   }
 }
