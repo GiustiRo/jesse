@@ -15,7 +15,8 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
-| **[r57 `PROTOCOL_R57.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/PROTOCOL_R57.md)** | **Última ronda (cerrada): usos continuos de los pronósticos de r56 sobre P-r55. Ninguno pasa; P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R57_CLOSE_20261026.md) y [handoff a r58](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/HANDOFF_R58.md).** |
+| **[r58 `PROTOCOL_R58.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/PROTOCOL_R58.md)** | **Ronda en curso: qué distingue una ruptura buena de C6 de una mala. F0 cerrada ([informe](bot/strategies/FundingOiPilot4h/reports/R58_PHASE0_20261027.md)): N3 bajado, particiones fijadas antes de unir con trades.** |
+| [r57 `PROTOCOL_R57.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/PROTOCOL_R57.md)** | Ronda cerrada: usos continuos de los pronósticos de r56 sobre P-r55. Ninguno pasa; P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R57_CLOSE_20261026.md) y [handoff a r58](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/HANDOFF_R58.md). |
 | [r56 `PROTOCOL_R56.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md) | Ronda cerrada, con extensión r56-B: detección de régimen cripto como pronóstico de estados. Ninguna configuración pasa el puente en N2; T3 (Chronos-2 + covariables) es el mejor pronóstico de vol. [Cierre r56-B](bot/strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md), [cierre r56](bot/strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md) y [handoff a r57](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md). |
 | [r55 `PROTOCOL_R55.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/PROTOCOL_R55.md) | Ronda cerrada: regímenes de BTC, motor cripto, ranking ML, Brent–WTI e integración. Candidata P-r55; agenda en el [handoff a r56](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r55/HANDOFF_R56.md). |
 | [r51 `PLAN.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md) | Cortos, bono y WTI con reglas propias y pronósticos continuos sobre P1. Reglas y puertas en [`PROTOCOL_R51.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md). |
@@ -38,7 +39,13 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r57, 2026-10-26)
+## Decisiones vigentes (r58, 2026-10-27)
+
+- **r58 en curso (2026-10-27)** ([protocolo](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/PROTOCOL_R58.md)). El usuario aprobó el plan.
+  - **Objetivo:** qué distingue una ruptura buena de C6 de una mala. Barrido en las alts de U50 (≤ 2024), como máximo 3 filtros y una sola confirmación en N2 ∪ N3.
+  - **F0 cerrada** ([informe](bot/strategies/FundingOiPilot4h/reports/R58_PHASE0_20261027.md)): N3 = 30 perpetuos nuevos (`data/r58/n3`, gitignore). P5 en N3 sin torch. V5b (OI) descartada por cobertura. Enmienda E1: el corte de p(rango) es 0,3874.
+  - **Contadores:** N = 143 (techo 146), N_régimen = 38, N_temática = 12 (contador nuevo).
+  - **Datos:** `v1_events.json` trae 544 trades de C6 de 2025: se descartan al cargar.
 
 - **r57 cerrada (2026-10-26)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R57_CLOSE_20261026.md), [handoff a r58](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r57/HANDOFF_R58.md)). Plan aprobado por el usuario, ejecución autónoma.
   - **Candidata sin cambios: P-r55.** 2025 sellado y 2026 reservado. N = 143 (techo 146); N_régimen = 38.

@@ -51,7 +51,7 @@ Todas son para C6, que es **solo largo** (`r50_f1b.r2_r3_decider`). «Alineado c
 | Id | Variable | Clase favorable (dirección previa) | Notas |
 |---|---|---|---|
 | V1 | Compresión de la vol pasada: `persist_vol` (vara de r56) del día anterior | clase 0 (compresión) | Réplica de r57 F1. Existe desde el 2020-12-30 |
-| V2 | p(rango a 40 días) de P5, corte 0,447 (`data/r57/f0_cuts.json`) | p < 0,447 | Réplica de r57 F1. Existe desde el 2021-07 |
+| V2 | p(rango a 40 días) de P5, corte 0,3874 (`data/r57/f0_cuts.json`; ver enmienda E1) | p < 0,3874 | Réplica de r57 F1. Existe desde el 2021-07 |
 | V3 | Volumen relativo: volumen de la vela de señal / mediana de las 180 velas 4h previas (mínimo 90) | tercil superior | Nueva |
 | V4 | Desbalance taker de la vela de señal: 2·tbv/v − 1 | tercil superior | **Réplica de R53/R54** (prior bajo). En r53, z(QOI) > 0 restó |
 | V5a | Funding saturado: suma de funding de 7 días en el percentil ≥ 0,90 de su propia historia expansiva de sumas de 7 días (mínimo 90 liquidaciones) | **no** saturado | Réplica parcial de `fund7` de R54 |
@@ -122,3 +122,8 @@ Se commitea:
 4. **Antecedente estructural:** `R54_W1` (C6 en alts no diversifica a P1) y `R55_F2_ML3` (falló la puerta bajista). F3 tiene un prior bajo, aunque F2 pase.
 5. **R tiene colas gordas** (22–25% de ganadores). Por eso la regla de elegibilidad mira el decil superior y el Sharpe de la canasta, no solo el R medio.
 6. **Sesgo de supervivencia** en U50, N2 y N3.
+
+## 6. Enmiendas
+- **E1 (2026-10-27, antes de cualquier unión con trades).** El corte de p(rango) commiteado en r57 (`9f3df218`, `data/r57/f0_cuts.json`) es **0,3874**. Con ese valor corrieron r57 F1 (`f1_diag.json`) y Q2.
+  - El «0,447» de los informes de r57 (F1, F4 y el cierre) y de la versión anterior de este protocolo es un **error de transcripción**.
+  - r58 usa el valor commiteado, que es el que produjo el hallazgo −0,19 R / +0,41 R.

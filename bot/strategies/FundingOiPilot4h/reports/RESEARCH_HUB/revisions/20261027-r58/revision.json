@@ -3,8 +3,8 @@
   "id": "20261027-r58",
   "updated_at_utc": "2026-10-27 00:00:00 UTC",
   "objective": "Qué distingue una ruptura buena de C6 de una mala: barrido de diagnóstico en las alts de U50 (≤2024), como máximo 3 filtros confirmados juntos una sola vez en N2 ∪ N3, e integración a P-r55 solo si pasan.",
-  "latest": "r58 F0 en curso: protocolo commiteado antes de bajar N3 y de unir variables con trades.",
-  "next": "F0: bajar N3, P5 en N3, particiones y selftest (commit A). Luego F1.",
+  "latest": "r58 F0 cerrada (2026-10-27): N3 bajado (30), P5 en N3 con reproducción exacta de N2, particiones fijadas sin trades, selftest pasa. V5b (OI) descartada. Enmienda E1: corte p(rango) 0,3874.",
+  "next": "F1: barrido V1–V7 en 1.910 trades C6 de alts U50 (N_temática 12 → 19).",
   "blockers": "Ninguno.",
   "counts": {
     "r58": {
@@ -16,14 +16,15 @@
   },
   "decisions": [
     "2026-10-27 r58: plan aprobado por el usuario; F0 a ejecutar y reportar.",
-    "2026-10-27 r58 F0: V5b (OI) descartada por cobertura (alts desde 2021-12-01); N3 excluye contratos índice (BTCDOM) antes de bajar."
+    "2026-10-27 r58 F0: V5b (OI) descartada por cobertura (alts desde 2021-12-01); N3 excluye contratos índice (BTCDOM) antes de bajar.",
+    "2026-10-27 r58 F0 cerrada; enmienda E1 (corte p(rango) 0,3874, el 0,447 de r57 era transcripción)."
   ],
   "supersedes": "20261026-r57",
   "roadmap": [
     {
       "order": 0,
       "title": "F0 protocolo, N3 y particiones",
-      "state": "en curso",
+      "state": "completada",
       "depends": "-",
       "gate": "no suma N"
     },
@@ -54,12 +55,16 @@
     {
       "label": "r58: protocolo",
       "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/PROTOCOL_R58.md"
+    },
+    {
+      "label": "r58 F0: protocolo, N3 y particiones",
+      "path": "strategies/FundingOiPilot4h/reports/R58_PHASE0_20261027.md"
     }
   ],
   "current_stage": {
     "stage": "r58_f0",
     "execution_status": "r58_running",
-    "current_focus": "F0",
+    "current_focus": "F1",
     "permitted": [
       "Scripts en research_scripts.",
       "Bajar N3 (1h + funding) de data.binance.vision hasta 2024-12-31."
