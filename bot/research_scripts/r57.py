@@ -314,8 +314,156 @@ def diag():
     json.dump(res, open(os.path.join(OUT, 'f1_diag.json'), 'w'), indent=2, default=float)
 
 
+# ----------------------------------------------------------------------------------------------
+# P-r55 base (shared by F2 and F4)
+# ----------------------------------------------------------------------------------------------
+def p55_base():
+    """P-r55 components per window ({'R1', 'C6'}, start, sleeves) and the r55 quarterly labels."""
+    import r50_f1b as fb
+    import r51_lib as lib
+    import r55_regimes as rg
+    t, c = rg.btc_daily()
+    qlab, mlab = rg.labels_a(t, c), rg.labels_a(t, c, monthly=True)
+    base = {}
+    for w in ('long', 'common'):
+        r1, _, c6, _, data = lib.p1_sleeves(w)
+        r1 = {n: cv for n, cv in r1.items() if n != 'BOND'}
+        comps = {'R1': fb.basket(r1, list(r1)), 'C6': fb.basket(c6, list(c6))}
+        start = max(int(cv[0][0]) for cv in comps.values()) + DAY
+        base[w] = {'comps': comps, 'start': start, 'r1': r1, 'data': data}
+    return base, qlab, mlab
+
+
+def evaluate(comps, start, qlab, mlab):
+    import r55_engine as eg
+    return eg.evaluate(*eg.portfolio(comps, start), qlab, mlab)
+
+
+P55_REF = {'long': 1.677, 'common': 1.723}      # P55_FREEZE.md
+
+
+# ----------------------------------------------------------------------------------------------
+# F2: U1
+# ----------------------------------------------------------------------------------------------
+def u1_engine_cls():
+    import r50_harness as hz
+
+    class DonchianU1(hz.DonchianEnsR49):
+        """r49 ensemble whose sizing vol is sigma30 * m(day): m from the stored Chronos-2 + covariates
+        forecast (protocol §2). Only _target changes; it repeats the parent's arithmetic."""
+
+        def __init__(self, mult, **kw):
+            super().__init__(**kw)
+            self.mult = mult
+            self.log = []
+
+        def _target(self, allc, i, acct):
+            self._update(allc, i)
+            if not self.states:
+                return 0.0
+            frac = sum(self.states) / len(self.states)
+            if frac <= 0:
+                return 0.0
+            closes = self._series(allc, i)[-self.vol_window - 1:, hz.C]
+            rets = np.diff(np.log(closes))
+            rv = float(np.std(rets, ddof=1)) * self.ann if len(rets) > 10 else float('nan')
+            if not math.isfinite(rv) or rv <= 0:
+                return 0.0
+            m = self.mult(int(allc[i, hz.T]) + 4 * 3_600_000)
+            self.log.append(m)
+            price = allc[i, hz.C]
+            notional_x = min(self.MAX_NOTIONAL_X, frac * self.TARGET_VOL / (rv * m))
+            return max(acct.equity(price) * notional_x / price, 0.0)
+    return DonchianU1
+
+
+def make_mult(s, sym):
+    j = s['syms'].index(sym)
+    lr = s['log_ratio'][:, j]
+
+    def mult(close_ts):
+        if close_ts < U1_FROM or close_ts >= CUT_MS:
+            return 1.0
+        r = row_for(s['days'], close_ts)
+        x = lr[r] if r >= 0 else np.nan
+        if not np.isfinite(x):
+            return 1.0
+        return float(np.clip(math.sqrt(math.exp(x)), *U1_CLIP))
+    return mult
+
+
+def r1_curve(name, d, mult=None, fee_x=1.0):
+    """fb.r1_run with an optional U1 multiplier and a fee multiplier; calendar curve as p1_sleeves."""
+    import r50_engines as en
+    import r50_f1b as fb
+    import r50_harness as hz
+    import r51_lib as lib
+    h4 = d['h4']
+    k = int(np.searchsorted(h4[:, hz.T], d['start_ms'], side='left'))
+    warm, bars = h4[max(0, k - 1520):k], h4[k:]
+    acct = fb.SlipAccount(en.BALANCE, en.TAKER * fee_x, 3, en.SLIP_BPS.get(name, 0.0))
+    fund = hz.load_funding(en.FUNDING[name]) if d['funding'] and name in en.FUNDING else None
+    eng = u1_engine_cls()(mult, **fb.R1_CFG[name]) if mult else hz.DonchianEnsR49(**fb.R1_CFG[name])
+    ts, eq = hz.run(eng, warm, bars, fb.H4_MS, acct, fund)
+    cv = en.calendar(ts, eq, lib._date(d['start_ms']), en.COMMON[1])
+    return cv, acct, (eng.log if mult else None)
+
+
+def u1():
+    warnings.simplefilter('ignore')
+    import r50_engines as en
+    import r50_f1b as fb
+    import r55_engine as eg
+    eg.N_DECLARED = 141
+    s = load_states()
+    base, qlab, mlab = p55_base()
+    res = {'protocol': 'PROTOCOL_R57.md §2 (208ea238)', 'n_declared': 141}
+    ev_base, ev_u1, ev_b2, ev_u2, sleeves = {}, {}, {}, {}, {}
+    for w, b in base.items():
+        ev_base[w] = evaluate(b['comps'], b['start'], qlab, mlab)
+        assert abs(ev_base[w]['sharpe'] - P55_REF[w]) < 0.0015, (w, ev_base[w]['sharpe'])
+        r1u, r1b2, r1u2 = dict(b['r1']), dict(b['r1']), dict(b['r1'])
+        for name, sym in (('BTC', 'BTCUSDT'), ('ETH', 'ETHUSDT')):
+            d = b['data'][name]
+            same, _, _ = r1_curve(name, d)
+            assert np.allclose(same[1], b['r1'][name][1]), f'R1 {name} {w} not reproduced'
+            cu, acct_u, log = r1_curve(name, d, make_mult(s, sym))
+            c2, acct_b2, _ = r1_curve(name, d, fee_x=2.0)
+            cu2, _, _ = r1_curve(name, d, make_mult(s, sym), fee_x=2.0)
+            r1u[name], r1b2[name], r1u2[name] = cu, c2, cu2
+            lg = np.array(log)
+            act = lg[lg != 1.0]
+            own_b = en.metrics(*b['r1'][name], [], d['mfrom'])
+            own_u = en.metrics(*cu, [], d['mfrom'])
+            sleeves[f'{name}_{w}'] = {'m_active_share': float(len(act) / max(len(lg), 1)),
+                                      'm_median': float(np.median(act)) if len(act) else None,
+                                      'm_p05_p95': np.percentile(act, [5, 95]).tolist() if len(act) else None,
+                                      'm_clipped_share': float(np.mean((act <= U1_CLIP[0]) | (act >= U1_CLIP[1]))) if len(act) else None,
+                                      'own_sharpe_base': own_b['sharpe'], 'own_sharpe_u1': own_u['sharpe'],
+                                      'own_cagr_base': own_b['cagr'], 'own_cagr_u1': own_u['cagr'],
+                                      'own_dd_base': own_b['max_dd'], 'own_dd_u1': own_u['max_dd'],
+                                      'trades_base': None, 'trades_u1': len(acct_u.trades)}
+        mk = lambda r1: {'R1': fb.basket(r1, list(r1)), 'C6': b['comps']['C6']}
+        ev_u1[w] = evaluate(mk(r1u), b['start'], qlab, mlab)
+        ev_b2[w] = evaluate(mk(r1b2), b['start'], qlab, mlab)
+        ev_u2[w] = evaluate(mk(r1u2), b['start'], qlab, mlab)
+    gt = eg.gates('U1', ev_base, ev_u1)
+    gt['gates']['cost2_dsharpe_common_ge_0'] = ev_u2['common']['sharpe'] - ev_b2['common']['sharpe'] >= 0
+    gt['gates']['dd_not_worse_1pp'] = all(ev_u1[w]['max_dd'] - ev_base[w]['max_dd'] >= -0.01 for w in ev_u1)
+    gt['pass'] = bool(all(gt['gates'].values()))
+    res.update({'P55': ev_base, 'U1': ev_u1, 'cost2': {'base': {w: ev_b2[w]['sharpe'] for w in ev_b2},
+                                                       'u1': {w: ev_u2[w]['sharpe'] for w in ev_u2}},
+                'sleeves': sleeves, **gt})
+    print('U1', 'PASS' if gt['pass'] else 'no', gt['gates'], {k: round(x, 4) for k, x in gt['deltas'].items()})
+    for w in ev_u1:
+        print(' ', w, 'base', round(ev_base[w]['sharpe'], 3), 'u1', round(ev_u1[w]['sharpe'], 3),
+              'cost2', round(ev_b2[w]['sharpe'], 3), round(ev_u2[w]['sharpe'], 3))
+    print(json.dumps(sleeves, default=float)[:1500])
+    json.dump(res, open(os.path.join(OUT, 'f2_u1.json'), 'w'), indent=2, default=float)
+
+
 def main():
-    cmds = {'states': states, 'diag': diag}
+    cmds = {'states': states, 'diag': diag, 'u1': u1}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         print(__doc__)
         return 1

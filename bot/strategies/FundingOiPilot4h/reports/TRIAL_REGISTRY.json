@@ -3578,11 +3578,19 @@
       "phase": "F4",
       "date_utc": "2026-10-26",
       "decision": "congelada (P55_FREEZE.md); 2018-09+ Sharpe 1,677, 2021-24 1,723"
+    },
+    {
+      "id": "R57_U1",
+      "hypothesis": "R1-BTC/ETH con la vol de tamaño σ30·m, m = clip(√exp(pred Chronos-2+cov − l20 + b_q), 0,5, 2), desde 2021",
+      "round": "r57",
+      "phase": "F2",
+      "date_utc": "2026-10-26",
+      "decision": "no pasa: Sharpe 1,677→1,648 (largo), 1,723→1,685 (común); costos ×2 −0,038; falla g1, g2, g4 y costos"
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 140,
+    "declared": 141,
     "sensitivity": [
       20,
       200
@@ -3603,7 +3611,8 @@
     "r52_note": "+8: X0–X3, Q1–Q3, J1 (2026-10-26). P2 = P1, no suma. Sin techo por decisión del usuario.",
     "r53_note": "+7: Y1–Y6, C6q (2026-10-26).",
     "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma.",
-    "r55_note": "+15: E1-E3, ML1-ML4, A3v2, 5 activos marginales, R1 sin bono y cartera final (2026-10-26). Techo r55: 143."
+    "r55_note": "+15: E1-E3, ML1-ML4, A3v2, 5 activos marginales, R1 sin bono y cartera final (2026-10-26). Techo r55: 143.",
+    "r57_note": "+1 por U1 (F2). F1 diagnóstico N+0; F3 no corre (regla F1)."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
