@@ -5828,7 +5828,31 @@
     "discarded": [
       "F1 BTC/ETH del enfoque original: ya medida descriptiva en r58 F3 (−0,13/−0,20)",
       "permutación moneda × semana: sin contenido (≤1% de trades con etiqueta mixta)"
-    ]
+    ],
+    "f0": {
+      "date": "2026-10-27",
+      "n_added": 0,
+      "report": "strategies/FundingOiPilot4h/reports/R59_PHASE0_20261027.md",
+      "oracle_selftest": "pasa",
+      "rotation": {
+        "V1": 0.019,
+        "V2": 0.0135,
+        "V3": 0.0895,
+        "V4": 0.27,
+        "V5a_marginal": 0.436,
+        "V6": 0.98,
+        "placebo_share_p_lt_0_10": 0.13
+      },
+      "cv": {
+        "folds": 24,
+        "no_eligible": 7,
+        "V1_or_V2_share": 0.583,
+        "oof_D_median": 0.073,
+        "oof_D_mean": -0.127,
+        "oof_pos_share": 0.583
+      },
+      "amendment_E1": "q1 = D condicionado a V1 (r58 _cond), no D dentro de compresión"
+    }
   },
   "holdout_oracle": {
     "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/PROTOCOL_R59.md",
