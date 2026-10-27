@@ -11,6 +11,7 @@ Research container:
     python research_scripts/r58.py diag          # F1: sweep on the U50-alt C6 trades (N + 0)
     python research_scripts/r58.py commit_b      # F2: rule and power, before C6 runs on N2/N3
     python research_scripts/r58.py confirm       # F2: the single confirmation on N2 ∪ N3 (N 144)
+    python research_scripts/r58.py integrate     # F3: ML3 construction with the gated alts in P-r55 (N 145)
 
 No C6 trade is read before `states` has written data/r58/f0_cuts.json and f0_bars_*.npz. Every
 array stops at 2024-12-31; 2025 is sealed (the r54 event file holds 544 trades of 2025, dropped at
@@ -883,10 +884,120 @@ def confirm():
     log('criteria ' + json.dumps(crit) + f" pass {res['pass']}")
 
 
+# ----------------------------------------------------------------------------------------------
+# F3: integration into P-r55 (PROTOCOL_R58.md §4 + E3), N 145
+# ----------------------------------------------------------------------------------------------
+def _gate_btc_eth(cut):
+    """Descriptive: the rule on P-r55's C6 BTC/ETH, applied only where P5 exists (2021-07+); before
+    that the entry is unfiltered so the long window keeps its pre-2021 C6."""
+    import r56_eval as ev
+    import r57
+    z = np.load(os.path.join(ev.OUT, 'panel.npz'))
+    days, syms = z['day_ms'], [str(s) for s in z['syms']]
+    pe = np.load(os.path.join(ev.OUT, 'labels.npz'))['persist_vol']
+    hold = json.load(open(os.path.join(ev.OUT, 'holdout.json')))['holdout']
+    pr = r57._merge(r57._load('pred_P5_range40'), r57._load('pred_hold_P5_range40'),
+                    np.array([s in hold for s in syms]))[..., 1]
+
+    def gate(name, sig):
+        r = r57.row_for(days, sig)
+        j = syms.index(f'{name}USDT')
+        if r < 0 or not np.isfinite(pr[r, j]):
+            return True
+        return bool(np.isfinite(pe[r, j]) and pe[r, j] == 0 and pr[r, j] < cut)
+    return gate
+
+
+def _c6_btc_eth_gated(base_w, gate):
+    import r50_engines as en
+    import r50_f1b as fb
+    import r50_f1c as fc
+    import r51_lib as lib
+    orig = fb.risk_qty
+    c6 = {}
+    try:
+        for name in ('BTC', 'ETH'):
+            d = base_w['data'][name]
+            cur = []
+            for retest in (False, True):
+                ctx = {'ts': 0}
+                dec = fb.r2_r3_decider(d['h4'], retest)
+
+                def wrapped(i, acct, ts, dec=dec, ctx=ctx):
+                    ctx['ts'] = ts
+                    return dec(i, acct, ts)
+                fb.risk_qty = (lambda acct, price, dist, ctx=ctx, nm=name, rt=retest:
+                               orig(acct, price, dist) if gate(nm, ctx['ts'] - (H4 if rt else 0)) else 0.0)
+                ts, eq, acct = en.simulate(d['h4'], d['start_ms'], wrapped, name, d['funding'], fb.H4_MS)
+                fb.risk_qty = orig
+                cur.append(en.calendar(ts, eq, lib._date(d['start_ms']), lib.COMMON[1]))
+            c6[name] = fc.mean_curve(cur)
+    finally:
+        fb.risk_qty = orig
+    return fb.basket(c6, list(c6))
+
+
+def integrate():
+    import warnings
+    warnings.simplefilter('ignore')
+    import r50_engines as en
+    import r55_engine as eg
+    import r55_ml as ml
+    import r57
+    eg.N_DECLARED = 145
+    cut = json.load(open(os.path.join(OUT, 'f0_cuts.json')))['p_range_cut']
+    base, qlab, mlab = r57.p55_base()
+    ev_base = {w: r57.evaluate(b['comps'], b['start'], qlab, mlab) for w, b in base.items()}
+    for w in ev_base:
+        assert abs(ev_base[w]['sharpe'] - r57.P55_REF[w]) < 0.0015, (w, ev_base[w]['sharpe'])
+    frm = pd_date(CONF_FROM)
+    res = {'protocol': 'PROTOCOL_R58.md §4 + E3', 'n_declared': 145, 'P55': ev_base, 'alts_from': frm}
+    books = {}
+    for tag, gate, cx in (('I1', make_gate('u50', cut), 1), ('I1_cost2', make_gate('u50', cut), 2),
+                          ('ref_unfiltered', None, 1)):
+        cur, evs_ = c6_bank('u50', gate=gate, cost_x=cx)
+        b = r57.basket_from(cur, frm)
+        books[tag] = b
+        m = en.metrics(b[0], b[1], [], frm)
+        evs = {}
+        for w, bb in base.items():
+            c6p, _ = ml.c6_prime(bb['comps']['C6'], b, CONF_FROM)
+            evs[w] = r57.evaluate({'R1': bb['comps']['R1'], 'C6': c6p}, bb['start'], qlab, mlab)
+        gt = eg.gates(tag, ev_base, evs)
+        res[tag] = {'alt_basket': {k: m.get(k) for k in ('from', 'to', 'sharpe', 'cagr', 'max_dd', 'quarters_pos')},
+                    'trades': len(evs_), 'in_p55': evs, **gt}
+        log(f"{tag} basket {m['sharpe']:.3f} trades {len(evs_)} gates {gt['gates']} "
+            f"{ {k: round(x, 4) for k, x in gt['deltas'].items()} }")
+    i1 = res['I1']
+    i1['gates']['cost2_g4_inclusion'] = res['I1_cost2']['gates']['g4_inclusion']
+    i1['pass'] = bool(all(i1['gates'].values()))
+    res['ref_unfiltered']['candidate'] = False          # descriptive reference, no N (E3)
+    # Descriptive: the rule on P-r55's own C6 BTC/ETH (no N).
+    g = _gate_btc_eth(cut)
+    evb = {}
+    for w, bb in base.items():
+        c6g = _c6_btc_eth_gated(bb, g)
+        evb[w] = r57.evaluate({'R1': bb['comps']['R1'], 'C6': c6g}, bb['start'], qlab, mlab)
+    res['desc_btc_eth_gated'] = {'in_p55': {w: {k: evb[w][k] for k in ('sharpe', 'cagr', 'max_dd')} for w in evb},
+                                 **eg.gates('desc', ev_base, evb)}
+    json.dump(res, open(os.path.join(OUT, 'f3_integrate.json'), 'w'), indent=1, default=float)
+    for w in ('long', 'common'):
+        for tag in ('I1', 'I1_cost2', 'ref_unfiltered'):
+            e = res[tag]['in_p55'][w]
+            log(f"{w} {tag}: S {e['sharpe']:.3f} CAGR {e['cagr']:.3f} DD {e['max_dd']:.3f} Q+ {e['q_pos_count']}/{e['n_quarters']} "
+                f"bear {e['quarters']['bajista']['sum']:.3f} lat {e['quarters']['lateral']['sum']:.3f} bull {e['quarters']['alcista']['sum']:.3f}")
+        e = ev_base[w]
+        log(f"{w} P55: S {e['sharpe']:.3f} CAGR {e['cagr']:.3f} DD {e['max_dd']:.3f} Q+ {e['q_pos_count']}/{e['n_quarters']} "
+            f"bear {e['quarters']['bajista']['sum']:.3f} lat {e['quarters']['lateral']['sum']:.3f} bull {e['quarters']['alcista']['sum']:.3f}")
+        log(f"{w} desc BTC/ETH gated: {res['desc_btc_eth_gated']['in_p55'][w]}")
+    log(f"I1 pass {i1['pass']} {i1['gates']}")
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     fn = {'oi_probe': oi_probe, 'n3_select': n3_select, 'n3_download': n3_download, 'n3_panel': n3_panel,
-          'states': states, 'selftest': selftest, 'diag': diag, 'commit_b': commit_b, 'confirm': confirm}.get(cmd)
+          'states': states, 'selftest': selftest, 'diag': diag, 'commit_b': commit_b, 'confirm': confirm,
+          'integrate': integrate}.get(cmd)
     if fn is None:
         print(__doc__)
         return 1

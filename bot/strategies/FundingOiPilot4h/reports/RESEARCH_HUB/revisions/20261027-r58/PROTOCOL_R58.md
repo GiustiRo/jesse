@@ -136,3 +136,12 @@ Se commitea:
     - se esperan ~528 trades en N2 y ~741 en N3 (1.269 en total), con un EE esperado de 0,54;
     - poder unilateral al 10%: **0,60 contra el D completo y 0,30 contra la mitad**. Con N2 sola sería 0,22.
   - **La mitad queda por debajo de 0,4,** así que, según el §3, se reporta al usuario antes de correr la confirmación.
+- **Decisión del usuario (2026-10-27):** correr la confirmación con el poder 0,30. F2 pasa 5 de 5 (`61df21a7`).
+- **E3 (2026-10-27, antes de correr F3). Detalles de F3, sin cambiar la variante:**
+  - **Variante I1:** la canasta de C6 filtrada en las 48 alts de U50, con la regla del commit B como compuerta de entrada.
+    - Igual peso, desde el 2021-07-02.
+    - Va dentro de P-r55 con `r55_ml.c6_prime`, con `alts_from` = 2021-07-02.
+  - **Puertas:** `r55_engine.gates` (g1 bajista, g2 lateral, g3 alcista y g4 inclusión r51) en las dos ventanas.
+  - **Costos ×2:** se aplican a la canasta de alts (comisiones y deslizamiento del stop ×2); P-r55 queda igual. I1 a costos ×2 tiene que seguir pasando g4.
+  - **Referencia descriptiva, sin N:** la misma construcción con la canasta **sin** filtrar. Muestra cuánto aporta el filtro dentro de la cartera.
+  - **Descriptivo, sin N:** la regla aplicada a C6 en BTC/ETH de P-r55, solo donde existe P5 (2021-07 en adelante; antes no filtra).
