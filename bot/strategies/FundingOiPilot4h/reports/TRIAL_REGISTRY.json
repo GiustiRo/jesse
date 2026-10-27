@@ -3602,11 +3602,34 @@
       "phase": "F4",
       "date_utc": "2026-10-26",
       "decision": "no pasa: canasta U50 −0,03 (< Q1), N2 0,36; en P-r55 1,482 / 1,326; falla g1, g2, g4"
+    },
+    {
+      "id": "R58_F2_CONF",
+      "hypothesis": "C6 en alts solo si persist_vol = 0 y p(rango 40d, P5) < 0,3874 (último día cerrado); confirmación única en N2 ∪ N3 (50 monedas nunca usadas por C6)",
+      "round": "r58",
+      "phase": "F2",
+      "date_utc": "2026-10-27",
+      "harness": "research_scripts/r58.py",
+      "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/PROTOCOL_R58.md",
+      "metrics": {
+        "D_union": 0.598,
+        "D_union_p10": 0.259,
+        "D_n2": 0.395,
+        "D_n3": 0.771,
+        "basket_sharpe_gated": 0.455,
+        "basket_sharpe_uncond": 0.132,
+        "cost2_D_union": 0.591,
+        "cost2_basket_gated": 0.398,
+        "cost2_basket_uncond": 0.065,
+        "n_evaluable": 1127,
+        "retained": 0.533
+      },
+      "decision": "pasa (5/5); F3 habilitada. Poder previo 0,30 vs medio efecto; el usuario decidió correr."
     }
   ],
   "n_effective": {
     "upper_bound": 650,
-    "declared": 143,
+    "declared": 144,
     "sensitivity": [
       20,
       200
@@ -3628,7 +3651,8 @@
     "r53_note": "+7: Y1–Y6, C6q (2026-10-26).",
     "r54_note": "+2: W1, M1 (2026-10-26). V1 es validación congelada, no suma.",
     "r55_note": "+15: E1-E3, ML1-ML4, A3v2, 5 activos marginales, R1 sin bono y cartera final (2026-10-26). Techo r55: 143.",
-    "r57_note": "+1 por U1 (F2) y +2 por Q1/Q2 (F4). F1 diagnóstico N+0; F3 no corre (regla F1); Q3 no corre (Q2 no pasa)."
+    "r57_note": "+1 por U1 (F2) y +2 por Q1/Q2 (F4). F1 diagnóstico N+0; F3 no corre (regla F1); Q3 no corre (Q2 no pasa).",
+    "r58_note": "+1 por R58_F2_CONF (2026-10-27). N_temática (aparte) = 19."
   },
   "references_dsr_20261024": {
     "BtcMomentumCore4h_iter9A": {
@@ -5725,7 +5749,7 @@
       "expected_trades_union": 1269,
       "power_vs_full_D": 0.597,
       "power_vs_half_D": 0.302,
-      "status": "en espera de decisión del usuario (poder < 0,4)"
+      "status": "corrida con autorización del usuario; pasa"
     }
   }
 }

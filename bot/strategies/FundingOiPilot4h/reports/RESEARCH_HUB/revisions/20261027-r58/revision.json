@@ -3,12 +3,12 @@
   "id": "20261027-r58",
   "updated_at_utc": "2026-10-27 00:00:00 UTC",
   "objective": "Qué distingue una ruptura buena de C6 de una mala: barrido de diagnóstico en las alts de U50 (≤2024), como máximo 3 filtros confirmados juntos una sola vez en N2 ∪ N3, e integración a P-r55 solo si pasan.",
-  "latest": "r58 F1 cerrada (2026-10-27): elegibles V2 (p(rango) bajo, D +0,70) y V1 (compresión, D +0,68); regla compuesta V1 ∧ V2 (retiene 51,6%, D +0,82). V3–V6 no elegibles. N 143, N_temática 19.",
-  "next": "F2: commit B (regla V1 ∧ V2, poder) y confirmación única en N2 ∪ N3.",
+  "latest": "r58 F2 cerrada (2026-10-27): la regla compresión ∧ p(rango) bajo confirma en N2 ∪ N3 (D +0,60, p10 +0,26; N2 +0,40, N3 +0,77; canasta 0,455 vs 0,132; aguanta costos ×2). N 144.",
+  "next": "F3: integración ML3 dentro de P-r55 con puertas r51 + r55 + costos ×2 (N 145).",
   "blockers": "Ninguno.",
   "counts": {
     "r58": {
-      "n_strategies": 143,
+      "n_strategies": 144,
       "n_ceiling": 146,
       "n_regime": 38,
       "n_tematica": 19
@@ -18,7 +18,8 @@
     "2026-10-27 r58: plan aprobado por el usuario; F0 a ejecutar y reportar.",
     "2026-10-27 r58 F0: V5b (OI) descartada por cobertura (alts desde 2021-12-01); N3 excluye contratos índice (BTCDOM) antes de bajar.",
     "2026-10-27 r58 F0 cerrada; enmienda E1 (corte p(rango) 0,3874, el 0,447 de r57 era transcripción).",
-    "2026-10-27 r58 F1 cerrada: seleccionadas V2 y V1; regla compuesta AND."
+    "2026-10-27 r58 F1 cerrada: seleccionadas V2 y V1; regla compuesta AND.",
+    "2026-10-27 r58 F2: el usuario autorizó correr con poder 0,30; pasa 5/5."
   ],
   "supersedes": "20261026-r57",
   "roadmap": [
@@ -39,7 +40,7 @@
     {
       "order": 2,
       "title": "F2 confirmación única en N2 ∪ N3",
-      "state": "pendiente",
+      "state": "completada: pasa",
       "depends": "F1",
       "gate": "PROTOCOL_R58 §3"
     },
@@ -64,12 +65,16 @@
     {
       "label": "r58 F1: barrido",
       "path": "strategies/FundingOiPilot4h/reports/R58_PHASE1_DIAG_20261027.md"
+    },
+    {
+      "label": "r58 F2: confirmación",
+      "path": "strategies/FundingOiPilot4h/reports/R58_PHASE2_CONFIRM_20261027.md"
     }
   ],
   "current_stage": {
     "stage": "r58_f0",
     "execution_status": "r58_running",
-    "current_focus": "F2",
+    "current_focus": "F3",
     "permitted": [
       "Scripts en research_scripts.",
       "Bajar N3 (1h + funding) de data.binance.vision hasta 2024-12-31."
