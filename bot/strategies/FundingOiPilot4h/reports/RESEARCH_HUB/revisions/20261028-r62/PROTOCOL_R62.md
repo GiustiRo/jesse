@@ -149,7 +149,7 @@ N_fab se escribe en `TRIAL_REGISTRY.json → factory_trials` al cerrar cada gene
 ## 6. Proxy de cascadas (F0, `r62_liq.py`)
 1. **Bajada** de `data.binance.vision/data/futures/um/daily/metrics/{BTCUSDT,ETHUSDT}`, del 2020-09-01 al 2024-12-31, y de `futures/cm/daily/liquidationSnapshot/{BTCUSD_PERP,ETHUSD_PERP}`, del 2023-06-25 al 2024-10-14.
    - Cada archivo se verifica contra su `.CHECKSUM`.
-   - Se guardan en `data/r62/raw/` (gitignored) y se procesan con `python -I` desde `research_scripts/`.
+   - Se guardan en `data/r62/raw/` (gitignored) y se procesan con `python -P` (sin el directorio actual en el path; `-I` también quita los paquetes de usuario donde está numpy).
 2. **Cobertura:** primera fecha con OI no nulo; fracción de filas de 5 min presentes por año; huecos de más de 1 día. Se reporta en `R62_PHASE0_*.md` **antes** de que la pieza se use.
 3. **Proxy:** intensidad diaria = Σ en el día de max(0, −ΔOI₁ₕ/σ) · \|ret₁ₕ\|/σ, con σ móvil de 30 d y causal.
 4. **Validación contra COIN-M:** AUC diaria del proxy de BTCUSDT/ETHUSDT contra el indicador «día en el decil superior del nocional liquidado de BTCUSD_PERP/ETHUSD_PERP».
@@ -231,4 +231,17 @@ Cada finalista pasa por estos pasos, en orden:
 6. **El sintético conserva la estructura dentro del bloque** (20 días), así que una ventaja de horizonte corto sobrevive y el filtro no la descarta. Sirve para descartar ventajas que dependen del orden de los regímenes, no para confirmar.
 
 ## 10. Enmiendas
-(ninguna)
+
+### E1 (2026-10-28, en F0, antes de cualquier resultado económico de la fábrica)
+Son precisiones de implementación que el protocolo no fijaba o que el código obliga a ajustar. Ninguna sale de ver un resultado de un programa.
+
+1. **`python -P` en lugar de `python -I`** para los scripts que leen datos bajados. `-I` también quita los paquetes de usuario, donde está numpy. `-P` saca del path el directorio actual y el del script, que es lo que protege de un módulo plantado.
+2. **Pares solo taker.** Dos patas no se llenan como una sola orden límite, y el spread no tiene rango dentro de la barra. El parser rechaza maker en los universos de pares. El spread se arma con O = H = L = C, así que la entrada taker ocurre al cierre de la barra siguiente.
+3. **Segunda señal.** Dos eventos de inicio rara vez coinciden en la misma barra. La segunda señal confirma si disparó en la misma dirección dentro de las 6 barras previas (`CONFIRM_BARS`).
+4. **`volreg`:** el tercil de la vol de 30 días se calcula sobre los 365 valores diarios previos y se aplica desde el día siguiente.
+5. **Puerta de cascadas (§6.5): falla en sentido estricto.**
+   - BTCUSDT: cobertura de 99,6–100% en 2021–2024, AUC 0,837 y 48 días del decil superior. Pasa.
+   - ETHUSDT: AUC 0,841, pero sus metrics recién empiezan el **2021-12-01**, así que la cobertura de 2021 es del 8,5%.
+   - **Mientras el usuario no decida otra cosa, la pieza `cascade` queda fuera del menú** (`liq_f0.json → cascade_enabled: false`). La opción para decidir es habilitarla con ETH solo desde 2021-12, sin eventos antes.
+6. **Control del §8.5 (Donchian 55/20 largo en `core_1d`):** da ρ 0,73 con R1, Sharpe 1,44 y cae en la celda bloqueada `rho2|hold2|long`. Es el control de los casilleros, no un ensayo nuevo (N + 0).
+7. **El selftest de q4** corrió un programa de demostración (`shock` fade, maker) sobre la mitad 1 de U50, que es el holdout falso de r60. Dio Sharpe −0,12 (N + 0, como los selftests de r60 y r61). Ese programa no tiene ningún privilegio en la búsqueda.

@@ -1,0 +1,55 @@
+{
+ "1_parser": {
+  "mutations": [
+   "rejected",
+   "rejected",
+   "rejected",
+   "rejected",
+   "rejected"
+  ],
+  "hash_order_invariant": true,
+  "ok": true
+ },
+ "2_maker_causal": {
+  "fill_rule_ok": true,
+  "causal": {
+   "zrev": true,
+   "rsi2": true,
+   "shock": true,
+   "voljump": true,
+   "volreg": true,
+   "trendveto": true
+  },
+  "ok": true
+ },
+ "3_spa": {
+  "r59": 0.05333333333333334,
+  "fast": 0.05333333333333334,
+  "ok": true
+ },
+ "4_leak": {
+  "contaminated": {
+   "{\"x\": \"BTC\"}": "stopped",
+   "{\"year\": 2022}": "stopped",
+   "{\"d\": \"2021-05-19\"}": "stopped",
+   "{\"p\": 43000.5}": "stopped",
+   "{\"a\": \"luna crash\"}": "stopped"
+  },
+  "gen0_package_ok": true,
+  "gen0_chars": 6222,
+  "ok": true
+ },
+ "5_donchian": {
+  "rho_r1": 0.7263163063222029,
+  "hold_days": 40.794871794871796,
+  "dir": 1.0,
+  "cell": "rho2|hold2|long",
+  "sharpe": 1.4356122733629482,
+  "ok": true
+ },
+ "6_cut": {
+  "ok": true
+ },
+ "cascade_enabled": false,
+ "ok": true
+}

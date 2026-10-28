@@ -42,7 +42,11 @@ TRACKED = ('bot/research_scripts/r59_criteria.py', 'bot/research_scripts/r59_ora
            'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/PROTOCOL_R60.md',
            # r61 (PROTOCOL_R61.md §2.1): q3 runs r61's code.
            'bot/research_scripts/r61.py',
-           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/PROTOCOL_R61.md')
+           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/PROTOCOL_R61.md',
+           # r62 (PROTOCOL_R62.md §7.3.5): q4 runs the factory's engine on a frozen program file.
+           'bot/research_scripts/r62.py', 'bot/research_scripts/r62_dsl.py', 'bot/research_scripts/r62_eval.py',
+           'bot/research_scripts/r62_data.py', 'bot/research_scripts/data/r62/q4_program.json',
+           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r62/PROTOCOL_R62.md')
 
 
 def _git(*args):

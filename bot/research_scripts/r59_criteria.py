@@ -59,3 +59,21 @@ def q3(ctx):
     n2 = {u['symbol'] for u in json.load(open(hg._LIST_FILES[0]))['selected']}
     src_of = lambda s: r58.N2_DIR if s in n2 else r58.N3_DIR  # noqa: E731
     return r61.q3_compute(hg.holdout_syms(), src_of, r61.selected_variant())
+
+
+# ----------------------------------------------------------------------------------------------
+# r62 q4 (PROTOCOL_R62.md §7.3.5), committed before the query. The program itself is read from
+# data/r62/q4_program.json, which F3 writes and commits before calling the oracle.
+# ----------------------------------------------------------------------------------------------
+@register('q4', 0.05, 'r62 F3: finalista cripto de la fábrica (congelado en data/r62/q4_program.json) sobre las 50 '
+                      'alts de H a 1 h, 2021-07-02 → 2024-12-31; márgenes (a) Sharpe − 0,3, (b) Sharpe con costos ×2, '
+                      '(c) ΔSharpe 0,85·P55 + 0,15·x̃ contra P55 (PROTOCOL_R62 §7.3.5)')
+def q4(ctx):
+    import json
+    import r59_holdout as hg
+    import r62
+    n2 = {u['symbol'] for u in json.load(open(hg._LIST_FILES[0]))['selected']}
+    dir_of = lambda s: r58.N2_DIR if s in n2 else r58.N3_DIR  # noqa: E731
+    with open(r62.Q4_PROGRAM, encoding='utf-8') as f:
+        program = json.load(f)['program']
+    return r62.q4_compute(hg.holdout_syms(), dir_of, program)
