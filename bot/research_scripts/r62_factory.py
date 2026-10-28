@@ -79,10 +79,8 @@ class Archive:
                              for k, v in rec['folds'].items()}
             with open(self.log_path, 'a', encoding='utf-8') as f:
                 f.write(json.dumps(line, default=_json_default) + '\n')
-        if self.series_round:
-            import r59
-            r59.save_series(self.series_round, f'R62_P_{rec["hash"][:10]}', days, r,
-                            'r62_factory.py', 'r62 dev (2018-10-01/2020-01-01 -> 2024-12-31)')
+        # Real runs persist their series in batches (r62_run.save_series_batch): r59.save_series
+        # rewrites the whole round file on each call, which is quadratic over ~3,000 programs.
 
     def elites(self):
         return sorted(self.cells.values(), key=lambda r: -r['score'])

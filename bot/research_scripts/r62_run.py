@@ -149,8 +149,43 @@ def ga(run, gen):
     st['gens'].setdefault(str(gen), {})['ga'] = made
     _save(run, st, arch)
     if st['kind'] == 'real':
+        save_series_batch(arch, st)
         fx.write_counter(arch.n(), gen, f'run {run}')
     _status(run, st, arch)
+
+
+def save_series_batch(arch, st):
+    """Every not-yet-stored series of a real run into the r59 store (round 'r62', ids R62_P_<hash10>),
+    float32 to keep the file small (§0); the manifest carries the sha256 of the stored bytes, so
+    r59.load_series verifies them unchanged. One write per generation instead of one per program."""
+    import hashlib
+    import r59
+    root = r59.SERIES
+    path = os.path.join(root, 'r62.npz')
+    cur = dict(np.load(path)) if os.path.exists(path) else {}
+    mpath = os.path.join(root, 'manifest.json')
+    with open(mpath) as f:
+        man = json.load(f)
+    new = 0
+    for h, (d, r) in arch.series.items():
+        tid = f'R62_P_{h[:10]}'
+        if tid in man['series']:
+            continue
+        d = np.asarray(d, np.int64)
+        r = np.asarray(r, np.float32)
+        assert (np.diff(d) > 0).all() and d[-1] < 1_735_689_600_000
+        cur[f'{tid}__days'], cur[f'{tid}__ret'] = d, r
+        man['series'][tid] = {'file': 'r62.npz', 'script': 'r62_run.py (factory)', 'window': 'r62 dev',
+                              'n_days': int(len(d)), 'dtype': 'float32',
+                              'sha256': hashlib.sha256(d.tobytes() + r.tobytes()).hexdigest()}
+        new += 1
+    if new:
+        np.savez_compressed(path, **cur)
+        with open(path, 'rb') as f:
+            man['files']['r62.npz'] = hashlib.sha256(f.read()).hexdigest()
+        with open(mpath, 'w') as f:
+            json.dump(man, f, indent=1)
+    st['series_saved'] = len([k for k in man['series'] if k.startswith('R62_P_')])
 
 
 def _status(run, st, arch):

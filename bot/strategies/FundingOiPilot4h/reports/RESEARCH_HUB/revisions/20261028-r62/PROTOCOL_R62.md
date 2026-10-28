@@ -272,3 +272,9 @@ Son precisiones de implementación que el protocolo no fijaba o que el código o
    - Se reingresaron después de la búsqueda genética de esa misma generación, y los paquetes de la generación 1 se rearmaron con esas evaluaciones (registradas como `llm_reingest`).
    - Desde la generación 1, el orden es el del §5.
 2. **Relleno de la búsqueda local:** si un archivo pequeño agota la vecindad de sus élites (10·n intentos), el resto del presupuesto de la generación se completa con programas al azar del DSL (origen `ga_random`). Antes, una corrida quedaba en 32 de 150 evaluaciones.
+
+### E5 (2026-10-28, tras F1, antes de F2)
+**Series de la corrida real:**
+- Se guardan en el almacén de r59 (`data/r59/series/r62.npz`, ids `R62_P_<hash10>`) **por lotes al final de cada generación** (`r62_run.save_series_batch`), en float32. Cada una lleva su sha256 en el manifiesto.
+- La razón: `r59.save_series` reescribe el archivo entero en cada llamada, lo que es cuadrático para unas 3.000 series.
+- `r62.npz` no se versiona por tamaño; el manifiesto sí. Cada serie se reproduce de forma determinista desde el programa del log y el código commiteado.
