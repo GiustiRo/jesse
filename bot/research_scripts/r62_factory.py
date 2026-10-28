@@ -168,7 +168,7 @@ def ga_step(arch, rng, n, gen):
     elites = arch.elites()
     pool = elites or [r for r in _top_seen(arch)]
     made, tries = 0, 0
-    while made < n and tries < 20 * n and arch.n() < N_FAB_CEILING:
+    while made < n and tries < 10 * n and arch.n() < N_FAB_CEILING:
         tries += 1
         if not pool:
             child = dsl.random_program(rng)
@@ -184,6 +184,10 @@ def ga_step(arch, rng, n, gen):
                 other = same[int(rng.integers(len(same)))]['program']
                 child = cross(parent, other, rng) if other['universe'] == parent['universe'] else mutate(parent, rng)
         if arch.add(child, 'ga', gen) is not None:
+            made += 1
+    # E4: a small elite pool can exhaust its grid neighbourhood; fill the budget with random programs
+    while made < n and arch.n() < N_FAB_CEILING:
+        if arch.add(dsl.random_program(rng), 'ga_random', gen) is not None:
             made += 1
     return made
 

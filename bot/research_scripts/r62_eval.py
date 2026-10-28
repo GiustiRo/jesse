@@ -236,20 +236,26 @@ class Evaluator:
         rec['series'] = (days, r)
         return rec
 
-    def rotation_p(self, q, n_rot=N_ROT, seed=SEED):
+    def rotation_p(self, q, n_rot=N_ROT, seed=SEED, mapper=None):
+        """e3 p-value; `mapper(fn_args)` may spread the rotations over worker processes (the
+        shifts are drawn here, so the result is identical to the sequential run)."""
         q = dsl.validate(q)
         per, _, _ = run_program(q, self.panel)
         obs = sharpe(basket(per)[1])
         rng = np.random.default_rng(seed)
         span_days = 365 * 4.5
         lo = ROT_MIN_DAYS / span_days
-        null = []
-        for _ in range(n_rot):
-            f = rng.uniform(lo, 1 - lo)
-            pr, _, _ = run_program(q, self.panel, rot=f)
-            null.append(sharpe(basket(pr)[1]))
-        null = np.nan_to_num(np.array(null), nan=-np.inf)
+        fracs = [float(rng.uniform(lo, 1 - lo)) for _ in range(n_rot)]
+        if mapper is None:
+            null = [self.rot_sharpe(q, f) for f in fracs]
+        else:
+            null = mapper(q, fracs)
+        null = np.nan_to_num(np.array(null, float), nan=-np.inf)
         return float((1 + (null >= obs).sum()) / (1 + n_rot)), obs
+
+    def rot_sharpe(self, q, f):
+        pr, _, _ = run_program(q, self.panel, rot=f)
+        return sharpe(basket(pr)[1])
 
 
 def _trade_pnl(t):

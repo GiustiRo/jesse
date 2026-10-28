@@ -28,18 +28,48 @@ SEED = 62
 # the P1 oracle a mean net Sharpe of 0.80; P2 tops out at ~0.5 (alpha 50) under taker costs (E3).
 PLANTED = {'kappa': 0.20, 'alpha': 50.0}
 SPA_ALPHA = 0.05
+MAX_TOOL_USES = 3
+ROT_WORKERS = 5                      # per run; four runs in parallel stay within the 22 cores                    # E3.4: Read its package, Write its answer, and the hand-back
 
 
 def _dir(run):
     return os.path.join(RUNS, run)
 
 
+_W = {}
+
+
+def _winit(kind, seed):
+    _W['E'] = evaluator(kind, seed)
+
+
+def _wrot(args):
+    q, chunk = args
+    return [_W['E'].rot_sharpe(q, f) for f in chunk]
+
+
+def parallel_rot(E, kind, seed, workers=ROT_WORKERS):
+    """rot_fn for the Archive: the 200 rotations of a cell winner spread over a process pool."""
+    import multiprocessing as mp
+    pool = mp.get_context('spawn').Pool(workers, initializer=_winit, initargs=(kind, seed))
+
+    def mapper(q, fracs):
+        chunks = [fracs[i::workers] for i in range(workers)]
+        res = pool.map(_wrot, [(q, c) for c in chunks])
+        out = [None] * len(fracs)
+        for i, r in enumerate(res):
+            out[i::workers] = r
+        return out
+    return (lambda q: E.rotation_p(q, mapper=mapper)), pool
+
+
 def _load(run):
     with open(os.path.join(_dir(run), 'state.pkl'), 'rb') as f:
         st = pickle.load(f)
     E = evaluator(st['kind'], st['seed'])
+    rot, _ = parallel_rot(E, st['kind'], st['seed'])
     arch = fx.Archive(E, log_path=os.path.join(_dir(run), 'log.jsonl'),
-                      series_round='r62' if st['kind'] == 'real' else None)
+                      series_round='r62' if st['kind'] == 'real' else None, rot_fn=rot)
     arch.cells, arch.seen, arch.series = st['cells'], st['seen'], st['series']
     return st, arch
 
@@ -98,15 +128,16 @@ def ingest(run, gen, answer_path, tool_uses='0'):
     with open(answer_path, encoding='utf-8') as f:
         text = f.read()
     rec = {'tool_uses': int(tool_uses), 'parsed': 0, 'new': 0}
-    if int(tool_uses) > 0:
-        rec['discarded'] = 'subagent used tools (§5)'
+    if int(tool_uses) > MAX_TOOL_USES:
+        rec['discarded'] = 'subagent used tools beyond Read pkg + Write answer + hand-back (E3.4)'
     else:
         progs = fx.ingest(text, al)
         rec['parsed'] = len(progs)
         for q in progs:
             if arch.add(q, 'llm', int(gen)) is not None:
                 rec['new'] += 1
-    st['gens'].setdefault(str(gen), {})['llm'] = rec
+    g = st['gens'].setdefault(str(gen), {})
+    g['llm_reingest' if 'llm' in g else 'llm'] = rec
     _save(run, st, arch)
     print(json.dumps(rec))
 

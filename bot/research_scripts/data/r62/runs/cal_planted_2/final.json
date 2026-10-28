@@ -1,0 +1,281 @@
+{
+ "run": "cal_planted_2",
+ "kind": "planted",
+ "n_programs": 1539,
+ "n_cells": 9,
+ "finalists": [
+  {
+   "hash": "7677c84939f3b817dcbddd02a79307e67cb0ab4d",
+   "cell": "rho0|hold0|neutral",
+   "score": 4.1459900117618576,
+   "sharpe": 5.132090180373791,
+   "marginal": 0.7698445121612523,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 2,
+   "program": {
+    "universe": "pair_WTI_GAS",
+    "signal": [
+     {
+      "kind": "spread_z",
+      "params": {
+       "k": 24,
+       "z": 2.0
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "trendveto",
+      "params": {
+       "k": 60
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 6
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.0,
+   "t_cash": 10.883088294751495,
+   "spa_cash_pass": true,
+   "spa_marginal_p": 0.0,
+   "t_marginal": 10.365738053789848,
+   "spa_marginal_pass": true,
+   "spa_pass": true,
+   "planted_piece": "P2"
+  },
+  {
+   "hash": "bd0415d1e1c7d7ed5ab384a845d80ac727394eaa",
+   "cell": "rho0|hold1|neutral",
+   "score": 2.6834573752343385,
+   "sharpe": 3.4690213647190014,
+   "marginal": 0.530765236861878,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 1,
+   "program": {
+    "universe": "pair_WTI_GAS",
+    "signal": [
+     {
+      "kind": "spread_z",
+      "params": {
+       "k": 24,
+       "z": 2.5
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 24
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.0,
+   "t_cash": 8.734741798767123,
+   "spa_cash_pass": true,
+   "spa_marginal_p": 0.0,
+   "t_marginal": 8.462797339470216,
+   "spa_marginal_pass": true,
+   "spa_pass": true,
+   "planted_piece": "P2"
+  },
+  {
+   "hash": "f73821260e217a61953d9212008e21bb845f0023",
+   "cell": "rho0|hold2|neutral",
+   "score": 0.6111613233237306,
+   "sharpe": 1.6823711868426343,
+   "marginal": 0.2441012632432824,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 6,
+   "program": {
+    "universe": "pair_WTI_GAS",
+    "signal": [
+     {
+      "kind": "spread_z",
+      "params": {
+       "k": 120,
+       "z": 2.0
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 120
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.0,
+   "t_cash": 4.581892284173081,
+   "spa_cash_pass": true,
+   "spa_marginal_p": 0.0,
+   "t_marginal": 4.220595996545227,
+   "spa_marginal_pass": true,
+   "spa_pass": true,
+   "planted_piece": "P2"
+  },
+  {
+   "hash": "87896920561dd61083eabcae2c66ba6dc4dd756d",
+   "cell": "rho0|hold0|long",
+   "score": 0.3980063071491009,
+   "sharpe": 1.2550106715236966,
+   "marginal": 0.17362059055761336,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 1,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "fade",
+       "ratio": 1.5
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "session",
+      "params": {
+       "s": "europe"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "atr",
+     "params": {
+      "stop": 2,
+      "tgt": 2
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.0,
+   "t_cash": 2.6407077266318124,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.0,
+   "t_marginal": 2.3656057179374024,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "25a77c9b16610a268271340a7963b0fb7af0c7fb",
+   "cell": "rho0|hold2|long",
+   "score": 0.27806796714526066,
+   "sharpe": 0.727854748312897,
+   "marginal": 0.100959313248429,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 3,
+   "program": {
+    "universe": "core_1h",
+    "signal": [
+     {
+      "kind": "zrev",
+      "params": {
+       "k": 6,
+       "z": 2.5
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "btcstate",
+      "params": {
+       "state": "down"
+      }
+     },
+     {
+      "kind": "trendveto",
+      "params": {
+       "k": 60
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 120
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.0,
+   "t_cash": 1.9278135766652422,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.0,
+   "t_marginal": 1.5671070200819257,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  }
+ ],
+ "spa_cash": {
+  "p": 0.0,
+  "argmax": "1a24c2ef3d29a90852f13ff02cadee464622c934",
+  "crit_t": 4.056739942320914
+ },
+ "spa_marginal": {
+  "p": 0.0,
+  "argmax": "1a24c2ef3d29a90852f13ff02cadee464622c934",
+  "crit_t": 4.06611086302193
+ }
+}

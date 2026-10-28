@@ -266,3 +266,9 @@ Son precisiones de implementación que el protocolo no fijaba o que el código o
    - los conteos (trades y órdenes no llenadas) van en centenas, porque `leak_check` rechaza todo número mayor que 1.000;
    - el filtro `btcstate` se muestra como `leadstate`.
 4. **Uso de herramientas del subagente:** para no pegar paquetes de 10–20 mil caracteres en la sesión, el subagente puede usar **solo** Read sobre su `pkg_<g>.json` y Write sobre su `answer_<g>.json`, más la entrega final. Con más de 3 usos de herramientas, la generación del LLM se descarta. La prueba previa al protocolo (un paquete pegado en el prompt) contó 1 uso: la entrega.
+
+### E4 (2026-10-28, en F1, durante la generación 0 de la calibración; no afecta a la corrida real)
+1. **Error de código corregido:** `ingest` todavía descartaba toda respuesta con algún uso de herramientas (la regla anterior a E3.4). Por eso las respuestas de la generación 0 de las 4 corridas de calibración (3 usos cada una) quedaron descartadas.
+   - Se reingresaron después de la búsqueda genética de esa misma generación, y los paquetes de la generación 1 se rearmaron con esas evaluaciones (registradas como `llm_reingest`).
+   - Desde la generación 1, el orden es el del §5.
+2. **Relleno de la búsqueda local:** si un archivo pequeño agota la vecindad de sus élites (10·n intentos), el resto del presupuesto de la generación se completa con programas al azar del DSL (origen `ga_random`). Antes, una corrida quedaba en 32 de 150 evaluaciones.
