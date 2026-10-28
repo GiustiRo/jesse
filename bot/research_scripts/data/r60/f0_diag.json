@@ -1,0 +1,95 @@
+{
+ "protocol": "PROTOCOL_R60.md \u00a71.2",
+ "window": [
+  "2021-05-24",
+  "2024-12-31"
+ ],
+ "models": {
+  "X1": {
+   "short_coin_weeks": 1662,
+   "short_leg_pnl": -0.656017973157037,
+   "short_leg_loss": 5.858855959869067,
+   "book_sharpe": -0.11827919553687773,
+   "tails": {
+    "0.01": {
+     "n": 17,
+     "share_of_short_loss": 0.1303526824496333,
+     "stop_hit_frac": 0.9411764705882353,
+     "avoidable_share": 0.6317971887606888,
+     "crowded_share": 0.23379875417915402,
+     "credit_share": 0.7155357225476973,
+     "book_sharpe_without_tail": 0.879996893813118
+    },
+    "0.02": {
+     "n": 33,
+     "share_of_short_loss": 0.21012338703621233,
+     "stop_hit_frac": 0.9393939393939394,
+     "avoidable_share": 0.5426159883906458,
+     "crowded_share": 0.2445481970956212,
+     "credit_share": 0.6544217722064855,
+     "book_sharpe_without_tail": 1.5283485708289979
+    },
+    "0.05": {
+     "n": 83,
+     "share_of_short_loss": 0.3845797942590153,
+     "stop_hit_frac": 0.8795180722891566,
+     "avoidable_share": 0.36136891960772094,
+     "crowded_share": 0.22195527406583082,
+     "credit_share": 0.5011030186439227,
+     "book_sharpe_without_tail": 3.019696707998956
+    }
+   },
+   "funding_pnl_by_leg": {
+    "long": -0.09082357550327835,
+    "short": 0.09837358315256924
+   }
+  },
+  "X2": {
+   "short_coin_weeks": 1662,
+   "short_leg_pnl": -0.24004705707875162,
+   "short_leg_loss": 5.288254703709782,
+   "book_sharpe": 0.18447284166521488,
+   "tails": {
+    "0.01": {
+     "n": 17,
+     "share_of_short_loss": 0.12426768939274986,
+     "stop_hit_frac": 0.9411764705882353,
+     "avoidable_share": 0.6002847860231213,
+     "crowded_share": 0.32863816330228096,
+     "credit_share": 0.7397018474344741,
+     "book_sharpe_without_tail": 1.176849054099542
+    },
+    "0.02": {
+     "n": 33,
+     "share_of_short_loss": 0.20526136498175082,
+     "stop_hit_frac": 0.9393939393939394,
+     "avoidable_share": 0.5079476711161263,
+     "crowded_share": 0.27659587161295246,
+     "credit_share": 0.6461470830738644,
+     "book_sharpe_without_tail": 1.8718344075987754
+    },
+    "0.05": {
+     "n": 83,
+     "share_of_short_loss": 0.38581918394041537,
+     "stop_hit_frac": 0.9036144578313253,
+     "avoidable_share": 0.3309222350092857,
+     "crowded_share": 0.20927264458069567,
+     "credit_share": 0.463802840604607,
+     "book_sharpe_without_tail": 3.4437913974278698
+    }
+   },
+   "funding_pnl_by_leg": {
+    "long": -0.07971915489432387,
+    "short": 0.09024400716353718
+   }
+  }
+ },
+ "gate": {
+  "tail": 0.02,
+  "credit_share_pooled": 0.6505444823742796,
+  "threshold": 0.5,
+  "avoidable_share_pooled": 0.5263713764283343,
+  "crowded_share_pooled": 0.2595648485444395,
+  "continue": true
+ }
+}
