@@ -36,7 +36,10 @@ BUDGET = 5                         # q0 (r58 F2) + q1..q4
 NOISE = 0.1                        # Laplace scale as a fraction of each margin's own scale
 TRACKED = ('bot/research_scripts/r59_criteria.py', 'bot/research_scripts/r59_oracle.py',
            'bot/research_scripts/r59_holdout.py', 'bot/research_scripts/r59.py',
-           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/PROTOCOL_R59.md')
+           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/PROTOCOL_R59.md',
+           # r60 (PROTOCOL_R60.md §1.3): q2 runs r60's code, so it and its protocol must be committed too.
+           'bot/research_scripts/r60.py',
+           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/PROTOCOL_R60.md')
 
 
 def _git(*args):
@@ -153,6 +156,30 @@ def count_q1():
     return out
 
 
+def schema():
+    """r60 §1.3, no budget: per H coin only the 1h column count, first/last day and the funding row
+    count. No price, return or volume value leaves the oracle context."""
+    import r58
+    with hg.oracle_context():
+        n2 = {u['symbol'] for u in json.load(open(hg._LIST_FILES[0]))['selected']}
+        out = {}
+        for s in hg.holdout_syms():
+            src = r58.N2_DIR if s in n2 else r58.N3_DIR
+            a = np.load(os.path.join(src, f'{s}_1h.npy'))
+            fp = os.path.join(src, f'{s}_funding.npy')
+            f = np.load(fp) if os.path.exists(fp) else np.empty((0, 2))
+            day = lambda ms_: datetime.fromtimestamp(ms_ / 1000, timezone.utc).strftime('%Y-%m-%d')  # noqa: E731
+            out[s] = {'bank': 'n2' if s in n2 else 'n3', 'cols_1h': int(a.shape[1]) if a.ndim == 2 else 0,
+                      'first_day': day(a[0, 0]) if len(a) else None, 'last_day': day(a[-1, 0]) if len(a) else None,
+                      'funding_rows': int(len(f))}
+    os.makedirs(os.path.join(hg.DATA, 'r60'), exist_ok=True)
+    json.dump(out, open(os.path.join(hg.DATA, 'r60', 'f0_schema.json'), 'w'), indent=1)
+    print(json.dumps({'coins': len(out), 'cols_1h': sorted({v['cols_1h'] for v in out.values()}),
+                      'no_funding': [s for s, v in out.items() if not v['funding_rows']],
+                      'first_after_2021_07': sum(v['first_day'] > '2021-07-01' for v in out.values())}))
+    return out
+
+
 # ----------------------------------------------------------------------------------------------
 # Selftest: fake holdout of 12 U50 alts (seed 59), temporary log, H never read
 # ----------------------------------------------------------------------------------------------
@@ -255,7 +282,7 @@ def main():
     if cmd == 'query' and len(sys.argv) == 3:
         import r59_criteria as rc
         print(run_query(sys.argv[2], rc.CRITERIA, {}))
-    elif cmd in ('init', 'selftest', 'count_q1', 'sync_registry'):
+    elif cmd in ('init', 'selftest', 'count_q1', 'sync_registry', 'schema'):
         globals()[cmd]()
     else:
         print(__doc__)

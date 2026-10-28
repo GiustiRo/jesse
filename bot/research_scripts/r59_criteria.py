@@ -29,3 +29,18 @@ def d_boot(df, keep, n_boot, seed):
     finally:
         r57.N_BOOT = old
     return r58._d(R, g), bs
+
+
+# ----------------------------------------------------------------------------------------------
+# r60 q2 (PROTOCOL_R60.md §4), committed before the query
+# ----------------------------------------------------------------------------------------------
+@register('q2', 0.05, 'r60 F2: libro K de la variante elegida en F1 sobre H = N2 ∪ N3, márgenes (a) Sharpe − 0,4, '
+                      '(b) Sharpe con costos ×2, (c) 0,3 − ρ con R1, (d) ΔSharpe R1 + manga − 0,1 (PROTOCOL_R60 §4)')
+def q2(ctx):
+    import json
+    import os
+    import r59_holdout as hg
+    import r60
+    n2 = {u['symbol'] for u in json.load(open(hg._LIST_FILES[0]))['selected']}
+    src_of = lambda s: r58.N2_DIR if s in n2 else r58.N3_DIR  # noqa: E731
+    return r60.q2_compute(hg.holdout_syms(), src_of, r60.u50()[0], r60.selected_variant())

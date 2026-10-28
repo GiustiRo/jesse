@@ -692,9 +692,143 @@ def rotation():
     json.dump(res, open(os.path.join(OUT, 'f1_rotation.json'), 'w'), indent=1, default=float)
 
 
+# ----------------------------------------------------------------------------------------------
+# §4 q2: the selected variant's book on a holdout bank (real H inside the oracle, or a fake one)
+# ----------------------------------------------------------------------------------------------
+Q2_FROM = '2021-07-02'
+Q2_BOOT = 1000
+
+
+def boot_stats(r, r2, r1, n_boot=Q2_BOOT, seed=SEED):
+    """Stationary-bootstrap (block 20) SEs of Sharpe(r), Sharpe(r2), rho(r, r1) and the R1 combo delta,
+    resampling the common days jointly."""
+    import r59
+    j = pd.concat([r, r2, r1], axis=1, join='inner').dropna()
+    X = j.values
+    rng = np.random.default_rng(seed)
+    out = []
+    for _ in range(n_boot):
+        ix = r59.stationary_idx(len(X), rng)
+        a, b, c = X[ix, 0], X[ix, 1], X[ix, 2]
+        comb = 0.5 * a / a.std() + 0.5 * c / c.std()
+        out.append((sharpe(a), sharpe(b), float(np.corrcoef(a, c)[0, 1]), sharpe(comb) - sharpe(c)))
+    return np.array(out).std(0, ddof=1)
+
+
+def q2_compute(h_syms, h_src_of, train_syms, variant):
+    """Book K of `variant` with legs on h_syms (BTC hedge, BTC/ETH in the panel like U50), scores from
+    models fit walk-forward on train_syms' rows only. Returns the oracle's margins and stats."""
+    t = VARIANTS[variant]
+    Pu = Panel(train_syms, lambda s: U50_DIR)
+    Ph = Panel(list(h_syms) + ['BTCUSDT', 'ETHUSDT'], lambda s: U50_DIR if s in ('BTCUSDT', 'ETHUSDT') else h_src_of(s))
+    if t == 'L0':
+        score = -Ph.S['ret1w']
+    else:
+        Su, Sh = Pu.S.copy(), Ph.S.copy()
+        Sh.index = Sh.index + len(Su) + 10
+        A = pd.concat([Su, Sh])
+        tr = pd.Series(A.index.isin(Su.index), index=A.index)
+        kind = 'en' if t == 'X1' else 'gbm'
+        pr = predict_wf_split(A, Pu.names, kind, tr, ~tr)
+        # The common-weeks rule of r52: both models must predict (they share the refit schedule).
+        other = predict_wf_split(A, Pu.names, 'gbm' if kind == 'en' else 'en', tr, ~tr)
+        score = pr.where(other.notna()).loc[Sh.index]
+        score.index = Ph.S.index
+    fb = FastBook(Ph, list(h_syms))
+    r = window(fb.run(score), Q2_FROM)
+    r2 = window(fb.run(score, cost_mult=2.0), Q2_FROM)
+    r1 = bench('BENCH_R1_common')
+    d, sc, s1 = combo_delta(r, r1)
+    se = boot_stats(r, r2, r1)
+    st = {'variant': variant, 'sharpe': sharpe(r), 'sharpe_cost2': sharpe(r2), 'rho_r1': rho(r, r1), 'combo_delta': d,
+          'combo_sharpe': sc, 'r1_sharpe': s1, 'se': se.tolist(), 'days': int(len(r)), 'from': str(r.index[0].date()),
+          'n_legs_coins': len(h_syms)}
+    margins = [('a_sharpe_minus_0_4', st['sharpe'] - 0.4, float(se[0])),
+               ('b_cost2_sharpe', st['sharpe_cost2'], float(se[1])),
+               ('c_0_3_minus_rho', 0.3 - st['rho_r1'], float(se[2])),
+               ('d_combo_delta_minus_0_1', d - 0.1, float(se[3]))]
+    return {'margins': margins, 'stats': st}
+
+
+def selected_variant():
+    return json.load(open(os.path.join(OUT, 'f1_results.json')))['selected']
+
+
+def q2_power():
+    """§4: Lo (2002) SE of the annual Sharpe over H's window with the D book's daily skew/kurtosis."""
+    from scipy.stats import norm, skew, kurtosis
+    L = selected_variant()
+    import r59
+    d, v = r59.load_series(f'R60_F1_{L}')
+    S_d = sharpe(v)
+    n = int((pd.Timestamp(CUT, tz='UTC') - pd.Timestamp(Q2_FROM, tz='UTC')).days + 1)
+    sr = S_d / math.sqrt(365)
+    g3, g4 = float(skew(v)), float(kurtosis(v, fisher=False))
+    se = math.sqrt((1 - g3 * sr + (g4 - 1) / 4 * sr ** 2) / n) * math.sqrt(365)
+    power = float(norm.cdf((0.5 * S_d - 0.4) / se))
+    out = {'variant': L, 'sharpe_D': S_d, 'skew': g3, 'kurt': g4, 'n_days_H': n, 'se_annual': se,
+           'power_half_effect': power, 'power_full_effect': float(norm.cdf((S_d - 0.4) / se)), 'go': power >= 0.4}
+    json.dump(out, open(os.path.join(OUT, 'f2_power.json'), 'w'), indent=1)
+    log(json.dumps(out))
+    return out
+
+
+def q2_selftest():
+    """Fake holdout = CV half 1 (24 U50 alts, seed 60); models fit on half 0 + BTC/ETH. Exercises the
+    oracle mechanics of r59's selftest on q2's real computation. H and the real log are never touched."""
+    import tempfile
+    import r59_oracle as orc
+    H = json.load(open(os.path.join(OUT, 'cv_halves.json')))['halves']
+    fake, train = H['1'], H['0'] + ['BTCUSDT', 'ETHUSDT']
+    L = selected_variant() or 'L1'
+    ctx = {}
+    crits = {'st_q2': {'fn': lambda c: q2_compute(fake, lambda s: U50_DIR, train, L), 'alpha': 0.05, 'desc': 'q2 fake'},
+             'st_true': {'fn': lambda c: {'margins': [('t', 1.0, 1.0)], 'stats': {}}, 'alpha': 0.0, 'desc': 't'},
+             'st_false': {'fn': lambda c: {'margins': [('f', -1.0, 1.0)], 'stats': {}}, 'alpha': 0.0, 'desc': 'f'},
+             'st_x1': {'fn': lambda c: {'margins': [('t', 1.0, 1.0)], 'stats': {}}, 'alpha': 0.0, 'desc': 't'},
+             'st_x2': {'fn': lambda c: {'margins': [('t', 1.0, 1.0)], 'stats': {}}, 'alpha': 0.0, 'desc': 't'}}
+    direct = q2_compute(fake, lambda s: U50_DIR, train, L)
+    tmp = tempfile.mkdtemp(prefix='r60_q2_selftest_')
+    lp, sd = os.path.join(tmp, 'log.jsonl'), os.path.join(tmp, 'sealed')
+    kw = dict(log_path=lp, sealed_dir=sd, commit='selftest', dirty_fn=lambda: '', sync=False)
+    res = {'fake_holdout': fake, 'variant': L, 'direct_stats': direct['stats']}
+    ans = {q: orc.run_query(q, crits, ctx, noise=0.0, **kw) for q in ('st_q2', 'st_true', 'st_false')}
+    exp = {'st_q2': 'PASA' if all(m > 0 for _, m, _ in direct['margins']) else 'NO PASA', 'st_true': 'PASA',
+           'st_false': 'NO PASA'}
+    res['i_ok'] = ans == exp
+    m = [('x', 0.01, 1.0)]
+    res['ii_ok'] = orc.noisy(m, 'abc', 'q2') == orc.noisy(m, 'abc', 'q2')
+    before = open(lp, 'rb').read()
+    ref = {}
+    for nm, call in (('repeated', lambda: orc.run_query('st_true', crits, ctx, **kw)),
+                     ('dirty', lambda: orc.run_query('st_x1', crits, ctx, **{**kw, 'dirty_fn': lambda: ' M r60.py'}))):
+        try:
+            call()
+            ref[nm] = 'ran (FAIL)'
+        except SystemExit as e:
+            ref[nm] = str(e)
+    orc.run_query('st_x1', crits, ctx, **kw)
+    orc.run_query('st_x2', crits, ctx, **kw)
+    crits['st_over'] = crits['st_true']
+    try:
+        orc.run_query('st_over', crits, ctx, **kw)
+        ref['budget'] = 'ran (FAIL)'
+    except SystemExit as e:
+        ref['budget'] = str(e)
+    res['iii_refusals'] = ref
+    res['iii_ok'] = all('FAIL' not in v for v in ref.values())
+    after = open(lp, 'rb').read()
+    res['iv_ok'] = after.startswith(before) and len(orc.read_log(lp)) == orc.BUDGET
+    res['real_log_untouched'] = all(r['qid'][:3] != 'st_' for r in orc.read_log(orc.LOG))
+    res['pass'] = bool(res['i_ok'] and res['ii_ok'] and res['iii_ok'] and res['iv_ok'] and res['real_log_untouched'])
+    json.dump(res, open(os.path.join(OUT, 'f0_q2_selftest.json'), 'w'), indent=1, default=str)
+    log(json.dumps({k: v for k, v in res.items() if k != 'direct_stats'}, default=str))
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
-    fns = {'repro': repro, 'diag': diag, 'halves': halves, 'f1': f1, 'cv': cv, 'rotation': rotation}
+    fns = {'repro': repro, 'diag': diag, 'halves': halves, 'f1': f1, 'cv': cv, 'rotation': rotation,
+           'q2_selftest': q2_selftest, 'q2_power': q2_power}
     if cmd not in fns:
         print(__doc__)
         return 1
