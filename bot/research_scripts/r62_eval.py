@@ -56,6 +56,7 @@ class Panel:
                     idx = np.searchsorted(ht, bars[:, 0].astype(np.int64) + dsl.HOUR)
                     ok = (idx < len(ht)) & (ht[np.clip(idx, 0, len(ht) - 1)] == bars[:, 0] + dsl.HOUR)
                     oi = np.where(ok, z[np.clip(idx, 0, len(ht) - 1)], np.nan)
+                    oi[bars[:, 0] < OI_FROM.get(name, 0)] = np.nan
                 self._a[key] = dsl.Asset(name, bars, tf, funding=f, oi=oi, btc_t90=self.btc_t90)
         return self._a[key]
 
@@ -302,9 +303,16 @@ def real_panel(with_oi=True):
     return Panel(src, btc_t90, oi)
 
 
+# Amendment E2 (user's decision after F0): `cascade` is on with each feed only from these dates;
+# before them the OI z-score is NaN, so the piece has no events. liq_f0.json keeps the strict verdict.
+OI_FROM = {'BTC': 1_609_459_200_000, 'ETH': 1_638_316_800_000}     # 2021-01-01 / 2021-12-01
+CASCADE_BY_AMENDMENT = 'E2'
+
+
 def cascade_gate():
     p = os.path.join(HERE, 'data', 'r62', 'liq_f0.json')
     if not os.path.exists(p):
         return False
     with open(p) as f:
-        return bool(json.load(f).get('cascade_enabled'))
+        strict = bool(json.load(f).get('cascade_enabled'))
+    return strict or CASCADE_BY_AMENDMENT == 'E2'

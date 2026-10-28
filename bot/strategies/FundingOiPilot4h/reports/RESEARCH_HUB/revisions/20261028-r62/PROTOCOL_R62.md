@@ -245,3 +245,13 @@ Son precisiones de implementación que el protocolo no fijaba o que el código o
    - **Mientras el usuario no decida otra cosa, la pieza `cascade` queda fuera del menú** (`liq_f0.json → cascade_enabled: false`). La opción para decidir es habilitarla con ETH solo desde 2021-12, sin eventos antes.
 6. **Control del §8.5 (Donchian 55/20 largo en `core_1d`):** da ρ 0,73 con R1, Sharpe 1,44 y cae en la celda bloqueada `rho2|hold2|long`. Es el control de los casilleros, no un ensayo nuevo (N + 0).
 7. **El selftest de q4** corrió un programa de demostración (`shock` fade, maker) sobre la mitad 1 de U50, que es el holdout falso de r60. Dio Sharpe −0,12 (N + 0, como los selftests de r60 y r61). Ese programa no tiene ningún privilegio en la búsqueda.
+
+### E2 (2026-10-28, decisión del usuario tras F0, antes de F1)
+- **La pieza `cascade` queda habilitada** aunque la puerta estricta del §6.5 falló por la cobertura de ETH en 2021.
+- **Ventanas del OI:**
+  - **BTC** desde el 2021-01-01;
+  - **ETH** desde el 2021-12-01.
+  
+  Antes de esas fechas el z de ΔOI vale NaN y la pieza no genera eventos (`r62_eval.OI_FROM`). Con el calentamiento de 30 días, el primer evento posible en ETH cae a fines de 2021-12.
+- `liq_f0.json` conserva el veredicto estricto (`cascade_enabled: false`). La habilitación queda registrada en el código (`CASCADE_BY_AMENDMENT = 'E2'`).
+- **Consecuencia declarada:** en el pliegue cripto de 2021, solo BTC aporta eventos de cascada.
