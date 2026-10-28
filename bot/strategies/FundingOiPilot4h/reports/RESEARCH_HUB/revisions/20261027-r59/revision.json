@@ -1,10 +1,10 @@
 {
   "format_version": 1,
   "id": "20261027-r59",
-  "updated_at_utc": "2026-10-27 21:00:00 UTC",
+  "updated_at_utc": "2026-10-27 22:00:00 UTC",
   "objective": "Validación reutilizable sobre el universo actual (U50 + N2 + N3, sin bajar monedas): holdout N2 ∪ N3 con oráculo y presupuesto, CV grupo × año, rotación, almacén de series; auditoría SPA/PBO de P-r55; funding | compresión como q1.",
-  "latest": "r59 F1 cerrada: 84/85 ensayos de r50–r58 reconstruidos (P-r55 1,677/1,723 reproducida). SPA vs cash: la familia P supera la selección (p 0,002–0,015). SPA vs R1 solo: no (p 0,23–0,29 sin P3 fuera de alcance). PBO 0,58–0,63: elegir entre variantes de P (corr 0,91–0,95) es ruido; P-r55 3.ª/24 y 6.ª/23. Ninguna manga S supera a R1 (p ≥ 0,68). N=145.",
-  "next": "F2 (q1): prefiltro p1/p2 en U50, poder por count_q1; consulta solo si pasa.",
+  "latest": "r59 cerrada: P-r55 sin cambios, N=145. F1: la ventaja que sobrevive a la selección es R1 (vs cash p ≤ 0,015; vs R1 p 0,23/0,29; PBO 0,58–0,63). F2: prefiltro pasa, sin consultar (poder 0,36; decisión del usuario). Oráculo 1/5.",
+  "next": "r60: ver HANDOFF_R60.md (decisión del usuario sobre 2025: P-r55 vs R1 sola).",
   "blockers": "Ninguno.",
   "counts": {
     "r59": {
@@ -17,7 +17,8 @@
   "decisions": [
     "2026-10-27 r59: plan aprobado por el usuario; holdout = N2 ∪ N3 (no partición nueva), F1 BTC/ETH descartada, rotación en lugar de permutación moneda × semana.",
     "2026-10-27 r59 F0 cerrada; enmienda E1: estadístico de q1 = D condicionado a V1 (r58), no D dentro de compresión.",
-    "2026-10-27 r59 F1 cerrada (descriptiva, N+0); enmienda E3 (ventanas, vara R1, sensibilidad sin fuera de alcance) commiteada antes del SPA/PBO."
+    "2026-10-27 r59 F1 cerrada (descriptiva, N+0); enmienda E3 (ventanas, vara R1, sensibilidad sin fuera de alcance) commiteada antes del SPA/PBO.",
+    "2026-10-27 r59 F2: usuario decide no consultar q1 (poder 0,36 < 0,4); r59 cerrada."
   ],
   "supersedes": "20261027-r58",
   "roadmap": [
@@ -38,7 +39,7 @@
     {
       "order": 2,
       "title": "F2 funding | compresión (q1 del oráculo)",
-      "state": "pendiente",
+      "state": "cerrada sin consulta",
       "depends": "F0",
       "gate": "PROTOCOL_R59 §3"
     }
