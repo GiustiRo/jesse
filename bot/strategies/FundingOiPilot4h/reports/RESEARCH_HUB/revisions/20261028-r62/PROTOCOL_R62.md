@@ -255,3 +255,14 @@ Son precisiones de implementación que el protocolo no fijaba o que el código o
   Antes de esas fechas el z de ΔOI vale NaN y la pieza no genera eventos (`r62_eval.OI_FROM`). Con el calentamiento de 30 días, el primer evento posible en ETH cae a fines de 2021-12.
 - `liq_f0.json` conserva el veredicto estricto (`cascade_enabled: false`). La habilitación queda registrada en el código (`CASCADE_BY_AMENDMENT = 'E2'`).
 - **Consecuencia declarada:** en el pliegue cripto de 2021, solo BTC aporta eventos de cascada.
+
+### E3 (2026-10-28, en F1, antes de cualquier corrida de la fábrica más allá de las semillas)
+1. **Fuerza de las ventajas plantadas** (`data/r62/f1_calib_grid.json`, semillas 101–106, distintas de las de las corridas):
+   - **P1:** κ = 0,20 da al programa oráculo un Sharpe neto medio de 0,80 (dentro de 0,8 ± 0,1).
+   - **P2:** no llega a 0,7. Con costos taker de dos patas (GAS 5 pb), el oráculo alcanza un techo de ~0,5 (α = 50: 0,51; α = 60–70: 0,45–0,48).
+   - **Se usa α = 50.** P2 queda más débil que lo previsto, lo que hace C2 más difícil, no más fácil.
+2. **SPA marginal (§7.3.1 b):** la columna es la combinación 0,85·P55 + 0,15·x̃ **reescalada a la vol de P55**, menos P55. Así, una media > 0 equivale a ΔSharpe > 0, igual que e2. La forma literal sin reescalar exigiría que el programa le gane a P55 en Sharpe por sí solo.
+3. **Paquete:**
+   - los conteos (trades y órdenes no llenadas) van en centenas, porque `leak_check` rechaza todo número mayor que 1.000;
+   - el filtro `btcstate` se muestra como `leadstate`.
+4. **Uso de herramientas del subagente:** para no pegar paquetes de 10–20 mil caracteres en la sesión, el subagente puede usar **solo** Read sobre su `pkg_<g>.json` y Write sobre su `answer_<g>.json`, más la entrega final. Con más de 3 usos de herramientas, la generación del LLM se descarta. La prueba previa al protocolo (un paquete pegado en el prompt) contó 1 uso: la entrega.

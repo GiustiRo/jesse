@@ -243,6 +243,9 @@ class Aliases:
     def program_out(self, q):
         q = copy.deepcopy(q)
         q['universe'] = self.univ[q['universe']]
+        for f in q['filters']:
+            if f['kind'] == 'btcstate':        # the name would reveal the lead market
+                f['kind'] = 'leadstate'
         for s in q['signal']:
             if s['kind'] == 'clock':
                 s['params']['event'] = self.event[s['params']['event']]
@@ -251,6 +254,9 @@ class Aliases:
     def program_in(self, q):
         q = copy.deepcopy(q)
         q['universe'] = self.inv_univ.get(q.get('universe'), q.get('universe'))
+        for f in q.get('filters', []) or []:
+            if isinstance(f, dict) and f.get('kind') == 'leadstate':
+                f['kind'] = 'btcstate'
         for s in q.get('signal', []):
             if isinstance(s, dict) and s.get('kind') == 'clock':
                 s.setdefault('params', {})
@@ -305,14 +311,14 @@ def package(arch, panel, gen, rng, recent_fail=12):
             g, y = k.split(':')
             sh = v['sharpe']
             out[f'{al.group[g]}:{year_alias[y]}'] = [None if sh is None or not np.isfinite(sh) else round(sh, 2),
-                                                     v['trades']]
+                                                     _hund(v["trades"])]
         return out
 
     def compact(r):
         return {'program': al.program_out(r['program']), 'score': round(r['score'], 3),
                 'cell': r['cell'], 'sharpe': round(r['sharpe'], 2), 'sharpe_cost2': round(r['sharpe_cost2'], 2),
-                'marginal_vs_book': round(r['marginal'], 3), 'trades': r['trades'],
-                'maker_unfilled': r['unfilled'], 'folds': folds_out(r['folds'])}
+                'marginal_vs_book': round(r['marginal'], 3), 'trades_hundreds': _hund(r['trades']),
+                'maker_unfilled_hundreds': _hund(r['unfilled']), 'folds': folds_out(r['folds'])}
 
     logs = _recent_failures(arch, recent_fail)
     stats, corr = asset_stats(panel, al)
@@ -334,6 +340,12 @@ def package(arch, panel, gen, rng, recent_fail=12):
     return text, al
 
 
+def _hund(n):
+    """Counts in hundreds: the leak check rejects any number > 1000 (price levels), so counts are
+    scaled rather than exempted."""
+    return round(n / 100, 1)
+
+
 def _recent_failures(arch, n):
     """The last n evaluated programs that failed, with the gate that failed (from the log file)."""
     if not arch.log_path or not os.path.exists(arch.log_path):
@@ -348,7 +360,7 @@ def _recent_failures(arch, n):
         why = ('score=-inf (too few valid folds)' if r['score'] is None or r['score'] == -math.inf else
                'e1 costs' if not r['e1'] else 'e2 marginal' if not r['e2'] else
                'e3 rotation' if r.get('e3') is False else 'lower score than cell elite')
-        out.append({'why': why, 'score': r['score'], 'cell': r['cell'], 'trades': r['trades'],
+        out.append({'why': why, 'score': r['score'], 'cell': r['cell'], 'trades_hundreds': _hund(r['trades']),
                     'kind': [s['kind'] for s in r['program']['signal']], 'exit': r['program']['exit']['kind'],
                     'exec': r['program']['exec']['kind']})
         if len(out) == n:
@@ -363,7 +375,8 @@ def _dsl_spec(al):
         'program': '{"universe": U?, "signal": [1-2 pieces], "filters": [0-2 pieces], "exit": piece, '
                    '"size": {"kind": "voltgt", "params": {"side": both|long|short}}, "exec": piece}; '
                    'piece = {"kind": ..., "params": {...}} with every listed param, values from the grid only',
-        'signals': sig, 'filters': dsl.FILTERS, 'exits': dsl.EXITS, 'execs': dsl.EXECS,
+        'signals': sig, 'filters': {('leadstate' if k == 'btcstate' else k): v for k, v in dsl.FILTERS.items()},
+        'exits': dsl.EXITS, 'execs': dsl.EXECS,
         'rules': ['spread_z is the only (and mandatory) signal of pair universes; pairs execute taker',
                   'clock E1/E2 and cascade are only legal on the 2-asset 1h universe of derivative '
                   'contracts (the one with positioning data); clock/cascade/session need 1h bars',
@@ -377,6 +390,9 @@ def _dsl_spec(al):
                          'clock': 'E1 three fixed daily hours, E2 a weekly reopening hour, E3 month-end; '
                                   'direction from the prior move',
                          'cascade': 'open-interest drop beyond z_oi sigma with |return| beyond z_ret'},
+        'filter_notes': {'volreg': 'tercile of 30-day vol vs the prior year', 'trendveto': 'skip entries against '
+                         'a k-day move beyond 1 sigma', 'session': 'UTC hour blocks', 'leadstate': 'trend state '
+                         '(90-day) of the lead asset of the market'},
     }
 
 
