@@ -110,4 +110,19 @@ Una variante pasa si cumple **todas** las puertas.
 6. **Cobertura:** en K la cobertura se fija en la formación y no cubre el largo implícito después del stop. El libro operable sí lo cubre, así que difiere de la forma límite en eso.
 
 ## 7. Enmiendas
-(ninguna)
+
+### E1 (2026-10-28, en F0, antes de cualquier resultado de F1)
+**Qué pasó.** Con la forma límite del §1, la aserción del §2.2 pasó en A (ρ 0,986) y falló en B (ρ 0,61). La causa es una pieza de K que el plan no había visto:
+- K excluye los cortos hacinados y **renormaliza la pata corta sobre las no hacinadas que quedan**. La pata corta siempre suma 0,5 de bruto.
+- En el límite, K completa también está **corta en las alts no hacinadas**, con E[w_s,i] > E[w_l,i]. Es un L/S de funding con neutralidad de dólar (largo en las hacinadas, corto en el resto), que se suma a la pata de ruptura.
+
+**Corrección del código, no de la cota:**
+- `run_limit` usa ahora los **pesos esperados exactos de K** sobre patas al azar.
+- Se calculan sorteando solo la pertenencia a las patas (20.000 sorteos por formación, semilla 61, sin retornos). El sorteo hace falta porque 1/Σ es convexa: con pocas no hacinadas en una pata corta al azar (en 2022, ~30 de 45 son hacinadas), la forma cerrada subestima el peso corto.
+- Resultado: A ρ 0,986, |Δμ| 0,0031 contra 0,087 anual; B ρ 0,989, |Δμ| 0,0076 contra 0,146. **Pasa.**
+
+**Consecuencia declarada:**
+- **El libro B operable, tal como se preregistró en el §1, no es el límite completo de K.** Le falta el corto en las no hacinadas.
+- B no se cambia. Sumarle esa pieza ahora sería elegirla después de ver su Sharpe en D (la forma límite de B da 2,62 y la de A 1,96, ambas sin costos y con la varianza de las patas promediada; ver la crítica 5 del §6).
+- **Esa pieza (el L/S de funding de K) queda como hipótesis para r62,** a preregistrar con su propia N y a juzgar solo fuera de D.
+- **La N de reserva no se usa.**

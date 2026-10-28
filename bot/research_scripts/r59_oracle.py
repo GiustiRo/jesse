@@ -39,7 +39,10 @@ TRACKED = ('bot/research_scripts/r59_criteria.py', 'bot/research_scripts/r59_ora
            'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/PROTOCOL_R59.md',
            # r60 (PROTOCOL_R60.md §1.3): q2 runs r60's code, so it and its protocol must be committed too.
            'bot/research_scripts/r60.py',
-           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/PROTOCOL_R60.md')
+           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/PROTOCOL_R60.md',
+           # r61 (PROTOCOL_R61.md §2.1): q3 runs r61's code.
+           'bot/research_scripts/r61.py',
+           'bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/PROTOCOL_R61.md')
 
 
 def _git(*args):
