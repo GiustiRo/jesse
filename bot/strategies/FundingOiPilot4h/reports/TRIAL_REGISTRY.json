@@ -4795,6 +4795,76 @@
           "n_days": 1318
         }
       }
+    },
+    {
+      "id": "R61_F1_A",
+      "hypothesis": "Libro de asimetría neutral A: largo en la alt desde el primer cierre 1h > +2σ_sem sobre el cierre del domingo hasta el domingo siguiente, cubierto con beta 60 d en BTC (48 alts U50); variante de C6",
+      "round": "r61",
+      "phase": "F1",
+      "date_utc": "2026-10-28",
+      "harness": "research_scripts/r61.py",
+      "family": "C6 en alts (variante)",
+      "metrics": {
+        "sharpe_dev": 1.53,
+        "sharpe_cost2": 1.365,
+        "sharpe_2024": 2.122,
+        "sharpe_old20": 0.981,
+        "top5_share": 0.611,
+        "rho_r1": 0.015,
+        "rho_p55": -0.039,
+        "rho_c6alts": 0.286,
+        "combo_delta_r1": 0.728,
+        "combo3_delta_c6": 0.477,
+        "dsr_n11": 0.944,
+        "cv_median": 0.861,
+        "placebo_p": 0.6906,
+        "max_dd": -0.134,
+        "vol": 0.181
+      },
+      "decision": "no pasa: g5_top5_lt_0_6, g7_bear, p2_timing",
+      "series": {
+        "common": {
+          "store": "research_scripts/data/r59/series/r61.npz",
+          "key": "R61_F1_A",
+          "sha256": "a40c6637c03754dad019fdf01b3d42e036c720a99867455c549ac47c0d20566f",
+          "n_days": 1318
+        }
+      }
+    },
+    {
+      "id": "R61_F1_B",
+      "hypothesis": "Libro de asimetría neutral B: A + largo toda la semana en alts con funding 7 d < 0 (enmienda r49 solo para esta manga), cubierto con beta 60 d en BTC; variante de C6",
+      "round": "r61",
+      "phase": "F1",
+      "date_utc": "2026-10-28",
+      "harness": "research_scripts/r61.py",
+      "family": "C6 en alts (variante)",
+      "metrics": {
+        "sharpe_dev": 1.276,
+        "sharpe_cost2": 1.157,
+        "sharpe_2024": 2.256,
+        "sharpe_old20": 1.394,
+        "top5_share": 0.804,
+        "rho_r1": 0.028,
+        "rho_p55": -0.027,
+        "rho_c6alts": 0.179,
+        "combo_delta_r1": 0.539,
+        "combo3_delta_c6": 0.39,
+        "dsr_n11": 0.804,
+        "cv_median": 1.361,
+        "placebo_p": 0.008,
+        "max_dd": -0.479,
+        "vol": 0.39
+      },
+      "decision": "no pasa: g5_top5_lt_0_6, g10_dsr_ge_0_9",
+      "series": {
+        "common": {
+          "store": "research_scripts/data/r59/series/r61.npz",
+          "key": "R61_F1_B",
+          "sha256": "b294eb834ae3f866277c2ada9d55253399d46d572f9d91ef38fb43adc784f00c",
+          "n_days": 1318
+        }
+      }
     }
   ],
   "n_effective": {
@@ -7232,6 +7302,35 @@
     },
     "open": [
       "Libro de asimetría K con puntaje neutro (stop + hacinados + beta) como hipótesis preregistrada con confirmación en H; requiere decisión del usuario sobre funding como señal de entrada (regla r49)"
+    ]
+  },
+  "r61_closed": {
+    "date": "2026-10-28",
+    "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/PROTOCOL_R61.md",
+    "candidate": "P-r55 sin cambios",
+    "n_start": 148,
+    "n_final": 150,
+    "n_ceiling": 151,
+    "n_regime": 38,
+    "n_tematica": 19,
+    "n_c6_alts_family": 11,
+    "sealed_2025": "sin abrir",
+    "oracle_budget": {
+      "used": 1,
+      "left": 4,
+      "note": "q3 no se consultó: ninguna variante pasó F1"
+    },
+    "report": "strategies/FundingOiPilot4h/reports/R61_CLOSE_20261028.md",
+    "amendments": [
+      "E1: la pata corta de K se renormaliza sobre las no hacinadas; la forma límite usa pesos esperados exactos; B preregistrado no es el límite completo de K (le falta el corto en no hacinadas)"
+    ],
+    "results": {
+      "F0": "aserción del límite pasa (A ρ 0,986; B 0,989); ρ con C6alts 0,29/0,18; selftests q2/q3 pasan",
+      "F1": "A 1,53 falla g5/g7/p2' (placebo p 0,69: la ruptura no tiene valor de timing); B 1,28 falla g5 (0,80) y g10 (DSR 0,80); ninguna pasa",
+      "F3": "familia C6 en alts + A/B (9): SPA vs cash p 0,137; combo vs R1 p 0,29; PBO 0,46"
+    },
+    "open": [
+      "L/S de funding de K (largo hacinadas, corto no hacinadas, neutral en dólares): preregistrar fuera de D"
     ]
   }
 }

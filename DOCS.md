@@ -15,6 +15,7 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 | [`bot/docs/socks-proxy.md`](bot/docs/socks-proxy.md) | Salida SOCKS hacia Binance. |
 | [`jesse/mcp/resources/funding.md`](jesse/mcp/resources/funding.md) | Funding/OI: fuentes, MCP/UI, contabilidad y límites de live. |
 | [`.claude/skills/jesse-strategy-tests/SKILL.md`](.claude/skills/jesse-strategy-tests/SKILL.md) | Cómo escribir tests de estrategias y del motor. |
+| [r61 `PROTOCOL_R61.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/PROTOCOL_R61.md) | Ronda cerrada: «libro de asimetría neutral» (límite de K de r60) como variante de C6, A (rupturas) y B (+ funding < 0). Ninguna pasa: la ruptura no tiene timing (placebo p 0,69; un largo en alts U50 cubierto da ~1,6 en D por supervivencia) y B concentra el PnL (top-5 80%, DSR 0,80). E1: K es también un L/S de funding. q3 sin consultar. P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R61_CLOSE_20261028.md) y [handoff a r62](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/HANDOFF_R62.md). |
 | [r60 `PROTOCOL_R60.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/PROTOCOL_R60.md) | Ronda cerrada: L/S entre alts de U50 con la cola corta cortada (stop 2σ, sin cortos hacinados, beta neutral). El Sharpe (~1,05, ρ ≈ 0 con R1) es de la construcción, no del ranking (rotación p 0,59); ninguna variante pasa y q2 no se consultó. Unlocks gratis insuficientes. P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R60_CLOSE_20261028.md) y [handoff a r61](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/HANDOFF_R61.md). |
 | [r59 `PROTOCOL_R59.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/PROTOCOL_R59.md) | Ronda cerrada: validación reutilizable sin bajar monedas (holdout N2 ∪ N3 con oráculo, 1/5 consultas; series de r50–r58 en `research_scripts/data/r59/series/`). SPA/PBO: la ventaja que sobrevive a la selección es R1, no lo que C6 y las variantes le suman; P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R59_CLOSE_20261027.md) y [handoff a r60](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r59/HANDOFF_R60.md). |
 | [r58 `PROTOCOL_R58.md`](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/PROTOCOL_R58.md) | Ronda cerrada: qué distingue una ruptura buena de C6 de una mala. El filtro compresión ∧ p(rango) bajo confirma en N2 ∪ N3, pero dentro de P-r55 resta; P-r55 sin cambios. [Cierre](bot/strategies/FundingOiPilot4h/reports/R58_CLOSE_20261027.md) y [handoff a r59](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261027-r58/HANDOFF_R59.md). |
@@ -41,14 +42,24 @@ Leer este archivo antes de trabajar en el repo. Aquí están solo el mapa y las 
 - `bot/archive/strategies/` guarda las 661 carpetas de rondas cerradas, con su código y reportes. Para re-ejecutar una, primero hay que devolverla a `bot/strategies/`.
 - El tag git `research-archive-r48` guarda el estado completo previo a la limpieza, incluidos los volcados crudos `*_PART_NN_*.json`. Esos volcados ya no se versionan: se regeneran desde la base de Jesse.
 
-## Decisiones vigentes (r60, 2026-10-28)
+## Decisiones vigentes (r61, 2026-10-28)
+
+- **r61 cerrada (2026-10-28)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R61_CLOSE_20261028.md), [handoff a r62](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r61/HANDOFF_R62.md)). El usuario aprobó el plan, eligió dos variantes y «variante de C6», y delegó el resto.
+  - **Candidata sin cambios: P-r55.** N = 150 (familia C6 en alts = 11). 2025 sellado y 2026 reservado. Oráculo: 1 de 5 consultas (r61 no leyó H; el criterio q3 queda registrado sin uso).
+  - **Regla r49:** enmendada solo para la manga B de r61 (funding negativo como entrada). Fuera de r61 sigue vigente.
+  - **F1:** A (rupturas) 1,53 falla el placebo de timing (p 0,69), g5 y g7. B (+ funding < 0) 1,28 pasa el placebo (p 0,008), pero falla g5 (top-5 80%) y g10 (DSR 0,80).
+  - **Hallazgo:** en D, cualquier largo en alts de U50 cubierto contra BTC da ~1,6 (supervivencia). **No juzgar libros de alts solo en D.**
+  - **E1:** K de r60 contiene un L/S de funding neutral en dólares (renormalización de la pata corta). Queda como hipótesis para r62, a juzgar solo en H.
+  - Los pasos que importan `r50_harness` (C6) corren con el contenedor descartable unido a `jesse-research_default` y `JESSE_ENV_FILE=/src/bot/.env.research`.
+
+## Decisiones r60 (2026-10-28)
 
 - **r60 cerrada (2026-10-28)** ([cierre](bot/strategies/FundingOiPilot4h/reports/R60_CLOSE_20261028.md), [handoff a r61](bot/strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/HANDOFF_R61.md)). Plan aprobado por el usuario; ejecución autónoma por delegación.
   - **Candidata sin cambios: P-r55.** N = 148. 2025 sellado y 2026 reservado. Oráculo: 1 de 5 consultas (r60 no leyó H).
   - **F1:** con la construcción K (stop 2σ de los cortos, sin cortos con funding 7 d < 0, beta neutral), L1/L2/L0 dan 1,05/0,93/0,85 en D con ρ ≈ 0 contra R1. Pero la rotación falla (p 0,19–0,59): con puntajes rotados K da 1,12. **El ranking entre monedas no agrega; el Sharpe es de las asimetrías de K.**
   - **F3:** familia transversal (15 libros r52–r60) SPA vs cash p 0,143; PBO 0,26.
   - **F0b:** los datos gratis de unlocks no alcanzan (23/48, cruce 4/10). Línea cerrada.
-  - **Pendiente del usuario para r61:** habilitar o no el funding negativo como señal de entrada (regla r49) en el «libro de asimetría neutral», y si cuenta como variante de C6.
+  - **Decisiones para r61:** se resolvieron en r61 (dos variantes; variante de C6).
 
 ## Decisiones r59 (2026-10-27)
 
