@@ -825,10 +825,91 @@ def q2_selftest():
     log(json.dumps({k: v for k, v in res.items() if k != 'direct_stats'}, default=str))
 
 
+# ----------------------------------------------------------------------------------------------
+# §5 F3: SPA/PBO over every cross-sectional book of the store (r52-r55) plus L0-L2
+# ----------------------------------------------------------------------------------------------
+XS_FAMILY = ['R52_F1_X0', 'R52_F1_X1', 'R52_F1_X2', 'R52_F1_X3', 'R53_F1_Y1', 'R53_F1_Y2', 'R53_F1_Y3',
+             'R53_F1_Y4', 'R53_F1_Y5', 'R53_F1_Y6', 'R55_F2_ML1', 'R55_F2_ML2', 'R60_F1_L0', 'R60_F1_L1', 'R60_F1_L2']
+
+
+def pbo_cscv(matrix, s=16):
+    """r50_f1d.pbo copied verbatim: importing r50_f1d opens Jesse's database, which the disposable
+    container does not have."""
+    import itertools
+    t, n = matrix.shape
+    blocks = np.array_split(np.arange(t), s)
+    lam = []
+    for combo in itertools.combinations(range(s), s // 2):
+        is_idx = np.concatenate([blocks[j] for j in combo])
+        os_idx = np.concatenate([blocks[j] for j in range(s) if j not in combo])
+
+        def sr(x):
+            sd = x.std(axis=0, ddof=1)
+            return np.where(sd > 0, x.mean(axis=0) / sd, 0.0)
+        is_sr, os_sr = sr(matrix[is_idx]), sr(matrix[os_idx])
+        best = int(np.argmax(is_sr))
+        rank = (os_sr < os_sr[best]).sum() + 0.5 * ((os_sr == os_sr[best]).sum() - 1)
+        w = (rank + 1) / (n + 1)
+        lam.append(math.log(w / (1 - w)))
+    lam = np.array(lam)
+    return float((lam <= 0).mean()), len(lam)
+
+
+def f3():
+    import r59
+    cols = [bench(t) for t in XS_FAMILY]
+    r1 = bench('BENCH_R1_common')
+    J = pd.concat(cols + [r1], axis=1, join='inner').dropna()
+    J = J[J.index <= pd.Timestamp(CUT, tz='UTC')]
+    M, b = J.values[:, :-1], J.values[:, -1]
+    sd = M.std(0, ddof=1)
+    sh = M.mean(0) / sd * math.sqrt(365)
+    G_r1 = M - b[:, None] * (sd / b.std(ddof=1))[None, :]
+    # Declared in F3 before computing: a diversifier need not beat R1 alone, so the decision-relevant
+    # differential is the equal-risk combo R1 + member, rescaled to R1's vol, minus R1.
+    comb = 0.5 * M / sd[None, :] + 0.5 * (b / b.std(ddof=1))[:, None]
+    comb = comb / comb.std(0, ddof=1)[None, :] * b.std(ddof=1)
+    G_c = comb - b[:, None]
+    p_cash, k_cash = r59.spa_pvalue(M)
+    p_r1, k_r1 = r59.spa_pvalue(G_r1)
+    p_c, k_c = r59.spa_pvalue(G_c)
+    pb, nc = pbo_cscv(M)
+    res = {'protocol': 'PROTOCOL_R60.md §5', 'window': [str(J.index[0].date()), str(J.index[-1].date())],
+           'days': int(len(J)), 'members': XS_FAMILY,
+           'sharpe': {t: round(float(x), 4) for t, x in sorted(zip(XS_FAMILY, sh), key=lambda z: -z[1])},
+           'spa_cash': {'p': p_cash, 'best': XS_FAMILY[k_cash]}, 'spa_r1': {'p': p_r1, 'best': XS_FAMILY[k_r1]},
+           'spa_combo_vs_r1': {'p': p_c, 'best': XS_FAMILY[k_c]}, 'pbo': pb, 'pbo_combinations': nc,
+           'r1_sharpe': float(b.mean() / b.std(ddof=1) * math.sqrt(365))}
+    json.dump(res, open(os.path.join(OUT, 'f3_spa.json'), 'w'), indent=1, default=float)
+    log(json.dumps(res, default=float))
+
+
+def null_parts():
+    """Descriptive, after p2 failed (N + 0): where does the rotation null's Sharpe come from? 100 X1
+    rotations (seed 601), each run with construction K and with each piece switched off."""
+    P = dev_panel()
+    sc = load_scores(P.S)
+    fb = FastBook(P, alts())
+    s = sc['X1']
+    rows = coin_rows(fb.S, s)
+    rng = np.random.default_rng(601)
+    rots = [rotate(s, rows, rng) for _ in range(100)]
+    out = {}
+    for nm, kw in (('K', {}), ('no_stop', {'stops': False}), ('no_crowded', {'crowded': False}),
+                   ('no_beta', {'beta': False}), ('stop_only', {'crowded': False, 'beta': False}),
+                   ('none', {'stops': False, 'crowded': False, 'beta': False})):
+        v = np.array([sharpe(window(fb.run(x, **kw))) for x in rots])
+        out[nm] = {'mean': float(v.mean()), 'p5': float(np.percentile(v, 5)), 'p95': float(np.percentile(v, 95)),
+                   'frac_pos': float((v > 0).mean())}
+    json.dump({'protocol': 'PROTOCOL_R60.md, descriptive after §3.3 p2', 'n_rot': 100, 'seed': 601, 'parts': out},
+              open(os.path.join(OUT, 'f1_null_parts.json'), 'w'), indent=1)
+    log(json.dumps(out))
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     fns = {'repro': repro, 'diag': diag, 'halves': halves, 'f1': f1, 'cv': cv, 'rotation': rotation,
-           'q2_selftest': q2_selftest, 'q2_power': q2_power}
+           'q2_selftest': q2_selftest, 'q2_power': q2_power, 'f3': f3, 'null_parts': null_parts}
     if cmd not in fns:
         print(__doc__)
         return 1

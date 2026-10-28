@@ -4708,6 +4708,93 @@
           "n_days": 2284
         }
       }
+    },
+    {
+      "id": "R60_F1_L0",
+      "hypothesis": "Reversión 1 semana entre las 48 alts de U50, construcción K (quintiles, inverso a vol, beta neutral con BTC, stop 2σ de la pata corta, sin cortos con funding 7d < 0)",
+      "round": "r60",
+      "phase": "F1",
+      "date_utc": "2026-10-28",
+      "harness": "research_scripts/r60.py",
+      "metrics": {
+        "sharpe_dev": 0.845,
+        "sharpe_cost2": 0.576,
+        "sharpe_2024": 0.102,
+        "sharpe_old20": -0.53,
+        "rho_r1": -0.015,
+        "rho_p55": 0.011,
+        "combo_delta_r1": 0.269,
+        "cv_median": 0.667,
+        "rotation_p": 0.1918,
+        "rotation_null_mean": 0.422
+      },
+      "decision": "no pasa: g4_old20_pos, g5_top5_lt_0_6, p2_rotation (el Sharpe es de la construcción K, no del puntaje)",
+      "series": {
+        "common": {
+          "store": "research_scripts/data/r59/series/r60.npz",
+          "key": "R60_F1_L0",
+          "sha256": "4f62d6a3be00282a768871e7a7c3f2d22f376a51a04bd18f0ad4eac79c83b7c7",
+          "n_days": 1318
+        }
+      }
+    },
+    {
+      "id": "R60_F1_L1",
+      "hypothesis": "Puntajes X1 (elastic net r52) con construcción K en las 48 alts de U50",
+      "round": "r60",
+      "phase": "F1",
+      "date_utc": "2026-10-28",
+      "harness": "research_scripts/r60.py",
+      "metrics": {
+        "sharpe_dev": 1.053,
+        "sharpe_cost2": 0.874,
+        "sharpe_2024": 1.49,
+        "sharpe_old20": 0.417,
+        "rho_r1": -0.024,
+        "rho_p55": 0.008,
+        "combo_delta_r1": 0.424,
+        "cv_median": 0.998,
+        "rotation_p": 0.5924,
+        "rotation_null_mean": 1.155
+      },
+      "decision": "no pasa: p2_rotation (el Sharpe es de la construcción K, no del puntaje)",
+      "series": {
+        "common": {
+          "store": "research_scripts/data/r59/series/r60.npz",
+          "key": "R60_F1_L1",
+          "sha256": "861488e9512e9bee08898f7bdb159db4765ad904e8539f93b9ee0727522e0607",
+          "n_days": 1318
+        }
+      }
+    },
+    {
+      "id": "R60_F1_L2",
+      "hypothesis": "Puntajes X2 (GBM r52) con construcción K en las 48 alts de U50",
+      "round": "r60",
+      "phase": "F1",
+      "date_utc": "2026-10-28",
+      "harness": "research_scripts/r60.py",
+      "metrics": {
+        "sharpe_dev": 0.929,
+        "sharpe_cost2": 0.694,
+        "sharpe_2024": 1.896,
+        "sharpe_old20": 0.338,
+        "rho_r1": 0.006,
+        "rho_p55": 0.035,
+        "combo_delta_r1": 0.312,
+        "cv_median": 0.437,
+        "rotation_p": 0.4825,
+        "rotation_null_mean": 0.913
+      },
+      "decision": "no pasa: p2_rotation (el Sharpe es de la construcción K, no del puntaje)",
+      "series": {
+        "common": {
+          "store": "research_scripts/data/r59/series/r60.npz",
+          "key": "R60_F1_L2",
+          "sha256": "dc7cf9dc02abd3a17389945353d41001f4d1da7e6e3d0b8af61f666cdbd0b5df",
+          "n_days": 1318
+        }
+      }
     }
   ],
   "n_effective": {
@@ -7119,6 +7206,32 @@
     "open": [
       "funding no saturado | compresión sin consultar en H",
       "2025: P-r55 vs R1 sola, preregistrado"
+    ]
+  },
+  "r60_closed": {
+    "date": "2026-10-28",
+    "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r60/PROTOCOL_R60.md",
+    "candidate": "P-r55 sin cambios",
+    "n_start": 145,
+    "n_final": 148,
+    "n_ceiling": 149,
+    "n_regime": 38,
+    "n_tematica": 19,
+    "sealed_2025": "sin abrir",
+    "oracle_budget": {
+      "used": 1,
+      "left": 4,
+      "note": "q2 no se consultó: ninguna variante pasó p2"
+    },
+    "report": "strategies/FundingOiPilot4h/reports/R60_CLOSE_20261028.md",
+    "results": {
+      "F0": "compuerta de colas pasa (crédito 0,65 ≥ 0,50)",
+      "F0b": "unlocks gratis insuficientes (23/48, cruce 4/10)",
+      "F1": "L1 1,05 / L2 0,93 / L0 0,85 en D; ρ con R1 ≈ 0; p1 pasa; p2 falla (p 0,19/0,59/0,48): con puntajes rotados K da 1,12 de media",
+      "F3": "familia transversal de 15: SPA vs cash p 0,143; combo vs R1 p 0,61; PBO 0,26"
+    },
+    "open": [
+      "Libro de asimetría K con puntaje neutro (stop + hacinados + beta) como hipótesis preregistrada con confirmación en H; requiere decisión del usuario sobre funding como señal de entrada (regla r49)"
     ]
   }
 }

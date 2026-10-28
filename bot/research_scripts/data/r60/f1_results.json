@@ -1,0 +1,186 @@
+{
+ "protocol": "PROTOCOL_R60.md \u00a73",
+ "window": [
+  "2021-05-24",
+  "2024-12-31"
+ ],
+ "old20": [
+  "ZECUSDT",
+  "XRPUSDT",
+  "BNBUSDT",
+  "ADAUSDT",
+  "LINKUSDT",
+  "XMRUSDT",
+  "BCHUSDT",
+  "IOSTUSDT",
+  "LTCUSDT",
+  "DASHUSDT",
+  "COMPUSDT",
+  "XLMUSDT",
+  "TRXUSDT",
+  "ETCUSDT",
+  "ATOMUSDT",
+  "BATUSDT",
+  "ZILUSDT",
+  "ALGOUSDT"
+ ],
+ "variants": {
+  "L0": {
+   "score": "L0",
+   "metrics": {
+    "sharpe": 0.8450000459682443,
+    "sharpe_cost2": 0.5755481951057877,
+    "sharpe_2024": 0.10241179951108569,
+    "sharpe_old20": -0.5302821476866282,
+    "top5_share": 0.6239597128471538,
+    "rho_r1": -0.015333327437749164,
+    "rho_p55": 0.010770616599781577,
+    "bear_sum": 0.2281407924866358,
+    "bear_rho_r1": 0.15461984282490762,
+    "combo_sharpe": 1.4290204108665046,
+    "r1_sharpe": 1.1603862793636714,
+    "combo_delta": 0.2686341315028331,
+    "cagr": 0.1867569922075918,
+    "max_dd": -0.20041955315299476,
+    "vol": 0.23536594180727255,
+    "from": "2021-05-24",
+    "to": "2024-12-31",
+    "without": {
+     "stop": 0.5349393661891356,
+     "crowded": 0.6612729455348967,
+     "beta": 0.8738237036182381,
+     "all_K_off": 0.037052276023743086
+    },
+    "capacity": {
+     "median_usdt": 2111584.0989607982,
+     "p10_usdt": 1272890.622723694
+    }
+   },
+   "gates": {
+    "g1_sharpe_ge_0_8": true,
+    "g2_cost2_ge_0_4": true,
+    "g3_2024_pos": true,
+    "g4_old20_pos": false,
+    "g5_top5_lt_0_6": false,
+    "g6_rho_le_0_3": true,
+    "g7_bear": true,
+    "g8_combo_ge_0_15": true,
+    "p1_cv": true,
+    "p2_rotation": false
+   },
+   "pass": false,
+   "series": {
+    "file": "r60.npz",
+    "script": "r60.py f1",
+    "window": "2021-05-24..2024-12-31",
+    "n_days": 1318,
+    "sha256": "4f62d6a3be00282a768871e7a7c3f2d22f376a51a04bd18f0ad4eac79c83b7c7"
+   }
+  },
+  "L1": {
+   "score": "X1",
+   "metrics": {
+    "sharpe": 1.0527555227989667,
+    "sharpe_cost2": 0.8742101667407906,
+    "sharpe_2024": 1.4904357783589566,
+    "sharpe_old20": 0.41739498214842613,
+    "top5_share": 0.5142858286410291,
+    "rho_r1": -0.02434389710133985,
+    "rho_p55": 0.007511175182853954,
+    "bear_sum": 0.25129820217555876,
+    "bear_rho_r1": 0.0029286116546221016,
+    "combo_sharpe": 1.5843307838078506,
+    "r1_sharpe": 1.1603862793636714,
+    "combo_delta": 0.4239445044441792,
+    "cagr": 0.2300790104531416,
+    "max_dd": -0.25055546518925864,
+    "vol": 0.21969552523396577,
+    "from": "2021-05-24",
+    "to": "2024-12-31",
+    "without": {
+     "stop": 0.7788824524293072,
+     "crowded": 0.9413252638028714,
+     "beta": 0.5470391129154006,
+     "all_K_off": -0.07837180039630129
+    },
+    "capacity": {
+     "median_usdt": 2021657.5448208402,
+     "p10_usdt": 1182915.0624268558
+    }
+   },
+   "gates": {
+    "g1_sharpe_ge_0_8": true,
+    "g2_cost2_ge_0_4": true,
+    "g3_2024_pos": true,
+    "g4_old20_pos": true,
+    "g5_top5_lt_0_6": true,
+    "g6_rho_le_0_3": true,
+    "g7_bear": true,
+    "g8_combo_ge_0_15": true,
+    "p1_cv": true,
+    "p2_rotation": false
+   },
+   "pass": false,
+   "series": {
+    "file": "r60.npz",
+    "script": "r60.py f1",
+    "window": "2021-05-24..2024-12-31",
+    "n_days": 1318,
+    "sha256": "861488e9512e9bee08898f7bdb159db4765ad904e8539f93b9ee0727522e0607"
+   }
+  },
+  "L2": {
+   "score": "X2",
+   "metrics": {
+    "sharpe": 0.929082801961624,
+    "sharpe_cost2": 0.6940484386799585,
+    "sharpe_2024": 1.8957040495577326,
+    "sharpe_old20": 0.33812838182106025,
+    "top5_share": 0.5078714665109635,
+    "rho_r1": 0.0064175575044382645,
+    "rho_p55": 0.0353601259117337,
+    "bear_sum": 0.22626614418661578,
+    "bear_rho_r1": 0.017290440062667535,
+    "combo_sharpe": 1.4727595546454288,
+    "r1_sharpe": 1.1603862793636714,
+    "combo_delta": 0.3123732752817574,
+    "cagr": 0.1840846474629554,
+    "max_dd": -0.21093187754891696,
+    "vol": 0.2044450564633589,
+    "from": "2021-05-24",
+    "to": "2024-12-31",
+    "without": {
+     "stop": 0.7903033615045622,
+     "crowded": 1.1712976898347325,
+     "beta": 0.6385054522453534,
+     "all_K_off": 0.34663716784234877
+    },
+    "capacity": {
+     "median_usdt": 1915329.2823780954,
+     "p10_usdt": 1200643.2441521762
+    }
+   },
+   "gates": {
+    "g1_sharpe_ge_0_8": true,
+    "g2_cost2_ge_0_4": true,
+    "g3_2024_pos": true,
+    "g4_old20_pos": true,
+    "g5_top5_lt_0_6": true,
+    "g6_rho_le_0_3": true,
+    "g7_bear": true,
+    "g8_combo_ge_0_15": true,
+    "p1_cv": true,
+    "p2_rotation": false
+   },
+   "pass": false,
+   "series": {
+    "file": "r60.npz",
+    "script": "r60.py f1",
+    "window": "2021-05-24..2024-12-31",
+    "n_days": 1318,
+    "sha256": "dc7cf9dc02abd3a17389945353d41001f4d1da7e6e3d0b8af61f666cdbd0b5df"
+   }
+  }
+ },
+ "selected": null
+}
