@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "id": "20261029-r63",
+  "updated_at_utc": "2026-10-29 00:00:00 UTC",
+  "objective": "Última fábrica (r62) sobre el universo completo USDT-M de Binance con deslistadas, sin LLM; holdout local L63 fresco.",
+  "latest": "r63 cerrada, negativa: calibración F1 falla C2 (2 de 3 semillas plantadas), la fábrica no corre sobre datos reales; voljump r62 en L63 Sharpe −0,04 (p 0,55). P-r55 sin cambios, N=156, N_fab=1614, oráculo 1/5.",
+  "next": "r64: robustez operativa de P-r55 (HANDOFF_R64.md).",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r63": {
+      "n_strategies": 156,
+      "n_regime": 38,
+      "n_tematica": 19,
+      "n_fab": 1614
+    }
+  },
+  "decisions": [
+    "2026-10-29 plan aprobado por el usuario: sin LLM, ~1.620 programas, deslistadas incluidas.",
+    "2026-10-29 E1 (usuario): P1 plantado en el 100% de D63, κ 0,165.",
+    "2026-10-29 F1 no pasa (C2); F2 no corre; voljump en L63 no pasa; búsqueda de segundo motor cerrada."
+  ],
+  "supersedes": "20261028-r62",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 universo, datos, selftests",
+      "state": "completada",
+      "depends": "-",
+      "gate": "PROTOCOL_R63 §1-§2, §8"
+    },
+    {
+      "order": 1,
+      "title": "F1 calibración",
+      "state": "completada, no pasa (C2)",
+      "depends": "F0",
+      "gate": "§6"
+    },
+    {
+      "order": 2,
+      "title": "F2 búsqueda real",
+      "state": "no corre",
+      "depends": "F1",
+      "gate": "§5"
+    },
+    {
+      "order": 3,
+      "title": "F3 voljump en L63",
+      "state": "completada, no pasa",
+      "depends": "F0",
+      "gate": "§7.4"
+    }
+  ]
+}

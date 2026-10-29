@@ -4865,6 +4865,36 @@
      "n_days": 1318
     }
    }
+  },
+  {
+   "id": "R63_VOLJUMP_L63",
+   "hypothesis": "Finalista r62 1521f048 (voljump follow 1,5, sesión US, salida 24 h, largo, taker), congelado, sobre las 98 alts frescas L63 a 1 h (PROTOCOL_R63 §7.4)",
+   "round": "r63",
+   "phase": "F3",
+   "date_utc": "2026-10-29",
+   "harness": "research_scripts/r63_f3.py",
+   "family": "voljump (fábrica r62)",
+   "metrics": {
+    "sharpe_l63": -0.042,
+    "p_one_sided": 0.552,
+    "sharpe_cost2": -0.278,
+    "sharpe_survivors_only": 0.067,
+    "years_positive": 4,
+    "trades": 756,
+    "power": 0.41,
+    "sharpe_d63_descriptive": 1.416
+   },
+   "decision": "no pasa: Sharpe L63 ≤ 0, p 0,55; no se consulta el oráculo",
+   "series": {
+    "l63": {
+     "store": "research_scripts/data/r59/series/r63.npz",
+     "key": "R63_VOLJUMP_L63"
+    },
+    "d63": {
+     "store": "research_scripts/data/r59/series/r63.npz",
+     "key": "R63_VOLJUMP_D63"
+    }
+   }
   }
  ],
  "n_effective": {
@@ -7380,7 +7410,12 @@
     "note": "run real_f2"
    }
   },
-  "n_eff_f2": 65.3
+  "n_eff_f2": 65.3,
+  "r63": {
+   "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261029-r63/PROTOCOL_R63.md",
+   "n_fab": 0,
+   "note": "La calibración F1 falló (C2), así que la fábrica no corrió sobre datos reales: N_fab no se mueve. Las 5 corridas sintéticas (8.100 programas) no cuentan (§0)."
+  }
  },
  "r62_closed": {
   "date": "2026-10-29",
@@ -7418,6 +7453,37 @@
   },
   "open": [
    "voljump en cripto 1h: familia dominante (4/5 finalistas, rotación p 0,005) pero indistinguible del ruido tras el costo de búsqueda"
+  ]
+ },
+ "r63_closed": {
+  "date": "2026-10-29",
+  "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261029-r63/PROTOCOL_R63.md",
+  "candidate": "P-r55 sin cambios",
+  "n_start": 155,
+  "n_final": 156,
+  "n_note": "+1 por la prueba preregistrada de voljump en L63; la fábrica no dejó finalistas reales",
+  "n_fab": 1614,
+  "n_fab_note": "sin cambios: la fábrica no corrió en datos reales",
+  "sealed_2025": "sin abrir",
+  "oracle_budget": {
+   "used": 1,
+   "left": 4,
+   "note": "q5 no se consultó"
+  },
+  "report": "strategies/FundingOiPilot4h/reports/R63_CLOSE_20261029.md",
+  "amendments": [
+   "E1 P1 plantado en el 100% de D63 y κ 0,165 (usuario)"
+  ],
+  "results": {
+   "F0": "295 alts USDT-M fuera de U50/H (54 deslistadas en ventana); D63 197 / L63 98; selftests pasan",
+   "F1": "no pasa: C1 se cumple (ruido p 0,035/0,091 y 0,40/0,66), C2 falla en 2 de 3 semillas plantadas (SPA global p<0,02 pero ningún finalista es el máximo ni supera t 4,2)",
+   "F2": "no corre (protocolo §6)",
+   "F3": "voljump r62 en L63: Sharpe −0,04, p 0,55 (D63 descriptivo 1,42); no pasa"
+  },
+  "findings": [
+   "La fábrica sobre canasta no puede ver ventajas concentradas en una minoría de monedas (20%: techo de Sharpe 0,4)",
+   "Una ventaja amplia de Sharpe ~0,8 se detecta con el SPA global pero no sobrevive a la regla de finalistas (t ≥ ~4,2) en 2 de 3 semillas",
+   "voljump largo no se confirma en monedas nuevas"
   ]
  }
 }

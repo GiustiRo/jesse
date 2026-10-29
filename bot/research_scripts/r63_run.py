@@ -187,7 +187,7 @@ def run(name, kind, seed, kappa=0.0, workers=None):
             if str(g) in st['gens']:
                 continue
             tg = time.time()
-            rng = np.random.default_rng([SEED, -1 if g == 'seed' else g, int(seed), 11])
+            rng = np.random.default_rng([SEED, 10_000 if g == 'seed' else g, int(seed), 11])
             room = N_FAB_CEILING - arch.n() if kind == 'real' else 10 ** 9
             n = min(N_SEED if g == 'seed' else PER_GEN, room)
             if g == 'seed':

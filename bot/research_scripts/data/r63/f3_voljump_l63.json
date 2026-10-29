@@ -1,0 +1,55 @@
+{
+ "program": {
+  "universe": "alts_1h",
+  "signal": [
+   {
+    "kind": "voljump",
+    "params": {
+     "mode": "follow",
+     "ratio": 1.5
+    }
+   }
+  ],
+  "filters": [
+   {
+    "kind": "session",
+    "params": {
+     "s": "us"
+    }
+   }
+  ],
+  "exit": {
+   "kind": "time",
+   "params": {
+    "h": 24
+   }
+  },
+  "size": {
+   "kind": "voltgt",
+   "params": {
+    "side": "long"
+   }
+  },
+  "exec": {
+   "kind": "taker",
+   "params": {}
+  }
+ },
+ "sharpe_l63": -0.04166916397422076,
+ "p_one_sided": 0.552223888055972,
+ "years": {
+  "2020": -1.1131529714328665,
+  "2021": 0.2263770965708465,
+  "2022": 0.10501835589756814,
+  "2023": 0.9133605964347445,
+  "2024": 1.2375676729873977
+ },
+ "years_positive": 4,
+ "pass": false,
+ "n_days": 1729,
+ "n_tramos": 92,
+ "trades": 756,
+ "sharpe_cost2": -0.2782224484784056,
+ "sharpe_survivors_only": 0.06717192844645292,
+ "n_delisted_tramos": 19
+}

@@ -1,0 +1,56 @@
+{
+ "program": {
+  "universe": "alts_1h",
+  "signal": [
+   {
+    "kind": "voljump",
+    "params": {
+     "mode": "follow",
+     "ratio": 1.5
+    }
+   }
+  ],
+  "filters": [
+   {
+    "kind": "session",
+    "params": {
+     "s": "us"
+    }
+   }
+  ],
+  "exit": {
+   "kind": "time",
+   "params": {
+    "h": 24
+   }
+  },
+  "size": {
+   "kind": "voltgt",
+   "params": {
+    "side": "long"
+   }
+  },
+  "exec": {
+   "kind": "taker",
+   "params": {}
+  }
+ },
+ "sharpe_d63": 1.4162421325618797,
+ "se_d63": 0.38201422066262186,
+ "n_eff_d63": 64.61250957295024,
+ "n_days": 1553,
+ "trades": 1501,
+ "n_tramos": 189,
+ "sharpe_d_for_power": 1.5348043953483959,
+ "years": {
+  "2020": 2.90800808873325,
+  "2021": 1.242001920137517,
+  "2022": 0.7147854999653429,
+  "2023": 2.2486756853289847,
+  "2024": 1.0249940366022685
+ },
+ "r62": {
+  "hash": "1521f048f29e0403cdc1e6be0b6c9ac91455721b",
+  "sharpe_d": 1.5348043953483959
+ }
+}
