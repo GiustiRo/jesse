@@ -1,0 +1,16 @@
+# BTC R1 root source review — 2026-10-19
+
+Reviewed nine complete MCP sources against current PortCompareBtc4h before tickets. Entry variants normalize exactly to base after removing new _entry_gate and its two-line call: 3/3 equality; all original methods preserved. Gates use correct OHLCV columns (close2,low4,volume5), closed-clock contiguous windows. R101 six returns from7closes, R102 log downside majority, R103 floor excludes signal. No new quantity/ledger/long changes.
+
+Payoff: root read all changed hooks and helpers. Original entry/sizing methods and long management preserved; timeout72h before full-postfill-bar gate. EMA stop requires price<new<old; feeBE exact short equal-fee equation; RSI3 neutral exits MARKET. Short fills reset latch; no stop widening or quantity increase. Decision gate requires current closed bar open>=fill timestamp and time>fill. Inherited inaccurate debugfalse persistence comment requested fixed before drafts; debugtrue fixed across all runs.
+
+Explore: root read all changed methods, reviewed R10132row volume median strictly before shock, ATR from c[:-1], R10249closes into2nonoverlap24returnwindows and startupfalse state, R10314rows for C_s vsC_s-12 and12q/HLC3VWAP. Supplemental plans have original long/short priority, kind isolates stop/TP/timeout from original long runner; new sizing shares ledger/room/risk helpers. R102 original short replaced only. before observes events while occupied; no pending queue. Requested pre-run finite-first validation, explicit candleclosedtime, idempotent sameclock guard; synthetic causal QA required before ticket.
+
+Controls fixed B/C same data and fees; previous validated debug equivalence used. Root independently checked E01 forms and three source snapshots against fresh sources, all exact. P01 exchangeconfig equals E01; PAXG/SPY snapshots exact, debugtrue/fastfalse/warm240. All final18forms/snapshots/hp and telemetry remain mandatory in agent reports and root finalregistry.
+
+No production/live/paper change, no2026, no parameter optimization. Actual new source codes persist in Jesse classes and per-session3-route snapshots. Numerical result audit uses recovered immutable daily source marks and executed fills, not trade-close monthly aggregation. Full and partial denominator results both shown.
+
+## Completed source/state review update
+Final Explore finite-first/closed-time/idempotency adjustments re-read by root; synthetic state QA128PASS. Payoff AST/stubs101PASS and actual P01order comparison passed (50changed short exits,2new entries, preserved31long timestamps). Root read framework Strategy._execute1359 always calls before before _check; _reset869 retains vars. events_occupied observes initial state only, not rejected fills.
+
+All18draft/session forms and54route-source snapshots independently verified by root against frozen originals: dates/order/4h/M1/fee/balance/isolated5x/warmup240/debugtrue/fastfalse/charttrue pass. Only entry copies received a postexperiment documentation correction: one inherited terminate comment now correctly says debugtrue required; root reread3sources and reversed exactonecomment to frozen bytes3/3. No executable change, rerun, or baseline change. Finalregistry retains original frozen snapshots and documents difference.

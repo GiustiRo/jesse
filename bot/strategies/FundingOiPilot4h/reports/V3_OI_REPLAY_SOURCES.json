@@ -1,0 +1,93 @@
+{
+  "status": "CREATED_READBACK_VERIFIED_PENDING_ROOT_FREEZE",
+  "sector": "CHANNEL_POI_REPLAY",
+  "calendar_ref": "V3_REPLAY_CALENDARS_FROZEN.json",
+  "calendar_frozen_at": "2026-10-20 23:44:31 UTC",
+  "calendar": {
+    "strategy": "ResearchV3ChannelOi4h",
+    "windows": [
+      {
+        "fold": "C1",
+        "start": "2024-01-01",
+        "finish": "2024-07-01",
+        "start_ms": 1704067200000,
+        "finish_ms": 1719792000000
+      },
+      {
+        "fold": "C2",
+        "start": "2024-07-01",
+        "finish": "2025-01-01",
+        "start_ms": 1719792000000,
+        "finish_ms": 1735689600000
+      },
+      {
+        "fold": "C3",
+        "start": "2025-01-01",
+        "finish": "2025-07-01",
+        "start_ms": 1735689600000,
+        "finish_ms": 1751328000000
+      },
+      {
+        "fold": "C4",
+        "start": "2025-07-01",
+        "finish": "2026-01-01",
+        "start_ms": 1751328000000,
+        "finish_ms": 1767225600000
+      }
+    ],
+    "force_boundaries": [
+      1719792000000,
+      1735689600000,
+      1751328000000,
+      1767225600000
+    ]
+  },
+  "config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "start": "2024-01-01",
+  "finish": "2026-01-01",
+  "finish_exclusive": true,
+  "sources": {
+    "ResearchV3ChannelOiReplay4h": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3ChannelOiReplay4h(ResearchV3ChannelOi4h):\n    START = 1704067200000\n    FINISH = 1767225600000\n    ACTIVE_WINDOWS = [[1704067200000,1719792000000],[1719792000000,1735689600000],[1735689600000,1751328000000],[1751328000000,1767225600000]]\n    FORCE_BOUNDARIES = [1719792000000,1735689600000,1751328000000,1767225600000]\n",
+    "ResearchV3ChannelOiReplayN09_4h": "from strategies.ResearchV3ChannelOiReplay4h import ResearchV3ChannelOiReplay4h\n\n\nclass ResearchV3ChannelOiReplayN09_4h(ResearchV3ChannelOiReplay4h):\n    STOP_MULTIPLIER = 1.8\n    TRAIL_MULTIPLIER = 2.7\n",
+    "ResearchV3ChannelOiReplayN11_4h": "from strategies.ResearchV3ChannelOiReplay4h import ResearchV3ChannelOiReplay4h\n\n\nclass ResearchV3ChannelOiReplayN11_4h(ResearchV3ChannelOiReplay4h):\n    STOP_MULTIPLIER = 2.2\n    TRAIL_MULTIPLIER = 3.3\n",
+    "ResearchV3ChannelOiReplayLag4h": "from strategies.ResearchV3ChannelOiReplay4h import ResearchV3ChannelOiReplay4h\n\n\nclass ResearchV3ChannelOiReplayLag4h(ResearchV3ChannelOiReplay4h):\n    OI_LAG_BARS = 1\n"
+  },
+  "readback_equal": 4,
+  "hashes_status": "root independent SHA/compile pending",
+  "created_at": "2026-10-20T23:46:37.577Z",
+  "no_replay_runs": true,
+  "no_stress_runs": true
+}

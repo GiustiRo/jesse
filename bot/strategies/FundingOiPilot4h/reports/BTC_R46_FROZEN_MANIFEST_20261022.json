@@ -1,0 +1,75 @@
+{
+  "protocol": "BTC_R46_CONTINUATION_VALUE_PROTOCOL_20261022.md",
+  "protocol_chars": 12001,
+  "source_hashes": {
+    "BtcResearchR10Base4h": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+    "BtcResearchR46ContinuationMath": "d99555ef0ae33616e5e2a2f5d08ba590163be0fdd2c49d435f1cea9d13da10e4",
+    "BtcResearchR46ContinuationObserver1m": "2db2a55099f4cf32aa173fca7475ea8ee9708411e7980965c6d134fc3b282858"
+  },
+  "synthetic_job": "7f0e98c8e69245e6a6d5a6027c2b485d",
+  "synthetic_outcomes": 88,
+  "synthetic_pass_first_attempt": true,
+  "static_review_complete": true,
+  "form": {
+    "exchange": "Binance Perpetual Futures",
+    "routes": [
+      {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "timeframe": "1m",
+        "strategy": "BtcResearchR46ContinuationObserver1m"
+      }
+    ],
+    "data_routes": [
+      {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "timeframe": "4h"
+      }
+    ],
+    "start_date": "2020-10-15",
+    "finish_date": "2026-01-01",
+    "debug_mode": true,
+    "export_csv": false,
+    "export_json": false,
+    "export_chart": false,
+    "fast_mode": false,
+    "benchmark": false,
+    "config": {
+      "logging": {
+        "order_submission": true,
+        "order_cancellation": true,
+        "order_execution": true,
+        "position_opened": true,
+        "position_increased": true,
+        "position_reduced": true,
+        "position_closed": true,
+        "shorter_period_candles": false,
+        "trading_candles": false,
+        "balance_update": true
+      },
+      "warm_up_candles": 240,
+      "exchange": {
+        "name": "Binance Perpetual Futures",
+        "type": "futures",
+        "balance": 10000,
+        "fee": 0.00045,
+        "futures_leverage_mode": "isolated",
+        "futures_leverage": 3,
+        "slippage_bps": 0
+      },
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+      },
+      "open_interest": {
+        "mode": "disabled"
+      }
+    }
+  },
+  "session_id": "24a7a576-b1af-4b96-ade4-1623d5d95a7d",
+  "dashboard_url": "http://localhost:9200/#/backtest/24a7a576-b1af-4b96-ade4-1623d5d95a7d",
+  "zero_order_observer_not_economy": true,
+  "new_2026": false,
+  "goal_status": "active"
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Funding e interés abierto · Jesse</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/funding/panel.css?v=3">
+  <script src="/funding/logic.js?v=1" defer></script>
+  <script src="/funding/panel.js?v=3" defer></script>
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <div><a href="/" class="back-link">← Dashboard Jesse</a><p class="eyebrow">DATOS Y CONTABILIDAD</p><h1>Funding e interés abierto</h1></div>
+      <span class="source-tag">Binance · BTC-USDT USDⓈ-M</span>
+    </header>
+    <p class="intro">El funding mueve el saldo. El interés abierto es una fuente de información para las estrategias. Acá podés preparar datos y verificar qué consumió una sesión.</p>
+    <div id="global-message" class="message" role="status" aria-live="polite" hidden></div>
+
+    <section class="card" aria-labelledby="data-title">
+      <div class="section-heading"><div><p class="eyebrow">1 · PREPARAR DATOS</p><h2 id="data-title">Biblioteca de datos</h2></div><button type="button" id="refresh-datasets" class="secondary">Actualizar lista</button></div>
+      <div class="tabs" role="group" aria-label="Tipo de datos"><button type="button" id="tab-funding" aria-pressed="true">Funding</button><button type="button" id="tab-oi" aria-pressed="false">Interés abierto</button></div>
+      <p id="data-description" class="muted">Tasas ya liquidadas y precio de referencia de cada cobro. Cada descarga genera una versión identificable.</p>
+      <form id="import-form" class="form-grid">
+        <label>Desde (UTC, incluido)<input type="date" id="start-date" required></label>
+        <label>Hasta (UTC, excluido)<input type="date" id="finish-date" required></label>
+        <label id="funding-symbol-label">Símbolo (perpetuo USDT-M)<input type="text" id="funding-symbol" value="BTC-USDT" required pattern="[A-Z0-9]{2,20}-USDT" title="Formato Jesse, por ejemplo BTC-USDT o ETH-USDT" autocomplete="off"></label>
+        <label id="period-label" hidden>Intervalo<select id="oi-period"><option value="5m">5 minutos</option></select></label>
+        <label id="oi-source-label" hidden>Fuente<select id="oi-source"><option value="rest">API REST · último mes</option><option value="archive">Archivo oficial Binance · desde septiembre 2020</option><option value="auto">Automática · archivo + API REST</option></select></label>
+        <button type="submit" id="import-data">Descargar datos</button>
+      </form>
+      <label id="allow-mark-proxy-label" class="checkbox-row"><input type="checkbox" id="allow-mark-proxy">Permitir aproximación de mark price cuando Binance no conserve el precio de liquidación</label>
+      <p id="mark-proxy-note" class="fine-print">Desactivado por defecto. Si lo habilitás, los precios faltantes se aproximan con la apertura de una vela horaria de mark price de Binance en el límite de liquidación; esos costos dejan de ser exactos.</p>
+      <p id="oi-coverage-note" class="callout warning" hidden>La API REST de interés abierto sólo ofrece una ventana reciente. No permite asumir cobertura desde 2020; las solicitudes fuera de cobertura deben rechazarse.</p>
+      <label id="archive-consent-label" class="checkbox-row" hidden><input type="checkbox" id="allow-archive-assumptions">Acepto usar archivos históricos con posibles revisiones y el retraso supuesto de seis minutos; no son un historial certificado de publicación en tiempo real.</label>
+      <div id="oi-job-panel" class="callout neutral" role="status" aria-live="polite" hidden><strong id="oi-job-status"></strong><p id="oi-job-progress"></p><p id="oi-job-reference" class="fine-print"></p></div>
+      <p id="library-status" class="muted" role="status">Cargando biblioteca…</p>
+      <div class="table-wrap"><table><thead><tr><th>Seleccionar</th><th>Ventana solicitada UTC</th><th>Registros y cobertura</th><th>Fuente y versión</th></tr></thead><tbody id="datasets-body"></tbody></table></div>
+      <div class="update-row"><label>Extender versión seleccionada hasta (UTC, excluido)<input type="date" id="update-finish"></label><button type="button" id="update-data" class="secondary" disabled>Descargar actualización</button></div>
+      <p class="fine-print">Actualizar conserva la versión anterior. Ninguna descarga modifica automáticamente una estrategia o un backtest ya ejecutado.</p>
+    </section>
+
+    <section class="card" aria-labelledby="session-title">
+      <div class="section-heading"><div><p class="eyebrow">2 · CONFIGURAR Y COMPROBAR</p><h2 id="session-title">Sesión de backtest</h2></div><a id="session-link" href="/" hidden>Abrir en dashboard ↗</a></div>
+      <form id="session-form" class="session-row"><label class="grow">ID de sesión<input id="session-id" type="text" placeholder="UUID de un borrador o backtest guardado" required autocomplete="off"></label><button type="submit">Cargar sesión</button><button type="button" id="load-drafts" class="secondary">Ver borradores</button></form>
+      <label id="drafts-label" hidden>Borradores guardados<select id="drafts"><option value="">Seleccioná un borrador</option></select></label>
+      <div id="session-status" class="callout neutral"><strong>Sin evidencia</strong><p>Cargá una sesión para comprobar si contabilizó funding.</p></div>
+      <div id="session-summary" class="summary-grid" hidden></div>
+      <form id="session-config-form" hidden>
+        <div class="config-grid">
+          <fieldset><legend>Funding</legend><label class="checkbox-row"><input type="checkbox" id="enable-funding">Contabilizar funding histórico</label><label>Versiones de funding (una por símbolo; Ctrl/⌘ para varias)<select id="funding-dataset" multiple size="4"></select></label><div id="funding-exclusions" hidden></div></fieldset>
+          <fieldset><legend>Interés abierto</legend><label class="checkbox-row"><input type="checkbox" id="enable-oi">Exponer interés abierto a la estrategia</label><label>Versión de interés abierto<select id="oi-dataset"><option value="">Seleccioná una versión</option></select></label><label class="checkbox-row"><input type="checkbox" id="allow-missing-oi">Permitir OI con huecos: los datos faltantes o vencidos serán None</label><p id="oi-selection-warning" class="callout warning" hidden></p></fieldset>
+        </div>
+        <p class="fine-print">Se guarda únicamente en un borrador. Ejecutá luego el backtest desde el dashboard o MCP. Si el borrador está abierto en otra pestaña, volvé a abrirlo para cargar la configuración guardada.</p>
+        <button type="submit" id="save-config">Guardar configuración del borrador</button>
+      </form>
+      <details id="ledger-section" hidden><summary>Pagos y cobros de funding</summary><p class="fine-print">Un valor positivo es un cobro; negativo, un pago. Se muestran por separado de las comisiones de ejecución. La fuente del precio distingue liquidaciones exactas de aproximaciones.</p><div class="table-wrap"><table><thead><tr><th>Liquidación UTC</th><th>Símbolo</th><th>Tasa</th><th>Cantidad firmada</th><th>Precio de referencia</th><th>Fuente del precio</th><th>Movimiento</th></tr></thead><tbody id="ledger-body"></tbody></table></div><div class="pager"><button type="button" id="ledger-prev" class="secondary">Anterior</button><span id="ledger-page"></span><button type="button" id="ledger-next" class="secondary">Siguiente</button></div></details>
+    </section>
+
+    <section class="card" aria-labelledby="live-title">
+      <div class="section-heading"><div><p class="eyebrow">3 · COMPROBAR LIVE</p><h2 id="live-title">Estado de funding en live</h2></div><span class="source-tag">Sólo lectura</span></div>
+      <p class="muted">Consulta una sesión existente. No inicia sesiones, no cambia su configuración y no envía órdenes.</p>
+      <form id="live-form" class="session-row"><label class="grow">ID de sesión live<input id="live-session-id" type="text" placeholder="UUID de una sesión existente" required autocomplete="off"></label><button type="submit">Consultar estado</button></form>
+      <div id="live-status" class="callout neutral"><strong>Sin consultar</strong><p>La tasa estimada del próximo cobro es distinta de una tasa final ya liquidada.</p></div>
+      <div id="live-summary" class="summary-grid" hidden></div>
+      <details id="live-ledger-section" hidden><summary>Movimientos conciliados de la cuenta</summary><p class="fine-print">Son registros de la cuenta del exchange; no deben interpretarse automáticamente como rendimiento de esta estrategia.</p><div class="table-wrap"><table><thead><tr><th>Fecha UTC</th><th>Instrumento</th><th>Movimiento</th><th>Referencia del exchange</th></tr></thead><tbody id="live-ledger-body"></tbody></table></div></details>
+      <label class="checkbox-row refresh-option"><input type="checkbox" id="auto-refresh">Actualizar la consulta cada 30 segundos mientras esta página esté visible</label>
+    </section>
+    <footer>Funding apagado conserva el comportamiento anterior. La ausencia de datos no equivale a una tasa cero.</footer>
+  </main>
+</body>
+</html>

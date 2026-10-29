@@ -1,0 +1,660 @@
+{
+  "id": "BTC_DISCOVERY_R",
+  "title": "BTC: similitud de trayectorias y control global",
+  "asset": "BTC",
+  "family": "aprendizaje no paramétrico / control global",
+  "execution": "cerrado",
+  "promoted": false,
+  "results": [
+    {
+      "id": "e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+      "name": "KNN",
+      "strategy": "BtcResearchR18AnalogueKnn1m",
+      "url": "http://localhost:9200/#/backtest/e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+      "financial": {
+        "N": 1751,
+        "net": -6660.846532925419,
+        "return_pct": -66.60846532925419,
+        "cagr_pct": -18.963571285044722,
+        "pf": 0.9412293246370574,
+        "dd_daily_pct": -82.76623916709762,
+        "fee": 9948.266673171467,
+        "funding": -1413.6015183596885,
+        "funding_applied": true,
+        "proxy_payments": 2684,
+        "errors": {
+          "gross_fee_funding_pnl": 5.4569682106375694e-12,
+          "pnl_metrics": -2.7284841053187847e-12,
+          "terminal_vs_net": -6.821210263296962e-11,
+          "funding_vs_metric": 7.048583938740194e-12
+        },
+        "gross": 4701.021658605742,
+        "finish": 3339.1534670745136,
+        "raw_open_counter": 0,
+        "long_pnl": -923.0199689377542,
+        "short_pnl": -5737.826563987653
+      },
+      "descriptive_calendar": {
+        "annual": {
+          "2021": 16.63716600808669,
+          "2022": -22.378583620187133,
+          "2023": -28.484899927751172,
+          "2024": -46.389541736351866,
+          "2025": -25.94236968672027
+        },
+        "rolling_12m": [
+          {
+            "start": "2020-11",
+            "finish": "2021-10",
+            "return_pct": 64.84593144335804
+          },
+          {
+            "start": "2020-12",
+            "finish": "2021-11",
+            "return_pct": 29.903540799934582
+          },
+          {
+            "start": "2021-01",
+            "finish": "2021-12",
+            "return_pct": 16.63716600808669
+          },
+          {
+            "start": "2021-02",
+            "finish": "2022-01",
+            "return_pct": 15.341408002716705
+          },
+          {
+            "start": "2021-03",
+            "finish": "2022-02",
+            "return_pct": 14.29925453864984
+          },
+          {
+            "start": "2021-04",
+            "finish": "2022-03",
+            "return_pct": 10.910275092125875
+          },
+          {
+            "start": "2021-05",
+            "finish": "2022-04",
+            "return_pct": 7.137914362531994
+          },
+          {
+            "start": "2021-06",
+            "finish": "2022-05",
+            "return_pct": -9.087145655089435
+          },
+          {
+            "start": "2021-07",
+            "finish": "2022-06",
+            "return_pct": -2.0503349966044415
+          },
+          {
+            "start": "2021-08",
+            "finish": "2022-07",
+            "return_pct": -15.57315014559535
+          },
+          {
+            "start": "2021-09",
+            "finish": "2022-08",
+            "return_pct": -25.175636156663007
+          },
+          {
+            "start": "2021-10",
+            "finish": "2022-09",
+            "return_pct": -16.37875365281053
+          },
+          {
+            "start": "2021-11",
+            "finish": "2022-10",
+            "return_pct": -16.27217340121311
+          },
+          {
+            "start": "2021-12",
+            "finish": "2022-11",
+            "return_pct": -17.680308775499086
+          },
+          {
+            "start": "2022-01",
+            "finish": "2022-12",
+            "return_pct": -22.378583620187133
+          },
+          {
+            "start": "2022-02",
+            "finish": "2023-01",
+            "return_pct": -29.128633067653197
+          },
+          {
+            "start": "2022-03",
+            "finish": "2023-02",
+            "return_pct": -31.270489915297052
+          },
+          {
+            "start": "2022-04",
+            "finish": "2023-03",
+            "return_pct": -38.7631862474192
+          },
+          {
+            "start": "2022-05",
+            "finish": "2023-04",
+            "return_pct": -33.3167531735856
+          },
+          {
+            "start": "2022-06",
+            "finish": "2023-05",
+            "return_pct": -31.609676773211127
+          },
+          {
+            "start": "2022-07",
+            "finish": "2023-06",
+            "return_pct": -41.61105347790265
+          },
+          {
+            "start": "2022-08",
+            "finish": "2023-07",
+            "return_pct": -43.400274676548
+          },
+          {
+            "start": "2022-09",
+            "finish": "2023-08",
+            "return_pct": -43.408766457473966
+          },
+          {
+            "start": "2022-10",
+            "finish": "2023-09",
+            "return_pct": -45.23463729720639
+          },
+          {
+            "start": "2022-11",
+            "finish": "2023-10",
+            "return_pct": -35.98403794496529
+          },
+          {
+            "start": "2022-12",
+            "finish": "2023-11",
+            "return_pct": -33.28083126311447
+          },
+          {
+            "start": "2023-01",
+            "finish": "2023-12",
+            "return_pct": -28.484899927751172
+          },
+          {
+            "start": "2023-02",
+            "finish": "2024-01",
+            "return_pct": -28.22376194482884
+          },
+          {
+            "start": "2023-03",
+            "finish": "2024-02",
+            "return_pct": -20.392873753910546
+          },
+          {
+            "start": "2023-04",
+            "finish": "2024-03",
+            "return_pct": -10.642803359150276
+          },
+          {
+            "start": "2023-05",
+            "finish": "2024-04",
+            "return_pct": -21.936806703707457
+          },
+          {
+            "start": "2023-06",
+            "finish": "2024-05",
+            "return_pct": -35.42038218832959
+          },
+          {
+            "start": "2023-07",
+            "finish": "2024-06",
+            "return_pct": -31.072002508858244
+          },
+          {
+            "start": "2023-08",
+            "finish": "2024-07",
+            "return_pct": -36.46095112736827
+          },
+          {
+            "start": "2023-09",
+            "finish": "2024-08",
+            "return_pct": -24.4987504194899
+          },
+          {
+            "start": "2023-10",
+            "finish": "2024-09",
+            "return_pct": -28.992857677096108
+          },
+          {
+            "start": "2023-11",
+            "finish": "2024-10",
+            "return_pct": -44.85165626256946
+          },
+          {
+            "start": "2023-12",
+            "finish": "2024-11",
+            "return_pct": -40.47574673479824
+          },
+          {
+            "start": "2024-01",
+            "finish": "2024-12",
+            "return_pct": -46.389541736351866
+          },
+          {
+            "start": "2024-02",
+            "finish": "2025-01",
+            "return_pct": -42.41306892330984
+          },
+          {
+            "start": "2024-03",
+            "finish": "2025-02",
+            "return_pct": -46.90821269679664
+          },
+          {
+            "start": "2024-04",
+            "finish": "2025-03",
+            "return_pct": -45.26324135955795
+          },
+          {
+            "start": "2024-05",
+            "finish": "2025-04",
+            "return_pct": -36.20323451162778
+          },
+          {
+            "start": "2024-06",
+            "finish": "2025-05",
+            "return_pct": -22.15082451501369
+          },
+          {
+            "start": "2024-07",
+            "finish": "2025-06",
+            "return_pct": -20.50056805023338
+          },
+          {
+            "start": "2024-08",
+            "finish": "2025-07",
+            "return_pct": -15.748454387582644
+          },
+          {
+            "start": "2024-09",
+            "finish": "2025-08",
+            "return_pct": -26.779995648204768
+          },
+          {
+            "start": "2024-10",
+            "finish": "2025-09",
+            "return_pct": -23.79077347031209
+          },
+          {
+            "start": "2024-11",
+            "finish": "2025-10",
+            "return_pct": -29.813039982253077
+          },
+          {
+            "start": "2024-12",
+            "finish": "2025-11",
+            "return_pct": -27.147950410516852
+          },
+          {
+            "start": "2025-01",
+            "finish": "2025-12",
+            "return_pct": -25.94236968672027
+          }
+        ],
+        "basis": "Arithmetic on complete MCP R11 monthly telemetry; 51 overlapping windows, not independent, development only."
+      },
+      "gates": {
+        "cagr30": false,
+        "pf1_2": false,
+        "dd25": false,
+        "months65": false,
+        "quarters80": false,
+        "medianPositive": false,
+        "withoutBestTwoPositive": false,
+        "n100": true
+      },
+      "promoted": false,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 25,
+        "positive_calendar": 25,
+        "median_return": -0.007074899622019182,
+        "complete_quarters": 20,
+        "positive_quarters": 7,
+        "pnl_without_best_two": -10656.139017970056,
+        "stage": "PRETERMINAL",
+        "equity": 3339.1534670745136,
+        "dd_m1_events": -0.8313836614357417,
+        "minute_marks": 2741760,
+        "sequence": 2745263,
+        "signals": 8872,
+        "entries": 1751,
+        "invalid_windows": 0
+      }
+    },
+    {
+      "id": "ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+      "name": "GLOBAL",
+      "strategy": "BtcResearchR18AnalogueGlobal1m",
+      "url": "http://localhost:9200/#/backtest/ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+      "financial": {
+        "N": 1265,
+        "net": -3083.769629236552,
+        "return_pct": -30.83769629236552,
+        "cagr_pct": -6.8242913318438125,
+        "pf": 0.9621414395828037,
+        "dd_daily_pct": -55.923825157767794,
+        "fee": 7018.0481513692275,
+        "funding": -1914.8927447151261,
+        "funding_applied": true,
+        "proxy_payments": 2173,
+        "errors": {
+          "gross_fee_funding_pnl": -7.73070496506989e-12,
+          "pnl_metrics": -1.8189894035458565e-12,
+          "terminal_vs_net": 1.5916157281026244e-11,
+          "funding_vs_metric": 5.002220859751105e-12
+        },
+        "gross": 5849.171266847794,
+        "finish": 6916.230370763464,
+        "raw_open_counter": 1,
+        "long_pnl": -373.99396721961745,
+        "short_pnl": -2709.775662016928
+      },
+      "descriptive_calendar": {
+        "annual": {
+          "2021": -7.939920017396518,
+          "2022": -18.40805561046753,
+          "2023": -19.45835468464412,
+          "2024": 9.187526351732078,
+          "2025": -19.14598573194839
+        },
+        "rolling_12m": [
+          {
+            "start": "2020-11",
+            "finish": "2021-10",
+            "return_pct": 40.855837110551164
+          },
+          {
+            "start": "2020-12",
+            "finish": "2021-11",
+            "return_pct": 10.711998316822037
+          },
+          {
+            "start": "2021-01",
+            "finish": "2021-12",
+            "return_pct": -7.939920017396518
+          },
+          {
+            "start": "2021-02",
+            "finish": "2022-01",
+            "return_pct": 1.290976577065761
+          },
+          {
+            "start": "2021-03",
+            "finish": "2022-02",
+            "return_pct": -11.468220664309914
+          },
+          {
+            "start": "2021-04",
+            "finish": "2022-03",
+            "return_pct": -12.517238470421276
+          },
+          {
+            "start": "2021-05",
+            "finish": "2022-04",
+            "return_pct": -15.144395712995918
+          },
+          {
+            "start": "2021-06",
+            "finish": "2022-05",
+            "return_pct": -17.954290221395276
+          },
+          {
+            "start": "2021-07",
+            "finish": "2022-06",
+            "return_pct": -1.141382500202004
+          },
+          {
+            "start": "2021-08",
+            "finish": "2022-07",
+            "return_pct": -5.434847204971749
+          },
+          {
+            "start": "2021-09",
+            "finish": "2022-08",
+            "return_pct": -19.77434696764604
+          },
+          {
+            "start": "2021-10",
+            "finish": "2022-09",
+            "return_pct": -16.371971351023696
+          },
+          {
+            "start": "2021-11",
+            "finish": "2022-10",
+            "return_pct": -25.522963146152822
+          },
+          {
+            "start": "2021-12",
+            "finish": "2022-11",
+            "return_pct": -20.595490690063855
+          },
+          {
+            "start": "2022-01",
+            "finish": "2022-12",
+            "return_pct": -18.40805561046753
+          },
+          {
+            "start": "2022-02",
+            "finish": "2023-01",
+            "return_pct": -20.66112762239628
+          },
+          {
+            "start": "2022-03",
+            "finish": "2023-02",
+            "return_pct": -16.78579004865961
+          },
+          {
+            "start": "2022-04",
+            "finish": "2023-03",
+            "return_pct": -19.868892098743007
+          },
+          {
+            "start": "2022-05",
+            "finish": "2023-04",
+            "return_pct": -15.446867125657448
+          },
+          {
+            "start": "2022-06",
+            "finish": "2023-05",
+            "return_pct": -23.553320479933838
+          },
+          {
+            "start": "2022-07",
+            "finish": "2023-06",
+            "return_pct": -37.62939107167723
+          },
+          {
+            "start": "2022-08",
+            "finish": "2023-07",
+            "return_pct": -34.922214740608084
+          },
+          {
+            "start": "2022-09",
+            "finish": "2023-08",
+            "return_pct": -29.602546555177213
+          },
+          {
+            "start": "2022-10",
+            "finish": "2023-09",
+            "return_pct": -31.792295933907646
+          },
+          {
+            "start": "2022-11",
+            "finish": "2023-10",
+            "return_pct": -21.23803144992067
+          },
+          {
+            "start": "2022-12",
+            "finish": "2023-11",
+            "return_pct": -25.368899642945053
+          },
+          {
+            "start": "2023-01",
+            "finish": "2023-12",
+            "return_pct": -19.45835468464412
+          },
+          {
+            "start": "2023-02",
+            "finish": "2024-01",
+            "return_pct": -23.01391080546503
+          },
+          {
+            "start": "2023-03",
+            "finish": "2024-02",
+            "return_pct": -3.9101040431292367
+          },
+          {
+            "start": "2023-04",
+            "finish": "2024-03",
+            "return_pct": 0.44102206132097255
+          },
+          {
+            "start": "2023-05",
+            "finish": "2024-04",
+            "return_pct": -17.67134545870427
+          },
+          {
+            "start": "2023-06",
+            "finish": "2024-05",
+            "return_pct": -10.135875131674032
+          },
+          {
+            "start": "2023-07",
+            "finish": "2024-06",
+            "return_pct": -6.895190082749703
+          },
+          {
+            "start": "2023-08",
+            "finish": "2024-07",
+            "return_pct": -3.3924091971026527
+          },
+          {
+            "start": "2023-09",
+            "finish": "2024-08",
+            "return_pct": 2.6323824437134657
+          },
+          {
+            "start": "2023-10",
+            "finish": "2024-09",
+            "return_pct": 9.181803080357408
+          },
+          {
+            "start": "2023-11",
+            "finish": "2024-10",
+            "return_pct": -2.3921761315547796
+          },
+          {
+            "start": "2023-12",
+            "finish": "2024-11",
+            "return_pct": 13.025695293754058
+          },
+          {
+            "start": "2024-01",
+            "finish": "2024-12",
+            "return_pct": 9.187526351732078
+          },
+          {
+            "start": "2024-02",
+            "finish": "2025-01",
+            "return_pct": 6.484360834726632
+          },
+          {
+            "start": "2024-03",
+            "finish": "2025-02",
+            "return_pct": -14.85978420859604
+          },
+          {
+            "start": "2024-04",
+            "finish": "2025-03",
+            "return_pct": -19.284617530139847
+          },
+          {
+            "start": "2024-05",
+            "finish": "2025-04",
+            "return_pct": -7.794120614392042
+          },
+          {
+            "start": "2024-06",
+            "finish": "2025-05",
+            "return_pct": -8.218928789299495
+          },
+          {
+            "start": "2024-07",
+            "finish": "2025-06",
+            "return_pct": -10.608522831328704
+          },
+          {
+            "start": "2024-08",
+            "finish": "2025-07",
+            "return_pct": -12.205165880521651
+          },
+          {
+            "start": "2024-09",
+            "finish": "2025-08",
+            "return_pct": -13.329172618644147
+          },
+          {
+            "start": "2024-10",
+            "finish": "2025-09",
+            "return_pct": -13.329172618644147
+          },
+          {
+            "start": "2024-11",
+            "finish": "2025-10",
+            "return_pct": -13.981811246150322
+          },
+          {
+            "start": "2024-12",
+            "finish": "2025-11",
+            "return_pct": -18.882212369301065
+          },
+          {
+            "start": "2025-01",
+            "finish": "2025-12",
+            "return_pct": -19.14598573194839
+          }
+        ],
+        "basis": "Arithmetic on complete MCP R11 monthly telemetry; 51 overlapping windows, not independent, development only."
+      },
+      "gates": {
+        "cagr30": false,
+        "pf1_2": false,
+        "dd25": false,
+        "months65": false,
+        "quarters80": false,
+        "medianPositive": false,
+        "withoutBestTwoPositive": false,
+        "n100": true
+      },
+      "promoted": false,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 58,
+        "positive_active": 22,
+        "positive_calendar": 22,
+        "median_return": -0.01773945039395286,
+        "complete_quarters": 20,
+        "positive_quarters": 8,
+        "pnl_without_best_two": -7173.25099820228,
+        "stage": "FINAL",
+        "equity": 6916.230370763464,
+        "dd_m1_events": -0.5717505710112039,
+        "minute_marks": 2741760,
+        "sequence": 2744291,
+        "signals": 7616,
+        "entries": 1265,
+        "invalid_windows": 0
+      }
+    }
+  ]
+}

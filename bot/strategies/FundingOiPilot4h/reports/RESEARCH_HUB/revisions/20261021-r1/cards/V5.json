@@ -1,0 +1,79 @@
+{
+  "id": "V5",
+  "title": "Ciclo V5",
+  "asset": "BTC",
+  "family": "funding / cruce / VWAP",
+  "execution": "cerrado",
+  "evidence": "histórica adaptativa",
+  "objective": "no alcanzado",
+  "hypothesis": "Normalización de funding, cruces y VWAP con controles/OI y selección por DD.",
+  "origin": "Protocolos históricos V1–V6; no son propuestas nuevas.",
+  "method": "Screening y selección cronológica según protocolo original. Pruebas técnicas separadas de resultados económicos.",
+  "protocol": null,
+  "budget": {
+    "cycle": "V5",
+    "economic_unique": 37,
+    "nominal_slots": 40,
+    "technical_attempts": 3
+  },
+  "versions": "Fuentes/config/datasets congelados en registry original; consultar referencias. No se afirman hashes nuevos.",
+  "periods": [
+    "screen 2020–2023",
+    "confirmación adaptativa 2024–2025"
+  ],
+  "results": {
+    "scope": "replays continuos 2024–2025",
+    "funding_oi": {
+      "net_pct": -6.866518,
+      "cagr_pct": -3.489614,
+      "pf": 0.853912,
+      "drawdown_engine_pct": -17.669256,
+      "trades": 84,
+      "positive_half_years": "1/4"
+    },
+    "funding": {
+      "net_pct": -2.079607,
+      "cagr_pct": -1.043844,
+      "pf": 0.960575,
+      "drawdown_engine_pct": -14.311619,
+      "trades": 107,
+      "positive_half_years": "2/4"
+    },
+    "stress": "17 corridas de fase C negativas; no promover vecinos",
+    "annual": null,
+    "half_years": null,
+    "exposure": null,
+    "costs": "fee nominal .00045, slip 0, funding histórico; S1 fee .0009; S2 slip5bps; S3 fee .0009/slip10bps"
+  },
+  "limitations": [
+    "2020–2025 ya examinados; no son OOS virgen.",
+    "Los gates originales se conservan, no se reemplazan por la nueva meta.",
+    "Sin conclusión prospectiva ni autorización de trading."
+  ],
+  "audit": "Decisiones finales originales y cierre consolidado leídos por MCP. Conteos contrastados con RESEARCH_COUNTS_V1_V6_20261020.json.",
+  "decision": "Finalistas Funding rechazadas tras confirmación y estrés. CROSS elegible en screening, fuera del cupo; sin confirmación.",
+  "references": [
+    {
+      "label": "FINAL_DECISION_V5.md",
+      "path": "strategies/FundingOiPilot4h/reports/FINAL_DECISION_V5.md"
+    },
+    {
+      "label": "RESEARCH_PROTOCOL_V5_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_PROTOCOL_V5_20261020.md"
+    },
+    {
+      "label": "REGISTRY_V5.json",
+      "path": "strategies/FundingOiPilot4h/reports/REGISTRY_V5.json"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "Funding OI",
+      "url": "http://localhost:9200/#/backtest/46f4c14a-1ac2-4cc0-b347-5d6bff007051"
+    },
+    {
+      "label": "Funding",
+      "url": "http://localhost:9200/#/backtest/ff2f12bf-1faf-4bec-808f-800a778421a4"
+    }
+  ]
+}

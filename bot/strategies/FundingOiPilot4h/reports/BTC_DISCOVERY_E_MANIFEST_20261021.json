@@ -1,0 +1,205 @@
+{
+  "phase": "pre_economic_execution",
+  "protocol": "BTC_DISCOVERY_E_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 18:25:46 UTC",
+  "sources": {
+    "BtcResearchR12ReversionBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef kalman_event(rows, state):\n    \"\"\"Predict before assimilating current close; original R40 coefficients.\"\"\"\n    x = np.log(rows[-62:, 2])\n    variance = float(np.var(np.diff(x[:-1]), ddof=1))\n    if not math.isfinite(variance) or variance <= 0:\n        return None, {}\n    q, r = .01 * variance, .25 * variance\n    m, p = state.get(\"filter\", (float(x[-2]), r))\n    pp = p + q\n    innovation, s = float(x[-1]) - m, pp + r\n    z = innovation / math.sqrt(s)\n    k = pp / s\n    regime = 1 if z >= 1.5 else -1 if z <= -1.5 else 0\n    new = {\"filter\": (m+k*innovation, (1-k)*pp), \"regime\": regime}\n    if not regime or regime == state.get(\"regime\", 0):\n        return None, new\n    direction, target = -regime, math.exp(m)\n    atr = atr14(rows)\n    if atr is None or direction * (target-float(rows[-1, 2])) <= 0:\n        return None, new\n    return dict(direction=direction, distance=2*atr, target=target, hours=48), new\n\n\ndef recovery_event(rows, state):\n    \"\"\"One mature excursion, frozen arm ATR, separate confirmation and expiry.\"\"\"\n    state = dict(state)\n    state[\"used\"] = dict(state.get(\"used\", {1: -1, -1: -1}))\n    used = state[\"used\"]\n    now, price = int(rows[-1, 0])+BAR, float(rows[-1, 2])\n    episode = state.get(\"episode\")\n    if episode:\n        episode = dict(episode)\n        state[\"episode\"] = episode\n        direction = episode[\"direction\"]\n        if now-episode[\"armed\"] >= 60*BAR:\n            used[direction] = episode[\"origin\"]\n            state.pop(\"episode\")\n            return None, state\n        episode[\"turn\"] = (min if direction == 1 else max)(episode[\"turn\"], price)\n        depth = direction * (episode[\"anchor\"]-episode[\"turn\"])\n        level = episode[\"turn\"] + direction*.5*depth\n        if direction*(price-level) >= 0 and depth >= 4*episode[\"atr\"]:\n            used[direction] = episode[\"origin\"]\n            state.pop(\"episode\")\n            return dict(direction=direction, distance=2*episode[\"atr\"],\n                        target=None, hours=72), state\n        return None, state\n    atr = atr14(rows)\n    if atr is None:\n        return None, state\n    c = rows[-60:, 2]\n    imax = len(c)-1-int(np.argmax(c[::-1]))\n    imin = len(c)-1-int(np.argmin(c[::-1]))\n    candidates = []\n    for direction, index in ((1, imax), (-1, imin)):\n        anchor, origin = float(c[index]), int(rows[-60+index, 0])\n        displacement = direction*(anchor-price)\n        if len(c)-1-index >= 12 and displacement >= 4*atr and origin > used[direction]:\n            turn = float((np.min if direction == 1 else np.max)(c[index:]))\n            candidates.append(dict(direction=direction, origin=origin, anchor=anchor,\n                                   turn=turn, atr=atr, armed=now, score=displacement/atr))\n    candidates.sort(key=lambda a: -a[\"score\"])\n    if candidates and (len(candidates) == 1 or candidates[0][\"score\"] > candidates[1][\"score\"]):\n        state[\"episode\"] = candidates[0]\n    return None, state\n\n\nclass BtcResearchR12ReversionBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 62)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            self.vars[\"model\"] = {}\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"KALMAN\", \"RECOVERY\")\n        function = kalman_event if self.MODE == \"KALMAN\" else recovery_event\n        event, state = function(rows, self.vars.get(\"model\", {}))\n        self.vars[\"model\"] = state\n        if not event or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = event[\"direction\"]\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, event[\"distance\"])\n        if plan is None or (event[\"target\"] is None and self.price+direction*2*plan[\"distance\"] <= 0):\n            return\n        self.vars[\"plan\"] = dict(plan, target=event[\"target\"], hours=event[\"hours\"])\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        # Kalman target is the frozen predictive level, not shifted by the fill.\n        target = plan[\"target\"] if plan[\"target\"] is not None else entry+direction*2*plan[\"distance\"]\n        assert direction*(target-entry) > 0\n        self.take_profit = qty, target\n        self.vars[\"holding_hours\"] = plan[\"hours\"]\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n\n    def update_position(self):\n        if int(self.time) % BAR == 0 and int(self.time)-int(self.position.opened_at) >= self.vars[\"holding_hours\"]*3600000:\n            self.liquidate()\n",
+    "BtcResearchR12Kalman1m": "from strategies.BtcResearchR12ReversionBase1m import BtcResearchR12ReversionBase1m\n\n\nclass BtcResearchR12Kalman1m(BtcResearchR12ReversionBase1m):\n    MODE = \"KALMAN\"\n",
+    "BtcResearchR12Recovery1m": "from strategies.BtcResearchR12ReversionBase1m import BtcResearchR12ReversionBase1m\n\n\nclass BtcResearchR12Recovery1m(BtcResearchR12ReversionBase1m):\n    MODE = \"RECOVERY\"\n"
+  },
+  "check": {
+    "status": "passed",
+    "checks": "AST, Kalman predictive target/regime/reset/mirror, recovery confirmation/expiry/consume/copy/arming, closed-window future/gaps, fee-aware sizing",
+    "source_sha256": "7362803d217fa5f9244a4c0bcc174585e6fca0f139e94a8262cfb6e75913a9b0",
+    "helper_sha256": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9"
+  },
+  "check_job": "80186308c07a431d9e5a695642bb7260",
+  "prior_check_jobs": [
+    "57ca4ebeeace4c8cab31b7ebc507cffc",
+    "761d9386441e42a49957d9b845078e82"
+  ],
+  "technical_note": "First harness exact exp(log(price)) equality repaired to isclose, strategy unchanged by that check. Independent review removed fictitious2R target guard from Kalman before economic execution, final check passed.",
+  "parent_hash": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "9a7ce958-13d0-481e-992d-401e03b579fd",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery E | BtcResearchR12Kalman1m",
+      "description": "Transferencia explícita R40 PAXG→BTC; protocolo E previo. Desarrollo observado 2020–25, 2%/6%/3x, fee.00045+funding, slippage0; sin estrés.",
+      "description_truncated": false,
+      "created_at": 1792607118000,
+      "updated_at": 1792607132000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR12Kalman1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/9a7ce958-13d0-481e-992d-401e03b579fd"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "ce148b26-9a50-4ef9-9874-a784a9067c4e",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery E | BtcResearchR12Recovery1m",
+      "description": "Transferencia explícita R40 PAXG→BTC; protocolo E previo. Desarrollo observado 2020–25, 2%/6%/3x, fee.00045+funding, slippage0; sin estrés.",
+      "description_truncated": false,
+      "created_at": 1792607118000,
+      "updated_at": 1792607132000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR12Recovery1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/ce148b26-9a50-4ef9-9874-a784a9067c4e"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "key": "C4_EVAL",
+  "expected": {
+    "s0": {
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "strategy": "ResearchV6EF_P_C4V",
+      "timeframe": "4h",
+      "start": "2025-07-01",
+      "finish": "2026-01-01"
+    }
+  },
+  "code_reference": "V5_V6_ACCOUNTING_CODE.json",
+  "raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"action\": \"run_analysis\",\n  \"status\": \"success\",\n  \"job\": {\n    \"id\": \"30a2d98513c648339fb49d96c2105fb4\",\n    \"kind\": \"analysis\",\n    \"workspace\": \"storage/mcp/analysis/30a2d98513c648339fb49d96c2105fb4\",\n    \"inputs\": [\n      {\n        \"name\": \"s0\",\n        \"file\": \"inputs/s0.json\",\n        \"session_type\": \"backtest\",\n        \"session_id\": \"8071ac98-42a0-474b-ab62-dab0b913def6\",\n        \"session_status\": \"finished\",\n        \"title\": \"MCP Backtest: V6 WF C4 EVAL EFFICIENCY_P\",\n        \"size_bytes\": 140091\n      }\n    ],\n    \"status\": \"running\",\n    \"pid\": 10694,\n    \"exit_code\": null,\n    \"started_at\": \"2026-10-21T01:42:05+00:00\",\n    \"finished_at\": null,\n    \"timeout_minutes\": 3,\n    \"output_truncated\": false,\n    \"expires_at\": null,\n    \"lifetime\": \"Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first).\"\n  },\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+      }
+    ],
+    "isError": false
+  }
+}

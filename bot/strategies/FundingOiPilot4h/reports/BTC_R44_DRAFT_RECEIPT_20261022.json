@@ -1,0 +1,131 @@
+{
+  "status": "DRAFT_ONLY_NOT_RUN",
+  "protocol": "BTC_R44_INITIAL_RANGE_PROTOCOL_20261022.md",
+  "variants": {
+    "UTC00": {
+      "session_id": "026a408a-24e4-4174-adc7-416a7b577c9a",
+      "dashboard_url": "http://localhost:9200/#/backtest/026a408a-24e4-4174-adc7-416a7b577c9a",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR44InitialRangeUtc00"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      }
+    },
+    "UTC12": {
+      "session_id": "8056c4d9-dec4-4b84-b587-269dc6143c8e",
+      "dashboard_url": "http://localhost:9200/#/backtest/8056c4d9-dec4-4b84-b587-269dc6143c8e",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR44InitialRangeUtc12"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      }
+    }
+  },
+  "economic_jobs_launched": 0,
+  "source_checks_pending": true,
+  "defensive_revision_pending": "strict finite ascending 4h timestamps before searchsorted"
+}

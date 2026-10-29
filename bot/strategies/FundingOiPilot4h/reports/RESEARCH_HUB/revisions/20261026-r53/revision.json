@@ -1,0 +1,69 @@
+{
+  "format_version": 1,
+  "id": "20261026-r53",
+  "updated_at_utc": "2026-10-26 09:00:00 UTC",
+  "objective": "Cobrar el IC del ranking transversal sin la cola, reversión semanal y QOI como variable o filtro de C6.",
+  "latest": "r53 cerrada: ninguna manga pasa; P1 sin cambios; 2025 sellado. Y4 (largo cubierto) queda al borde: Sharpe 0,49 contra compuerta 0,5. C6q empeora P1. N=123.",
+  "next": "r54: validación congelada de C6 en las 48 alts de U50 y meta-labeling de C6 sobre eventos agrupados.",
+  "blockers": "Ninguno. Informes guardados por MCP el 2026-10-26 tras reiniciar Docker Desktop.",
+  "counts": {
+    "r53": {
+      "n_declared_start": 116,
+      "n_final": 123
+    }
+  },
+  "decisions": [
+    "2026-10-26 r53 cerrada: P1 sin cambios; Y4 al borde, no se rescata.",
+    "2026-10-26 r53 corre en la misma sesión: la app no permite abrir sesiones desde un evento automático."
+  ],
+  "supersedes": "20261026-r52",
+  "roadmap": [
+    {
+      "order": 1,
+      "title": "F1 carteras del ranking (Y1–Y6)",
+      "state": "completada: ninguna pasa",
+      "depends": "r52",
+      "gate": "PROTOCOL_R53 F1"
+    },
+    {
+      "order": 2,
+      "title": "F2 C6q",
+      "state": "completada: no pasa",
+      "depends": "r52 F2",
+      "gate": "regla r51"
+    },
+    {
+      "order": 3,
+      "title": "F3 cartera",
+      "state": "completada: P2 = P1",
+      "depends": "F1–F2",
+      "gate": "inclusión"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r53: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r53/PROTOCOL_R53.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r53_ranking",
+    "execution_status": "r53_closed",
+    "current_focus": "r54",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Descargas de data.binance.vision.",
+      "Push."
+    ],
+    "excluded": [
+      "Live/paper/Pi.",
+      "2026.",
+      "Abrir 2025 sin candidata."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Mandato autónomo del usuario 2026-10-25.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "closed"
+  }
+}

@@ -1,0 +1,1 @@
+R42 cerrada sin economía: persistencia latente empeora retorno esperado y signo a24h frente IID, global y diario; sólo2023 mejora ambos.11.137 labels maduros auditados. Mejor densidad1paso no habilita operativa. Objetivo global activo.

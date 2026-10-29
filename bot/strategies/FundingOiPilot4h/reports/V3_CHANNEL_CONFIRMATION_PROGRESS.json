@@ -1,0 +1,4331 @@
+{
+  "sector": "CHANNEL",
+  "phase": "B",
+  "status": "PHASE_B_COMPLETE",
+  "sessions": [
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C1V",
+      "name": "ResearchV3CH_P_C1V",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2024-01-01",
+      "finish": "2024-07-01",
+      "start_ms": 1704067200000,
+      "finish_ms": 1719792000000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C1V(ResearchV3ChannelP4h):\n    START = 1704067200000\n    FINISH = 1719792000000\n",
+      "sha256": "ab4e539e5cab188f9fb516ade3b1603bc820fcd5328a84343a19ac9f31a5ff76",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation",
+      "session_id": "1ead2e5d-d907-43b2-8e9d-925aea5e3093",
+      "dashboard_url": "http://localhost:9200/#/backtest/1ead2e5d-d907-43b2-8e9d-925aea5e3093",
+      "created_at": "2026-10-20T23:29:35.260Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:29:35.321Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"1ead2e5d-d907-43b2-8e9d-925aea5e3093\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C1V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/1ead2e5d-d907-43b2-8e9d-925aea5e3093\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:30:23.851Z",
+      "execution_duration": 6.11,
+      "summary_metrics": {
+        "total": 25,
+        "total_winning_trades": 9,
+        "total_losing_trades": 16,
+        "starting_balance": 10000,
+        "finishing_balance": 11631.462581180433,
+        "win_rate": 0.36,
+        "win_rate_longs": 0.46153846153846156,
+        "win_rate_shorts": 0.25,
+        "ratio_avg_win_loss": 2.8217090000414475,
+        "longs_count": 13,
+        "longs_percentage": 52,
+        "shorts_percentage": 48,
+        "shorts_count": 12,
+        "fee": 200.38295750415836,
+        "net_profit": 1631.4625811804376,
+        "net_profit_percentage": 16.314625811804376,
+        "average_win": 489.9761540660156,
+        "average_loss": 173.64517533835647,
+        "expectancy": 65.25850324721748,
+        "expectancy_percentage": 0.6525850324721747,
+        "expected_net_profit_every_100_trades": 65.25850324721748,
+        "average_holding_period": 212632.8,
+        "average_winning_holding_period": 312986.6666666667,
+        "average_losing_holding_period": 156183.75,
+        "gross_profit": 4409.785386594141,
+        "gross_loss": -2778.3228054137035,
+        "max_drawdown": -18.35338185083333,
+        "max_underwater_period": 117,
+        "annual_return": 35.40331091153271,
+        "annualization": 365,
+        "sharpe_ratio": 1.2838967327838915,
+        "calmar_ratio": 1.9289802391337065,
+        "sortino_ratio": 2.603826686589813,
+        "omega_ratio": 1.3291617998291334,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 2,
+        "losing_streak": 6,
+        "largest_losing_trade": -261.17219233482183,
+        "largest_winning_trade": 1790.4841709640175,
+        "current_streak": -1,
+        "avg_trades_per_day": 0.1373621132397999,
+        "avg_trades_per_week": 0.9615347926785993,
+        "avg_trades_per_month": 4.181302727019509,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -202.18612132147524,
+          "rate_kind": "settled",
+          "event_count": 179,
+          "settlements_processed": 546,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1719791400000,
+            "available_at": 1719791760000,
+            "quantity_base": 85784.699,
+            "value_quote": 5391156565.5948
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C1V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2024-01-01",
+        "finish_date": "2024-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C1V.json",
+      "audit_summary": {
+        "bars": 1092,
+        "entries": 25,
+        "exits": 25,
+        "primary": {
+          "no_setup": 1004,
+          "allowed": 25,
+          "in_position_or_pending": 40,
+          "regime_reject": 22,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 5
+        },
+        "months": 6,
+        "audit_records": 22,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C1V",
+      "name": "ResearchV3CH_OI_C1V",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2024-01-01",
+      "finish": "2024-07-01",
+      "start_ms": 1704067200000,
+      "finish_ms": 1719792000000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C1V(ResearchV3ChannelOi4h):\n    START = 1704067200000\n    FINISH = 1719792000000\n",
+      "sha256": "8deb991ee9172b96a71545e5cdc0ab2cf0ae33e5a7c965d1b8f79b2eb8b94598",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation",
+      "session_id": "faeccf79-ea48-4d5a-93bf-8ab77a0c8095",
+      "dashboard_url": "http://localhost:9200/#/backtest/faeccf79-ea48-4d5a-93bf-8ab77a0c8095",
+      "created_at": "2026-10-20T23:29:53.740Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:29:53.811Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "error",
+      "finished_observed_at": "2026-10-20T23:31:32.823Z",
+      "execution_duration": 4.74,
+      "summary_metrics": {
+        "total": 22,
+        "total_winning_trades": 8,
+        "total_losing_trades": 14,
+        "starting_balance": 10000,
+        "finishing_balance": 11199.15798328197,
+        "win_rate": 0.36363636363636365,
+        "win_rate_longs": 0.38461538461538464,
+        "win_rate_shorts": 0.3333333333333333,
+        "ratio_avg_win_loss": 2.6259793962031686,
+        "longs_count": 13,
+        "longs_percentage": 59.09090909090909,
+        "shorts_percentage": 40.90909090909091,
+        "shorts_count": 9,
+        "fee": 171.83088042992597,
+        "net_profit": 1199.1579832819739,
+        "net_profit_percentage": 11.991579832819738,
+        "average_win": 449.34906153897975,
+        "average_loss": 171.11675064499028,
+        "expectancy": 54.507181058271556,
+        "expectancy_percentage": 0.5450718105827156,
+        "expected_net_profit_every_100_trades": 54.507181058271556,
+        "average_holding_period": 204758.18181818182,
+        "average_winning_holding_period": 305370,
+        "average_losing_holding_period": 147265.7142857143,
+        "gross_profit": 3594.792492311838,
+        "gross_loss": -2395.6345090298637,
+        "max_drawdown": -15.059590810783508,
+        "max_underwater_period": 117,
+        "annual_return": 25.499209884734086,
+        "annualization": 365,
+        "sharpe_ratio": 1.0446752240425932,
+        "calmar_ratio": 1.6932206329587143,
+        "sortino_ratio": 2.106753869396235,
+        "omega_ratio": 1.2810375290505518,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 2,
+        "losing_streak": 5,
+        "largest_losing_trade": -242.38271882062423,
+        "largest_winning_trade": 1567.559187059163,
+        "current_streak": -1,
+        "avg_trades_per_day": 0.12087865965102393,
+        "avg_trades_per_week": 0.8461506175571675,
+        "avg_trades_per_month": 3.6795463997771685,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -189.39599792110144,
+          "rate_kind": "settled",
+          "event_count": 151,
+          "settlements_processed": 546,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1719791400000,
+            "available_at": 1719791760000,
+            "quantity_base": 85784.699,
+            "value_quote": 5391156565.5948
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C1V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2024-01-01",
+        "finish_date": "2024-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C1V.json",
+      "audit_summary": {
+        "bars": 1092,
+        "entries": 22,
+        "exits": 22,
+        "primary": {
+          "no_setup": 1004,
+          "oi_initialization": 2,
+          "allowed": 22,
+          "in_position_or_pending": 35,
+          "regime_reject": 22,
+          "oi_nonrising": 6,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 2,
+          "oi_nonrising": 6
+        },
+        "months": 6,
+        "audit_records": 22,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C2T",
+      "name": "ResearchV3CH_P_C2T",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2020-09-01",
+      "finish": "2024-07-01",
+      "start_ms": 1598918400000,
+      "finish_ms": 1719792000000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C2T(ResearchV3ChannelP4h):\n    START = 1598918400000\n    FINISH = 1719792000000\n",
+      "sha256": "8fb126060d21e9e06c2d992073d9cdfd78d8b7952f1c08114a2fc6966303f0f3",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_train",
+      "session_id": "eea52bae-9a68-4d87-959b-208a497c6594",
+      "dashboard_url": "http://localhost:9200/#/backtest/eea52bae-9a68-4d87-959b-208a497c6594",
+      "created_at": "2026-10-20T23:31:33.505Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:31:33.573Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"eea52bae-9a68-4d87-959b-208a497c6594\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C2T\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/eea52bae-9a68-4d87-959b-208a497c6594\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:33:53.742Z",
+      "execution_duration": 37.42,
+      "summary_metrics": {
+        "total": 175,
+        "total_winning_trades": 58,
+        "total_losing_trades": 117,
+        "starting_balance": 10000,
+        "finishing_balance": 15909.414701508702,
+        "win_rate": 0.3314285714285714,
+        "win_rate_longs": 0.3854166666666667,
+        "win_rate_shorts": 0.26582278481012656,
+        "ratio_avg_win_loss": 2.6034055635351487,
+        "longs_count": 96,
+        "longs_percentage": 54.85714285714286,
+        "shorts_percentage": 45.14285714285714,
+        "shorts_count": 79,
+        "fee": 1156.188772130478,
+        "net_profit": 5909.41470150869,
+        "net_profit_percentage": 59.094147015086904,
+        "average_win": 452.5212984978599,
+        "average_loss": 173.8189795843349,
+        "expectancy": 33.76808400862109,
+        "expectancy_percentage": 0.3376808400862109,
+        "expected_net_profit_every_100_trades": 33.76808400862109,
+        "average_holding_period": 206833.7142857143,
+        "average_winning_holding_period": 348513.1034482759,
+        "average_losing_holding_period": 136599.4871794872,
+        "gross_profit": 26246.235312875873,
+        "gross_loss": -20336.820611367184,
+        "max_drawdown": -23.620115506766194,
+        "max_underwater_period": 587,
+        "annual_return": 12.878625160467339,
+        "annualization": 365,
+        "sharpe_ratio": 0.676237739741797,
+        "calmar_ratio": 0.5452397197963804,
+        "sortino_ratio": 1.3087530030487562,
+        "omega_ratio": 1.1751511398679566,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 13,
+        "largest_losing_trade": -357.22909413541004,
+        "largest_winning_trade": 2449.0089107126933,
+        "current_streak": -1,
+        "avg_trades_per_day": 0.1250892874427729,
+        "avg_trades_per_week": 0.8756250120994102,
+        "avg_trades_per_month": 3.807717909758007,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -1032.6307057942256,
+          "rate_kind": "settled",
+          "event_count": 1220,
+          "settlements_processed": 4197,
+          "mark_price_proxy_count": 987,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1719791400000,
+            "available_at": 1719791760000,
+            "quantity_base": 85784.699,
+            "value_quote": 5391156565.5948
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C2T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C2T.json",
+      "audit_summary": {
+        "bars": 8394,
+        "entries": 175,
+        "exits": 175,
+        "primary": {
+          "no_setup": 7716,
+          "allowed": 175,
+          "in_position_or_pending": 263,
+          "regime_reject": 237,
+          "daily_limit": 2,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 41
+        },
+        "months": 46,
+        "audit_records": 164,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C2T",
+      "name": "ResearchV3CH_OI_C2T",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2020-09-01",
+      "finish": "2024-07-01",
+      "start_ms": 1598918400000,
+      "finish_ms": 1719792000000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C2T(ResearchV3ChannelOi4h):\n    START = 1598918400000\n    FINISH = 1719792000000\n",
+      "sha256": "182e2634564a085e0d5c544982c8c9e3565d2e2a4bd34e803db44f69449d16b4",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_train",
+      "session_id": "e9aac0d1-947b-447b-8268-ed7bb3b9d491",
+      "dashboard_url": "http://localhost:9200/#/backtest/e9aac0d1-947b-447b-8268-ed7bb3b9d491",
+      "created_at": "2026-10-20T23:31:52.304Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:31:52.381Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "error",
+      "finished_observed_at": "2026-10-20T23:33:53.907Z",
+      "execution_duration": 36.09,
+      "summary_metrics": {
+        "total": 149,
+        "total_winning_trades": 50,
+        "total_losing_trades": 99,
+        "starting_balance": 10000,
+        "finishing_balance": 17194.992025454776,
+        "win_rate": 0.33557046979865773,
+        "win_rate_longs": 0.3780487804878049,
+        "win_rate_shorts": 0.2835820895522388,
+        "ratio_avg_win_loss": 2.7516886429650107,
+        "longs_count": 82,
+        "longs_percentage": 55.033557046979865,
+        "shorts_percentage": 44.966442953020135,
+        "shorts_count": 67,
+        "fee": 1073.988419318076,
+        "net_profit": 7194.992025454751,
+        "net_profit_percentage": 71.94992025454751,
+        "average_win": 513.1182899516987,
+        "average_loss": 186.4739643649513,
+        "expectancy": 48.28853708358896,
+        "expectancy_percentage": 0.4828853708358896,
+        "expected_net_profit_every_100_trades": 48.28853708358896,
+        "average_holding_period": 206318.25503355704,
+        "average_winning_holding_period": 346594.8,
+        "average_losing_holding_period": 135471.51515151514,
+        "gross_profit": 25655.914497584934,
+        "gross_loss": -18460.92247213018,
+        "max_drawdown": -22.71956960543582,
+        "max_underwater_period": 596,
+        "annual_return": 15.190464006748194,
+        "annualization": 365,
+        "sharpe_ratio": 0.8055178367728669,
+        "calmar_ratio": 0.6686070321998427,
+        "sortino_ratio": 1.5949039633640956,
+        "omega_ratio": 1.233604148274626,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 10,
+        "largest_losing_trade": -372.1501969982948,
+        "largest_winning_trade": 2471.1657673573845,
+        "current_streak": -1,
+        "avg_trades_per_day": 0.10650459330841806,
+        "avg_trades_per_week": 0.7455321531589264,
+        "avg_trades_per_month": 3.241999820308246,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -1007.0544162928345,
+          "rate_kind": "settled",
+          "event_count": 1038,
+          "settlements_processed": 4197,
+          "mark_price_proxy_count": 839,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1719791400000,
+            "available_at": 1719791760000,
+            "quantity_base": 85784.699,
+            "value_quote": 5391156565.5948
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C2T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C2T.json",
+      "audit_summary": {
+        "bars": 8394,
+        "entries": 149,
+        "exits": 149,
+        "primary": {
+          "no_setup": 7716,
+          "oi_initialization": 2,
+          "regime_reject": 237,
+          "oi_nonrising": 55,
+          "allowed": 149,
+          "in_position_or_pending": 232,
+          "daily_limit": 2,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 2,
+          "oi_nonrising": 55
+        },
+        "months": 46,
+        "audit_records": 164,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C2V",
+      "name": "ResearchV3CH_P_C2V",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2024-07-01",
+      "finish": "2025-01-01",
+      "start_ms": 1719792000000,
+      "finish_ms": 1735689600000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C2V(ResearchV3ChannelP4h):\n    START = 1719792000000\n    FINISH = 1735689600000\n",
+      "sha256": "86dabd7539292bcb7e0747cf4e1a5dcde0f2f83340a6916b2c903fd14e830132",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_eval",
+      "selection_ref": "SELECTION_V3_C2.json",
+      "session_id": "e670ca1a-26d3-42d3-94de-a4292b6ae972",
+      "dashboard_url": "http://localhost:9200/#/backtest/e670ca1a-26d3-42d3-94de-a4292b6ae972",
+      "created_at": "2026-10-20T23:35:10.833Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:35:10.887Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"e670ca1a-26d3-42d3-94de-a4292b6ae972\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C2V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/e670ca1a-26d3-42d3-94de-a4292b6ae972\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:36:13.310Z",
+      "execution_duration": 5.65,
+      "summary_metrics": {
+        "total": 21,
+        "total_winning_trades": 10,
+        "total_losing_trades": 11,
+        "starting_balance": 10000,
+        "finishing_balance": 11894.48540655239,
+        "win_rate": 0.47619047619047616,
+        "win_rate_longs": 0.4666666666666667,
+        "win_rate_shorts": 0.5,
+        "ratio_avg_win_loss": 2.481874625818739,
+        "longs_count": 15,
+        "longs_percentage": 71.42857142857143,
+        "shorts_percentage": 28.57142857142857,
+        "shorts_count": 6,
+        "fee": 145.5176945276382,
+        "net_profit": 1894.4854065523919,
+        "net_profit_percentage": 18.94485406552392,
+        "average_win": 340.2533899716475,
+        "average_loss": 137.0953175603712,
+        "expectancy": 90.21359078820912,
+        "expectancy_percentage": 0.9021359078820911,
+        "expected_net_profit_every_100_trades": 90.2135907882091,
+        "average_holding_period": 242888.57142857142,
+        "average_winning_holding_period": 359754,
+        "average_losing_holding_period": 136647.27272727274,
+        "gross_profit": 3402.533899716475,
+        "gross_loss": -1508.048493164083,
+        "max_drawdown": -4.642711329292892,
+        "max_underwater_period": 49,
+        "annual_return": 41.07915631119843,
+        "annualization": 365,
+        "sharpe_ratio": 2.0610710666865883,
+        "calmar_ratio": 8.848096165706469,
+        "sortino_ratio": 4.271129854568009,
+        "omega_ratio": 1.5994019208333174,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 3,
+        "losing_streak": 4,
+        "largest_losing_trade": -247.89949283825456,
+        "largest_winning_trade": 945.139403140724,
+        "current_streak": -2,
+        "avg_trades_per_day": 0.11413000403833018,
+        "avg_trades_per_week": 0.7989100282683113,
+        "avg_trades_per_month": 3.474117322926771,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -97.1622066902576,
+          "rate_kind": "settled",
+          "event_count": 173,
+          "settlements_processed": 552,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1735689000000,
+            "available_at": 1735689360000,
+            "quantity_base": 91227.361,
+            "value_quote": 8541647920.63537
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C2V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2024-07-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C2V.json",
+      "audit_summary": {
+        "bars": 1104,
+        "entries": 21,
+        "exits": 21,
+        "primary": {
+          "regime_reject": 46,
+          "no_setup": 995,
+          "allowed": 21,
+          "in_position_or_pending": 41,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_nonrising": 5
+        },
+        "months": 6,
+        "audit_records": 23,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C2V",
+      "name": "ResearchV3CH_OI_C2V",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2024-07-01",
+      "finish": "2025-01-01",
+      "start_ms": 1719792000000,
+      "finish_ms": 1735689600000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C2V(ResearchV3ChannelOi4h):\n    START = 1719792000000\n    FINISH = 1735689600000\n",
+      "sha256": "571905c3e8ac711b5e56e83d68fe5481080b97b7bc611184b294cbf3884d6920",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_eval",
+      "selection_ref": "SELECTION_V3_C2.json",
+      "session_id": "0ca32a2d-e9b5-4420-94bd-58113244d560",
+      "dashboard_url": "http://localhost:9200/#/backtest/0ca32a2d-e9b5-4420-94bd-58113244d560",
+      "created_at": "2026-10-20T23:35:29.565Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:35:29.639Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "error",
+      "finished_observed_at": "2026-10-20T23:36:13.380Z",
+      "execution_duration": 5.06,
+      "summary_metrics": {
+        "total": 22,
+        "total_winning_trades": 7,
+        "total_losing_trades": 15,
+        "starting_balance": 10000,
+        "finishing_balance": 10081.318478492338,
+        "win_rate": 0.3181818181818182,
+        "win_rate_longs": 0.3125,
+        "win_rate_shorts": 0.3333333333333333,
+        "ratio_avg_win_loss": 2.2351544775723933,
+        "longs_count": 16,
+        "longs_percentage": 72.72727272727273,
+        "shorts_percentage": 27.272727272727266,
+        "shorts_count": 6,
+        "fee": 131.85086596299698,
+        "net_profit": 81.31847849233637,
+        "net_profit_percentage": 0.8131847849233638,
+        "average_win": 281.32581644540835,
+        "average_loss": 125.86414910836812,
+        "expectancy": 3.696294476924379,
+        "expectancy_percentage": 0.03696294476924379,
+        "expected_net_profit_every_100_trades": 3.696294476924379,
+        "average_holding_period": 192670.9090909091,
+        "average_winning_holding_period": 281845.71428571426,
+        "average_losing_holding_period": 151056,
+        "gross_profit": 1969.2807151178586,
+        "gross_loss": -1887.9622366255219,
+        "max_drawdown": -9.277280880014938,
+        "max_underwater_period": 128,
+        "annual_return": 1.6195626880741498,
+        "annualization": 365,
+        "sharpe_ratio": 0.17913106123656297,
+        "calmar_ratio": 0.17457299277884342,
+        "sortino_ratio": 0.32751553808104583,
+        "omega_ratio": 1.0454762948594485,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 2,
+        "losing_streak": 5,
+        "largest_losing_trade": -211.4392672275471,
+        "largest_winning_trade": 806.1314977258146,
+        "current_streak": -2,
+        "avg_trades_per_day": 0.11956476613539352,
+        "avg_trades_per_week": 0.8369533629477546,
+        "avg_trades_per_month": 3.6395514811613787,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -68.61788916888027,
+          "rate_kind": "settled",
+          "event_count": 141,
+          "settlements_processed": 552,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1735689000000,
+            "available_at": 1735689360000,
+            "quantity_base": 91227.361,
+            "value_quote": 8541647920.63537
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C2V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2024-07-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C2V.json",
+      "audit_summary": {
+        "bars": 1104,
+        "entries": 22,
+        "exits": 22,
+        "primary": {
+          "regime_reject": 46,
+          "no_setup": 995,
+          "allowed": 22,
+          "in_position_or_pending": 30,
+          "oi_nonrising": 9,
+          "daily_limit": 1,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_nonrising": 9
+        },
+        "months": 6,
+        "audit_records": 23,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C3T",
+      "name": "ResearchV3CH_P_C3T",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2020-09-01",
+      "finish": "2025-01-01",
+      "start_ms": 1598918400000,
+      "finish_ms": 1735689600000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C3T(ResearchV3ChannelP4h):\n    START = 1598918400000\n    FINISH = 1735689600000\n",
+      "sha256": "98828973ba276d9a0c5b987a489b22ece5b4677edaf72a331d49c723dd48ed0f",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_train",
+      "session_id": "a9d0824d-4a51-4dc2-86e6-d9035aed7db7",
+      "dashboard_url": "http://localhost:9200/#/backtest/a9d0824d-4a51-4dc2-86e6-d9035aed7db7",
+      "created_at": "2026-10-20T23:37:13.286Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:37:13.349Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"a9d0824d-4a51-4dc2-86e6-d9035aed7db7\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C3T\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/a9d0824d-4a51-4dc2-86e6-d9035aed7db7\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:38:48.600Z",
+      "execution_duration": 45.05,
+      "summary_metrics": {
+        "total": 196,
+        "total_winning_trades": 68,
+        "total_losing_trades": 128,
+        "starting_balance": 10000,
+        "finishing_balance": 18923.430104963543,
+        "win_rate": 0.3469387755102041,
+        "win_rate_longs": 0.3963963963963964,
+        "win_rate_shorts": 0.2823529411764706,
+        "ratio_avg_win_loss": 2.6211380046420194,
+        "longs_count": 111,
+        "longs_percentage": 56.63265306122449,
+        "shorts_percentage": 43.36734693877551,
+        "shorts_count": 85,
+        "fee": 1387.698908826153,
+        "net_profit": 8923.430104963536,
+        "net_profit_percentage": 89.23430104963536,
+        "average_win": 465.5804058770811,
+        "average_loss": 177.62529292717173,
+        "expectancy": 45.52770461716088,
+        "expectancy_percentage": 0.45527704617160875,
+        "expected_net_profit_every_100_trades": 45.52770461716087,
+        "average_holding_period": 210696.73469387754,
+        "average_winning_holding_period": 350166.17647058825,
+        "average_losing_holding_period": 136603.59375,
+        "gross_profit": 31659.467599641514,
+        "gross_loss": -22736.03749467798,
+        "max_drawdown": -23.620115506766194,
+        "max_underwater_period": 587,
+        "annual_return": 15.84284195024357,
+        "annualization": 365,
+        "sharpe_ratio": 0.8103075711079368,
+        "calmar_ratio": 0.6707351598558121,
+        "sortino_ratio": 1.5760338794533717,
+        "omega_ratio": 1.2124799255261374,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 13,
+        "largest_losing_trade": -394.3935490325451,
+        "largest_winning_trade": 2449.0089107126933,
+        "current_streak": -2,
+        "avg_trades_per_day": 0.12381548579723547,
+        "avg_trades_per_week": 0.8667084005806484,
+        "avg_trades_per_month": 3.768943387667848,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -1187.2100889769915,
+          "rate_kind": "settled",
+          "event_count": 1393,
+          "settlements_processed": 4749,
+          "mark_price_proxy_count": 987,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1735689000000,
+            "available_at": 1735689360000,
+            "quantity_base": 91227.361,
+            "value_quote": 8541647920.63537
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C3T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C3T.json",
+      "audit_summary": {
+        "bars": 9498,
+        "entries": 196,
+        "exits": 196,
+        "primary": {
+          "no_setup": 8711,
+          "allowed": 196,
+          "in_position_or_pending": 304,
+          "regime_reject": 284,
+          "daily_limit": 2,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 46
+        },
+        "months": 52,
+        "audit_records": 187,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C3T",
+      "name": "ResearchV3CH_OI_C3T",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2020-09-01",
+      "finish": "2025-01-01",
+      "start_ms": 1598918400000,
+      "finish_ms": 1735689600000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C3T(ResearchV3ChannelOi4h):\n    START = 1598918400000\n    FINISH = 1735689600000\n",
+      "sha256": "5e2d7cac3dcc3e08d6a97f279de437bffa4d098ba3e9ac7bf2e20118f9d6f500",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_train",
+      "session_id": "ad9c1d7a-ab87-4a5a-a536-a44cfb4c200b",
+      "dashboard_url": "http://localhost:9200/#/backtest/ad9c1d7a-ab87-4a5a-a536-a44cfb4c200b",
+      "created_at": "2026-10-20T23:37:31.002Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:37:31.076Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"ad9c1d7a-ab87-4a5a-a536-a44cfb4c200b\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_OI_C3T\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/ad9c1d7a-ab87-4a5a-a536-a44cfb4c200b\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:39:34.781Z",
+      "execution_duration": 41.09,
+      "summary_metrics": {
+        "total": 171,
+        "total_winning_trades": 57,
+        "total_losing_trades": 114,
+        "starting_balance": 10000,
+        "finishing_balance": 17334.81916414959,
+        "win_rate": 0.3333333333333333,
+        "win_rate_longs": 0.3673469387755102,
+        "win_rate_shorts": 0.2876712328767123,
+        "ratio_avg_win_loss": 2.675793726358644,
+        "longs_count": 98,
+        "longs_percentage": 57.30994152046783,
+        "shorts_percentage": 42.69005847953217,
+        "shorts_count": 73,
+        "fee": 1300.705886898935,
+        "net_profit": 7334.819164149569,
+        "net_profit_percentage": 73.34819164149569,
+        "average_win": 509.510373749932,
+        "average_loss": 190.41466789119787,
+        "expectancy": 42.89367932251207,
+        "expectancy_percentage": 0.42893679322512074,
+        "expected_net_profit_every_100_trades": 42.89367932251207,
+        "average_holding_period": 204562.45614035087,
+        "average_winning_holding_period": 338643.15789473685,
+        "average_losing_holding_period": 137522.1052631579,
+        "gross_profit": 29042.091303746125,
+        "gross_loss": -21707.272139596556,
+        "max_drawdown": -22.71956960543582,
+        "max_underwater_period": 596,
+        "annual_return": 13.524288111999017,
+        "annualization": 365,
+        "sharpe_ratio": 0.7448701494874485,
+        "calmar_ratio": 0.5952704363186191,
+        "sortino_ratio": 1.4646458718912687,
+        "omega_ratio": 1.2136278770712015,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 10,
+        "largest_losing_trade": -372.1501969982948,
+        "largest_winning_trade": 2471.1657673573845,
+        "current_streak": -2,
+        "avg_trades_per_day": 0.10802269424146564,
+        "avg_trades_per_week": 0.7561588596902595,
+        "avg_trades_per_month": 3.288210812710214,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -1125.04283074494,
+          "rate_kind": "settled",
+          "event_count": 1179,
+          "settlements_processed": 4749,
+          "mark_price_proxy_count": 839,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1735689000000,
+            "available_at": 1735689360000,
+            "quantity_base": 91227.361,
+            "value_quote": 8541647920.63537
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C3T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C3T.json",
+      "audit_summary": {
+        "bars": 9498,
+        "entries": 171,
+        "exits": 171,
+        "primary": {
+          "no_setup": 8711,
+          "oi_initialization": 2,
+          "regime_reject": 284,
+          "oi_nonrising": 64,
+          "allowed": 171,
+          "in_position_or_pending": 262,
+          "daily_limit": 3,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 2,
+          "oi_nonrising": 64
+        },
+        "months": 52,
+        "audit_records": 187,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C3V",
+      "name": "ResearchV3CH_P_C3V",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "start_ms": 1735689600000,
+      "finish_ms": 1751328000000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C3V(ResearchV3ChannelP4h):\n    START = 1735689600000\n    FINISH = 1751328000000\n",
+      "sha256": "909bd476f721ebf1d6b033499f6a73fb3740f027cec19bedfebf183ee8b41da2",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_eval",
+      "selection_ref": "SELECTION_V3_C3.json",
+      "session_id": "03753b45-bdb2-45c9-88ca-015a2bd374c5",
+      "dashboard_url": "http://localhost:9200/#/backtest/03753b45-bdb2-45c9-88ca-015a2bd374c5",
+      "created_at": "2026-10-20T23:39:58.706Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:39:58.762Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"03753b45-bdb2-45c9-88ca-015a2bd374c5\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C3V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/03753b45-bdb2-45c9-88ca-015a2bd374c5\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:40:48.434Z",
+      "execution_duration": 6.07,
+      "summary_metrics": {
+        "total": 25,
+        "total_winning_trades": 9,
+        "total_losing_trades": 16,
+        "starting_balance": 10000,
+        "finishing_balance": 10187.02588568722,
+        "win_rate": 0.36,
+        "win_rate_longs": 0.3076923076923077,
+        "win_rate_shorts": 0.4166666666666667,
+        "ratio_avg_win_loss": 1.9249931766921464,
+        "longs_count": 13,
+        "longs_percentage": 52,
+        "shorts_percentage": 48,
+        "shorts_count": 12,
+        "fee": 192.4284786184301,
+        "net_profit": 187.025885687225,
+        "net_profit_percentage": 1.8702588568722502,
+        "average_win": 271.72848346911,
+        "average_loss": 141.15815409592284,
+        "expectancy": 7.481035427488976,
+        "expectancy_percentage": 0.07481035427488976,
+        "expected_net_profit_every_100_trades": 7.481035427488976,
+        "average_holding_period": 200179.2,
+        "average_winning_holding_period": 332866.6666666667,
+        "average_losing_holding_period": 125542.5,
+        "gross_profit": 2445.55635122199,
+        "gross_loss": -2258.5304655347654,
+        "max_drawdown": -12.378332202589137,
+        "max_underwater_period": 50,
+        "annual_return": 3.8073732893664225,
+        "annualization": 365,
+        "sharpe_ratio": 0.28226278341969685,
+        "calmar_ratio": 0.30758370570875826,
+        "sortino_ratio": 0.5118107893974304,
+        "omega_ratio": 1.0677159696491316,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 2,
+        "losing_streak": 5,
+        "largest_losing_trade": -224.03126475262766,
+        "largest_winning_trade": 900.4436572698971,
+        "current_streak": -4,
+        "avg_trades_per_day": 0.13812101703108876,
+        "avg_trades_per_week": 0.9668471192176213,
+        "avg_trades_per_month": 4.204403758426342,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": 0.7369274814405979,
+          "rate_kind": "settled",
+          "event_count": 167,
+          "settlements_processed": 543,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1751327400000,
+            "available_at": 1751327760000,
+            "quantity_base": 76513.358,
+            "value_quote": 8190877395.2728
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C3V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2025-01-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C3V.json",
+      "audit_summary": {
+        "bars": 1086,
+        "entries": 25,
+        "exits": 25,
+        "primary": {
+          "no_setup": 981,
+          "regime_reject": 37,
+          "allowed": 25,
+          "in_position_or_pending": 42,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_nonrising": 5
+        },
+        "months": 6,
+        "audit_records": 22,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C3V",
+      "name": "ResearchV3CH_OI_C3V",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "start_ms": 1735689600000,
+      "finish_ms": 1751328000000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C3V(ResearchV3ChannelOi4h):\n    START = 1735689600000\n    FINISH = 1751328000000\n",
+      "sha256": "9ca7eebe71b463054c05a1ad0c76196f238dab4c9fca60bf4568ec57d07168c7",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_eval",
+      "selection_ref": "SELECTION_V3_C3.json",
+      "session_id": "2004cd16-ad77-4d80-b1bd-0e54809126bf",
+      "dashboard_url": "http://localhost:9200/#/backtest/2004cd16-ad77-4d80-b1bd-0e54809126bf",
+      "created_at": "2026-10-20T23:40:17.371Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:40:17.448Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "error",
+      "finished_observed_at": "2026-10-20T23:43:09.133Z",
+      "execution_duration": 4.89,
+      "summary_metrics": {
+        "total": 22,
+        "total_winning_trades": 9,
+        "total_losing_trades": 13,
+        "starting_balance": 10000,
+        "finishing_balance": 10298.07282440018,
+        "win_rate": 0.4090909090909091,
+        "win_rate_longs": 0.3333333333333333,
+        "win_rate_shorts": 0.5,
+        "ratio_avg_win_loss": 1.651256463450604,
+        "longs_count": 12,
+        "longs_percentage": 54.54545454545454,
+        "shorts_percentage": 45.45454545454546,
+        "shorts_count": 10,
+        "fee": 172.01103825643648,
+        "net_profit": 298.0728244001741,
+        "net_profit_percentage": 2.980728244001741,
+        "average_win": 264.43481285029253,
+        "average_loss": 160.14157625018913,
+        "expectancy": 13.548764745462478,
+        "expectancy_percentage": 0.1354876474546248,
+        "expected_net_profit_every_100_trades": 13.54876474546248,
+        "average_holding_period": 198649.0909090909,
+        "average_winning_holding_period": 326466.6666666667,
+        "average_losing_holding_period": 110160,
+        "gross_profit": 2379.9133156526327,
+        "gross_loss": -2081.840491252459,
+        "max_drawdown": -12.415806454100553,
+        "max_underwater_period": 50,
+        "annual_return": 6.101944238244461,
+        "annualization": 365,
+        "sharpe_ratio": 0.39308719309157014,
+        "calmar_ratio": 0.49146579892353104,
+        "sortino_ratio": 0.7289605859674441,
+        "omega_ratio": 1.1027571998616854,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 2,
+        "losing_streak": 5,
+        "largest_losing_trade": -226.57028379163452,
+        "largest_winning_trade": 910.6487012304265,
+        "current_streak": -2,
+        "avg_trades_per_day": 0.1215464949873581,
+        "avg_trades_per_week": 0.8508254649115067,
+        "avg_trades_per_month": 3.699875307415181,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -4.267608171318909,
+          "rate_kind": "settled",
+          "event_count": 146,
+          "settlements_processed": 543,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1751327400000,
+            "available_at": 1751327760000,
+            "quantity_base": 76513.358,
+            "value_quote": 8190877395.2728
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C3V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2025-01-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C3V.json",
+      "audit_summary": {
+        "bars": 1086,
+        "entries": 22,
+        "exits": 22,
+        "primary": {
+          "no_setup": 981,
+          "regime_reject": 37,
+          "oi_nonrising": 8,
+          "allowed": 22,
+          "in_position_or_pending": 37,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_nonrising": 8
+        },
+        "months": 6,
+        "audit_records": 22,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C4T",
+      "name": "ResearchV3CH_P_C4T",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2020-09-01",
+      "finish": "2025-07-01",
+      "start_ms": 1598918400000,
+      "finish_ms": 1751328000000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C4T(ResearchV3ChannelP4h):\n    START = 1598918400000\n    FINISH = 1751328000000\n",
+      "sha256": "c4ecefa350f7344728d6fdc92de9d136c88220d144baa8c2add44ae695c510ba",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_train",
+      "session_id": "676cdf48-3f7a-475c-8e06-de41f0f39ac1",
+      "dashboard_url": "http://localhost:9200/#/backtest/676cdf48-3f7a-475c-8e06-de41f0f39ac1",
+      "created_at": "2026-10-20T23:41:57.813Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:41:57.875Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"676cdf48-3f7a-475c-8e06-de41f0f39ac1\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C4T\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/676cdf48-3f7a-475c-8e06-de41f0f39ac1\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:43:50.496Z",
+      "execution_duration": 45.29,
+      "summary_metrics": {
+        "total": 221,
+        "total_winning_trades": 77,
+        "total_losing_trades": 144,
+        "starting_balance": 10000,
+        "finishing_balance": 19277.347013446106,
+        "win_rate": 0.34841628959276016,
+        "win_rate_longs": 0.3870967741935484,
+        "win_rate_shorts": 0.29896907216494845,
+        "ratio_avg_win_loss": 2.5124799104818125,
+        "longs_count": 124,
+        "longs_percentage": 56.10859728506787,
+        "shorts_percentage": 43.89140271493213,
+        "shorts_count": 97,
+        "fee": 1751.8396045733357,
+        "net_profit": 9277.347013446102,
+        "net_profit_percentage": 92.77347013446102,
+        "average_win": 471.26362371909124,
+        "average_loss": 187.56911120086053,
+        "expectancy": 41.97894576219957,
+        "expectancy_percentage": 0.4197894576219957,
+        "expected_net_profit_every_100_trades": 41.97894576219957,
+        "average_holding_period": 209506.96832579185,
+        "average_winning_holding_period": 348144.1558441558,
+        "average_losing_holding_period": 135374.58333333334,
+        "gross_profit": 36287.29902637003,
+        "gross_loss": -27009.952012923917,
+        "max_drawdown": -23.620115506766194,
+        "max_underwater_period": 587,
+        "annual_return": 14.546248018317609,
+        "annualization": 365,
+        "sharpe_ratio": 0.7567773861063083,
+        "calmar_ratio": 0.6158415277076316,
+        "sortino_ratio": 1.460058048595856,
+        "omega_ratio": 1.196535972674799,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 13,
+        "largest_losing_trade": -423.94401720895735,
+        "largest_winning_trade": 2449.0089107126933,
+        "current_streak": -4,
+        "avg_trades_per_day": 0.1252833973909528,
+        "avg_trades_per_week": 0.8769837817366695,
+        "avg_trades_per_month": 3.813626616580603,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -1185.815570322462,
+          "rate_kind": "settled",
+          "event_count": 1560,
+          "settlements_processed": 5292,
+          "mark_price_proxy_count": 987,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1751327400000,
+            "available_at": 1751327760000,
+            "quantity_base": 76513.358,
+            "value_quote": 8190877395.2728
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C4T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C4T.json",
+      "audit_summary": {
+        "bars": 10584,
+        "entries": 221,
+        "exits": 221,
+        "primary": {
+          "no_setup": 9693,
+          "allowed": 221,
+          "in_position_or_pending": 346,
+          "regime_reject": 321,
+          "daily_limit": 2,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 51
+        },
+        "months": 58,
+        "audit_records": 209,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C4T",
+      "name": "ResearchV3CH_OI_C4T",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2020-09-01",
+      "finish": "2025-07-01",
+      "start_ms": 1598918400000,
+      "finish_ms": 1751328000000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C4T(ResearchV3ChannelOi4h):\n    START = 1598918400000\n    FINISH = 1751328000000\n",
+      "sha256": "6a8a17b240ff49084e0d42ef662dbc13c22c4a98bc3fd64ed27206060d3c9b08",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_train",
+      "session_id": "b32e4cec-b7fd-428f-8a71-5440e41071c4",
+      "dashboard_url": "http://localhost:9200/#/backtest/b32e4cec-b7fd-428f-8a71-5440e41071c4",
+      "created_at": "2026-10-20T23:42:16.323Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:42:16.397Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "error",
+      "finished_observed_at": "2026-10-20T23:43:50.650Z",
+      "execution_duration": 43.45,
+      "summary_metrics": {
+        "total": 193,
+        "total_winning_trades": 66,
+        "total_losing_trades": 127,
+        "starting_balance": 10000,
+        "finishing_balance": 17851.522971145856,
+        "win_rate": 0.34196891191709844,
+        "win_rate_longs": 0.36363636363636365,
+        "win_rate_shorts": 0.3132530120481928,
+        "ratio_avg_win_loss": 2.5210259176493346,
+        "longs_count": 110,
+        "longs_percentage": 56.994818652849744,
+        "shorts_percentage": 43.005181347150256,
+        "shorts_count": 83,
+        "fee": 1598.8839179801098,
+        "net_profit": 7851.522971145849,
+        "net_profit_percentage": 78.51522971145849,
+        "average_win": 502.5398181162375,
+        "average_loss": 199.33940964193567,
+        "expectancy": 40.68146617174011,
+        "expectancy_percentage": 0.40681466171740116,
+        "expected_net_profit_every_100_trades": 40.68146617174012,
+        "average_holding_period": 203888.3937823834,
+        "average_winning_holding_period": 336982.7272727273,
+        "average_losing_holding_period": 134721.25984251968,
+        "gross_profit": 33167.627995671675,
+        "gross_loss": -25316.10502452583,
+        "max_drawdown": -22.71956960543582,
+        "max_underwater_period": 596,
+        "annual_return": 12.739386175859346,
+        "annualization": 365,
+        "sharpe_ratio": 0.7080676238139978,
+        "calmar_ratio": 0.560723041725727,
+        "sortino_ratio": 1.382219816887917,
+        "omega_ratio": 1.2009710707112164,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 10,
+        "largest_losing_trade": -392.75551696392586,
+        "largest_winning_trade": 2471.1657673573845,
+        "current_streak": -2,
+        "avg_trades_per_day": 0.10941038776675967,
+        "avg_trades_per_week": 0.7658727143673176,
+        "avg_trades_per_month": 3.3304522036201645,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -1132.4406552686357,
+          "rate_kind": "settled",
+          "event_count": 1325,
+          "settlements_processed": 5292,
+          "mark_price_proxy_count": 839,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1751327400000,
+            "available_at": 1751327760000,
+            "quantity_base": 76513.358,
+            "value_quote": 8190877395.2728
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C4T"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C4T.json",
+      "audit_summary": {
+        "bars": 10584,
+        "entries": 193,
+        "exits": 193,
+        "primary": {
+          "no_setup": 9693,
+          "oi_initialization": 2,
+          "regime_reject": 321,
+          "oi_nonrising": 72,
+          "allowed": 193,
+          "in_position_or_pending": 299,
+          "daily_limit": 3,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 2,
+          "oi_nonrising": 72
+        },
+        "months": 58,
+        "audit_records": 209,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "P",
+      "stage": "C4V",
+      "name": "ResearchV3CH_P_C4V",
+      "parent": "ResearchV3ChannelP4h",
+      "id": "CHANNEL_P",
+      "start": "2025-07-01",
+      "finish": "2026-01-01",
+      "start_ms": 1751328000000,
+      "finish_ms": 1767225600000,
+      "source": "from strategies.ResearchV3ChannelP4h import ResearchV3ChannelP4h\n\n\nclass ResearchV3CH_P_C4V(ResearchV3ChannelP4h):\n    START = 1751328000000\n    FINISH = 1767225600000\n",
+      "sha256": "3ce1ebc10da9aec3d77c48ab5e232cbc8de080c0ec79554b92ba238205f72e31",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_eval",
+      "selection_ref": "SELECTION_V3_C4.json",
+      "session_id": "36b23618-bda4-44b3-b1c1-e9e97fdd23a1",
+      "dashboard_url": "http://localhost:9200/#/backtest/36b23618-bda4-44b3-b1c1-e9e97fdd23a1",
+      "created_at": "2026-10-20T23:45:18.667Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:45:18.729Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"36b23618-bda4-44b3-b1c1-e9e97fdd23a1\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV3CH_P_C4V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/36b23618-bda4-44b3-b1c1-e9e97fdd23a1\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "started",
+      "finished_observed_at": "2026-10-20T23:47:27.740Z",
+      "execution_duration": 6.86,
+      "summary_metrics": {
+        "total": 24,
+        "total_winning_trades": 7,
+        "total_losing_trades": 17,
+        "starting_balance": 10000,
+        "finishing_balance": 9807.580815584215,
+        "win_rate": 0.2916666666666667,
+        "win_rate_longs": 0.3,
+        "win_rate_shorts": 0.2857142857142857,
+        "ratio_avg_win_loss": 2.2296712342853553,
+        "longs_count": 10,
+        "longs_percentage": 41.66666666666667,
+        "shorts_percentage": 58.33333333333333,
+        "shorts_count": 14,
+        "fee": 181.38063878776498,
+        "net_profit": -192.4191844157865,
+        "net_profit_percentage": -1.924191844157865,
+        "average_win": 308.145587400528,
+        "average_loss": 138.2022527187931,
+        "expectancy": -8.017466017324423,
+        "expectancy_percentage": -0.08017466017324423,
+        "expected_net_profit_every_100_trades": -8.017466017324423,
+        "average_holding_period": 189347.5,
+        "average_winning_holding_period": 365108.5714285714,
+        "average_losing_holding_period": 116975.29411764706,
+        "gross_profit": 2157.019111803696,
+        "gross_loss": -2349.4382962194827,
+        "max_drawdown": -12.179279969104806,
+        "max_underwater_period": 108,
+        "annual_return": -3.7808826412842778,
+        "annualization": 365,
+        "sharpe_ratio": -0.17166473794531842,
+        "calmar_ratio": -0.31043564569295123,
+        "sortino_ratio": -0.2855955925249401,
+        "omega_ratio": 0.9637905611593239,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 4,
+        "losing_streak": 7,
+        "largest_losing_trade": -210.7882346091304,
+        "largest_winning_trade": 775.6421337466928,
+        "current_streak": -5,
+        "avg_trades_per_day": 0.1304342903295202,
+        "avg_trades_per_week": 0.9130400323066414,
+        "avg_trades_per_month": 3.970419797630595,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -0.19246390616911158,
+          "rate_kind": "settled",
+          "event_count": 156,
+          "settlements_processed": 552,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1767225000000,
+            "available_at": 1767225360000,
+            "quantity_base": 94202.223,
+            "value_quote": 8252900595.68379
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_P_C4V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2025-07-01",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_P_C4V.json",
+      "audit_summary": {
+        "bars": 1104,
+        "entries": 24,
+        "exits": 24,
+        "primary": {
+          "no_setup": 997,
+          "regime_reject": 51,
+          "allowed": 24,
+          "in_position_or_pending": 31,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 7
+        },
+        "months": 6,
+        "audit_records": 23,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    },
+    {
+      "sector": "CHANNEL",
+      "side": "OI",
+      "stage": "C4V",
+      "name": "ResearchV3CH_OI_C4V",
+      "parent": "ResearchV3ChannelOi4h",
+      "id": "CHANNEL_POI",
+      "start": "2025-07-01",
+      "finish": "2026-01-01",
+      "start_ms": 1751328000000,
+      "finish_ms": 1767225600000,
+      "source": "from strategies.ResearchV3ChannelOi4h import ResearchV3ChannelOi4h\n\n\nclass ResearchV3CH_OI_C4V(ResearchV3ChannelOi4h):\n    START = 1751328000000\n    FINISH = 1767225600000\n",
+      "sha256": "1d98d79478c0794bc8336e786d999b04bd317755834bc094c6f9631206a92366",
+      "status": "finished",
+      "readback_equal": true,
+      "kind": "confirmation_eval",
+      "selection_ref": "SELECTION_V3_C4.json",
+      "session_id": "2ebd9039-498f-4bd7-9cc3-dbf36fb77682",
+      "dashboard_url": "http://localhost:9200/#/backtest/2ebd9039-498f-4bd7-9cc3-dbf36fb77682",
+      "created_at": "2026-10-20T23:45:36.277Z",
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "start_requested_at": "2026-10-20T23:45:36.353Z",
+      "raw_start_response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": "error",
+      "finished_observed_at": "2026-10-20T23:47:27.925Z",
+      "execution_duration": 4.78,
+      "summary_metrics": {
+        "total": 18,
+        "total_winning_trades": 6,
+        "total_losing_trades": 12,
+        "starting_balance": 10000,
+        "finishing_balance": 10569.606162763648,
+        "win_rate": 0.3333333333333333,
+        "win_rate_longs": 0.375,
+        "win_rate_shorts": 0.3,
+        "ratio_avg_win_loss": 2.6789928547530186,
+        "longs_count": 8,
+        "longs_percentage": 44.44444444444444,
+        "shorts_percentage": 55.55555555555556,
+        "shorts_count": 10,
+        "fee": 136.66125767075556,
+        "net_profit": 569.6061627636378,
+        "net_profit_percentage": 5.696061627636379,
+        "average_win": 374.5672308098487,
+        "average_loss": 139.81643517462115,
+        "expectancy": 31.644786820202114,
+        "expectancy_percentage": 0.31644786820202114,
+        "expected_net_profit_every_100_trades": 31.644786820202114,
+        "average_holding_period": 211450,
+        "average_winning_holding_period": 385100,
+        "average_losing_holding_period": 124625,
+        "gross_profit": 2247.403384859092,
+        "gross_loss": -1677.797222095454,
+        "max_drawdown": -7.087425378410739,
+        "max_underwater_period": 92,
+        "annual_return": 11.615715433018249,
+        "annualization": 365,
+        "sharpe_ratio": 0.8313084565182015,
+        "calmar_ratio": 1.6389189039508332,
+        "sortino_ratio": 1.544132736688076,
+        "omega_ratio": 1.2275760833400646,
+        "serenity_index": null,
+        "total_open_trades": 0,
+        "open_pl": 0,
+        "winning_streak": 3,
+        "losing_streak": 4,
+        "largest_losing_trade": -223.38741489073576,
+        "largest_winning_trade": 822.0035461393742,
+        "current_streak": -4,
+        "avg_trades_per_day": 0.09782571774714015,
+        "avg_trades_per_week": 0.6847800242299811,
+        "avg_trades_per_month": 2.977814848222946,
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "cashflow": -4.424333045536194,
+          "rate_kind": "settled",
+          "event_count": 131,
+          "settlements_processed": 552,
+          "mark_price_proxy_count": 0,
+          "status": "applied",
+          "applied": true,
+          "scope": [
+            "BTC-USDT"
+          ],
+          "excluded_symbols": [],
+          "data": {
+            "allow_mark_price_proxy": true,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "mark_price_proxy_count": 4198,
+            "schema": 1,
+            "source": "binance-usdm-fundingRate-v1",
+            "start": 1577836800000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "event_count": 6576,
+            "first_settlement": 1577836800000,
+            "last_settlement": 1767196800001,
+            "largest_gap_ms": 28800047,
+            "status": "ready",
+            "coverage_complete": true,
+            "supported_timestamps": true,
+            "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+            "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+            "publication_delay_ms": 60000,
+            "rate_unit": "decimal_fraction",
+            "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+          },
+          "effective_fast_mode": false,
+          "boundary_policy": "before_strategy_decisions; finish_exclusive",
+          "publication_delay_ms": 60000
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "max_age_ms": 600000,
+          "applied": true,
+          "status": "applied",
+          "scope": [
+            "BTC-USDT"
+          ],
+          "data": {
+            "archive_assumptions_acknowledged": true,
+            "archive_catalog": {
+              "first_archive_date": "2020-09-01",
+              "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+              "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+              "point_in_time_certified": false,
+              "source": "binance-usdm-metrics-archive-v1"
+            },
+            "availability_lag_ms": 360000,
+            "exchange": "Binance Perpetual Futures",
+            "finish": 1767225600000,
+            "import_source": "auto",
+            "original_publication_known": false,
+            "period_ms": 300000,
+            "rest_range": null,
+            "schema": 1,
+            "source": "binance-usdm-metrics-archive-v1",
+            "start": 1598918400000,
+            "symbol": "BTC-USDT",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "observation_count": 560390,
+            "expected_observation_count": 561024,
+            "missing_observation_count": 634,
+            "coverage_complete": false,
+            "status": "incomplete",
+            "leading_gap_ms": 0,
+            "trailing_gap_ms": 0,
+            "first_observation": 1598918400000,
+            "last_observation": 1767225300000,
+            "first_available_at": 1598918760000,
+            "last_available_at": 1767225660000,
+            "largest_gap_ms": 37800000,
+            "gap_count": 156,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+            "point_in_time_certified": false,
+            "missing_policy": "no interpolation; unavailable or stale values return None",
+            "cashflow": false,
+            "archive_file_count": 1948,
+            "archive_verified_file_count": 1948,
+            "archive_missing_days": [],
+            "archive_missing_day_count": 0,
+            "archive_identical_duplicate_rows": 75255
+          },
+          "allow_missing_observations": true,
+          "observation_count": 560390,
+          "cashflow": false,
+          "availability_lag_ms": 360000,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "current": {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "observed_at": 1767225000000,
+            "available_at": 1767225360000,
+            "quantity_base": 94202.223,
+            "value_quote": 8252900595.68379
+          }
+        }
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h",
+            "strategy": "ResearchV3CH_OI_C4V"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2025-07-01",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "audit_artifact": "strategies/FundingOiPilot4h/reports/AUDIT_ResearchV3CH_OI_C4V.json",
+      "audit_summary": {
+        "bars": 1104,
+        "entries": 18,
+        "exits": 18,
+        "primary": {
+          "no_setup": 997,
+          "regime_reject": 51,
+          "oi_initialization": 1,
+          "allowed": 18,
+          "in_position_or_pending": 28,
+          "oi_nonrising": 8,
+          "boundary_or_inactive": 1
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 8
+        },
+        "months": 6,
+        "audit_records": 23,
+        "forced_following_audit": 0
+      },
+      "counter_verified": true
+    }
+  ],
+  "incidents": [
+    {
+      "kind": "run_response_timeout",
+      "session_id": "faeccf79-ea48-4d5a-93bf-8ab77a0c8095",
+      "stage": "C1V",
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "resolution": "Same session finished, no rerun."
+    },
+    {
+      "kind": "run_response_timeout",
+      "session_id": "e9aac0d1-947b-447b-8268-ed7bb3b9d491",
+      "stage": "C2T",
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "resolution": "Same session finished, no rerun."
+    },
+    {
+      "kind": "run_response_timeout",
+      "session_id": "0ca32a2d-e9b5-4420-94bd-58113244d560",
+      "stage": "C2V",
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "resolution": "Same session finished, no rerun."
+    },
+    {
+      "kind": "run_response_timeout",
+      "session_id": "2004cd16-ad77-4d80-b1bd-0e54809126bf",
+      "stage": "C3V",
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "resolution": "Same session finished, no rerun."
+    },
+    {
+      "kind": "run_response_timeout",
+      "session_id": "b32e4cec-b7fd-428f-8a71-5440e41071c4",
+      "stage": "C4T",
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "resolution": "Same session finished, no rerun."
+    },
+    {
+      "kind": "run_response_timeout",
+      "session_id": "2ebd9039-498f-4bd7-9cc3-dbf36fb77682",
+      "stage": "C4V",
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"error\",\n  \"error\": \"HTTPConnectionPool(host='127.0.0.1', port=9000): Read timed out. (read timeout=10)\",\n  \"message\": \"Failed to connect to Jesse API\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "resolution": "Same session finished, no rerun."
+    }
+  ],
+  "config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "wrappers_manifest": "V3_CONFIRMATION_WRAPPERS.json",
+  "source_freeze": "REGISTRY_V3.json and V3_IMPLEMENTATION_SOURCE_20261020.md",
+  "selection_C1_ref": "SELECTION_V3_C1.json",
+  "updated_at": "2026-10-20T23:47:28.091Z",
+  "completed_at": "2026-10-20T23:47:28.091Z"
+}

@@ -1,0 +1,5686 @@
+{
+  "status": "passed",
+  "errors": [],
+  "label": "P",
+  "session_id": "2baa85a1-e673-4c84-bce9-38640f7b4e44",
+  "dashboard_url": "http://localhost:9200/#/backtest/2baa85a1-e673-4c84-bce9-38640f7b4e44",
+  "summary": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "2baa85a1-e673-4c84-bce9-38640f7b4e44",
+    "session_status": "finished",
+    "title": "MCP Backtest: V6 SCREEN DELEVERAGING_P",
+    "description": "Frozen V6 24h displacement reversal with closed4h correction, stop2ATR/target2R/hold48h. Price ablation P; no OI entry gate, decliningOI context is diagnostic. Draft only until root motor GO.",
+    "description_truncated": false,
+    "created_at": 1792544488000,
+    "updated_at": 1792545406000,
+    "execution_duration": 29.63,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "ResearchV6DeleverageP4h"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2020-09-01",
+      "finish_date": "2024-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": true,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      }
+    },
+    "metrics": {
+      "total": 236,
+      "total_winning_trades": 101,
+      "total_losing_trades": 135,
+      "starting_balance": 10000,
+      "finishing_balance": 8256.98452806558,
+      "win_rate": 0.4279661016949153,
+      "win_rate_longs": 0.45098039215686275,
+      "win_rate_shorts": 0.41044776119402987,
+      "ratio_avg_win_loss": 1.1833864243330767,
+      "longs_count": 102,
+      "longs_percentage": 43.22033898305085,
+      "shorts_percentage": 56.77966101694915,
+      "shorts_count": 134,
+      "fee": 931.9499656458304,
+      "net_profit": -1743.0154719343896,
+      "net_profit_percentage": -17.430154719343896,
+      "average_win": 133.26429077288384,
+      "average_loss": 112.6126580740419,
+      "expectancy": -7.385658779383007,
+      "expectancy_percentage": -0.07385658779383007,
+      "expected_net_profit_every_100_trades": -7.385658779383007,
+      "average_holding_period": 125022.20338983051,
+      "average_winning_holding_period": 150349.900990099,
+      "average_losing_holding_period": 106073.33333333333,
+      "gross_profit": 13459.693368061267,
+      "gross_loss": -15202.708839995657,
+      "max_drawdown": -35.99195110216294,
+      "max_underwater_period": 1215,
+      "annual_return": -5.58233063594532,
+      "annualization": 365,
+      "sharpe_ratio": -0.25949926985110006,
+      "calmar_ratio": -0.15509941709189112,
+      "sortino_ratio": -0.38210838601352654,
+      "omega_ratio": 0.9435876193730237,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0,
+      "winning_streak": 7,
+      "losing_streak": 7,
+      "largest_losing_trade": -202.16616209386353,
+      "largest_winning_trade": 329.7756957902967,
+      "current_streak": 1,
+      "avg_trades_per_day": 0.1939193634624284,
+      "avg_trades_per_week": 1.357435544236999,
+      "avg_trades_per_month": 5.902905423796321,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 263.85092058341405,
+        "rate_kind": "settled",
+        "event_count": 992,
+        "settlements_processed": 3651,
+        "mark_price_proxy_count": 946,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "max_age_ms": 600000,
+        "applied": true,
+        "status": "applied",
+        "scope": [
+          "BTC-USDT"
+        ],
+        "data": {
+          "archive_assumptions_acknowledged": true,
+          "archive_catalog": {
+            "first_archive_date": "2020-09-01",
+            "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+            "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+            "point_in_time_certified": false,
+            "source": "binance-usdm-metrics-archive-v1"
+          },
+          "availability_lag_ms": 360000,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "import_source": "auto",
+          "original_publication_known": false,
+          "period_ms": 300000,
+          "rest_range": null,
+          "schema": 1,
+          "source": "binance-usdm-metrics-archive-v1",
+          "start": 1598918400000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "observation_count": 560390,
+          "expected_observation_count": 561024,
+          "missing_observation_count": 634,
+          "coverage_complete": false,
+          "status": "incomplete",
+          "leading_gap_ms": 0,
+          "trailing_gap_ms": 0,
+          "first_observation": 1598918400000,
+          "last_observation": 1767225300000,
+          "first_available_at": 1598918760000,
+          "last_available_at": 1767225660000,
+          "largest_gap_ms": 37800000,
+          "gap_count": 156,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+          "point_in_time_certified": false,
+          "missing_policy": "no interpolation; unavailable or stale values return None",
+          "cashflow": false,
+          "archive_file_count": 1948,
+          "archive_verified_file_count": 1948,
+          "archive_missing_days": [],
+          "archive_missing_day_count": 0,
+          "archive_identical_duplicate_rows": 75255
+        },
+        "allow_missing_observations": true,
+        "observation_count": 560390,
+        "cashflow": false,
+        "availability_lag_ms": 360000,
+        "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+        "current": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "observed_at": 1704066600000,
+          "available_at": 1704066960000,
+          "quantity_base": 73951.1,
+          "value_quote": 3128205481.1
+        }
+      }
+    },
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 236
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 1218
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 758530
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/2baa85a1-e673-4c84-bce9-38640f7b4e44"
+  },
+  "log_pages": 20,
+  "log_lines": 3857,
+  "max_line": 1113,
+  "total_buckets": 157,
+  "months": 40,
+  "totals": {
+    "bars": 7302,
+    "entries": 236,
+    "exits": 236,
+    "opportunities": 236
+  },
+  "primary": {
+    "deleverage_displacement_below": 6008,
+    "deleverage_correction_reject": 933,
+    "allowed": 236,
+    "in_position_or_pending": 120,
+    "daily_limit": 4,
+    "boundary_or_inactive": 1
+  },
+  "feature_reasons": {
+    "deleverage_displacement_below": 6009,
+    "deleverage_correction_reject": 933,
+    "deleverage_setup": 360
+  },
+  "provenance": {
+    "line": "DELEVERAGING",
+    "use_oi": false,
+    "oi_lag_bars": 0,
+    "oi_rule": "declining",
+    "oi_decline_fraction": 0.02,
+    "stop_multiplier": 2,
+    "bar_ms": 14400000,
+    "oi_reference_bars": 6,
+    "atr_offset_bars": 0,
+    "target_mode": "r_multiple",
+    "reward_multiple": 2,
+    "max_hold_bars": 12,
+    "start": 1598918400000,
+    "finish": 1704067200000,
+    "active_windows": null,
+    "force_boundaries": [],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "closes": [
+    {
+      "time": 1599135120000,
+      "trade_id": "71e6ffe4-6345-4bd2-a6e8-cacb8931bf82",
+      "reason": "stop-loss",
+      "pnl": -202.16616209386353,
+      "balance": 9797.833837906135,
+      "gross": -194.98809691439973,
+      "risk_budget": 200,
+      "realized_loss": 202.16616209386353,
+      "loss_over_budget": 2.1661620938635338
+    },
+    {
+      "time": 1599175800000,
+      "trade_id": "ae3a1a7c-eca3-4ad5-b9d4-0f18973ca178",
+      "reason": "stop-loss",
+      "pnl": -195.9566756942745,
+      "balance": 9601.87716221186,
+      "gross": -192.4916552670143,
+      "risk_budget": 195.9566767581227,
+      "realized_loss": 195.9566756942745,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1599364800000,
+      "trade_id": "5af7bb27-b0a8-4c1c-96f4-841940660bbb",
+      "reason": "maximum_hold",
+      "pnl": -34.776821431949905,
+      "balance": 9567.10034077991,
+      "gross": -30.237361112400446,
+      "risk_budget": 192.0375432442372,
+      "realized_loss": 34.776821431949905,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1600099500000,
+      "trade_id": "649b566c-c1fb-4e51-8635-a4d150cd5697",
+      "reason": "stop-loss",
+      "pnl": -173.36065245785437,
+      "balance": 9393.739688322057,
+      "gross": -167.57340200691374,
+      "risk_budget": 191.3420068155982,
+      "realized_loss": 173.36065245785437,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1600173120000,
+      "trade_id": "3f5f30d1-fd23-446a-a22f-09a4a26dc05d",
+      "reason": "stop-loss",
+      "pnl": -189.80905748607827,
+      "balance": 9203.93063083598,
+      "gross": -180.8584297196291,
+      "risk_budget": 187.87479376644114,
+      "realized_loss": 189.80905748607827,
+      "loss_over_budget": 1.93426371963713
+    },
+    {
+      "time": 1600891200000,
+      "trade_id": "ff95c09e-caa2-45a2-9319-f348f44b5d44",
+      "reason": "maximum_hold",
+      "pnl": -131.53922695935682,
+      "balance": 9072.391403876622,
+      "gross": -124.28429514660039,
+      "risk_budget": 184.0786126167196,
+      "realized_loss": 131.53922695935682,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1601179200000,
+      "trade_id": "8bda1ca3-36ff-475d-b1df-07ad120a753d",
+      "reason": "maximum_hold",
+      "pnl": -72.6137837434926,
+      "balance": 8999.777620133129,
+      "gross": -70.18668890140013,
+      "risk_budget": 181.44782807753242,
+      "realized_loss": 72.6137837434926,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1602201600000,
+      "trade_id": "383fe54d-3190-4bfd-b0e6-0b96c8008ebf",
+      "reason": "maximum_hold",
+      "pnl": 266.57041125329044,
+      "balance": 9266.34803138642,
+      "gross": 276.78161113200093,
+      "risk_budget": 179.99555240266258,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1602242700000,
+      "trade_id": "8fbeb12f-ca2f-4322-94ed-7b9f57edc786",
+      "reason": "stop-loss",
+      "pnl": -168.6692027877444,
+      "balance": 9097.678828598677,
+      "gross": -161.18424672570202,
+      "risk_budget": 185.3269606277284,
+      "realized_loss": 168.6692027877444,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1602489600000,
+      "trade_id": "608a1656-1b4f-4689-8335-e9c1762764ea",
+      "reason": "maximum_hold",
+      "pnl": 1.4072082546407416,
+      "balance": 9099.086036853316,
+      "gross": 3.5464989048001816,
+      "risk_budget": 181.95357657197354,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1603191840000,
+      "trade_id": "63ee6e44-e100-4b57-84b3-94606e875544",
+      "reason": "stop-loss",
+      "pnl": -180.17478209483158,
+      "balance": 8918.911254758485,
+      "gross": -173.80713998499985,
+      "risk_budget": 181.98172073706633,
+      "realized_loss": 180.17478209483158,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1603320840000,
+      "trade_id": "c6abe6eb-1a86-49ed-a158-507e7ef94577",
+      "reason": "stop-loss",
+      "pnl": -178.37822127628075,
+      "balance": 8740.533033482205,
+      "gross": -174.08236153027212,
+      "risk_budget": 178.37822509516968,
+      "realized_loss": 178.37822127628075,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1603512000000,
+      "trade_id": "1d96ddb2-02df-4b12-b4fd-2de77cb46227",
+      "reason": "maximum_hold",
+      "pnl": -82.74330051450465,
+      "balance": 8657.7897329677,
+      "gross": -81.4804204725,
+      "risk_budget": 174.8106606696441,
+      "realized_loss": 82.74330051450465,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1604016000000,
+      "trade_id": "8e2fcedb-e7c9-4ee2-92e5-a90cb07f4d2c",
+      "reason": "maximum_hold",
+      "pnl": 65.00498689508233,
+      "balance": 8722.79471986278,
+      "gross": 71.45031165210054,
+      "risk_budget": 173.155794659354,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1604560260000,
+      "trade_id": "3430ef26-b43f-4902-8749-4b3fb6f2f9a1",
+      "reason": "stop-loss",
+      "pnl": -175.23638689091683,
+      "balance": 8547.558332971863,
+      "gross": -170.0490826627711,
+      "risk_budget": 174.4558943972556,
+      "realized_loss": 175.23638689091683,
+      "loss_over_budget": 0.7804924936612281
+    },
+    {
+      "time": 1604808000000,
+      "trade_id": "1dd5f833-c281-4e82-8679-f7c70aebf9f2",
+      "reason": "maximum_hold",
+      "pnl": 99.35971517783402,
+      "balance": 8646.9180481497,
+      "gross": 96.94649224940017,
+      "risk_budget": 170.95116665943726,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1605625560000,
+      "trade_id": "d676dbc0-661d-465a-bc17-1b616d95e045",
+      "reason": "stop-loss",
+      "pnl": -172.39693939967128,
+      "balance": 8474.52110875003,
+      "gross": -168.00024073992853,
+      "risk_budget": 172.938360962994,
+      "realized_loss": 172.39693939967128,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1605673020000,
+      "trade_id": "bb8165b5-7089-4513-b553-788b305decd4",
+      "reason": "stop-loss",
+      "pnl": -169.49041654880338,
+      "balance": 8305.030692201228,
+      "gross": -165.2068359480003,
+      "risk_budget": 169.49042217500062,
+      "realized_loss": 169.49041654880338,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1606608000000,
+      "trade_id": "4dbf68ca-dbc7-4b0e-bf5e-422bcd9a2494",
+      "reason": "maximum_hold",
+      "pnl": 64.56220888517812,
+      "balance": 8369.592901086404,
+      "gross": 67.69062709600017,
+      "risk_budget": 166.10061384402456,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1606706880000,
+      "trade_id": "0adad111-29d9-4be9-b0df-93a762e41786",
+      "reason": "stop-loss",
+      "pnl": -166.60171729148612,
+      "balance": 8202.991183794918,
+      "gross": -163.82688135278522,
+      "risk_budget": 167.39185802172807,
+      "realized_loss": 166.60171729148612,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1606939200000,
+      "trade_id": "91012d5e-67ec-4877-88e2-59db879626aa",
+      "reason": "maximum_hold",
+      "pnl": 34.644269514008826,
+      "balance": 8237.635453308927,
+      "gross": 33.05368843399986,
+      "risk_budget": 164.05982367589837,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1608048000000,
+      "trade_id": "8275edb9-e37c-468b-a0c4-227ffdbff8b7",
+      "reason": "maximum_hold",
+      "pnl": -48.8120910508891,
+      "balance": 8188.8233622580365,
+      "gross": -47.29597425279958,
+      "risk_budget": 164.75270906617854,
+      "realized_loss": 48.8120910508891,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1608394680000,
+      "trade_id": "4113f3e3-a515-42b1-a31e-fdbd9204aac9",
+      "reason": "stop-loss",
+      "pnl": -156.93352775314116,
+      "balance": 8031.8898345048965,
+      "gross": -161.21411115360033,
+      "risk_budget": 163.77646724516075,
+      "realized_loss": 156.93352775314116,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1608998820000,
+      "trade_id": "6a03f27b-c13c-44ae-92ef-e01729cf94a0",
+      "reason": "stop-loss",
+      "pnl": -160.25823966094651,
+      "balance": 7871.63159484395,
+      "gross": -157.26271571457133,
+      "risk_budget": 160.63779669009793,
+      "realized_loss": 160.25823966094651,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1609257600000,
+      "trade_id": "6c895552-2210-46e4-a227-a274be7ff5ae",
+      "reason": "maximum_hold",
+      "pnl": 76.8098682677969,
+      "balance": 7948.441463111745,
+      "gross": 72.09461881440008,
+      "risk_budget": 157.432631896879,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1609650720000,
+      "trade_id": "77dca869-4a41-4c82-ae27-3a6bc44c0be1",
+      "reason": "stop-loss",
+      "pnl": -158.96882672295254,
+      "balance": 7789.472636388793,
+      "gross": -156.4748117091434,
+      "risk_budget": 158.96882926223492,
+      "realized_loss": 158.96882672295254,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1610568000000,
+      "trade_id": "1da3a01a-7209-49e5-909a-5315d60fdac8",
+      "reason": "maximum_hold",
+      "pnl": 116.80493213967617,
+      "balance": 7906.277568528469,
+      "gross": 120.56848671499996,
+      "risk_budget": 155.78945272777585,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1611460800000,
+      "trade_id": "580fe1cb-ae8c-4fff-bf9d-407d2e8bf4d3",
+      "reason": "maximum_hold",
+      "pnl": 71.37272219963405,
+      "balance": 7977.650290728103,
+      "gross": 73.68251012589974,
+      "risk_budget": 158.12555137056938,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1611758940000,
+      "trade_id": "52b1d983-ec34-45f3-81fc-c082d128e48f",
+      "reason": "take-profit",
+      "pnl": 313.51253267737724,
+      "balance": 8291.16282340548,
+      "gross": 314.36296681554285,
+      "risk_budget": 159.55300581456206,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1612426500000,
+      "trade_id": "90a753d2-e170-4c8a-ae85-1e3b72a12e2e",
+      "reason": "stop-loss",
+      "pnl": -160.55890143590477,
+      "balance": 8130.603921969577,
+      "gross": -163.17328951007133,
+      "risk_budget": 165.8232564681096,
+      "realized_loss": 160.55890143590477,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1612788720000,
+      "trade_id": "3c048556-fdac-4396-aaea-44d2bb0c78a0",
+      "reason": "stop-loss",
+      "pnl": -148.7381298441939,
+      "balance": 7981.8657921253825,
+      "gross": -159.6274456791997,
+      "risk_budget": 162.61207843939152,
+      "realized_loss": 148.7381298441939,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1612826760000,
+      "trade_id": "d1ea6961-408c-4678-a4ae-addd69532970",
+      "reason": "stop-loss",
+      "pnl": -159.63729946676975,
+      "balance": 7822.2284926586135,
+      "gross": -157.60898621274362,
+      "risk_budget": 159.63731584250766,
+      "realized_loss": 159.63729946676975,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1613044800000,
+      "trade_id": "568fa0f8-c3c9-4df7-becf-5f19c7d40964",
+      "reason": "maximum_hold",
+      "pnl": 24.05801070363822,
+      "balance": 7846.286503362252,
+      "gross": 12.578535849499932,
+      "risk_budget": 156.44456985317228,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1613760720000,
+      "trade_id": "d0d00bb0-1a4d-4bc8-9e46-6fc5d443aac9",
+      "reason": "stop-loss",
+      "pnl": -141.0618555372792,
+      "balance": 7705.224647824973,
+      "gross": -154.4178718129431,
+      "risk_budget": 156.92573006724504,
+      "realized_loss": 141.0618555372792,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1613933460000,
+      "trade_id": "0722b3a1-c284-4b77-a2b9-b8f9f0461c89",
+      "reason": "stop-loss",
+      "pnl": -134.33266082787196,
+      "balance": 7570.891986997099,
+      "gross": -150.90422704868587,
+      "risk_budget": 154.10449295649946,
+      "realized_loss": 134.33266082787196,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1614057240000,
+      "trade_id": "726bdffd-24ab-4d21-b603-7c6e6d430afa",
+      "reason": "stop-loss",
+      "pnl": -151.88384658986547,
+      "balance": 7419.008140407233,
+      "gross": -149.8191893393143,
+      "risk_budget": 151.41783973994197,
+      "realized_loss": 151.88384658986547,
+      "loss_over_budget": 0.4660068499235024
+    },
+    {
+      "time": 1614767700000,
+      "trade_id": "4fd46a3c-5e79-44c8-b517-f59a078b73fe",
+      "reason": "stop-loss",
+      "pnl": -147.34108740308454,
+      "balance": 7271.667053004147,
+      "gross": -146.47016854235673,
+      "risk_budget": 148.38016280814466,
+      "realized_loss": 147.34108740308454,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1615253400000,
+      "trade_id": "a0c25f9c-b41d-4ce6-a583-7a2c0645be85",
+      "reason": "stop-loss",
+      "pnl": -141.97826874458062,
+      "balance": 7129.688784259566,
+      "gross": -142.77553054097146,
+      "risk_budget": 145.43334106008294,
+      "realized_loss": 141.97826874458062,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1615383420000,
+      "trade_id": "7a08a6d2-96b4-4398-9a19-cb989f0fa77c",
+      "reason": "stop-loss",
+      "pnl": -138.7693322612976,
+      "balance": 6990.919451998269,
+      "gross": -139.91661672685711,
+      "risk_budget": 142.59377568519133,
+      "realized_loss": 138.7693322612976,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1615801320000,
+      "trade_id": "c9fa2490-4c82-4e2c-be6c-c83ba4ede0b8",
+      "reason": "take-profit",
+      "pnl": 280.3285207472639,
+      "balance": 7271.247972745533,
+      "gross": 274.27191152,
+      "risk_budget": 139.81838903996538,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1616241600000,
+      "trade_id": "dabd1c53-f1e8-495a-9a4f-7c1e897a4f6c",
+      "reason": "maximum_hold",
+      "pnl": -50.08551975569398,
+      "balance": 7221.162452989838,
+      "gross": -53.333887009200225,
+      "risk_budget": 145.42495945491066,
+      "realized_loss": 50.08551975569398,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1616624760000,
+      "trade_id": "3d9b7ac2-6358-4d00-ac33-8f15008854ca",
+      "reason": "stop-loss",
+      "pnl": -149.03685193435047,
+      "balance": 7072.125601055487,
+      "gross": -141.98823515688534,
+      "risk_budget": 144.42324905979677,
+      "realized_loss": 149.03685193435047,
+      "loss_over_budget": 4.613602874553692
+    },
+    {
+      "time": 1616832000000,
+      "trade_id": "8b89568e-d00c-4a90-9e4c-bad686187571",
+      "reason": "maximum_hold",
+      "pnl": 122.70689922378976,
+      "balance": 7194.832500279277,
+      "gross": 126.65971398779976,
+      "risk_budget": 141.44251202110974,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1617220800000,
+      "trade_id": "178ed0bb-3718-4232-87a3-82a5fe695725",
+      "reason": "maximum_hold",
+      "pnl": -44.64199441170923,
+      "balance": 7150.190505867569,
+      "gross": -53.791617300800155,
+      "risk_budget": 143.89665000558554,
+      "realized_loss": 44.64199441170923,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1618243200000,
+      "trade_id": "1a87ac31-7922-406a-af9b-7108202984c6",
+      "reason": "maximum_hold",
+      "pnl": 40.49855634932344,
+      "balance": 7190.689062216892,
+      "gross": 19.36826539110029,
+      "risk_budget": 143.00381011735138,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1618516800000,
+      "trade_id": "8635be2d-06a1-46c4-ac69-3aae8c651582",
+      "reason": "maximum_hold",
+      "pnl": -5.078307358995637,
+      "balance": 7185.610754857897,
+      "gross": -24.797326912100072,
+      "risk_budget": 143.81378124433783,
+      "realized_loss": 5.078307358995637,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1618905600000,
+      "trade_id": "c3cd9959-14ec-4e88-b8c3-4cbbcce24410",
+      "reason": "maximum_hold",
+      "pnl": -67.37878140071265,
+      "balance": 7118.231973457182,
+      "gross": -64.37465220000011,
+      "risk_budget": 143.71221509715792,
+      "realized_loss": 67.37878140071265,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1619352000000,
+      "trade_id": "e223683a-db92-4cb1-84cb-bfa54fba2971",
+      "reason": "maximum_hold",
+      "pnl": -21.182427355594527,
+      "balance": 7097.049546101588,
+      "gross": -17.52827712510002,
+      "risk_budget": 142.36463946914364,
+      "realized_loss": 21.182427355594527,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1619625600000,
+      "trade_id": "a636bd92-4276-4247-bd22-fbae9d66e5f7",
+      "reason": "maximum_hold",
+      "pnl": -39.64276522707373,
+      "balance": 7057.406780874514,
+      "gross": -38.86687342650004,
+      "risk_budget": 141.94099092203177,
+      "realized_loss": 39.64276522707373,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1619985600000,
+      "trade_id": "0140b86d-25cb-45b3-b156-30c6c5c59347",
+      "reason": "maximum_hold",
+      "pnl": 10.027074689909401,
+      "balance": 7067.4338555644235,
+      "gross": 7.93664090969953,
+      "risk_budget": 141.14813561749028,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1620146940000,
+      "trade_id": "4967ab45-2b4d-43a9-b41c-c9288da9b93e",
+      "reason": "stop-loss",
+      "pnl": -143.34105082315665,
+      "balance": 6924.092804741267,
+      "gross": -138.60694640159994,
+      "risk_budget": 141.34867711128848,
+      "realized_loss": 143.34105082315665,
+      "loss_over_budget": 1.9923737118681686
+    },
+    {
+      "time": 1621051200000,
+      "trade_id": "f2e7d788-e6b7-4c35-89ba-74ff7b3b93cf",
+      "reason": "maximum_hold",
+      "pnl": -29.820110405890293,
+      "balance": 6894.272694335377,
+      "gross": -26.173166309499962,
+      "risk_budget": 138.48185609482536,
+      "realized_loss": 29.820110405890293,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1621388880000,
+      "trade_id": "2b10f9d5-5ede-47df-99ad-c990f6a672fe",
+      "reason": "stop-loss",
+      "pnl": -140.15982550796193,
+      "balance": 6754.112868827414,
+      "gross": -136.62286583474295,
+      "risk_budget": 137.88545388670755,
+      "realized_loss": 140.15982550796193,
+      "loss_over_budget": 2.2743716212543745
+    },
+    {
+      "time": 1622044800000,
+      "trade_id": "1f364912-82c8-4ac7-acbb-ffcacff7e5d2",
+      "reason": "maximum_hold",
+      "pnl": -42.66987324784297,
+      "balance": 6711.442995579571,
+      "gross": -42.29659279040002,
+      "risk_budget": 135.08225737654828,
+      "realized_loss": 42.66987324784297,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1622928900000,
+      "trade_id": "d8f436ee-e057-4e40-8614-cb932f412edb",
+      "reason": "stop-loss",
+      "pnl": -134.72447874155074,
+      "balance": 6576.71851683802,
+      "gross": -132.064980613414,
+      "risk_budget": 134.22885991159143,
+      "realized_loss": 134.72447874155074,
+      "loss_over_budget": 0.4956188299593123
+    },
+    {
+      "time": 1623277560000,
+      "trade_id": "fb7273be-8d10-47bf-aa69-6eafca7c71d7",
+      "reason": "take-profit",
+      "pnl": 257.6554886913701,
+      "balance": 6834.374005529391,
+      "gross": 259.5469164137143,
+      "risk_budget": 131.53437033676042,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1623470400000,
+      "trade_id": "8d1e4042-f1f9-4b6d-ae23-557b9ce53e14",
+      "reason": "maximum_hold",
+      "pnl": 59.20152199241885,
+      "balance": 6893.57552752181,
+      "gross": 60.22067635859996,
+      "risk_budget": 136.6874801105878,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1623780120000,
+      "trade_id": "59368e86-82f0-4e97-a6e2-84d265a904a5",
+      "reason": "stop-loss",
+      "pnl": -136.99913559545612,
+      "balance": 6756.576391926354,
+      "gross": -135.61774267485697,
+      "risk_budget": 137.8715105504362,
+      "realized_loss": 136.99913559545612,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1624184760000,
+      "trade_id": "81b6692e-dd32-4bd2-be15-1892ff149c3a",
+      "reason": "stop-loss",
+      "pnl": -135.55103165324067,
+      "balance": 6621.025360273114,
+      "gross": -133.08914634354284,
+      "risk_budget": 135.13152783852706,
+      "realized_loss": 135.55103165324067,
+      "loss_over_budget": 0.4195038147136074
+    },
+    {
+      "time": 1624852800000,
+      "trade_id": "1f65eac3-b683-463e-9cca-90722511a053",
+      "reason": "maximum_hold",
+      "pnl": 139.79628902014957,
+      "balance": 6760.821649293262,
+      "gross": 139.09328375410018,
+      "risk_budget": 132.4205072054623,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1625673600000,
+      "trade_id": "b26c2ff6-4779-4d14-9c81-10bfcd366c79",
+      "reason": "maximum_hold",
+      "pnl": 103.13219614531806,
+      "balance": 6863.953845438581,
+      "gross": 106.0150040108998,
+      "risk_budget": 135.21643298586525,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1625918400000,
+      "trade_id": "d2d53a0c-d7ab-4aaf-b02e-9db837b07101",
+      "reason": "maximum_hold",
+      "pnl": 94.53932254886678,
+      "balance": 6958.493167987449,
+      "gross": 95.19597131609939,
+      "risk_budget": 137.27907690877163,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1626233100000,
+      "trade_id": "bf1dc1bd-91c8-4980-8015-25934fb1bf0b",
+      "reason": "stop-loss",
+      "pnl": -139.94085921195395,
+      "balance": 6818.5523087754955,
+      "gross": -135.75647586011402,
+      "risk_budget": 139.16986335974897,
+      "realized_loss": 139.94085921195395,
+      "loss_over_budget": 0.770995852204976
+    },
+    {
+      "time": 1626422400000,
+      "trade_id": "09d4ad47-6e14-40b4-8a85-931a1e8991a3",
+      "reason": "maximum_hold",
+      "pnl": -17.970890144425947,
+      "balance": 6800.58141863107,
+      "gross": -15.257392309800439,
+      "risk_budget": 136.37104617550992,
+      "realized_loss": 17.970890144425947,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1626885240000,
+      "trade_id": "f566ce63-8a81-4bbf-a6c4-dda483c5c112",
+      "reason": "take-profit",
+      "pnl": 267.0153859609688,
+      "balance": 7067.596804592039,
+      "gross": 266.25574246222857,
+      "risk_budget": 136.0116283726214,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1627070400000,
+      "trade_id": "a68b7da5-006b-4134-b17d-70492f8099fb",
+      "reason": "maximum_hold",
+      "pnl": -61.078374367884564,
+      "balance": 7006.518430224154,
+      "gross": -57.38489949760034,
+      "risk_budget": 141.35193609184077,
+      "realized_loss": 61.078374367884564,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1627256100000,
+      "trade_id": "abf3a73d-a2e1-49e1-91e4-c5a66e83d821",
+      "reason": "stop-loss",
+      "pnl": -142.40081280564434,
+      "balance": 6864.117617418509,
+      "gross": -136.2482497300714,
+      "risk_budget": 140.1303686044831,
+      "realized_loss": 142.40081280564434,
+      "loss_over_budget": 2.27044420116124
+    },
+    {
+      "time": 1627459200000,
+      "trade_id": "43bbaaeb-a11b-466e-869f-afb87043c7c5",
+      "reason": "maximum_hold",
+      "pnl": -77.02830957050352,
+      "balance": 6787.089307848006,
+      "gross": -76.08309679460015,
+      "risk_budget": 137.28235234837018,
+      "realized_loss": 77.02830957050352,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1627920000000,
+      "trade_id": "e1229b8b-dea8-471f-8f87-3d179d1631ed",
+      "reason": "maximum_hold",
+      "pnl": 130.52701949410064,
+      "balance": 6917.616327342106,
+      "gross": 131.38805938839988,
+      "risk_budget": 135.74178615696013,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1628265840000,
+      "trade_id": "34af45fe-6847-419d-a1de-f627c4ac6f4d",
+      "reason": "stop-loss",
+      "pnl": -138.08342441887007,
+      "balance": 6779.532902923237,
+      "gross": -135.96789960342852,
+      "risk_budget": 138.35232654684214,
+      "realized_loss": 138.08342441887007,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1628496000000,
+      "trade_id": "6cdd23ba-a301-4ca3-a8ad-a25907bc6f24",
+      "reason": "maximum_hold",
+      "pnl": -32.105334524815824,
+      "balance": 6747.427568398423,
+      "gross": -31.419805131700173,
+      "risk_budget": 135.59065805846475,
+      "realized_loss": 32.105334524815824,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1628934060000,
+      "trade_id": "77b267b2-3ec6-4cb7-95c9-f646a8f9e5bf",
+      "reason": "take-profit",
+      "pnl": 259.5371890862276,
+      "balance": 7006.964757484652,
+      "gross": 264.23108227345676,
+      "risk_budget": 134.94855136796846,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1629475260000,
+      "trade_id": "5f901dce-0f8c-450f-81f4-103246dac84f",
+      "reason": "stop-loss",
+      "pnl": -139.64548568711953,
+      "balance": 6867.3192717975335,
+      "gross": -137.08472120262857,
+      "risk_budget": 140.13929514969306,
+      "realized_loss": 139.64548568711953,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1629979500000,
+      "trade_id": "0ff7c5f9-0f1e-4cf4-9dc9-45b3f68c0f88",
+      "reason": "stop-loss",
+      "pnl": -138.98467275244016,
+      "balance": 6728.334599045094,
+      "gross": -133.86263865382824,
+      "risk_budget": 137.34638543595068,
+      "realized_loss": 138.98467275244016,
+      "loss_over_budget": 1.6382873164894818
+    },
+    {
+      "time": 1630296000000,
+      "trade_id": "3b757ee6-1f73-4db8-8ceb-658e49e180bc",
+      "reason": "maximum_hold",
+      "pnl": 62.9870493190843,
+      "balance": 6791.321648364179,
+      "gross": 62.781223511999755,
+      "risk_budget": 134.56669198090188,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1630771200000,
+      "trade_id": "79009af4-10e4-4e35-93cc-b408c2383e5b",
+      "reason": "maximum_hold",
+      "pnl": -20.239635994878086,
+      "balance": 6771.082012369302,
+      "gross": -23.64597504900022,
+      "risk_budget": 135.82643296728358,
+      "realized_loss": 20.239635994878086,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1631026140000,
+      "trade_id": "da236d6c-2e5d-4228-a533-af40b74d44f8",
+      "reason": "take-profit",
+      "pnl": 259.7136003715119,
+      "balance": 7030.795612740814,
+      "gross": 262.00023611725726,
+      "risk_budget": 135.42164024738605,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1631217600000,
+      "trade_id": "c9b86f0f-8735-46c6-8b78-ad51f8b916be",
+      "reason": "maximum_hold",
+      "pnl": -8.870855933631205,
+      "balance": 7021.924756807183,
+      "gross": -5.609574638200014,
+      "risk_budget": 140.6159122548163,
+      "realized_loss": 8.870855933631205,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1632183600000,
+      "trade_id": "39ca8a3a-e2f8-428e-8ac3-d7c8b01d61cf",
+      "reason": "stop-loss",
+      "pnl": -140.73677188503265,
+      "balance": 6881.1879849221505,
+      "gross": -137.7652374085715,
+      "risk_budget": 140.43849513614367,
+      "realized_loss": 140.73677188503265,
+      "loss_over_budget": 0.2982767488889806
+    },
+    {
+      "time": 1632902400000,
+      "trade_id": "43ec68c9-5a13-43a4-aea2-70a3ec4f27ef",
+      "reason": "maximum_hold",
+      "pnl": 83.36923900663025,
+      "balance": 6964.55722392878,
+      "gross": 85.05379995840015,
+      "risk_budget": 137.62375969844302,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1633276800000,
+      "trade_id": "89fd2470-8889-4bf3-b469-3878dc56d91b",
+      "reason": "maximum_hold",
+      "pnl": -32.49409365259791,
+      "balance": 6932.063130276182,
+      "gross": -31.215267948800122,
+      "risk_budget": 139.2911444785756,
+      "realized_loss": 32.49409365259791,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1633465020000,
+      "trade_id": "193ff0f8-b12e-402e-a8b6-1521b8330ab3",
+      "reason": "stop-loss",
+      "pnl": -138.64125164920753,
+      "balance": 6793.421878626975,
+      "gross": -135.40914557794275,
+      "risk_budget": 138.64126260552365,
+      "realized_loss": 138.64125164920753,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1633752000000,
+      "trade_id": "2f3dc60b-5873-4ad6-8954-1b6efa83e106",
+      "reason": "maximum_hold",
+      "pnl": 15.91061525734257,
+      "balance": 6809.332493884318,
+      "gross": 14.405582606999749,
+      "risk_budget": 135.8684375725395,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1634169600000,
+      "trade_id": "a1513cfa-e75f-4306-9fdc-53c31a5b0bb5",
+      "reason": "maximum_hold",
+      "pnl": 5.011490029586721,
+      "balance": 6814.343983913904,
+      "gross": 6.026286338800033,
+      "risk_budget": 136.18664987768636,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1634306040000,
+      "trade_id": "62764ed6-b03d-4d29-939b-c79eb3f3e2aa",
+      "reason": "stop-loss",
+      "pnl": -134.43775490748556,
+      "balance": 6679.906229006418,
+      "gross": -133.6719322535999,
+      "risk_budget": 136.28687967827807,
+      "realized_loss": 134.43775490748556,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1635321780000,
+      "trade_id": "333663d5-fbfd-4775-bbf2-95bc6b75bd77",
+      "reason": "take-profit",
+      "pnl": 265.07706097733876,
+      "balance": 6944.983289983756,
+      "gross": 259.69638878145673,
+      "risk_budget": 133.59812458012834,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1635523200000,
+      "trade_id": "fb676e82-f105-4384-966c-459d6eeefbc1",
+      "reason": "maximum_hold",
+      "pnl": 198.3651302448979,
+      "balance": 7143.348420228653,
+      "gross": 205.3133366208,
+      "risk_budget": 138.89966579967512,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1636413420000,
+      "trade_id": "4add0a85-dd15-4d3a-9cc3-d58122b292cf",
+      "reason": "stop-loss",
+      "pnl": -142.86696221416838,
+      "balance": 7000.481458014484,
+      "gross": -138.56874493794263,
+      "risk_budget": 142.86696840457304,
+      "realized_loss": 142.86696221416838,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1637249160000,
+      "trade_id": "a913a1b3-7c64-4df1-ad7f-eb156ec80f21",
+      "reason": "stop-loss",
+      "pnl": -141.67481420149025,
+      "balance": 6858.8066438129945,
+      "gross": -137.21503403885708,
+      "risk_budget": 140.00962916028968,
+      "realized_loss": 141.67481420149025,
+      "loss_over_budget": 1.6651850412005729
+    },
+    {
+      "time": 1637481600000,
+      "trade_id": "43d0fdf1-8aaa-4885-9fc9-f7da0014ac89",
+      "reason": "maximum_hold",
+      "pnl": 128.03008612985965,
+      "balance": 6986.836729942855,
+      "gross": 131.87436434729918,
+      "risk_budget": 137.17613287625989,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1638115200000,
+      "trade_id": "73b9cb0b-6a62-4bc1-8239-6954d329bfd2",
+      "reason": "maximum_hold",
+      "pnl": -6.1898406420694325,
+      "balance": 6980.646889300786,
+      "gross": -1.620920924999919,
+      "risk_budget": 139.73673459885708,
+      "realized_loss": 6.1898406420694325,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1638285180000,
+      "trade_id": "5eca5b64-2ce8-4e7d-85f0-537875157a38",
+      "reason": "stop-loss",
+      "pnl": -137.3600146003273,
+      "balance": 6843.286874700459,
+      "gross": -136.11665211299984,
+      "risk_budget": 139.61293778601572,
+      "realized_loss": 137.3600146003273,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1638806400000,
+      "trade_id": "89a0fd57-7b04-44d2-b79f-30aad070eaf3",
+      "reason": "maximum_hold",
+      "pnl": 20.607632292271486,
+      "balance": 6863.89450699273,
+      "gross": 22.75244392400008,
+      "risk_budget": 136.86573749400918,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1639915200000,
+      "trade_id": "fd6417ff-b37c-4345-9cae-0fce7d710621",
+      "reason": "maximum_hold",
+      "pnl": -1.6074400571503273,
+      "balance": 6862.28706693558,
+      "gross": 2.7788265144000786,
+      "risk_budget": 137.2778901398546,
+      "realized_loss": 1.6074400571503273,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1640275200000,
+      "trade_id": "b0b8f5e1-dc84-406e-b595-a7bd72404035",
+      "reason": "maximum_hold",
+      "pnl": -26.799872819176407,
+      "balance": 6835.487194116404,
+      "gross": -25.61465275200004,
+      "risk_budget": 137.2457413387116,
+      "realized_loss": 26.799872819176407,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1640476800000,
+      "trade_id": "3616618a-9cff-4c1a-bfee-e7ee7f1f3308",
+      "reason": "maximum_hold",
+      "pnl": 33.29384596990429,
+      "balance": 6868.781040086308,
+      "gross": 34.55139942240051,
+      "risk_budget": 136.70974388232807,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1641530040000,
+      "trade_id": "acbff032-3534-428a-8e30-eb1616ab92a8",
+      "reason": "stop-loss",
+      "pnl": -137.92429288817712,
+      "balance": 6730.8567471981305,
+      "gross": -134.95525773289975,
+      "risk_budget": 137.37562080172617,
+      "realized_loss": 137.92429288817712,
+      "loss_over_budget": 0.5486720864509493
+    },
+    {
+      "time": 1642801680000,
+      "trade_id": "4ac9f804-b708-4428-98fa-47df3643bf23",
+      "reason": "stop-loss",
+      "pnl": -134.82817217041432,
+      "balance": 6596.028575027715,
+      "gross": -132.3513758997858,
+      "risk_budget": 134.6171349439626,
+      "realized_loss": 134.82817217041432,
+      "loss_over_budget": 0.2110372264517082
+    },
+    {
+      "time": 1643025600000,
+      "trade_id": "1162eadb-51df-4ebd-990e-62c2651e6b05",
+      "reason": "maximum_hold",
+      "pnl": -81.03975990251925,
+      "balance": 6514.988815125195,
+      "gross": -79.15898313419974,
+      "risk_budget": 131.9205715005543,
+      "realized_loss": 81.03975990251925,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1644206400000,
+      "trade_id": "ef03aa69-10fd-40d8-8784-cf7f8d7e1672",
+      "reason": "maximum_hold",
+      "pnl": -93.02425375407807,
+      "balance": 6421.964561371116,
+      "gross": -91.90510979259979,
+      "risk_budget": 130.29977630250391,
+      "realized_loss": 93.02425375407807,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645113600000,
+      "trade_id": "2f115593-2ce9-4c7e-a4ce-26ed1141fe9a",
+      "reason": "maximum_hold",
+      "pnl": 200.0292834618182,
+      "balance": 6621.993844832935,
+      "gross": 201.1349283340005,
+      "risk_budget": 128.43929122742233,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645329600000,
+      "trade_id": "2cd17154-0f64-480e-8091-aabd52f04e5e",
+      "reason": "maximum_hold",
+      "pnl": -70.21644162977462,
+      "balance": 6551.777403203161,
+      "gross": -66.9881583930001,
+      "risk_budget": 132.4398768966587,
+      "realized_loss": 70.21644162977462,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645480620000,
+      "trade_id": "19e6f5c6-79c0-4a80-bf3f-c7fa88e4e523",
+      "reason": "stop-loss",
+      "pnl": -130.97429520748364,
+      "balance": 6420.803107995678,
+      "gross": -127.68085568742855,
+      "risk_budget": 131.03554806406322,
+      "realized_loss": 130.97429520748364,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645676220000,
+      "trade_id": "7823c57c-f8b8-415d-aa6c-ba24361a046b",
+      "reason": "stop-loss",
+      "pnl": -128.0851767217695,
+      "balance": 6292.717931273908,
+      "gross": -126.60049106499991,
+      "risk_budget": 128.41606215991357,
+      "realized_loss": 128.0851767217695,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645733220000,
+      "trade_id": "d9559dd7-e954-4705-b401-1d41c1f76ea1",
+      "reason": "take-profit",
+      "pnl": 246.34802750584402,
+      "balance": 6539.065958779752,
+      "gross": 248.11811577800023,
+      "risk_budget": 125.85435862547817,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645948800000,
+      "trade_id": "b67d5bdc-6356-4d54-9e1c-4a036a828754",
+      "reason": "maximum_hold",
+      "pnl": -16.650623417902775,
+      "balance": 6522.415335361849,
+      "gross": -15.59091645000015,
+      "risk_budget": 130.78131917559503,
+      "realized_loss": 16.650623417902775,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1646280000000,
+      "trade_id": "62a450b7-74be-4d98-8942-aedbe520a058",
+      "reason": "maximum_hold",
+      "pnl": -9.307559147586355,
+      "balance": 6513.107776214264,
+      "gross": -8.35146411300007,
+      "risk_budget": 130.44830670723698,
+      "realized_loss": 9.307559147586355,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1646654400000,
+      "trade_id": "af60160d-7287-4872-bbb8-6f716eae1b30",
+      "reason": "maximum_hold",
+      "pnl": -55.85331963585433,
+      "balance": 6457.25445657841,
+      "gross": -53.54069688,
+      "risk_budget": 130.26215552428528,
+      "realized_loss": 55.85331963585433,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1647028800000,
+      "trade_id": "36808be4-96c5-4fd9-8138-27da67c7943e",
+      "reason": "maximum_hold",
+      "pnl": 185.8283987297231,
+      "balance": 6643.082855308134,
+      "gross": 187.89789839199992,
+      "risk_budget": 129.1450891315682,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1648324800000,
+      "trade_id": "2d7697ac-e37b-491e-8b87-754fbf096483",
+      "reason": "maximum_hold",
+      "pnl": -44.08036572732248,
+      "balance": 6599.002489580809,
+      "gross": -41.5547460119996,
+      "risk_budget": 132.86165710616268,
+      "realized_loss": 44.08036572732248,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1648493580000,
+      "trade_id": "c7ec14f6-0140-49d4-9fe6-da4778a012ce",
+      "reason": "stop-loss",
+      "pnl": -131.45811555025747,
+      "balance": 6467.544374030552,
+      "gross": -127.26743921685711,
+      "risk_budget": 131.98004979161618,
+      "realized_loss": 131.45811555025747,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1648972800000,
+      "trade_id": "aaf65ee2-1ba0-45b7-a36d-da83ed695e71",
+      "reason": "maximum_hold",
+      "pnl": 116.9625348389551,
+      "balance": 6584.506908869506,
+      "gross": 123.12054334299948,
+      "risk_budget": 129.35088748061105,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1649476800000,
+      "trade_id": "46c2a8da-6945-40c6-ac06-d12dff39d980",
+      "reason": "maximum_hold",
+      "pnl": -75.0961241437459,
+      "balance": 6509.41078472576,
+      "gross": -70.65130736999988,
+      "risk_budget": 131.69013817739014,
+      "realized_loss": 75.0961241437459,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1649908800000,
+      "trade_id": "20d00c93-5bd1-46d9-b516-2cf831f80375",
+      "reason": "maximum_hold",
+      "pnl": 140.17476214315982,
+      "balance": 6649.585546868921,
+      "gross": 142.94561977499987,
+      "risk_budget": 130.1882156945152,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1650305820000,
+      "trade_id": "349de6ee-6bbc-40bb-9c4c-dee63f532bea",
+      "reason": "take-profit",
+      "pnl": 252.11854169911203,
+      "balance": 6901.704088568033,
+      "gross": 256.6643994285713,
+      "risk_budget": 132.9917109373784,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1650454800000,
+      "trade_id": "1dd8ccb3-252e-42ec-8a48-5fa6c4dace53",
+      "reason": "stop-loss",
+      "pnl": -137.44910898215224,
+      "balance": 6764.2549795858795,
+      "gross": -134.26878116857057,
+      "risk_budget": 138.03408177136066,
+      "realized_loss": 137.44910898215224,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1650830400000,
+      "trade_id": "a361ed72-d594-4594-b8f4-201b1f0e9d46",
+      "reason": "maximum_hold",
+      "pnl": 14.944300184417981,
+      "balance": 6779.199279770298,
+      "gross": 15.725619952000237,
+      "risk_budget": 135.2850995917176,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1651004100000,
+      "trade_id": "b51df100-e420-4c41-8643-4863cafe7558",
+      "reason": "take-profit",
+      "pnl": 260.7770907141308,
+      "balance": 7039.976370484429,
+      "gross": 263.86849943857186,
+      "risk_budget": 135.58398559540595,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1651204800000,
+      "trade_id": "045784a9-3aef-4a7d-9417-d2118d1b3693",
+      "reason": "maximum_hold",
+      "pnl": 94.3585171703742,
+      "balance": 7134.3348876548025,
+      "gross": 97.18454856599966,
+      "risk_budget": 140.79952740968858,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1651763340000,
+      "trade_id": "9ae58f4b-5e5d-47a4-ae5c-77f3043639d3",
+      "reason": "take-profit",
+      "pnl": 273.52847324923266,
+      "balance": 7407.863360904035,
+      "gross": 277.04916058114276,
+      "risk_budget": 142.68669775309604,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1651964040000,
+      "trade_id": "a5d84d07-99fb-457d-b05b-1a4e753d9534",
+      "reason": "stop-loss",
+      "pnl": -148.15220894844606,
+      "balance": 7259.711151955588,
+      "gross": -145.59489149314317,
+      "risk_budget": 148.1572672180807,
+      "realized_loss": 148.15220894844606,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1652064000000,
+      "trade_id": "08c33756-3aeb-4e87-8562-5a7acbf469f6",
+      "reason": "stop-loss",
+      "pnl": -145.98851768840598,
+      "balance": 7113.722634267182,
+      "gross": -141.6420623499999,
+      "risk_budget": 145.19422303911176,
+      "realized_loss": 145.98851768840598,
+      "loss_over_budget": 0.7942946492942156
+    },
+    {
+      "time": 1652302560000,
+      "trade_id": "f5f2b2d4-c092-49f9-b2d5-b619eef8b8e8",
+      "reason": "stop-loss",
+      "pnl": -142.8694162966631,
+      "balance": 6970.85321797052,
+      "gross": -140.6423293860001,
+      "risk_budget": 142.27445268534365,
+      "realized_loss": 142.8694162966631,
+      "loss_over_budget": 0.5949636113194572
+    },
+    {
+      "time": 1653523200000,
+      "trade_id": "1d09aa45-4be5-44b5-936a-9e75e3c09ab0",
+      "reason": "maximum_hold",
+      "pnl": 50.26152441847127,
+      "balance": 7021.11474238899,
+      "gross": 54.78922818,
+      "risk_budget": 139.4170643594104,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1653942360000,
+      "trade_id": "74332c68-fbe9-41bf-8c72-d3f088bc5b14",
+      "reason": "stop-loss",
+      "pnl": -140.4222913491859,
+      "balance": 6880.692451039803,
+      "gross": -135.7988520335709,
+      "risk_budget": 140.4222948477798,
+      "realized_loss": 140.4222913491859,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1654329600000,
+      "trade_id": "2e1fff9f-35a7-4c31-9f26-79ed3a22b85c",
+      "reason": "maximum_hold",
+      "pnl": -34.43882303921725,
+      "balance": 6846.253628000585,
+      "gross": -30.951478689999913,
+      "risk_budget": 137.61384902079607,
+      "realized_loss": 34.43882303921725,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1654566360000,
+      "trade_id": "5b4a9a1b-36e7-44b0-87e4-642822050256",
+      "reason": "take-profit",
+      "pnl": 261.5487658620253,
+      "balance": 7107.80239386261,
+      "gross": 265.21551278171404,
+      "risk_budget": 136.9250725600117,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1654761600000,
+      "trade_id": "52371df7-e866-4215-bcfe-03c4a80cfede",
+      "reason": "maximum_hold",
+      "pnl": 108.23276477479828,
+      "balance": 7216.035158637409,
+      "gross": 113.33903644999991,
+      "risk_budget": 142.1560478772522,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1654964340000,
+      "trade_id": "75812336-fac1-4456-b566-64cf92318de0",
+      "reason": "stop-loss",
+      "pnl": -144.61073342261196,
+      "balance": 7071.424425214799,
+      "gross": -140.56350880000085,
+      "risk_budget": 144.32070317274818,
+      "realized_loss": 144.61073342261196,
+      "loss_over_budget": 0.2900302498637757
+    },
+    {
+      "time": 1655078700000,
+      "trade_id": "a6b483cd-85e7-4051-a4f8-f65eb18b2859",
+      "reason": "stop-loss",
+      "pnl": -141.61762010348014,
+      "balance": 6929.806805111319,
+      "gross": -138.57978526071426,
+      "risk_budget": 141.42848850429598,
+      "realized_loss": 141.61762010348014,
+      "loss_over_budget": 0.1891315991841509
+    },
+    {
+      "time": 1656573600000,
+      "trade_id": "d6c20564-db33-4541-889f-d2f58b6e74ea",
+      "reason": "stop-loss",
+      "pnl": -138.79157573633643,
+      "balance": 6791.0152293749825,
+      "gross": -135.53732545499992,
+      "risk_budget": 138.59613610222638,
+      "realized_loss": 138.79157573633643,
+      "loss_over_budget": 0.19543963411004484
+    },
+    {
+      "time": 1656635580000,
+      "trade_id": "f2c8ed06-ddb8-40da-acd6-edc937f04941",
+      "reason": "take-profit",
+      "pnl": 263.97416116210866,
+      "balance": 7054.989390537091,
+      "gross": 266.47029388971424,
+      "risk_budget": 135.82030458749966,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1657050420000,
+      "trade_id": "1250a76c-5f1d-418d-9983-2e01a96cb77a",
+      "reason": "stop-loss",
+      "pnl": -140.4945644735699,
+      "balance": 6914.494826063521,
+      "gross": -137.5762708744287,
+      "risk_budget": 141.09978781074182,
+      "realized_loss": 140.4945644735699,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1657411200000,
+      "trade_id": "27cf1a52-62cc-4e0d-b638-5f6100cf23dd",
+      "reason": "maximum_hold",
+      "pnl": 3.5728640496983948,
+      "balance": 6918.067690113218,
+      "gross": 4.566118676000199,
+      "risk_budget": 138.28989652127044,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1657609500000,
+      "trade_id": "f7ac7199-15f3-4118-857b-99b76638e08d",
+      "reason": "stop-loss",
+      "pnl": -138.97477078476783,
+      "balance": 6779.092919328451,
+      "gross": -135.03296379557185,
+      "risk_budget": 138.36135380226438,
+      "realized_loss": 138.97477078476783,
+      "loss_over_budget": 0.6134169825034519
+    },
+    {
+      "time": 1658126220000,
+      "trade_id": "4fea1611-5f66-42ed-a0de-b96849f24379",
+      "reason": "stop-loss",
+      "pnl": -134.9183843634215,
+      "balance": 6644.174534965028,
+      "gross": -132.25660026171465,
+      "risk_budget": 135.58185838656902,
+      "realized_loss": 134.9183843634215,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1658592000000,
+      "trade_id": "0a5bf473-81ea-4d89-aed5-e202f7e47e3f",
+      "reason": "maximum_hold",
+      "pnl": -42.84690292514876,
+      "balance": 6601.327632039879,
+      "gross": -39.96912470199959,
+      "risk_budget": 132.88349069930058,
+      "realized_loss": 42.84690292514876,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1658948700000,
+      "trade_id": "349dec4a-2b11-40a7-850e-252b63387e2e",
+      "reason": "take-profit",
+      "pnl": 255.51609212212196,
+      "balance": 6856.8437241619995,
+      "gross": 258.7375381960003,
+      "risk_budget": 132.02655264079758,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1659023640000,
+      "trade_id": "954d6339-895c-4e83-8e0a-db1c220061e5",
+      "reason": "stop-loss",
+      "pnl": -137.13686985379175,
+      "balance": 6719.706854308208,
+      "gross": -134.2714473989999,
+      "risk_budget": 137.13687448324,
+      "realized_loss": 137.13686985379175,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1660054080000,
+      "trade_id": "a1dfb9e3-bed7-4d8e-898d-947915b6c441",
+      "reason": "take-profit",
+      "pnl": 254.19002971761122,
+      "balance": 6973.896884025819,
+      "gross": 258.25276318171456,
+      "risk_budget": 134.39413708616416,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1660181160000,
+      "trade_id": "6d2116a4-75e0-478f-b355-1bb8de41bfc2",
+      "reason": "take-profit",
+      "pnl": 266.1447043862197,
+      "balance": 7240.04158841204,
+      "gross": 271.0536982045714,
+      "risk_budget": 139.4779376805164,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1661140800000,
+      "trade_id": "d05c5b1f-1118-45f1-ac92-792149facf4f",
+      "reason": "maximum_hold",
+      "pnl": 41.853276204382176,
+      "balance": 7281.894864616422,
+      "gross": 43.927730759999996,
+      "risk_budget": 144.8008317682408,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1661760000000,
+      "trade_id": "164b1271-8400-457b-a357-d6b837cb6f54",
+      "reason": "maximum_hold",
+      "pnl": -71.42900203437948,
+      "balance": 7210.465862582042,
+      "gross": -69.54801945500014,
+      "risk_budget": 145.63789729232843,
+      "realized_loss": 71.42900203437948,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1662033600000,
+      "trade_id": "f6521f2d-c14e-47d9-b2c4-4e225317fab6",
+      "reason": "maximum_hold",
+      "pnl": 78.92800842097031,
+      "balance": 7289.393871003012,
+      "gross": 82.70267756199947,
+      "risk_budget": 144.20931725164084,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1662696120000,
+      "trade_id": "23db7518-82da-48d5-89e1-76d6b61765e6",
+      "reason": "take-profit",
+      "pnl": 280.5754441356045,
+      "balance": 7569.969315138616,
+      "gross": 284.5732707085702,
+      "risk_budget": 145.78787742006023,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1662947040000,
+      "trade_id": "3eb6cdbb-f1ad-4d98-b043-7e921fd89b8a",
+      "reason": "stop-loss",
+      "pnl": -149.32060680335073,
+      "balance": 7420.648708335265,
+      "gross": -147.87830598800025,
+      "risk_budget": 151.39938630277234,
+      "realized_loss": 149.32060680335073,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1663300800000,
+      "trade_id": "c794761b-bf11-49d5-b410-57ca07ab5b96",
+      "reason": "maximum_hold",
+      "pnl": -68.23700333795374,
+      "balance": 7352.411704997311,
+      "gross": -65.69905945199991,
+      "risk_budget": 148.4129741667053,
+      "realized_loss": 68.23700333795374,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1663761600000,
+      "trade_id": "c7f8a9fe-fada-484d-8cef-97679f172a38",
+      "reason": "maximum_hold",
+      "pnl": 98.91438514814132,
+      "balance": 7451.3260901454505,
+      "gross": 103.49672319,
+      "risk_budget": 147.04823409994623,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1664467200000,
+      "trade_id": "973fb9fc-3898-4641-a8da-575c4adf930d",
+      "reason": "maximum_hold",
+      "pnl": 112.91096094624437,
+      "balance": 7564.237051091694,
+      "gross": 115.33340530999973,
+      "risk_budget": 149.026521802909,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1664916600000,
+      "trade_id": "ee0f0f04-1de9-413c-92af-341f213babb6",
+      "reason": "stop-loss",
+      "pnl": -150.75268100025087,
+      "balance": 7413.4843700914425,
+      "gross": -146.469208411429,
+      "risk_budget": 151.2847410218339,
+      "realized_loss": 150.75268100025087,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1665921600000,
+      "trade_id": "def70fdd-fb9e-4efa-aac2-5a8caac97166",
+      "reason": "maximum_hold",
+      "pnl": 96.42001656691835,
+      "balance": 7509.904386658359,
+      "gross": 99.22572360799968,
+      "risk_budget": 148.26968740182886,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1666238400000,
+      "trade_id": "0a3662d7-1f00-409e-8b24-f8b5f006ac67",
+      "reason": "maximum_hold",
+      "pnl": 192.34962713537607,
+      "balance": 7702.254013793734,
+      "gross": 194.74349709600028,
+      "risk_budget": 150.19808773316717,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1666773480000,
+      "trade_id": "380bd97e-df9b-4f43-ab0e-e3cba8cf370c",
+      "reason": "stop-loss",
+      "pnl": -153.71771843429616,
+      "balance": 7548.536295359438,
+      "gross": -148.84593047771398,
+      "risk_budget": 154.04508027587468,
+      "realized_loss": 153.71771843429616,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1667808000000,
+      "trade_id": "71d1940b-3f46-4cee-86b1-ce9cd71d0f0f",
+      "reason": "maximum_hold",
+      "pnl": 193.18071202160885,
+      "balance": 7741.717007381047,
+      "gross": 195.32017325200076,
+      "risk_budget": 150.97072590718875,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1667877540000,
+      "trade_id": "02bf0817-d87a-4c91-8418-c9931bebaf46",
+      "reason": "stop-loss",
+      "pnl": -144.4822571683593,
+      "balance": 7597.234750212687,
+      "gross": -136.29978731514356,
+      "risk_budget": 154.83434014762094,
+      "realized_loss": 144.4822571683593,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1668008220000,
+      "trade_id": "437e60a5-1e68-45e5-906a-ece11685b000",
+      "reason": "stop-loss",
+      "pnl": -152.0969262340534,
+      "balance": 7445.137823978634,
+      "gross": -150.10488053728577,
+      "risk_budget": 151.94469500425373,
+      "realized_loss": 152.0969262340534,
+      "loss_over_budget": 0.15223122979966774
+    },
+    {
+      "time": 1669059300000,
+      "trade_id": "be570c57-a071-464e-a9c1-fb15489dd2ae",
+      "reason": "stop-loss",
+      "pnl": -149.0486876694226,
+      "balance": 7296.089136309212,
+      "gross": -143.27742626228644,
+      "risk_budget": 148.90275647957267,
+      "realized_loss": 149.0486876694226,
+      "loss_over_budget": 0.14593118984993225
+    },
+    {
+      "time": 1669363200000,
+      "trade_id": "9c9391d6-c660-4cf3-8d99-ead67e625296",
+      "reason": "maximum_hold",
+      "pnl": 23.414132257042443,
+      "balance": 7319.5032685662545,
+      "gross": 26.095249479000476,
+      "risk_budget": 145.92178272618426,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1669769040000,
+      "trade_id": "03f0305f-a65e-47d4-b87e-27b788ad2292",
+      "reason": "take-profit",
+      "pnl": 256.24868270328017,
+      "balance": 7575.7519512695335,
+      "gross": 263.83710275742783,
+      "risk_budget": 146.3900653713251,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1669901460000,
+      "trade_id": "2ad71086-69f4-472f-8b97-815faccb7fc3",
+      "reason": "stop-loss",
+      "pnl": -151.76104806001197,
+      "balance": 7423.990903209521,
+      "gross": -145.93467157942874,
+      "risk_budget": 151.51503902539068,
+      "realized_loss": 151.76104806001197,
+      "loss_over_budget": 0.2460090346212951
+    },
+    {
+      "time": 1670397240000,
+      "trade_id": "6fe79683-5124-444e-9de2-635cff1844e2",
+      "reason": "take-profit",
+      "pnl": 236.1370802946974,
+      "balance": 7660.127983504218,
+      "gross": 241.1662704342869,
+      "risk_budget": 148.47981806419043,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1670716800000,
+      "trade_id": "9141671b-00db-4598-ba99-b1ea8fe4274e",
+      "reason": "maximum_hold",
+      "pnl": 36.412782711414,
+      "balance": 7696.540766215631,
+      "gross": 42.71446752,
+      "risk_budget": 153.20255967008436,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1670889060000,
+      "trade_id": "87f1955b-5a07-48c1-b986-ded5e30efeea",
+      "reason": "take-profit",
+      "pnl": 137.02835486875085,
+      "balance": 7833.5691210843825,
+      "gross": 143.89082349799997,
+      "risk_budget": 153.93081532431262,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1670925600000,
+      "trade_id": "a3bc73f4-0ed7-4463-8e45-6dbe6f73961b",
+      "reason": "stop-loss",
+      "pnl": -98.42458257767798,
+      "balance": 7735.1445385067045,
+      "gross": -91.48772765357167,
+      "risk_budget": 156.67138242168764,
+      "realized_loss": 98.42458257767798,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1671422400000,
+      "trade_id": "70b27fcd-bf67-4ac0-8817-ebda54022d36",
+      "reason": "maximum_hold",
+      "pnl": -4.6984675368903135,
+      "balance": 7730.446070969814,
+      "gross": 1.910632544999544,
+      "risk_budget": 154.7028907701341,
+      "realized_loss": 4.6984675368903135,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1671753600000,
+      "trade_id": "5436a3ef-4779-427f-af15-c73cfebf4ac0",
+      "reason": "maximum_hold",
+      "pnl": 24.313524509420724,
+      "balance": 7754.759595479235,
+      "gross": 27.300052479000275,
+      "risk_budget": 154.6089214193963,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1672262760000,
+      "trade_id": "5a860b1d-d00f-468b-9283-b2afdf97bcd0",
+      "reason": "stop-loss",
+      "pnl": -95.56335562166188,
+      "balance": 7659.196239857573,
+      "gross": -87.70656214571525,
+      "risk_budget": 155.0951919095847,
+      "realized_loss": 95.56335562166188,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1673219400000,
+      "trade_id": "49efe59a-a791-4e32-8250-b65dbe86392c",
+      "reason": "stop-loss",
+      "pnl": -83.59541780952891,
+      "balance": 7575.600822048044,
+      "gross": -79.20823277400066,
+      "risk_budget": 153.18392479715146,
+      "realized_loss": 83.59541780952891,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1673545020000,
+      "trade_id": "19ce0fa5-7bfe-4625-9f20-7890c6fb6fc8",
+      "reason": "stop-loss",
+      "pnl": -150.76971170964484,
+      "balance": 7424.831110338399,
+      "gross": -144.7487102679994,
+      "risk_budget": 151.51201644096088,
+      "realized_loss": 150.76971170964484,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1673641080000,
+      "trade_id": "e6ef160d-ba98-4121-8aa8-d550dae0325f",
+      "reason": "stop-loss",
+      "pnl": -147.68982439042225,
+      "balance": 7277.141285947978,
+      "gross": -144.2361600000005,
+      "risk_budget": 148.496622206768,
+      "realized_loss": 147.68982439042225,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1673856000000,
+      "trade_id": "5737af92-c346-4a76-85a4-cf3574c450b5",
+      "reason": "maximum_hold",
+      "pnl": -30.95699612474628,
+      "balance": 7246.184289823232,
+      "gross": -30.503519330000216,
+      "risk_budget": 145.54282571895956,
+      "realized_loss": 30.95699612474628,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1674295440000,
+      "trade_id": "dd2a0b9b-54a0-463b-8d82-a864f96e344b",
+      "reason": "stop-loss",
+      "pnl": -144.43989559146476,
+      "balance": 7101.744394231767,
+      "gross": -140.5239339588574,
+      "risk_budget": 144.92368579646464,
+      "realized_loss": 144.43989559146476,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1675110180000,
+      "trade_id": "e1c005c2-c230-4338-bb47-d6befb07ad08",
+      "reason": "take-profit",
+      "pnl": 270.0744082464546,
+      "balance": 7371.818802478221,
+      "gross": 273.88098710400004,
+      "risk_budget": 142.03488788463534,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1675296000000,
+      "trade_id": "f9236577-2e2b-459a-a4b6-7737032256ea",
+      "reason": "maximum_hold",
+      "pnl": 176.92424594100265,
+      "balance": 7548.743048419225,
+      "gross": 183.96801444399898,
+      "risk_budget": 147.43637604956442,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1675497600000,
+      "trade_id": "4ff216d8-ecb6-4200-b4aa-1d2f2d905de2",
+      "reason": "maximum_hold",
+      "pnl": 103.30806861501706,
+      "balance": 7652.0511170342415,
+      "gross": 104.90799017199967,
+      "risk_budget": 150.9748609683845,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1675857600000,
+      "trade_id": "aac105c3-f4c7-4e0d-a0f7-f4a29f789af8",
+      "reason": "maximum_hold",
+      "pnl": 81.00928582291421,
+      "balance": 7733.060402857155,
+      "gross": 92.55609742700024,
+      "risk_budget": 153.04102234068483,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1675970700000,
+      "trade_id": "935edd6e-3c91-444c-ba92-d93872e194f0",
+      "reason": "stop-loss",
+      "pnl": -155.26812988740505,
+      "balance": 7577.792272969751,
+      "gross": -149.2503776742853,
+      "risk_budget": 154.6612080571431,
+      "realized_loss": 155.26812988740505,
+      "loss_over_budget": 0.606921830261939
+    },
+    {
+      "time": 1676174400000,
+      "trade_id": "db49fd30-4432-4b98-a5e6-c35f384840e8",
+      "reason": "maximum_hold",
+      "pnl": -17.551912663362792,
+      "balance": 7560.240360306387,
+      "gross": -10.689471767999487,
+      "risk_budget": 151.55584545939502,
+      "realized_loss": 17.551912663362792,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1676707200000,
+      "trade_id": "a93ad918-ffb6-4f18-b0a8-00ea9f694855",
+      "reason": "maximum_hold",
+      "pnl": 18.78850420061415,
+      "balance": 7579.028864507001,
+      "gross": 19.56093516,
+      "risk_budget": 151.20480720612773,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678003200000,
+      "trade_id": "8380db11-0c73-4cd7-b8df-f9470f100ee7",
+      "reason": "maximum_hold",
+      "pnl": -0.8637298789198504,
+      "balance": 7578.1651346280805,
+      "gross": 3.2318465940002703,
+      "risk_budget": 151.58057729014004,
+      "realized_loss": 0.8637298789198504,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678636800000,
+      "trade_id": "7ba3479f-befa-414e-8c0e-2e864417b096",
+      "reason": "maximum_hold",
+      "pnl": 58.81551763846825,
+      "balance": 7636.9806522665485,
+      "gross": 62.12558881600026,
+      "risk_budget": 151.56330269256162,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678716600000,
+      "trade_id": "2dbed1c2-15b7-469f-88e3-210ab8194a40",
+      "reason": "stop-loss",
+      "pnl": -152.7396125429976,
+      "balance": 7484.241039723551,
+      "gross": -149.63719748699987,
+      "risk_budget": 152.73961304533097,
+      "realized_loss": 152.7396125429976,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678797120000,
+      "trade_id": "d77a9ab8-9b45-4e25-bcb4-817ed255b437",
+      "reason": "stop-loss",
+      "pnl": -149.4152890776415,
+      "balance": 7334.825750645909,
+      "gross": -147.20605064999995,
+      "risk_budget": 149.68482079447102,
+      "realized_loss": 149.4152890776415,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1679092680000,
+      "trade_id": "9b3927af-3333-47c2-8cd0-6d339a9b88be",
+      "reason": "stop-loss",
+      "pnl": -146.69650345251856,
+      "balance": 7188.129247193389,
+      "gross": -144.0123847954282,
+      "risk_budget": 146.69651501291818,
+      "realized_loss": 146.69650345251856,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1679284800000,
+      "trade_id": "a04a1106-0492-46b0-a311-43b876b9f84e",
+      "reason": "maximum_hold",
+      "pnl": 2.1758794319008414,
+      "balance": 7190.3051266252905,
+      "gross": 3.02730072,
+      "risk_budget": 143.76258494386778,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1679774400000,
+      "trade_id": "e014dc2c-9917-4d60-bd47-9c7cb309f0ba",
+      "reason": "maximum_hold",
+      "pnl": 121.0908977256783,
+      "balance": 7311.396024350969,
+      "gross": 122.79592052,
+      "risk_budget": 143.8061025325058,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1680307200000,
+      "trade_id": "b3e7b78b-3ff4-4227-b63a-6dd75911be8e",
+      "reason": "maximum_hold",
+      "pnl": -20.969068529341456,
+      "balance": 7290.4269558216265,
+      "gross": -18.30747580800023,
+      "risk_budget": 146.2279204870194,
+      "realized_loss": 20.969068529341456,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1681372800000,
+      "trade_id": "507679ce-afd0-4e1e-9ee4-dabeb66bbe07",
+      "reason": "maximum_hold",
+      "pnl": 4.673331932409029,
+      "balance": 7295.100287754035,
+      "gross": 7.308414852000129,
+      "risk_budget": 145.80853911643254,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1681892580000,
+      "trade_id": "7837a2fc-7afa-4700-b82d-5686d61f7a2c",
+      "reason": "stop-loss",
+      "pnl": -139.7868346043006,
+      "balance": 7155.313453149733,
+      "gross": -131.2548625425713,
+      "risk_budget": 145.9020057550807,
+      "realized_loss": 139.7868346043006,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1682059320000,
+      "trade_id": "d2700011-60a3-425c-b793-68a8cac0f4b1",
+      "reason": "stop-loss",
+      "pnl": -143.76949935355293,
+      "balance": 7011.54395379618,
+      "gross": -139.35618067828514,
+      "risk_budget": 143.10626906299464,
+      "realized_loss": 143.76949935355293,
+      "loss_over_budget": 0.663230290558289
+    },
+    {
+      "time": 1682308800000,
+      "trade_id": "7f24cf86-01a6-41a7-a705-3e7607cc7dd5",
+      "reason": "maximum_hold",
+      "pnl": 65.09532064734343,
+      "balance": 7076.639274443523,
+      "gross": 69.62828797800033,
+      "risk_budget": 140.2308790759236,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1683158400000,
+      "trade_id": "bfbe4011-b163-4477-aa4a-09e897aa6287",
+      "reason": "maximum_hold",
+      "pnl": 147.53655463982545,
+      "balance": 7224.175829083347,
+      "gross": 153.3051610000006,
+      "risk_budget": 141.53278548887047,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1684065600000,
+      "trade_id": "17bfde37-13bb-4c0b-9974-69d0b9600772",
+      "reason": "maximum_hold",
+      "pnl": 60.5722456636724,
+      "balance": 7284.748074747021,
+      "gross": 64.5640548079999,
+      "risk_budget": 144.48351658166695,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1684324800000,
+      "trade_id": "bce188a6-f9a0-4db6-be22-dba8a6dc926b",
+      "reason": "maximum_hold",
+      "pnl": 181.64570820416304,
+      "balance": 7466.393782951184,
+      "gross": 185.7499807670002,
+      "risk_budget": 145.69496149494043,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1684937220000,
+      "trade_id": "debeb83c-00cf-4101-b69a-931a170987ff",
+      "reason": "stop-loss",
+      "pnl": -149.3278742132116,
+      "balance": 7317.065908737972,
+      "gross": -142.98292381285728,
+      "risk_budget": 149.32787565902368,
+      "realized_loss": 149.3278742132116,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1685145600000,
+      "trade_id": "c7ecb42a-7df7-4bf7-b070-e41ae4f77f81",
+      "reason": "maximum_hold",
+      "pnl": 81.35225989047669,
+      "balance": 7398.418168628448,
+      "gross": 90.36257581000052,
+      "risk_budget": 146.34131817475944,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1685298180000,
+      "trade_id": "13865e0e-71cc-4ead-b521-2a7c24a60670",
+      "reason": "stop-loss",
+      "pnl": -129.6233466636299,
+      "balance": 7268.794821964818,
+      "gross": -123.65218743800018,
+      "risk_budget": 147.96836337256897,
+      "realized_loss": 129.6233466636299,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1685505600000,
+      "trade_id": "87837fa8-fd34-48ca-a41b-9efcaf99f1ab",
+      "reason": "maximum_hold",
+      "pnl": 69.19913713399853,
+      "balance": 7337.993959098815,
+      "gross": 72.45105342200034,
+      "risk_budget": 145.37589643929635,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1685736000000,
+      "trade_id": "9a04198c-b2b3-4eaa-b746-e4e7508884c0",
+      "reason": "maximum_hold",
+      "pnl": 42.16468940575784,
+      "balance": 7380.158648504574,
+      "gross": 50.090174089999685,
+      "risk_budget": 146.75987918197632,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1686079500000,
+      "trade_id": "882db82d-5815-49d3-be7c-5dc5ee0e3538",
+      "reason": "take-profit",
+      "pnl": 278.71745886492096,
+      "balance": 7658.876107369494,
+      "gross": 284.3943379285714,
+      "risk_budget": 147.60317297009146,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1686283200000,
+      "trade_id": "203c78bb-6d82-40f3-8042-5af10dfc3a1d",
+      "reason": "maximum_hold",
+      "pnl": 64.53007555145102,
+      "balance": 7723.406182920945,
+      "gross": 66.90896549999943,
+      "risk_budget": 153.17752214738988,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1686571200000,
+      "trade_id": "9ad89bd7-54b5-4832-ac37-d8acdb35f993",
+      "reason": "maximum_hold",
+      "pnl": 57.65867083116012,
+      "balance": 7781.064853752105,
+      "gross": 65.50426537,
+      "risk_budget": 154.4681236584189,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1686936240000,
+      "trade_id": "4a4409d4-234c-40fe-b777-b4323023adec",
+      "reason": "take-profit",
+      "pnl": 293.80411984114056,
+      "balance": 8074.868973593245,
+      "gross": 300.237897378286,
+      "risk_budget": 155.6212970750421,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1687176000000,
+      "trade_id": "b22be21f-e215-4ca6-9553-b738930823c4",
+      "reason": "maximum_hold",
+      "pnl": 9.862308335317978,
+      "balance": 8084.7312819285635,
+      "gross": 12.748958599000314,
+      "risk_budget": 161.4973794718649,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1687535640000,
+      "trade_id": "73d226b1-3703-4130-baf2-c8e81626678b",
+      "reason": "stop-loss",
+      "pnl": -160.1438621658554,
+      "balance": 7924.587419762708,
+      "gross": -158.06022869571433,
+      "risk_budget": 161.69462563857127,
+      "realized_loss": 160.1438621658554,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1689361560000,
+      "trade_id": "7fcc5e37-c51f-4620-be37-84ec10ba509e",
+      "reason": "take-profit",
+      "pnl": 301.4396669578382,
+      "balance": 8226.027086720545,
+      "gross": 305.6622199199998,
+      "risk_budget": 158.49174839525418,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1689552000000,
+      "trade_id": "f622b772-0617-4c0f-9787-7f47c14acd20",
+      "reason": "maximum_hold",
+      "pnl": -18.36132369395635,
+      "balance": 8207.665763026589,
+      "gross": -12.684932414999999,
+      "risk_budget": 164.5205417344109,
+      "realized_loss": 18.36132369395635,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1690401600000,
+      "trade_id": "7df44667-f681-467f-9241-f60f7e82f983",
+      "reason": "maximum_hold",
+      "pnl": 68.43265914402423,
+      "balance": 8276.098422170611,
+      "gross": 79.9141239000004,
+      "risk_budget": 164.1533152605318,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1690934460000,
+      "trade_id": "7043b5bc-2d6f-4008-89a0-24dc50e010ca",
+      "reason": "take-profit",
+      "pnl": 224.8143598262728,
+      "balance": 8500.912781996883,
+      "gross": 234.04639682914228,
+      "risk_budget": 165.52196844341222,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1691121600000,
+      "trade_id": "34db1f69-1ac7-40fa-bc2b-b2b5fc1313f3",
+      "reason": "maximum_hold",
+      "pnl": 124.55022098995268,
+      "balance": 8625.463002986835,
+      "gross": 127.1055253160004,
+      "risk_budget": 170.01825563993768,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1691712000000,
+      "trade_id": "6933a83c-8af3-4529-8e47-6f20bc31bf05",
+      "reason": "maximum_hold",
+      "pnl": 88.52681936208488,
+      "balance": 8713.98982234892,
+      "gross": 91.3877627519998,
+      "risk_budget": 172.5092600597367,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1692518400000,
+      "trade_id": "e4aa7f95-8374-47c5-ac44-f9851b9b9402",
+      "reason": "maximum_hold",
+      "pnl": -58.65830941889505,
+      "balance": 8655.331512930024,
+      "gross": -55.17403743600012,
+      "risk_budget": 174.2797964469784,
+      "realized_loss": 58.65830941889505,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1693500420000,
+      "trade_id": "8f7e7a23-eb48-4aa5-9b24-6f73917334dc",
+      "reason": "take-profit",
+      "pnl": 329.7756957902967,
+      "balance": 8985.107208720321,
+      "gross": 333.8853202242855,
+      "risk_budget": 173.1066302586005,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1693589400000,
+      "trade_id": "b1cf2c6e-7645-4537-b4d5-53d588f72e34",
+      "reason": "stop-loss",
+      "pnl": -180.4576895397968,
+      "balance": 8804.649519180522,
+      "gross": -174.17712825828443,
+      "risk_budget": 179.7021441744064,
+      "realized_loss": 180.4576895397968,
+      "loss_over_budget": 0.7555453653903896
+    },
+    {
+      "time": 1694514120000,
+      "trade_id": "80979778-f059-4ca5-a91e-6d83a33c45d0",
+      "reason": "take-profit",
+      "pnl": 322.3522230291966,
+      "balance": 9127.001742209719,
+      "gross": 330.91552604571297,
+      "risk_budget": 176.09299038361044,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1695801600000,
+      "trade_id": "3ad0bb6e-0653-4d78-b751-18d75a50e66d",
+      "reason": "maximum_hold",
+      "pnl": 9.812742808145964,
+      "balance": 9136.814485017865,
+      "gross": 19.734585028000758,
+      "risk_budget": 182.5400348441944,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1696118400000,
+      "trade_id": "e40a2769-0740-4cae-8e29-64ec8582d6e1",
+      "reason": "maximum_hold",
+      "pnl": 10.52766757996346,
+      "balance": 9147.34215259783,
+      "gross": 17.228781128999383,
+      "risk_budget": 182.7362897003573,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1696420800000,
+      "trade_id": "a8ef93b3-f9c1-4f11-a40a-8332898dbcd6",
+      "reason": "maximum_hold",
+      "pnl": 189.91145864566178,
+      "balance": 9337.253611243488,
+      "gross": 196.16004569700092,
+      "risk_budget": 182.94684305195662,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1697184000000,
+      "trade_id": "1530d01c-0068-4769-b33f-bd55c2cdfe5c",
+      "reason": "maximum_hold",
+      "pnl": -64.79143255351421,
+      "balance": 9272.462178689975,
+      "gross": -53.577351150000005,
+      "risk_budget": 186.74507222486977,
+      "realized_loss": 64.79143255351421,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1697462820000,
+      "trade_id": "4357adc7-1fa0-40b1-b85a-2aca9907182f",
+      "reason": "stop-loss",
+      "pnl": -146.58287984593494,
+      "balance": 9125.87929884404,
+      "gross": -138.17548516485675,
+      "risk_budget": 185.44924357379952,
+      "realized_loss": 146.58287984593494,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1697688000000,
+      "trade_id": "41483caf-ab38-4b3a-b724-5bae3f5116a8",
+      "reason": "maximum_hold",
+      "pnl": -2.4909584557612483,
+      "balance": 9123.388340388277,
+      "gross": 2.246251667000772,
+      "risk_budget": 182.5175859768808,
+      "realized_loss": 2.4909584557612483,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1697911320000,
+      "trade_id": "9d36bdf1-8fb4-438e-849d-856a43f712f5",
+      "reason": "stop-loss",
+      "pnl": -181.90380718969104,
+      "balance": 8941.484533198585,
+      "gross": -176.5588608567145,
+      "risk_budget": 182.46776680776554,
+      "realized_loss": 181.90380718969104,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1698307200000,
+      "trade_id": "b2b65804-d9b9-4eda-8f76-fbc8645e20a8",
+      "reason": "maximum_hold",
+      "pnl": -57.954379682085026,
+      "balance": 8883.530153516498,
+      "gross": -57.0059552159996,
+      "risk_budget": 178.82969066397172,
+      "realized_loss": 57.954379682085026,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1700280000000,
+      "trade_id": "94f28a39-c811-4987-8d8f-78583c729106",
+      "reason": "maximum_hold",
+      "pnl": 134.61707467347952,
+      "balance": 9018.147228189977,
+      "gross": 135.69017715,
+      "risk_budget": 177.67060307032997,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1700508900000,
+      "trade_id": "4112cbab-27a9-4ba9-8bf1-55f667936b91",
+      "reason": "stop-loss",
+      "pnl": -158.4110935102886,
+      "balance": 8859.73613467969,
+      "gross": -151.1362234192847,
+      "risk_budget": 180.36294456379954,
+      "realized_loss": 158.4110935102886,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1701544140000,
+      "trade_id": "4e134dfd-04b4-48d2-83f9-4d68db973dfa",
+      "reason": "stop-loss",
+      "pnl": -175.87925070274702,
+      "balance": 8683.856883976943,
+      "gross": -169.50385065843008,
+      "risk_budget": 177.1947226935938,
+      "realized_loss": 175.87925070274702,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1701642840000,
+      "trade_id": "b586d701-dcca-4230-8d78-9fb81d35c31e",
+      "reason": "stop-loss",
+      "pnl": -170.45512141589052,
+      "balance": 8513.401762561052,
+      "gross": -163.44080073300032,
+      "risk_budget": 173.67713767953887,
+      "realized_loss": 170.45512141589052,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1701728400000,
+      "trade_id": "271c516b-37c6-4999-904f-d14bf80c474d",
+      "reason": "stop-loss",
+      "pnl": -170.26803514908295,
+      "balance": 8343.133727411969,
+      "gross": -164.87052664199965,
+      "risk_budget": 170.26803525122105,
+      "realized_loss": 170.26803514908295,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1701796500000,
+      "trade_id": "c1c9bd9a-328a-4478-9f7a-d27175eec709",
+      "reason": "stop-loss",
+      "pnl": -165.84496139176534,
+      "balance": 8177.288766020204,
+      "gross": -162.19967668571422,
+      "risk_budget": 166.86267454823937,
+      "realized_loss": 165.84496139176534,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1702008000000,
+      "trade_id": "12bb8f17-51b8-4d38-97fa-166c5892bbec",
+      "reason": "maximum_hold",
+      "pnl": 31.810073210529346,
+      "balance": 8209.098839230734,
+      "gross": 33.02048513399946,
+      "risk_budget": 163.5457753204041,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1702318020000,
+      "trade_id": "a4247ba7-400a-4434-a179-ec10363c003f",
+      "reason": "stop-loss",
+      "pnl": -164.7217416297181,
+      "balance": 8044.377097601015,
+      "gross": -159.33507264114263,
+      "risk_budget": 164.18197678461468,
+      "realized_loss": 164.7217416297181,
+      "loss_over_budget": 0.5397648451034343
+    },
+    {
+      "time": 1702512000000,
+      "trade_id": "72d3631a-db48-4728-bfcb-e8772bd3eb4a",
+      "reason": "maximum_hold",
+      "pnl": 158.5076771969555,
+      "balance": 8202.884774797969,
+      "gross": 165.19089136,
+      "risk_budget": 160.88754195202029,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1702699200000,
+      "trade_id": "864c5fd8-b3b6-4427-b63b-413570922694",
+      "reason": "maximum_hold",
+      "pnl": 38.96055473885259,
+      "balance": 8241.845329536825,
+      "gross": 40.34570800400095,
+      "risk_budget": 164.0576954959594,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1703085300000,
+      "trade_id": "55bdf13b-f543-4273-8ef6-97e1421c4e25",
+      "reason": "stop-loss",
+      "pnl": -163.23010718556932,
+      "balance": 8078.615222351256,
+      "gross": -159.971015366429,
+      "risk_budget": 164.8369065907365,
+      "realized_loss": 163.23010718556932,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1703289600000,
+      "trade_id": "15c63892-f9de-4f6f-9667-06ced2729da6",
+      "reason": "maximum_hold",
+      "pnl": -29.650576200034813,
+      "balance": 8048.964646151222,
+      "gross": -32.75236884699951,
+      "risk_budget": 161.57230444702512,
+      "realized_loss": 29.650576200034813,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1703908800000,
+      "trade_id": "2b9651ad-8c00-4122-b1af-fceeb30d0219",
+      "reason": "maximum_hold",
+      "pnl": 208.01988191436055,
+      "balance": 8256.98452806558,
+      "gross": 197.3118265650008,
+      "risk_budget": 160.97929292302445,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    }
+  ],
+  "close_reasons": {
+    "stop-loss": 89,
+    "maximum_hold": 120,
+    "take-profit": 27
+  },
+  "post_audit_final_closes": [],
+  "oi_entries_checked": 0,
+  "p_allowed_without_passing_decline_gate": 159,
+  "limits": "Full logs traversed and all entry plans/close contexts checked. Source-window hashes establish construction identity, not independent candle recomputation. Root owns complete-snapshot monetary ledger/accounting and yearly selection gates. No new motors or analysis jobs.",
+  "buckets": [
+    {
+      "key": "2020-09:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23,
+        "allowed": 7,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23,
+        "deleverage_setup": 12
+      }
+    },
+    {
+      "key": "2020-09:long",
+      "bars": 8,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2020-09:none",
+      "bars": 168,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23
+      }
+    },
+    {
+      "key": "2020-09:short",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2020-10:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "allowed": 7,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2020-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2020-10:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2020-10:short",
+      "bars": 10,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "in_position_or_pending": 4,
+        "allowed": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2020-11:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30,
+        "allowed": 7,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2020-11:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2020-11:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30
+      }
+    },
+    {
+      "key": "2020-11:short",
+      "bars": 8,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 5,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2020-12:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "in_position_or_pending": 2,
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151,
+        "allowed": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6,
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151
+      }
+    },
+    {
+      "key": "2020-12:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151
+      }
+    },
+    {
+      "key": "2020-12:short",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "in_position_or_pending": 2,
+        "allowed": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-01:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27,
+        "allowed": 4,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27,
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-01:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-01:none",
+      "bars": 181,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27
+      }
+    },
+    {
+      "key": "2021-01:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-02:all",
+      "bars": 168,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "allowed": 7,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2021-02:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2021-02:none",
+      "bars": 160,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-02:short",
+      "bars": 7,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-03:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 8,
+      "exits": 8,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21,
+        "allowed": 8,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2021-03:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-03:short",
+      "bars": 7,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-04:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 5,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19,
+        "allowed": 6,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2021-04:long",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2021-04:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19
+      }
+    },
+    {
+      "key": "2021-04:short",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-05:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "deleverage_correction_reject": 21,
+        "in_position_or_pending": 4,
+        "deleverage_displacement_below": 156,
+        "allowed": 4,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 9,
+        "deleverage_displacement_below": 156
+      }
+    },
+    {
+      "key": "2021-05:long",
+      "bars": 6,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-05:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 21,
+        "deleverage_displacement_below": 156
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 21,
+        "deleverage_displacement_below": 156
+      }
+    },
+    {
+      "key": "2021-05:short",
+      "bars": 3,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "in_position_or_pending": 2,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-06:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21,
+        "allowed": 6,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2021-06:long",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-06:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-06:short",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "in_position_or_pending": 2,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2021-07:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 9,
+      "exits": 8,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20,
+        "allowed": 9,
+        "in_position_or_pending": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 15
+      }
+    },
+    {
+      "key": "2021-07:long",
+      "bars": 9,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2021-07:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20
+      }
+    },
+    {
+      "key": "2021-07:short",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-08:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 7,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23,
+        "allowed": 6,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23,
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-08:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-08:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23
+      }
+    },
+    {
+      "key": "2021-08:short",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-09:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16,
+        "allowed": 5,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2021-09:long",
+      "bars": 5,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-09:none",
+      "bars": 172,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16
+      }
+    },
+    {
+      "key": "2021-09:short",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-10:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "allowed": 7,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2021-10:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-10:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2021-10:short",
+      "bars": 9,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2021-11:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27,
+        "allowed": 5,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27,
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-11:long",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-11:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27
+      }
+    },
+    {
+      "key": "2021-11:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-12:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21,
+        "allowed": 4,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2021-12:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-12:none",
+      "bars": 178,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-12:short",
+      "bars": 5,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-01:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13,
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-01:long",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-01:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13
+      }
+    },
+    {
+      "key": "2022-02:all",
+      "bars": 168,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124,
+        "allowed": 7,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2022-02:long",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-02:none",
+      "bars": 157,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124
+      }
+    },
+    {
+      "key": "2022-02:short",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-03:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10,
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149
+      }
+    },
+    {
+      "key": "2022-03:long",
+      "bars": 5,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149
+      }
+    },
+    {
+      "key": "2022-03:short",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-04:all",
+      "bars": 180,
+      "opportunities": 8,
+      "entries": 8,
+      "exits": 8,
+      "primary": {
+        "deleverage_correction_reject": 19,
+        "allowed": 8,
+        "in_position_or_pending": 7,
+        "deleverage_displacement_below": 146
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 19,
+        "deleverage_setup": 15,
+        "deleverage_displacement_below": 146
+      }
+    },
+    {
+      "key": "2022-04:long",
+      "bars": 10,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2022-04:none",
+      "bars": 165,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 19,
+        "deleverage_displacement_below": 146
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 19,
+        "deleverage_displacement_below": 146
+      }
+    },
+    {
+      "key": "2022-04:short",
+      "bars": 5,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "in_position_or_pending": 3,
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-05:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27,
+        "allowed": 6,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2022-05:long",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-05:none",
+      "bars": 178,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27
+      }
+    },
+    {
+      "key": "2022-05:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2022-06:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33,
+        "allowed": 7,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2022-06:long",
+      "bars": 8,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 5,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2022-06:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33
+      }
+    },
+    {
+      "key": "2022-06:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2022-07:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 8,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24,
+        "allowed": 7,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2022-07:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "allowed": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-07:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2022-07:short",
+      "bars": 7,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2022-08:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24,
+        "allowed": 5,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2022-08:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-08:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2022-08:short",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-09:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22,
+        "allowed": 5,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2022-09:long",
+      "bars": 6,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-09:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22
+      }
+    },
+    {
+      "key": "2022-09:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-10:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22,
+        "allowed": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22,
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-10:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22
+      }
+    },
+    {
+      "key": "2022-10:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-11:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29,
+        "allowed": 7,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2022-11:long",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-11:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29
+      }
+    },
+    {
+      "key": "2022-11:short",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "allowed": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-12:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 8,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20,
+        "allowed": 7,
+        "in_position_or_pending": 3,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2022-12:long",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-12:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20
+      }
+    },
+    {
+      "key": "2022-12:short",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 1,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2023-01:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 7,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28,
+        "allowed": 7,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28,
+        "deleverage_setup": 12
+      }
+    },
+    {
+      "key": "2023-01:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2023-01:none",
+      "bars": 174,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28
+      }
+    },
+    {
+      "key": "2023-01:short",
+      "bars": 10,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2023-02:all",
+      "bars": 168,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "allowed": 5,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2023-02:long",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-02:none",
+      "bars": 160,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2023-02:short",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-03:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 8,
+      "exits": 8,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30,
+        "allowed": 8,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2023-03:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2023-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30
+      }
+    },
+    {
+      "key": "2023-03:short",
+      "bars": 7,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2023-04:all",
+      "bars": 180,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25,
+        "allowed": 4,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2023-04:long",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-04:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25
+      }
+    },
+    {
+      "key": "2023-04:short",
+      "bars": 5,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-05:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 8,
+      "exits": 7,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26,
+        "allowed": 8,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2023-05:long",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "allowed": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-05:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26
+      }
+    },
+    {
+      "key": "2023-05:short",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-06:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 7,
+      "primary": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141,
+        "allowed": 6,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2023-06:long",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-06:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141
+      }
+    },
+    {
+      "key": "2023-06:short",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-07:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12,
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12,
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-07:long",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-07:none",
+      "bars": 181,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12
+      }
+    },
+    {
+      "key": "2023-07:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2023-08:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "deleverage_correction_reject": 20,
+        "allowed": 5,
+        "deleverage_displacement_below": 155,
+        "in_position_or_pending": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 11,
+        "deleverage_displacement_below": 155
+      }
+    },
+    {
+      "key": "2023-08:long",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-08:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 20,
+        "deleverage_displacement_below": 155
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 20,
+        "deleverage_displacement_below": 155
+      }
+    },
+    {
+      "key": "2023-08:short",
+      "bars": 7,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2023-09:all",
+      "bars": 180,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "deleverage_correction_reject": 16,
+        "in_position_or_pending": 2,
+        "deleverage_displacement_below": 157,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7,
+        "deleverage_correction_reject": 16,
+        "deleverage_displacement_below": 157
+      }
+    },
+    {
+      "key": "2023-09:long",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-09:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 16,
+        "deleverage_displacement_below": 157
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 16,
+        "deleverage_displacement_below": 157
+      }
+    },
+    {
+      "key": "2023-09:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "daily_limit": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2023-10:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24,
+        "allowed": 6,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2023-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2023-10:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2023-10:short",
+      "bars": 8,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2023-11:all",
+      "bars": 180,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-11:long",
+      "bars": 1,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2023-11:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20
+      }
+    },
+    {
+      "key": "2023-11:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2023-12:all",
+      "bars": 186,
+      "opportunities": 11,
+      "entries": 11,
+      "exits": 11,
+      "primary": {
+        "deleverage_displacement_below": 150,
+        "deleverage_correction_reject": 22,
+        "allowed": 11,
+        "in_position_or_pending": 2,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 22,
+        "deleverage_setup": 13
+      }
+    },
+    {
+      "key": "2023-12:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2023-12:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 150,
+        "deleverage_correction_reject": 22,
+        "boundary_or_inactive": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 22
+      }
+    },
+    {
+      "key": "2023-12:short",
+      "bars": 11,
+      "opportunities": 9,
+      "entries": 9,
+      "exits": 9,
+      "primary": {
+        "allowed": 9,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_setup": 11
+      }
+    }
+  ],
+  "raw_log_pages": [
+    "V6_DELEVERAGING_P_SCREEN_LOGS_01.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_02.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_03.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_04.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_05.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_06.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_07.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_08.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_09.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_10.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_11.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_12.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_13.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_14.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_15.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_16.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_17.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_18.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_19.json",
+    "V6_DELEVERAGING_P_SCREEN_LOGS_20.json"
+  ],
+  "entry_plan_file": "V6_DELEVERAGING_P_ENTRYPLAN_AUDIT.json"
+}

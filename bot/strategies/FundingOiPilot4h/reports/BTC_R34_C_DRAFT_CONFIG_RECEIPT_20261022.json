@@ -1,0 +1,365 @@
+{
+  "round": "R34",
+  "line": "C",
+  "status": "DRAFTS_CONFIG_VERIFIED_NOT_EXECUTED",
+  "names": [
+    "C_NORMAL",
+    "C_DAY"
+  ],
+  "drafts": {
+    "C_NORMAL": {
+      "status": "success",
+      "backtest_id": "36040b37-aa26-403c-9416-ee2f32185959",
+      "draft_state": {
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1m",
+              "strategy": "BtcResearchR34VolNormal1m"
+            }
+          ],
+          "data_routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h"
+            }
+          ],
+          "start_date": "2020-10-15",
+          "finish_date": "2026-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": true,
+          "fast_mode": false,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": true,
+              "order_cancellation": true,
+              "order_execution": true,
+              "position_opened": true,
+              "position_increased": true,
+              "position_reduced": true,
+              "position_closed": true,
+              "shorter_period_candles": false,
+              "trading_candles": true,
+              "balance_update": true
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 5
+            },
+            "funding": {
+              "mode": "disabled"
+            },
+            "open_interest": {
+              "mode": "disabled"
+            }
+          }
+        },
+        "results": {
+          "showResults": false,
+          "executing": false,
+          "logsModal": false,
+          "progressbar": {
+            "current": 0,
+            "estimated_remaining_seconds": 0
+          },
+          "routes_info": [
+            [
+              {
+                "value": "BTC-USDT",
+                "style": ""
+              },
+              {
+                "value": "1m",
+                "style": ""
+              },
+              {
+                "value": "BtcResearchR34VolNormal1m",
+                "style": ""
+              }
+            ]
+          ],
+          "metrics": {},
+          "hyperparameters": [],
+          "generalInfo": {
+            "title": null,
+            "description": null
+          },
+          "infoLogs": "",
+          "exception": {
+            "error": "",
+            "traceback": ""
+          },
+          "charts": {
+            "equity_curve": []
+          },
+          "selectedRoute": {
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR34VolNormal1m"
+          },
+          "alert": {
+            "message": "",
+            "type": ""
+          },
+          "info": [],
+          "trades": []
+        }
+      },
+      "notes": {
+        "title": "MCP Backtest: R34 C | C_NORMAL | BTC cuota1%",
+        "description": "Primera normalización de volatilidad postshock; dirección20h, SL2ATR, sinTP,48h; cuota1% total. Protocolo BTC_POST_STRESS_NORMALIZATION_PROTOCOL_20261022.md.",
+        "strategy_code_keys": [
+          "Binance Perpetual Futures-BTC-USDT"
+        ],
+        "strategy_codes_captured": 1
+      },
+      "dashboard_url": "http://localhost:9200/#/backtest/36040b37-aa26-403c-9416-ee2f32185959",
+      "message": "Backtest draft created with ID: 36040b37-aa26-403c-9416-ee2f32185959",
+      "verified_form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR34VolNormal1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      }
+    },
+    "C_DAY": {
+      "status": "success",
+      "backtest_id": "f6697dd8-24d2-44cb-9fb5-c901385237c6",
+      "draft_state": {
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1m",
+              "strategy": "BtcResearchR34VolDay1m"
+            }
+          ],
+          "data_routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h"
+            }
+          ],
+          "start_date": "2020-10-15",
+          "finish_date": "2026-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": true,
+          "fast_mode": false,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": true,
+              "order_cancellation": true,
+              "order_execution": true,
+              "position_opened": true,
+              "position_increased": true,
+              "position_reduced": true,
+              "position_closed": true,
+              "shorter_period_candles": false,
+              "trading_candles": true,
+              "balance_update": true
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 5
+            },
+            "funding": {
+              "mode": "disabled"
+            },
+            "open_interest": {
+              "mode": "disabled"
+            }
+          }
+        },
+        "results": {
+          "showResults": false,
+          "executing": false,
+          "logsModal": false,
+          "progressbar": {
+            "current": 0,
+            "estimated_remaining_seconds": 0
+          },
+          "routes_info": [
+            [
+              {
+                "value": "BTC-USDT",
+                "style": ""
+              },
+              {
+                "value": "1m",
+                "style": ""
+              },
+              {
+                "value": "BtcResearchR34VolDay1m",
+                "style": ""
+              }
+            ]
+          ],
+          "metrics": {},
+          "hyperparameters": [],
+          "generalInfo": {
+            "title": null,
+            "description": null
+          },
+          "infoLogs": "",
+          "exception": {
+            "error": "",
+            "traceback": ""
+          },
+          "charts": {
+            "equity_curve": []
+          },
+          "selectedRoute": {
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR34VolDay1m"
+          },
+          "alert": {
+            "message": "",
+            "type": ""
+          },
+          "info": [],
+          "trades": []
+        }
+      },
+      "notes": {
+        "title": "MCP Backtest: R34 C | C_DAY | BTC cuota1%",
+        "description": "Control espera fija24h después del mismo episodio; dirección20h, SL2ATR, sinTP,48h; cuota1% total. Protocolo BTC_POST_STRESS_NORMALIZATION_PROTOCOL_20261022.md.",
+        "strategy_code_keys": [
+          "Binance Perpetual Futures-BTC-USDT"
+        ],
+        "strategy_codes_captured": 1
+      },
+      "dashboard_url": "http://localhost:9200/#/backtest/f6697dd8-24d2-44cb-9fb5-c901385237c6",
+      "message": "Backtest draft created with ID: f6697dd8-24d2-44cb-9fb5-c901385237c6",
+      "verified_form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR34VolDay1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "LEGACY",
+  "title": "Causalidad y contabilidad legacy",
+  "asset": "BTC",
+  "family": "legacy",
+  "execution": "auditado",
+  "evidence": "técnica acotada",
+  "objective": "sin evaluar",
+  "hypothesis": "Reutilizar ideas exige causalidad y unidades correctas.",
+  "origin": "Preflight legacy 2026-10-20",
+  "method": "Extracción AST y microvalidaciones sintéticas; no backtests nuevos.",
+  "protocol": null,
+  "budget": {
+    "economic_new": 0
+  },
+  "versions": "Hashes originales listados en el preflight",
+  "periods": [
+    "Ejemplos sintéticos; no ventana económica"
+  ],
+  "results": {
+    "corrected_profitability": null,
+    "findings": [
+      "oi_price_divergence remapea último cierre del día corriente a velas anteriores.",
+      "En trayectoria auditada, funding divide de nuevo por100 y usa tiempo desde entrada en lugar de liquidación exchange.",
+      "No hay A/B limpio que atribuya la ventaja del modelo a funding."
+    ]
+  },
+  "limitations": [
+    "Falla localizada: no acusar a todas las variables OI.",
+    "No se cuantificó rentabilidad corregida ni se reentrenó ML.",
+    "Archivos legacy incluyen 2026: exposición previa declarada."
+  ],
+  "audit": "Preflight original por MCP",
+  "decision": "No portar literalmente ni transferir resultados como evidencia económica.",
+  "references": [
+    {
+      "label": "Preflight original",
+      "path": "strategies/FundingIntegrationSmoke1m/reports/LEGACY_PREFLIGHT_AND_FUNDING_WALK_FORWARD_PILOT_20261020.md"
+    }
+  ],
+  "sessions": []
+}

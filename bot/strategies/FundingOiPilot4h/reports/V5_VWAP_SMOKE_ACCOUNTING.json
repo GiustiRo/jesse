@@ -1,0 +1,42 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "e809ed9e17aa47908f5f2c3fd72ac0eb",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/e809ed9e17aa47908f5f2c3fd72ac0eb",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "996568bc-0c12-4db0-9f7e-4235556b57ab",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 TECH VWAP 1h",
+        "size_bytes": 17272
+      }
+    ],
+    "status": "succeeded",
+    "pid": 8756,
+    "exit_code": 0,
+    "started_at": "2026-10-21T00:55:55+00:00",
+    "finished_at": "2026-10-21T00:55:55+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-22T00:55:55+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 3425,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"timeframe\": \"1h\", \"sharpe\": -10.612923870702733, \"session_id\": \"996568bc-0c12-4db0-9f7e-4235556b57ab\", \"strategy\": \"ResearchV5VwapSmoke1h\", \"start\": \"2020-09-01\", \"finish\": \"2020-09-08\", \"n\": 3, \"net\": -318.59871230692505, \"net_pct\": -3.1859871230692507, \"pf\": 0.06285717458380856, \"pf_no_losses\": false, \"dd\": -3.219141129836567, \"cagr_pct\": -81.51673442071554, \"turnover\": 5.411971478510443, \"gross\": -301.5523628093692, \"fees\": 24.35387165329699, \"funding\": 7.307522155741157, \"funding_events\": 3, \"proxy_funding\": 7.3075221557411565, \"exact_funding\": 0.0, \"unclassified_funding\": 0.0, \"funding_sources\": {\"markPriceKlines.1h_open_proxy\": {\"n\": 3, \"cashflow\": 7.3075221557411565}}, \"holding_seconds\": 73380.0, \"exposure\": 0.12132936507936508, \"directions\": {\"short\": {\"n\": 1, \"gross\": 22.33307214420238, \"fees\": 8.989950080659229, \"funding\": 8.026315271432129, \"net\": 21.36943733497528}, \"long\": {\"n\": 2, \"gross\": -323.8854349535716, \"fees\": 15.363921572637762, \"funding\": -0.7187931156909714, \"net\": -339.9681496419003}}, \"exit_order_types\": {\"MARKET\": 1, \"STOP\": 2}, \"months\": [{\"month\": \"2020-09\", \"return_pct\": -3.185987123069245, \"end_equity\": 9681.401287693076}], \"years\": [{\"year\": 2020, \"return_pct\": -3.185987123069245, \"end_equity\": 9681.401287693076, \"full_year\": false}], \"semesters\": [{\"period\": \"2020H2\", \"return_pct\": -3.185987123069245, \"end_equity\": 9681.401287693076, \"full_semester\": false}], \"replay_nominal_gates\": null, \"replay_nominal_eligible\": null, \"funding_sensitivities\": [{\"kind\": \"proxy_only\", \"multiplier\": 0.5, \"net_usdt\": -322.2524733847956, \"net_pct\": -3.222524733847956, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"proxy_only\", \"multiplier\": 1.5, \"net_usdt\": -314.9449512290545, \"net_pct\": -3.149449512290545, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 0.5, \"net_usdt\": -322.2524733847956, \"net_pct\": -3.222524733847956, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 1.5, \"net_usdt\": -314.9449512290545, \"net_pct\": -3.149449512290545, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 21.36943733497528, \"negative_pnl\": -339.9681496419003, \"best_trade\": 21.36943733497528, \"worst_trade\": -198.31307788217, \"adjusted_fills\": 0, \"curve_terminal_delta\": -3.637978807091713e-12, \"sampled_dd_including_terminal_pct\": -3.219141129836567, \"equity_points\": 8, \"equity_evidence\": \"full_daily\", \"max_accounting_error\": 3.637978807091713e-12, \"metric_open_indicator\": 0, \"metric_open_pl\": 0.0}]\n",
+  "output_lines_returned": 1,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}

@@ -1,0 +1,124 @@
+{
+  "cycle": "V6",
+  "recorded_at": "2026-10-21 01:41:15 UTC",
+  "start": "2024-01-01",
+  "finish": "2026-01-01",
+  "START": 1704067200000,
+  "FINISH": 1767225600000,
+  "forced_boundaries": [
+    1719792000000,
+    1735689600000,
+    1751328000000,
+    1767225600000
+  ],
+  "rule": "Individual windows only from TRAIN gates; keep adjacent eligible semesters separate; C3/C4 inactive independently of diagnostic future PNL.",
+  "individual": [
+    {
+      "strategy": "ResearchV6EfficiencyP4h",
+      "folds": [
+        {
+          "fold": "C1",
+          "selection_file": "SELECTION_V6_C1.json",
+          "decision_at": "2026-10-21 01:26:14 UTC",
+          "train_session": "8c8a2a0b-f3f9-4494-a557-7fbd2c5e0dd1",
+          "eligible": true,
+          "start_ms": 1704067200000,
+          "finish_ms": 1719792000000
+        },
+        {
+          "fold": "C2",
+          "selection_file": "SELECTION_V6_C2.json",
+          "decision_at": "2026-10-21 01:32:12 UTC",
+          "train_session": "f3fb5ce3-f506-43d1-905d-4fde351caa1a",
+          "eligible": true,
+          "start_ms": 1719792000000,
+          "finish_ms": 1735689600000
+        },
+        {
+          "fold": "C3",
+          "selection_file": "SELECTION_V6_C3.json",
+          "decision_at": "2026-10-21 01:37:37 UTC",
+          "train_session": "520c9356-883e-48bb-970f-c1ff39345bef",
+          "eligible": false,
+          "start_ms": 1735689600000,
+          "finish_ms": 1751328000000
+        },
+        {
+          "fold": "C4",
+          "selection_file": "SELECTION_V6_C4.json",
+          "decision_at": "2026-10-21 01:40:46 UTC",
+          "train_session": "294e9945-66ee-458c-ac06-8c167ee22373",
+          "eligible": false,
+          "start_ms": 1751328000000,
+          "finish_ms": 1767225600000
+        }
+      ],
+      "windows": [
+        [
+          1704067200000,
+          1719792000000
+        ],
+        [
+          1719792000000,
+          1735689600000
+        ]
+      ]
+    }
+  ],
+  "selector": [
+    {
+      "fold": "C1",
+      "selected": "ResearchV6EfficiencyP4h",
+      "recorded_at": "2026-10-21 01:26:14 UTC"
+    },
+    {
+      "fold": "C2",
+      "selected": "ResearchV6EfficiencyP4h",
+      "recorded_at": "2026-10-21 01:32:12 UTC"
+    },
+    {
+      "fold": "C3",
+      "selected": null,
+      "recorded_at": "2026-10-21 01:37:37 UTC"
+    },
+    {
+      "fold": "C4",
+      "selected": null,
+      "recorded_at": "2026-10-21 01:40:46 UTC"
+    }
+  ],
+  "nominal_config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  }
+}

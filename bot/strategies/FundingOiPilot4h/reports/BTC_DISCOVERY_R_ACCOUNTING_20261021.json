@@ -1,0 +1,2005 @@
+{
+  "analysis_job": "f16a68a6f6cd49108af72f2fc0fa458c",
+  "analysis_code": "import json,math\nimport numpy as np\nimport pandas as pd\nresults={}\nfor name in (\"KNN\",\"GLOBAL\"):\n d=json.load(open(\"inputs/\"+name+\".json\"));m=d[\"metrics\"];tr=d[\"trades\"]\n gross=sum((t[\"exit_price\"]-t[\"entry_price\"])*abs(t[\"qty\"])*(1 if t[\"type\"]==\"long\" else -1) for t in tr)\n fees=sum(t[\"fee\"] for t in tr);fund=sum(t.get(\"funding\",0) for t in tr);net=sum(t[\"PNL\"] for t in tr)\n errors={\"gross_fee_funding_pnl\":gross-fees+fund-net,\"pnl_metrics\":net-m[\"net_profit\"],\n         \"terminal_vs_net\":m[\"finishing_balance\"]-10000-net,\"funding_vs_metric\":fund-m[\"funding\"][\"cashflow\"]}\n assert all(abs(x)<1e-6 for x in errors.values()),errors\n pf=sum(t[\"PNL\"] for t in tr if t[\"PNL\"]>0)/(-sum(t[\"PNL\"] for t in tr if t[\"PNL\"]<0))\n start=pd.Timestamp(\"2020-10-15\",tz=\"UTC\");finish=pd.Timestamp(\"2026-01-01\",tz=\"UTC\")\n cagr=(m[\"finishing_balance\"]/10000)**(365/((finish-start).total_seconds()/86400))-1\n results[name]={\"N\":len(tr),\"net\":net,\"return_pct\":net/100,\"cagr_pct\":cagr*100,\"pf\":pf,\n  \"dd_daily_pct\":m[\"max_drawdown\"],\"fee\":fees,\"funding\":fund,\"funding_applied\":m[\"funding\"][\"applied\"],\n  \"proxy_payments\":m[\"funding\"][\"mark_price_proxy_count\"],\"errors\":errors,\n  \"gross\":gross,\"finish\":m[\"finishing_balance\"],\"raw_open_counter\":m[\"total_open_trades\"],\n  \"long_pnl\":sum(t[\"PNL\"] for t in tr if t[\"type\"]==\"long\"),\"short_pnl\":sum(t[\"PNL\"] for t in tr if t[\"type\"]==\"short\")}\njson.dump(results,open(\"output/audit.json\",\"w\"),indent=2)\nprint(json.dumps(results))\n",
+  "job_receipt": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "f16a68a6f6cd49108af72f2fc0fa458c",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/f16a68a6f6cd49108af72f2fc0fa458c",
+      "inputs": [
+        {
+          "name": "KNN",
+          "file": "inputs/KNN.json",
+          "session_type": "backtest",
+          "session_id": "e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+          "session_status": "finished",
+          "title": "MCP Backtest: BTC discovery R | KNN causal daily shape",
+          "size_bytes": 4170860
+        },
+        {
+          "name": "GLOBAL",
+          "file": "inputs/GLOBAL.json",
+          "session_type": "backtest",
+          "session_id": "ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+          "session_status": "finished",
+          "title": "MCP Backtest: BTC discovery R | GLOBAL causal daily shape",
+          "size_bytes": 3055131
+        }
+      ],
+      "status": "succeeded",
+      "pid": 691,
+      "exit_code": 0,
+      "started_at": "2026-10-21T20:36:09+00:00",
+      "finished_at": "2026-10-21T20:36:09+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T20:36:09+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "audit.json",
+        "size_bytes": 1440,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"KNN\": {\"N\": 1751, \"net\": -6660.846532925419, \"return_pct\": -66.60846532925419, \"cagr_pct\": -18.963571285044722, \"pf\": 0.9412293246370574, \"dd_daily_pct\": -82.76623916709762, \"fee\": 9948.266673171467, \"funding\": -1413.6015183596885, \"funding_applied\": true, \"proxy_payments\": 2684, \"errors\": {\"gross_fee_funding_pnl\": 5.4569682106375694e-12, \"pnl_metrics\": -2.7284841053187847e-12, \"terminal_vs_net\": -6.821210263296962e-11, \"funding_vs_metric\": 7.048583938740194e-12}, \"gross\": 4701.021658605742, \"finish\": 3339.1534670745136, \"raw_open_counter\": 0, \"long_pnl\": -923.0199689377542, \"short_pnl\": -5737.826563987653}, \"GLOBAL\": {\"N\": 1265, \"net\": -3083.769629236552, \"return_pct\": -30.83769629236552, \"cagr_pct\": -6.8242913318438125, \"pf\": 0.9621414395828037, \"dd_daily_pct\": -55.923825157767794, \"fee\": 7018.0481513692275, \"funding\": -1914.8927447151261, \"funding_applied\": true, \"proxy_payments\": 2173, \"errors\": {\"gross_fee_funding_pnl\": -7.73070496506989e-12, \"pnl_metrics\": -1.8189894035458565e-12, \"terminal_vs_net\": 1.5916157281026244e-11, \"funding_vs_metric\": 5.002220859751105e-12}, \"gross\": 5849.171266847794, \"finish\": 6916.230370763464, \"raw_open_counter\": 1, \"long_pnl\": -373.99396721961745, \"short_pnl\": -2709.775662016928}}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "results": [
+    {
+      "id": "e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+      "name": "KNN",
+      "strategy": "BtcResearchR18AnalogueKnn1m",
+      "url": "http://localhost:9200/#/backtest/e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+      "financial": {
+        "N": 1751,
+        "net": -6660.846532925419,
+        "return_pct": -66.60846532925419,
+        "cagr_pct": -18.963571285044722,
+        "pf": 0.9412293246370574,
+        "dd_daily_pct": -82.76623916709762,
+        "fee": 9948.266673171467,
+        "funding": -1413.6015183596885,
+        "funding_applied": true,
+        "proxy_payments": 2684,
+        "errors": {
+          "gross_fee_funding_pnl": 5.4569682106375694e-12,
+          "pnl_metrics": -2.7284841053187847e-12,
+          "terminal_vs_net": -6.821210263296962e-11,
+          "funding_vs_metric": 7.048583938740194e-12
+        },
+        "gross": 4701.021658605742,
+        "finish": 3339.1534670745136,
+        "raw_open_counter": 0,
+        "long_pnl": -923.0199689377542,
+        "short_pnl": -5737.826563987653
+      },
+      "telemetry": {
+        "session_id": "e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+        "summary": {
+          "complete_months": 62,
+          "active_months": 62,
+          "positive_active": 25,
+          "positive_calendar": 25,
+          "median_return": -0.007074899622019182,
+          "complete_quarters": 20,
+          "positive_quarters": 7,
+          "pnl_without_best_two": -10656.139017970056,
+          "stage": "PRETERMINAL",
+          "equity": 3339.1534670745136,
+          "dd_m1_events": -0.8313836614357417,
+          "minute_marks": 2741760,
+          "sequence": 2745263,
+          "signals": 8872,
+          "entries": 1751,
+          "invalid_windows": 0
+        },
+        "stats": {
+          "stage": "PRETERMINAL",
+          "mode": "KNN",
+          "long_fills": 1012,
+          "short_fills": 739,
+          "signals": 8872,
+          "occupied": 7121
+        },
+        "months": [
+          {
+            "stage": "PRETERMINAL",
+            "month": "2020-10",
+            "start": 1602720000000,
+            "finish": 1604188800000,
+            "complete": false,
+            "active": true,
+            "pnl": -417.7067682892957,
+            "return_fraction": -0.04177067682892954
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2020-11",
+            "start": 1604188800000,
+            "finish": 1606780800000,
+            "complete": true,
+            "active": true,
+            "pnl": 2123.9592578788943,
+            "return_fraction": 0.22165458794874615
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2020-12",
+            "start": 1606780800000,
+            "finish": 1609459200000,
+            "complete": true,
+            "active": true,
+            "pnl": 1283.4970066351489,
+            "return_fraction": 0.10964200607979069
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-01",
+            "start": 1609459200000,
+            "finish": 1612137600000,
+            "complete": true,
+            "active": true,
+            "pnl": 1344.6194372915888,
+            "return_fraction": 0.1035138851355355
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-02",
+            "start": 1612137600000,
+            "finish": 1614556800000,
+            "complete": true,
+            "active": true,
+            "pnl": 596.5927538898322,
+            "return_fraction": 0.04161974319601125
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-03",
+            "start": 1614556800000,
+            "finish": 1617235200000,
+            "complete": true,
+            "active": true,
+            "pnl": 835.7932885805785,
+            "return_fraction": 0.05597719062433515
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-04",
+            "start": 1617235200000,
+            "finish": 1619827200000,
+            "complete": true,
+            "active": true,
+            "pnl": -1195.8403393414828,
+            "return_fraction": -0.07584568550489845
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-05",
+            "start": 1619827200000,
+            "finish": 1622505600000,
+            "complete": true,
+            "active": true,
+            "pnl": 1534.8532704257614,
+            "return_fraction": 0.10533678281016523
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-06",
+            "start": 1622505600000,
+            "finish": 1625097600000,
+            "complete": true,
+            "active": true,
+            "pnl": 753.4490642969176,
+            "return_fraction": 0.04678131888179804
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-07",
+            "start": 1625097600000,
+            "finish": 1627776000000,
+            "complete": true,
+            "active": true,
+            "pnl": 1305.045968772327,
+            "return_fraction": 0.07740845680963071
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-08",
+            "start": 1627776000000,
+            "finish": 1630454400000,
+            "complete": true,
+            "active": true,
+            "pnl": -434.3407661111596,
+            "return_fraction": -0.02391182992354357
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-09",
+            "start": 1630454400000,
+            "finish": 1633046400000,
+            "complete": true,
+            "active": true,
+            "pnl": -1870.9378047046484,
+            "return_fraction": -0.10552431005282181
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-10",
+            "start": 1633046400000,
+            "finish": 1635724800000,
+            "complete": true,
+            "active": true,
+            "pnl": -62.96383787709965,
+            "return_fraction": -0.00397023141020858
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-11",
+            "start": 1635724800000,
+            "finish": 1638316800000,
+            "complete": true,
+            "active": true,
+            "pnl": -589.1840524899799,
+            "return_fraction": -0.0372995243527956
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2021-12",
+            "start": 1638316800000,
+            "finish": 1640995200000,
+            "complete": true,
+            "active": true,
+            "pnl": -55.960795011120354,
+            "return_fraction": -0.0036799761139377773
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-01",
+            "start": 1640995200000,
+            "finish": 1643673600000,
+            "complete": true,
+            "active": true,
+            "pnl": 1382.587272275483,
+            "return_fraction": 0.09125461135823731
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-02",
+            "start": 1643673600000,
+            "finish": 1646092800000,
+            "complete": true,
+            "active": true,
+            "pnl": 532.5149479349166,
+            "return_fraction": 0.03220831288308679
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-03",
+            "start": 1646092800000,
+            "finish": 1648771200000,
+            "complete": true,
+            "active": true,
+            "pnl": 420.973412811687,
+            "return_fraction": 0.02466740641385412
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-04",
+            "start": 1648771200000,
+            "finish": 1651363200000,
+            "complete": true,
+            "active": true,
+            "pnl": -1875.9772717217038,
+            "return_fraction": -0.10727869242143773
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-05",
+            "start": 1651363200000,
+            "finish": 1654041600000,
+            "complete": true,
+            "active": true,
+            "pnl": -968.7607267618114,
+            "return_fraction": -0.06205639212223191
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-06",
+            "start": 1654041600000,
+            "finish": 1656633600000,
+            "complete": true,
+            "active": true,
+            "pnl": 1871.3332271656745,
+            "return_fraction": 0.1278039860820248
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-07",
+            "start": 1656633600000,
+            "finish": 1659312000000,
+            "complete": true,
+            "active": true,
+            "pnl": -1178.0315460190104,
+            "return_fraction": -0.07133728316703059
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-08",
+            "start": 1659312000000,
+            "finish": 1661990400000,
+            "complete": true,
+            "active": true,
+            "pnl": -2069.2135229954692,
+            "return_fraction": -0.13492950990202746
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-09",
+            "start": 1661990400000,
+            "finish": 1664582400000,
+            "complete": true,
+            "active": true,
+            "pnl": -4.821089000950451,
+            "return_fraction": -0.00036340867192274917
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-10",
+            "start": 1664582400000,
+            "finish": 1667260800000,
+            "complete": true,
+            "active": true,
+            "pnl": -35.815707556053894,
+            "return_fraction": -0.0027007322341967566
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-11",
+            "start": 1667260800000,
+            "finish": 1669852800000,
+            "complete": true,
+            "active": true,
+            "pnl": -707.4438455865384,
+            "return_fraction": -0.05349022999593478
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2022-12",
+            "start": 1669852800000,
+            "finish": 1672531200000,
+            "complete": true,
+            "active": true,
+            "pnl": -757.8965346687401,
+            "return_fraction": -0.06054347056895215
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-01",
+            "start": 1672531200000,
+            "finish": 1675209600000,
+            "complete": true,
+            "active": true,
+            "pnl": -42.83310149620047,
+            "return_fraction": -0.003642170097030606
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-02",
+            "start": 1675209600000,
+            "finish": 1677628800000,
+            "complete": true,
+            "active": true,
+            "pnl": 11.871806362980351,
+            "return_fraction": 0.001013169642037015
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-03",
+            "start": 1677628800000,
+            "finish": 1680307200000,
+            "complete": true,
+            "active": true,
+            "pnl": -1020.9111957141449,
+            "return_fraction": -0.08703892916485634
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-04",
+            "start": 1680307200000,
+            "finish": 1682899200000,
+            "complete": true,
+            "active": true,
+            "pnl": -298.5474543770724,
+            "return_fraction": -0.027879609462015287
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-05",
+            "start": 1682899200000,
+            "finish": 1685577600000,
+            "complete": true,
+            "active": true,
+            "pnl": -396.0473385316036,
+            "return_fraction": -0.03804524278425492
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-06",
+            "start": 1685577600000,
+            "finish": 1688169600000,
+            "complete": true,
+            "active": true,
+            "pnl": -371.77115462617803,
+            "return_fraction": -0.03712567036154535
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-07",
+            "start": 1688169600000,
+            "finish": 1690848000000,
+            "complete": true,
+            "active": true,
+            "pnl": -962.2264947133172,
+            "return_fraction": -0.09979443333534688
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-08",
+            "start": 1690848000000,
+            "finish": 1693526400000,
+            "complete": true,
+            "active": true,
+            "pnl": -1172.295715629536,
+            "return_fraction": -0.13505929832494756
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-09",
+            "start": 1693526400000,
+            "finish": 1696118400000,
+            "complete": true,
+            "active": true,
+            "pnl": -244.86581705048502,
+            "return_fraction": -0.03261588291890816
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-10",
+            "start": 1696118400000,
+            "finish": 1698796800000,
+            "complete": true,
+            "active": true,
+            "pnl": 1203.8386490773255,
+            "return_fraction": 0.16575640025027893
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-11",
+            "start": 1698796800000,
+            "finish": 1701388800000,
+            "complete": true,
+            "active": true,
+            "pnl": -114.4836017045127,
+            "return_fraction": -0.013521893153438547
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2023-12",
+            "start": 1701388800000,
+            "finish": 1704067200000,
+            "complete": true,
+            "active": true,
+            "pnl": 58.35481041894309,
+            "return_fraction": 0.006986882296776686
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-01",
+            "start": 1704067200000,
+            "finish": 1706745600000,
+            "complete": true,
+            "active": true,
+            "pnl": -0.033315234637484537,
+            "return_fraction": -0.000003961191402113151
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-02",
+            "start": 1706745600000,
+            "finish": 1709251200000,
+            "complete": true,
+            "active": true,
+            "pnl": 927.0344384007894,
+            "return_fraction": 0.11022510971443467
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-03",
+            "start": 1709251200000,
+            "finish": 1711929600000,
+            "complete": true,
+            "active": true,
+            "pnl": 231.36352513155362,
+            "return_fraction": 0.024778129534152038
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-04",
+            "start": 1711929600000,
+            "finish": 1714521600000,
+            "complete": true,
+            "active": true,
+            "pnl": -1442.4685818476182,
+            "return_fraction": -0.15074750768152023
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-05",
+            "start": 1714521600000,
+            "finish": 1717200000000,
+            "complete": true,
+            "active": true,
+            "pnl": -1659.3931691063663,
+            "return_fraction": -0.2042002389356341
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-06",
+            "start": 1717200000000,
+            "finish": 1719792000000,
+            "complete": true,
+            "active": true,
+            "pnl": 179.18611148448235,
+            "return_fraction": 0.02770814734692384
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-07",
+            "start": 1719792000000,
+            "finish": 1722470400000,
+            "complete": true,
+            "active": true,
+            "pnl": -1130.99661556701,
+            "return_fraction": -0.17017456508770146
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-08",
+            "start": 1722470400000,
+            "finish": 1725148800000,
+            "complete": true,
+            "active": true,
+            "pnl": 153.204284530525,
+            "return_fraction": 0.02777905788952073
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-09",
+            "start": 1725148800000,
+            "finish": 1727740800000,
+            "complete": true,
+            "active": true,
+            "pnl": -511.27018212660823,
+            "return_fraction": -0.09019808196358936
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-10",
+            "start": 1727740800000,
+            "finish": 1730419200000,
+            "complete": true,
+            "active": true,
+            "pnl": -487.8795451360347,
+            "return_fraction": -0.0946046753612988
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-11",
+            "start": 1730419200000,
+            "finish": 1733011200000,
+            "complete": true,
+            "active": true,
+            "pnl": 302.3424676115974,
+            "return_fraction": 0.06475314928918174
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2024-12",
+            "start": 1733011200000,
+            "finish": 1735689600000,
+            "complete": true,
+            "active": true,
+            "pnl": -462.63900454411305,
+            "return_fraction": -0.09305828693238782
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-01",
+            "start": 1735689600000,
+            "finish": 1738368000000,
+            "complete": true,
+            "active": true,
+            "pnl": 334.41839011080265,
+            "return_fraction": 0.07416919811860612
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-02",
+            "start": 1738368000000,
+            "finish": 1740787200000,
+            "complete": true,
+            "active": true,
+            "pnl": 114.12073214629072,
+            "return_fraction": 0.0235627126081297
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-03",
+            "start": 1740787200000,
+            "finish": 1743465600000,
+            "complete": true,
+            "active": true,
+            "pnl": 280.2385929809252,
+            "return_fraction": 0.05652938025934717
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-04",
+            "start": 1743465600000,
+            "finish": 1746057600000,
+            "complete": true,
+            "active": true,
+            "pnl": -53.316869125453195,
+            "return_fraction": -0.010179567833829783
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-05",
+            "start": 1746057600000,
+            "finish": 1748736000000,
+            "complete": true,
+            "active": true,
+            "pnl": -149.88237851831673,
+            "return_fraction": -0.02891071709111026
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-06",
+            "start": 1748736000000,
+            "finish": 1751328000000,
+            "complete": true,
+            "active": true,
+            "pnl": 249.17255083260534,
+            "return_fraction": 0.04949363195226475
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-07",
+            "start": 1751328000000,
+            "finish": 1754006400000,
+            "complete": true,
+            "active": true,
+            "pnl": -637.0520600939035,
+            "return_fraction": -0.12057138315108618
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-08",
+            "start": 1754006400000,
+            "finish": 1756684800000,
+            "complete": true,
+            "active": true,
+            "pnl": -496.2243576521514,
+            "return_fraction": -0.1067939876433146
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-09",
+            "start": 1756684800000,
+            "finish": 1759276800000,
+            "complete": true,
+            "active": true,
+            "pnl": -220.19683994812567,
+            "return_fraction": -0.053055226060207406
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-10",
+            "start": 1759276800000,
+            "finish": 1761955200000,
+            "complete": true,
+            "active": true,
+            "pnl": -652.9981641628592,
+            "return_fraction": -0.1661515495644572
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-11",
+            "start": 1761955200000,
+            "finish": 1764547200000,
+            "complete": true,
+            "active": true,
+            "pnl": 344.6998378964827,
+            "return_fraction": 0.10518320230652867
+          },
+          {
+            "stage": "PRETERMINAL",
+            "month": "2025-12",
+            "start": 1764547200000,
+            "finish": 1767225600000,
+            "complete": true,
+            "active": true,
+            "pnl": -282.6840728282873,
+            "return_fraction": -0.07804990414779167
+          }
+        ],
+        "log_receipt": {
+          "returned": 200,
+          "has_more": true,
+          "complete_final_monthly_block_verified": true,
+          "not_financial_totals_from_partial_pages": true
+        }
+      },
+      "descriptive_calendar": {
+        "annual": {
+          "2021": 16.63716600808669,
+          "2022": -22.378583620187133,
+          "2023": -28.484899927751172,
+          "2024": -46.389541736351866,
+          "2025": -25.94236968672027
+        },
+        "rolling_12m": [
+          {
+            "start": "2020-11",
+            "finish": "2021-10",
+            "return_pct": 64.84593144335804
+          },
+          {
+            "start": "2020-12",
+            "finish": "2021-11",
+            "return_pct": 29.903540799934582
+          },
+          {
+            "start": "2021-01",
+            "finish": "2021-12",
+            "return_pct": 16.63716600808669
+          },
+          {
+            "start": "2021-02",
+            "finish": "2022-01",
+            "return_pct": 15.341408002716705
+          },
+          {
+            "start": "2021-03",
+            "finish": "2022-02",
+            "return_pct": 14.29925453864984
+          },
+          {
+            "start": "2021-04",
+            "finish": "2022-03",
+            "return_pct": 10.910275092125875
+          },
+          {
+            "start": "2021-05",
+            "finish": "2022-04",
+            "return_pct": 7.137914362531994
+          },
+          {
+            "start": "2021-06",
+            "finish": "2022-05",
+            "return_pct": -9.087145655089435
+          },
+          {
+            "start": "2021-07",
+            "finish": "2022-06",
+            "return_pct": -2.0503349966044415
+          },
+          {
+            "start": "2021-08",
+            "finish": "2022-07",
+            "return_pct": -15.57315014559535
+          },
+          {
+            "start": "2021-09",
+            "finish": "2022-08",
+            "return_pct": -25.175636156663007
+          },
+          {
+            "start": "2021-10",
+            "finish": "2022-09",
+            "return_pct": -16.37875365281053
+          },
+          {
+            "start": "2021-11",
+            "finish": "2022-10",
+            "return_pct": -16.27217340121311
+          },
+          {
+            "start": "2021-12",
+            "finish": "2022-11",
+            "return_pct": -17.680308775499086
+          },
+          {
+            "start": "2022-01",
+            "finish": "2022-12",
+            "return_pct": -22.378583620187133
+          },
+          {
+            "start": "2022-02",
+            "finish": "2023-01",
+            "return_pct": -29.128633067653197
+          },
+          {
+            "start": "2022-03",
+            "finish": "2023-02",
+            "return_pct": -31.270489915297052
+          },
+          {
+            "start": "2022-04",
+            "finish": "2023-03",
+            "return_pct": -38.7631862474192
+          },
+          {
+            "start": "2022-05",
+            "finish": "2023-04",
+            "return_pct": -33.3167531735856
+          },
+          {
+            "start": "2022-06",
+            "finish": "2023-05",
+            "return_pct": -31.609676773211127
+          },
+          {
+            "start": "2022-07",
+            "finish": "2023-06",
+            "return_pct": -41.61105347790265
+          },
+          {
+            "start": "2022-08",
+            "finish": "2023-07",
+            "return_pct": -43.400274676548
+          },
+          {
+            "start": "2022-09",
+            "finish": "2023-08",
+            "return_pct": -43.408766457473966
+          },
+          {
+            "start": "2022-10",
+            "finish": "2023-09",
+            "return_pct": -45.23463729720639
+          },
+          {
+            "start": "2022-11",
+            "finish": "2023-10",
+            "return_pct": -35.98403794496529
+          },
+          {
+            "start": "2022-12",
+            "finish": "2023-11",
+            "return_pct": -33.28083126311447
+          },
+          {
+            "start": "2023-01",
+            "finish": "2023-12",
+            "return_pct": -28.484899927751172
+          },
+          {
+            "start": "2023-02",
+            "finish": "2024-01",
+            "return_pct": -28.22376194482884
+          },
+          {
+            "start": "2023-03",
+            "finish": "2024-02",
+            "return_pct": -20.392873753910546
+          },
+          {
+            "start": "2023-04",
+            "finish": "2024-03",
+            "return_pct": -10.642803359150276
+          },
+          {
+            "start": "2023-05",
+            "finish": "2024-04",
+            "return_pct": -21.936806703707457
+          },
+          {
+            "start": "2023-06",
+            "finish": "2024-05",
+            "return_pct": -35.42038218832959
+          },
+          {
+            "start": "2023-07",
+            "finish": "2024-06",
+            "return_pct": -31.072002508858244
+          },
+          {
+            "start": "2023-08",
+            "finish": "2024-07",
+            "return_pct": -36.46095112736827
+          },
+          {
+            "start": "2023-09",
+            "finish": "2024-08",
+            "return_pct": -24.4987504194899
+          },
+          {
+            "start": "2023-10",
+            "finish": "2024-09",
+            "return_pct": -28.992857677096108
+          },
+          {
+            "start": "2023-11",
+            "finish": "2024-10",
+            "return_pct": -44.85165626256946
+          },
+          {
+            "start": "2023-12",
+            "finish": "2024-11",
+            "return_pct": -40.47574673479824
+          },
+          {
+            "start": "2024-01",
+            "finish": "2024-12",
+            "return_pct": -46.389541736351866
+          },
+          {
+            "start": "2024-02",
+            "finish": "2025-01",
+            "return_pct": -42.41306892330984
+          },
+          {
+            "start": "2024-03",
+            "finish": "2025-02",
+            "return_pct": -46.90821269679664
+          },
+          {
+            "start": "2024-04",
+            "finish": "2025-03",
+            "return_pct": -45.26324135955795
+          },
+          {
+            "start": "2024-05",
+            "finish": "2025-04",
+            "return_pct": -36.20323451162778
+          },
+          {
+            "start": "2024-06",
+            "finish": "2025-05",
+            "return_pct": -22.15082451501369
+          },
+          {
+            "start": "2024-07",
+            "finish": "2025-06",
+            "return_pct": -20.50056805023338
+          },
+          {
+            "start": "2024-08",
+            "finish": "2025-07",
+            "return_pct": -15.748454387582644
+          },
+          {
+            "start": "2024-09",
+            "finish": "2025-08",
+            "return_pct": -26.779995648204768
+          },
+          {
+            "start": "2024-10",
+            "finish": "2025-09",
+            "return_pct": -23.79077347031209
+          },
+          {
+            "start": "2024-11",
+            "finish": "2025-10",
+            "return_pct": -29.813039982253077
+          },
+          {
+            "start": "2024-12",
+            "finish": "2025-11",
+            "return_pct": -27.147950410516852
+          },
+          {
+            "start": "2025-01",
+            "finish": "2025-12",
+            "return_pct": -25.94236968672027
+          }
+        ],
+        "basis": "Arithmetic on complete MCP R11 monthly telemetry; 51 overlapping windows, not independent, development only."
+      },
+      "gates": {
+        "cagr30": false,
+        "pf1_2": false,
+        "dd25": false,
+        "months65": false,
+        "quarters80": false,
+        "medianPositive": false,
+        "withoutBestTwoPositive": false,
+        "n100": true
+      },
+      "promoted": false
+    },
+    {
+      "id": "ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+      "name": "GLOBAL",
+      "strategy": "BtcResearchR18AnalogueGlobal1m",
+      "url": "http://localhost:9200/#/backtest/ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+      "financial": {
+        "N": 1265,
+        "net": -3083.769629236552,
+        "return_pct": -30.83769629236552,
+        "cagr_pct": -6.8242913318438125,
+        "pf": 0.9621414395828037,
+        "dd_daily_pct": -55.923825157767794,
+        "fee": 7018.0481513692275,
+        "funding": -1914.8927447151261,
+        "funding_applied": true,
+        "proxy_payments": 2173,
+        "errors": {
+          "gross_fee_funding_pnl": -7.73070496506989e-12,
+          "pnl_metrics": -1.8189894035458565e-12,
+          "terminal_vs_net": 1.5916157281026244e-11,
+          "funding_vs_metric": 5.002220859751105e-12
+        },
+        "gross": 5849.171266847794,
+        "finish": 6916.230370763464,
+        "raw_open_counter": 1,
+        "long_pnl": -373.99396721961745,
+        "short_pnl": -2709.775662016928
+      },
+      "telemetry": {
+        "session_id": "ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+        "summary": {
+          "complete_months": 62,
+          "active_months": 58,
+          "positive_active": 22,
+          "positive_calendar": 22,
+          "median_return": -0.01773945039395286,
+          "complete_quarters": 20,
+          "positive_quarters": 8,
+          "pnl_without_best_two": -7173.25099820228,
+          "stage": "FINAL",
+          "equity": 6916.230370763464,
+          "dd_m1_events": -0.5717505710112039,
+          "minute_marks": 2741760,
+          "sequence": 2744291,
+          "signals": 7616,
+          "entries": 1265,
+          "invalid_windows": 0
+        },
+        "stats": {
+          "stage": "FINAL",
+          "mode": "GLOBAL",
+          "long_fills": 783,
+          "short_fills": 482,
+          "signals": 7616,
+          "occupied": 6351
+        },
+        "months": [
+          {
+            "stage": "FINAL",
+            "month": "2020-10",
+            "start": 1602720000000,
+            "finish": 1604188800000,
+            "complete": false,
+            "active": true,
+            "pnl": -158.28418530874114,
+            "return_fraction": -0.015828418530874133
+          },
+          {
+            "stage": "FINAL",
+            "month": "2020-11",
+            "start": 1604188800000,
+            "finish": 1606780800000,
+            "complete": true,
+            "active": true,
+            "pnl": 1962.4493079177555,
+            "return_fraction": 0.1994011354187144
+          },
+          {
+            "stage": "FINAL",
+            "month": "2020-12",
+            "start": 1606780800000,
+            "finish": 1609459200000,
+            "complete": true,
+            "active": true,
+            "pnl": 1145.4156500234221,
+            "return_fraction": 0.09703487185464388
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-01",
+            "start": 1609459200000,
+            "finish": 1612137600000,
+            "complete": true,
+            "active": true,
+            "pnl": -588.5489619574164,
+            "return_fraction": -0.045449267608821176
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-02",
+            "start": 1612137600000,
+            "finish": 1614556800000,
+            "complete": true,
+            "active": true,
+            "pnl": 861.300661415893,
+            "return_fraction": 0.06967870276590271
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-03",
+            "start": 1614556800000,
+            "finish": 1617235200000,
+            "complete": true,
+            "active": true,
+            "pnl": 460.9941726386696,
+            "return_fraction": 0.034864814782997966
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-04",
+            "start": 1617235200000,
+            "finish": 1619827200000,
+            "complete": true,
+            "active": true,
+            "pnl": 70.86337874472883,
+            "return_fraction": 0.0051788121839526635
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-05",
+            "start": 1619827200000,
+            "finish": 1622505600000,
+            "complete": true,
+            "active": true,
+            "pnl": 410.74285947687713,
+            "return_fraction": 0.029863107807574396
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-06",
+            "start": 1622505600000,
+            "finish": 1625097600000,
+            "complete": true,
+            "active": true,
+            "pnl": -257.443447792577,
+            "return_fraction": -0.018174702973879575
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-07",
+            "start": 1625097600000,
+            "finish": 1627776000000,
+            "complete": true,
+            "active": true,
+            "pnl": -670.426570736312,
+            "return_fraction": -0.04820615351620905
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-08",
+            "start": 1627776000000,
+            "finish": 1630454400000,
+            "complete": true,
+            "active": true,
+            "pnl": 353.32908155072437,
+            "return_fraction": 0.026692407913267546
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-09",
+            "start": 1630454400000,
+            "finish": 1633046400000,
+            "complete": true,
+            "active": true,
+            "pnl": -941.5417235915575,
+            "return_fraction": -0.06927995361241557
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-10",
+            "start": 1633046400000,
+            "finish": 1635724800000,
+            "complete": true,
+            "active": true,
+            "pnl": 1213.780974443407,
+            "return_fraction": 0.09595978710347008
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-11",
+            "start": 1635724800000,
+            "finish": 1638316800000,
+            "complete": true,
+            "active": true,
+            "pnl": -794.0041049670854,
+            "return_fraction": -0.0572765800152677
+          },
+          {
+            "stage": "FINAL",
+            "month": "2021-12",
+            "start": 1638316800000,
+            "finish": 1640995200000,
+            "complete": true,
+            "active": true,
+            "pnl": -1147.232675160525,
+            "return_fraction": -0.08778524837358714
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-01",
+            "start": 1640995200000,
+            "finish": 1643673600000,
+            "complete": true,
+            "active": true,
+            "pnl": 599.2154193372189,
+            "return_fraction": 0.050263870013221856
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-02",
+            "start": 1643673600000,
+            "finish": 1646092800000,
+            "complete": true,
+            "active": true,
+            "pnl": -814.6436288116583,
+            "return_fraction": -0.06506421328353373
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-03",
+            "start": 1646092800000,
+            "finish": 1648771200000,
+            "complete": true,
+            "active": true,
+            "pnl": 264.58581069926186,
+            "return_fraction": 0.022602646036685714
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-04",
+            "start": 1648771200000,
+            "finish": 1651363200000,
+            "complete": true,
+            "active": true,
+            "pnl": -299.35095872013517,
+            "return_fraction": -0.025007281057043307
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-05",
+            "start": 1651363200000,
+            "finish": 1654041600000,
+            "complete": true,
+            "active": true,
+            "pnl": -49.48133572167171,
+            "return_fraction": -0.004239609571515257
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-06",
+            "start": 1654041600000,
+            "finish": 1656633600000,
+            "complete": true,
+            "active": true,
+            "pnl": 2127.0320610479885,
+            "return_fraction": 0.1830221440249138
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-07",
+            "start": 1656633600000,
+            "finish": 1659312000000,
+            "complete": true,
+            "active": true,
+            "pnl": -1231.10306121338,
+            "return_fraction": -0.08954289673036087
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-08",
+            "start": 1659312000000,
+            "finish": 1661990400000,
+            "complete": true,
+            "active": true,
+            "pnl": -1614.668035001594,
+            "return_fraction": -0.128991320230466
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-09",
+            "start": 1661990400000,
+            "finish": 1664582400000,
+            "complete": true,
+            "active": true,
+            "pnl": -324.9966005740189,
+            "return_fraction": -0.029808050648239437
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-10",
+            "start": 1664582400000,
+            "finish": 1667260800000,
+            "complete": true,
+            "active": true,
+            "pnl": -253.5071423670961,
+            "return_fraction": -0.023965543932036315
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-11",
+            "start": 1667260800000,
+            "finish": 1669852800000,
+            "complete": true,
+            "active": true,
+            "pnl": 52.602270462874,
+            "return_fraction": 0.005094908995506353
+          },
+          {
+            "stage": "FINAL",
+            "month": "2022-12",
+            "start": 1669852800000,
+            "finish": 1672531200000,
+            "complete": true,
+            "active": true,
+            "pnl": -650.1817129065967,
+            "return_fraction": -0.06265556033478503
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-01",
+            "start": 1672531200000,
+            "finish": 1675209600000,
+            "complete": true,
+            "active": true,
+            "pnl": 206.81315578063732,
+            "return_fraction": 0.021261985717272447
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-02",
+            "start": 1675209600000,
+            "finish": 1677628800000,
+            "complete": true,
+            "active": true,
+            "pnl": -192.68336219773846,
+            "return_fraction": -0.01939691710557412
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-03",
+            "start": 1677628800000,
+            "finish": 1680307200000,
+            "complete": true,
+            "active": true,
+            "pnl": -148.8913426541112,
+            "return_fraction": -0.015284973352598596
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-04",
+            "start": 1680307200000,
+            "finish": 1682899200000,
+            "complete": true,
+            "active": true,
+            "pnl": 276.2301857614566,
+            "return_fraction": 0.028797567829548676
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-05",
+            "start": 1682899200000,
+            "finish": 1685577600000,
+            "complete": true,
+            "active": true,
+            "pnl": -983.9473078894134,
+            "return_fraction": -0.09970721535545213
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-06",
+            "start": 1685577600000,
+            "finish": 1688169600000,
+            "complete": true,
+            "active": true,
+            "pnl": -309.23862367536276,
+            "return_fraction": -0.03480684888143348
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-07",
+            "start": 1688169600000,
+            "finish": 1690848000000,
+            "complete": true,
+            "active": true,
+            "pnl": -428.9716523700454,
+            "return_fraction": -0.05002479737593735
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-08",
+            "start": 1690848000000,
+            "finish": 1693526400000,
+            "complete": true,
+            "active": true,
+            "pnl": -470.78780153050775,
+            "return_fraction": -0.05779225983626746
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-09",
+            "start": 1693526400000,
+            "finish": 1696118400000,
+            "complete": true,
+            "active": true,
+            "pnl": -460.42067142982705,
+            "return_fraction": -0.05998637549357555
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-10",
+            "start": 1696118400000,
+            "finish": 1698796800000,
+            "complete": true,
+            "active": true,
+            "pnl": 916.7612019506842,
+            "return_fraction": 0.12706322819675164
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-11",
+            "start": 1698796800000,
+            "finish": 1701388800000,
+            "complete": true,
+            "active": true,
+            "pnl": -387.23288097327713,
+            "return_fraction": -0.047619804297881596
+          },
+          {
+            "stage": "FINAL",
+            "month": "2023-12",
+            "start": 1701388800000,
+            "finish": 1704067200000,
+            "complete": true,
+            "active": true,
+            "pnl": 89.67488329589469,
+            "return_fraction": 0.011579127691369928
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-01",
+            "start": 1704067200000,
+            "finish": 1706745600000,
+            "complete": true,
+            "active": true,
+            "pnl": -186.627938956035,
+            "return_fraction": -0.023822197627396124
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-02",
+            "start": 1706745600000,
+            "finish": 1709251200000,
+            "complete": true,
+            "active": true,
+            "pnl": 1712.5676463073332,
+            "return_fraction": 0.2239360278739937
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-03",
+            "start": 1709251200000,
+            "finish": 1711929600000,
+            "complete": true,
+            "active": true,
+            "pnl": 274.2963952175105,
+            "return_fraction": 0.029304722735874478
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-04",
+            "start": 1711929600000,
+            "finish": 1714521600000,
+            "complete": true,
+            "active": true,
+            "pnl": -1509.9463216087697,
+            "return_fraction": -0.1567238383630376
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-05",
+            "start": 1714521600000,
+            "finish": 1717200000000,
+            "complete": true,
+            "active": true,
+            "pnl": -140.5878351866104,
+            "return_fraction": -0.017304197814026145
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-06",
+            "start": 1717200000000,
+            "finish": 1719792000000,
+            "complete": true,
+            "active": false,
+            "pnl": 0,
+            "return_fraction": 0
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-07",
+            "start": 1719792000000,
+            "finish": 1722470400000,
+            "complete": true,
+            "active": true,
+            "pnl": -114.04940534457819,
+            "return_fraction": -0.014284914715227082
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-08",
+            "start": 1722470400000,
+            "finish": 1725148800000,
+            "complete": true,
+            "active": true,
+            "pnl": 7.611355141150852,
+            "return_fraction": 0.0009671530594785871
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-09",
+            "start": 1725148800000,
+            "finish": 1727740800000,
+            "complete": true,
+            "active": false,
+            "pnl": 0,
+            "return_fraction": 0
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-10",
+            "start": 1727740800000,
+            "finish": 1730419200000,
+            "complete": true,
+            "active": true,
+            "pnl": 59.76804958039247,
+            "return_fraction": 0.007587216575482669
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-11",
+            "start": 1730419200000,
+            "finish": 1733011200000,
+            "complete": true,
+            "active": true,
+            "pnl": 816.0718433580369,
+            "return_fraction": 0.10281563031580543
+          },
+          {
+            "stage": "FINAL",
+            "month": "2024-12",
+            "start": 1733011200000,
+            "finish": 1735689600000,
+            "complete": true,
+            "active": true,
+            "pnl": -199.33429706733295,
+            "return_fraction": -0.022772455638525257
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-01",
+            "start": 1735689600000,
+            "finish": 1738368000000,
+            "complete": true,
+            "active": true,
+            "pnl": -410.50104972256213,
+            "return_fraction": -0.04798952023290448
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-02",
+            "start": 1738368000000,
+            "finish": 1740787200000,
+            "complete": true,
+            "active": true,
+            "pnl": -174.22578494338995,
+            "return_fraction": -0.0213945342659001
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-03",
+            "start": 1740787200000,
+            "finish": 1743465600000,
+            "complete": true,
+            "active": true,
+            "pnl": -192.77134165721236,
+            "return_fraction": -0.02418940800890501
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-04",
+            "start": 1743465600000,
+            "finish": 1746057600000,
+            "complete": true,
+            "active": true,
+            "pnl": -285.21432318237294,
+            "return_fraction": -0.03667655818033666
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-05",
+            "start": 1746057600000,
+            "finish": 1748736000000,
+            "complete": true,
+            "active": true,
+            "pnl": -163.54653184867493,
+            "return_fraction": -0.021831644577697484
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-06",
+            "start": 1748736000000,
+            "finish": 1751328000000,
+            "complete": true,
+            "active": true,
+            "pnl": -190.78292376353693,
+            "return_fraction": -0.026035804665468065
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-07",
+            "start": 1751328000000,
+            "finish": 1754006400000,
+            "complete": true,
+            "active": true,
+            "pnl": -227.60395418970256,
+            "return_fraction": -0.03189101307329445
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-08",
+            "start": 1754006400000,
+            "finish": 1756684800000,
+            "complete": true,
+            "active": true,
+            "pnl": -81.86088530502093,
+            "return_fraction": -0.011847881400829263
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-09",
+            "start": 1756684800000,
+            "finish": 1759276800000,
+            "complete": true,
+            "active": false,
+            "pnl": 0,
+            "return_fraction": 0
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-10",
+            "start": 1759276800000,
+            "finish": 1761955200000,
+            "complete": true,
+            "active": false,
+            "pnl": 0,
+            "return_fraction": 0
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-11",
+            "start": 1761955200000,
+            "finish": 1764547200000,
+            "complete": true,
+            "active": true,
+            "pnl": 273.02306034584035,
+            "return_fraction": 0.039988930152510926
+          },
+          {
+            "stage": "FINAL",
+            "month": "2025-12",
+            "start": 1764547200000,
+            "finish": 1767225600000,
+            "complete": true,
+            "active": true,
+            "pnl": -184.2586734078468,
+            "return_fraction": -0.025950138400551714
+          }
+        ],
+        "log_receipt": {
+          "returned": 200,
+          "has_more": true,
+          "complete_final_monthly_block_verified": true,
+          "not_financial_totals_from_partial_pages": true
+        }
+      },
+      "descriptive_calendar": {
+        "annual": {
+          "2021": -7.939920017396518,
+          "2022": -18.40805561046753,
+          "2023": -19.45835468464412,
+          "2024": 9.187526351732078,
+          "2025": -19.14598573194839
+        },
+        "rolling_12m": [
+          {
+            "start": "2020-11",
+            "finish": "2021-10",
+            "return_pct": 40.855837110551164
+          },
+          {
+            "start": "2020-12",
+            "finish": "2021-11",
+            "return_pct": 10.711998316822037
+          },
+          {
+            "start": "2021-01",
+            "finish": "2021-12",
+            "return_pct": -7.939920017396518
+          },
+          {
+            "start": "2021-02",
+            "finish": "2022-01",
+            "return_pct": 1.290976577065761
+          },
+          {
+            "start": "2021-03",
+            "finish": "2022-02",
+            "return_pct": -11.468220664309914
+          },
+          {
+            "start": "2021-04",
+            "finish": "2022-03",
+            "return_pct": -12.517238470421276
+          },
+          {
+            "start": "2021-05",
+            "finish": "2022-04",
+            "return_pct": -15.144395712995918
+          },
+          {
+            "start": "2021-06",
+            "finish": "2022-05",
+            "return_pct": -17.954290221395276
+          },
+          {
+            "start": "2021-07",
+            "finish": "2022-06",
+            "return_pct": -1.141382500202004
+          },
+          {
+            "start": "2021-08",
+            "finish": "2022-07",
+            "return_pct": -5.434847204971749
+          },
+          {
+            "start": "2021-09",
+            "finish": "2022-08",
+            "return_pct": -19.77434696764604
+          },
+          {
+            "start": "2021-10",
+            "finish": "2022-09",
+            "return_pct": -16.371971351023696
+          },
+          {
+            "start": "2021-11",
+            "finish": "2022-10",
+            "return_pct": -25.522963146152822
+          },
+          {
+            "start": "2021-12",
+            "finish": "2022-11",
+            "return_pct": -20.595490690063855
+          },
+          {
+            "start": "2022-01",
+            "finish": "2022-12",
+            "return_pct": -18.40805561046753
+          },
+          {
+            "start": "2022-02",
+            "finish": "2023-01",
+            "return_pct": -20.66112762239628
+          },
+          {
+            "start": "2022-03",
+            "finish": "2023-02",
+            "return_pct": -16.78579004865961
+          },
+          {
+            "start": "2022-04",
+            "finish": "2023-03",
+            "return_pct": -19.868892098743007
+          },
+          {
+            "start": "2022-05",
+            "finish": "2023-04",
+            "return_pct": -15.446867125657448
+          },
+          {
+            "start": "2022-06",
+            "finish": "2023-05",
+            "return_pct": -23.553320479933838
+          },
+          {
+            "start": "2022-07",
+            "finish": "2023-06",
+            "return_pct": -37.62939107167723
+          },
+          {
+            "start": "2022-08",
+            "finish": "2023-07",
+            "return_pct": -34.922214740608084
+          },
+          {
+            "start": "2022-09",
+            "finish": "2023-08",
+            "return_pct": -29.602546555177213
+          },
+          {
+            "start": "2022-10",
+            "finish": "2023-09",
+            "return_pct": -31.792295933907646
+          },
+          {
+            "start": "2022-11",
+            "finish": "2023-10",
+            "return_pct": -21.23803144992067
+          },
+          {
+            "start": "2022-12",
+            "finish": "2023-11",
+            "return_pct": -25.368899642945053
+          },
+          {
+            "start": "2023-01",
+            "finish": "2023-12",
+            "return_pct": -19.45835468464412
+          },
+          {
+            "start": "2023-02",
+            "finish": "2024-01",
+            "return_pct": -23.01391080546503
+          },
+          {
+            "start": "2023-03",
+            "finish": "2024-02",
+            "return_pct": -3.9101040431292367
+          },
+          {
+            "start": "2023-04",
+            "finish": "2024-03",
+            "return_pct": 0.44102206132097255
+          },
+          {
+            "start": "2023-05",
+            "finish": "2024-04",
+            "return_pct": -17.67134545870427
+          },
+          {
+            "start": "2023-06",
+            "finish": "2024-05",
+            "return_pct": -10.135875131674032
+          },
+          {
+            "start": "2023-07",
+            "finish": "2024-06",
+            "return_pct": -6.895190082749703
+          },
+          {
+            "start": "2023-08",
+            "finish": "2024-07",
+            "return_pct": -3.3924091971026527
+          },
+          {
+            "start": "2023-09",
+            "finish": "2024-08",
+            "return_pct": 2.6323824437134657
+          },
+          {
+            "start": "2023-10",
+            "finish": "2024-09",
+            "return_pct": 9.181803080357408
+          },
+          {
+            "start": "2023-11",
+            "finish": "2024-10",
+            "return_pct": -2.3921761315547796
+          },
+          {
+            "start": "2023-12",
+            "finish": "2024-11",
+            "return_pct": 13.025695293754058
+          },
+          {
+            "start": "2024-01",
+            "finish": "2024-12",
+            "return_pct": 9.187526351732078
+          },
+          {
+            "start": "2024-02",
+            "finish": "2025-01",
+            "return_pct": 6.484360834726632
+          },
+          {
+            "start": "2024-03",
+            "finish": "2025-02",
+            "return_pct": -14.85978420859604
+          },
+          {
+            "start": "2024-04",
+            "finish": "2025-03",
+            "return_pct": -19.284617530139847
+          },
+          {
+            "start": "2024-05",
+            "finish": "2025-04",
+            "return_pct": -7.794120614392042
+          },
+          {
+            "start": "2024-06",
+            "finish": "2025-05",
+            "return_pct": -8.218928789299495
+          },
+          {
+            "start": "2024-07",
+            "finish": "2025-06",
+            "return_pct": -10.608522831328704
+          },
+          {
+            "start": "2024-08",
+            "finish": "2025-07",
+            "return_pct": -12.205165880521651
+          },
+          {
+            "start": "2024-09",
+            "finish": "2025-08",
+            "return_pct": -13.329172618644147
+          },
+          {
+            "start": "2024-10",
+            "finish": "2025-09",
+            "return_pct": -13.329172618644147
+          },
+          {
+            "start": "2024-11",
+            "finish": "2025-10",
+            "return_pct": -13.981811246150322
+          },
+          {
+            "start": "2024-12",
+            "finish": "2025-11",
+            "return_pct": -18.882212369301065
+          },
+          {
+            "start": "2025-01",
+            "finish": "2025-12",
+            "return_pct": -19.14598573194839
+          }
+        ],
+        "basis": "Arithmetic on complete MCP R11 monthly telemetry; 51 overlapping windows, not independent, development only."
+      },
+      "gates": {
+        "cagr30": false,
+        "pf1_2": false,
+        "dd25": false,
+        "months65": false,
+        "quarters80": false,
+        "medianPositive": false,
+        "withoutBestTwoPositive": false,
+        "n100": true
+      },
+      "promoted": false
+    }
+  ]
+}

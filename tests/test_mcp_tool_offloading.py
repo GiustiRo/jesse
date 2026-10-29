@@ -103,7 +103,8 @@ SYNC_TOOLS = {'list_indicators', 'get_indicator_details', 'get_exchange_api_key_
 # Every tool the worker registers, including the 7 live/paper session tools, the 2 live/paper
 # trade and order history tools, and the candle export and purge tools; the live tools are
 # registered even without the plugin and answer live_plugin_unavailable then.
-REGISTERED_TOOL_COUNT = 101
+# Funding/OI tools include durable progress reads for multi-year archive imports.
+REGISTERED_TOOL_COUNT = 112
 # Tools metered by usage_limits.gated, with the route prefix whose /sessions/{id} they read first.
 GATED_RUN_TOOLS = {
     'run_backtest': 'backtest',
@@ -422,6 +423,10 @@ def gate(api, monkeypatch) -> _Gate:
 def meter(monkeypatch) -> _Meter:
     fake = _Meter()
     monkeypatch.setattr(usage_limits, 'USAGE_METER_BACKEND', 'remote')
+    # Self-hosted OSS calls intentionally bypass licensing when no token exists.
+    # These tests specifically exercise the authenticated metered path; both the
+    # token lookup and the remote decision are local fakes, never real credentials.
+    monkeypatch.setattr(auth, 'get_access_token', lambda: 'unit-test-meter-token')
     monkeypatch.setattr(usage_limits, '_remote_usage_decision', fake)
     yield fake
     fake.release.set()
@@ -482,6 +487,58 @@ def test_async_tools_advertise_the_same_schemas_as_synchronous_functions():
         assert tool.context_kwarg is None, tool.name
         checked += 1
     assert checked == REGISTERED_TOOL_COUNT - len(SYNC_TOOLS)
+
+
+@pytest.mark.parametrize('name, arguments, endpoint', [
+    ('import_funding', {'start_date': '2024-01-01', 'finish_date': '2024-02-01'}, '/funding/import'),
+    ('get_funding_dataset', {'dataset_id': 'a' * 64}, '/funding/dataset'),
+    ('list_funding_datasets', {}, '/funding/datasets'),
+    ('update_funding_dataset', {'dataset_id': 'a' * 64, 'finish_date': '2024-02-01'}, '/funding/update'),
+    ('configure_session_market_data', {'session_id': RUN_SESSION_ID, 'funding': {'mode': 'disabled'}},
+     '/funding/session-config'),
+    ('get_session_funding', {'session_id': RUN_SESSION_ID}, '/funding/session'),
+    ('import_open_interest', {'start_date': '2026-10-01', 'finish_date': '2026-10-02'}, '/open-interest/import'),
+    ('import_open_interest', {'start_date': '2020-09-01', 'finish_date': '2021-01-01',
+                             'source': 'archive', 'allow_archive_assumptions': True, 'background': True},
+     '/open-interest/import'),
+    ('get_open_interest_import_status', {'job_id': RUN_SESSION_ID}, '/open-interest/job'),
+    ('list_open_interest_datasets', {}, '/open-interest/datasets'),
+    ('get_open_interest_dataset', {'dataset_id': 'b' * 64}, '/open-interest/dataset'),
+    ('update_open_interest_dataset', {'dataset_id': 'b' * 64, 'finish_date': '2026-10-02'}, '/open-interest/update'),
+])
+def test_market_data_tools_offload_authenticated_http_and_preserve_arguments(monkeypatch, name, arguments, endpoint):
+    from jesse.mcp.tools import funding as funding_tools
+
+    calls = []
+    response_payload = {'fixture_response': name}
+    encoded_response = json.dumps(response_payload).encode()
+
+    def post(url, *, json, headers, timeout):
+        # A pure local HTTP boundary fake: an import tool cannot reach Binance,
+        # write a real dataset or start a session in this contract test.
+        calls.append((threading.get_ident(), url, json, headers, timeout))
+        response = requests.Response()
+        response.status_code = 200
+        response._content = encoded_response
+        return response
+
+    monkeypatch.setattr(funding_tools.mcp_config, 'JESSE_API_URL', 'http://jesse.test')
+    monkeypatch.setattr(funding_tools.mcp_config, 'JESSE_PASSWORD', PASSWORD)
+    monkeypatch.setattr(requests, 'post', post)
+
+    async def call():
+        loop_thread = threading.get_ident()
+        result = await _raw_tools()[name](**arguments)
+        return loop_thread, result
+
+    loop_thread, result = anyio.run(call)
+    assert result == response_payload
+    [(http_thread, url, payload, headers, timeout)] = calls
+    assert http_thread != loop_thread
+    assert url == 'http://jesse.test' + endpoint
+    assert headers == {'Authorization': funding_tools.hash_password(PASSWORD)}
+    assert timeout == 300
+    assert all(payload[key] == value for key, value in arguments.items())
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,108 @@
+{
+  "phase": "pre_economic_execution",
+  "protocol": "BTC_DISCOVERY_K_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 19:00:02 UTC",
+  "sources": {
+    "BtcResearchR13Semivariance1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef semivariance_state(rows):\n    \"\"\"R20's quiet gate belongs to the state and therefore resets it to zero.\"\"\"\n    returns = np.diff(np.log(rows[-61:, 2]))\n    atr = atr14(rows)\n    up = float(np.square(returns[returns > 0]).sum())\n    down = float(np.square(returns[returns < 0]).sum())\n    if atr is None or up <= 0 or down <= 0 or abs(float(returns.sum())) > atr/float(rows[-1, 2]):\n        return 0\n    return 1 if up/down >= 3 else -1 if down/up >= 3 else 0\n\n\nclass BtcResearchR13Semivariance1m(BtcResearchR11Base1m):\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 61)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            self.vars[\"semivariance_state\"] = 0\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        state = semivariance_state(rows)\n        previous = self.vars.get(\"semivariance_state\", 0)\n        self.vars[\"semivariance_state\"] = state\n        if not state or state == previous or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(rows)\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), state, 2*atr)\n        if plan is None or self.price+state*1.5*plan[\"distance\"] <= 0:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = state\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, entry+direction*1.5*plan[\"distance\"]\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n"
+  },
+  "check": {
+    "status": "passed",
+    "source_sha256": "0e97f8bf81ace3d8874f4c7740a35deadfcd278874992ce4d1c0fb15506b586a",
+    "checks": "AST, balanced asymmetric square magnitudes/mirror, zeros/one-sided, quiet reset, last61 restriction,3boundary/1.5Rtarget"
+  },
+  "check_job": "9b96a29a331b492bb3b1d44f218031e2",
+  "parent_hash": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+  "independent_review": "No material errors; quiet is state, one-transfer budget,3ATRtarget.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "823a2c19-0f0c-49f3-8ae8-8aeb34e2af66",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery K | BtcResearchR13Semivariance1m",
+      "description": "Semivarianza60r4hdomina3connetquiet,transferenciaR20PAXGexplícita,sinvecinos. Stop2ATR/TP3ATR/48h;2%/6%/3x,fee.00045+funding,slippage0;sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792609169000,
+      "updated_at": 1792609170000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR13Semivariance1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/823a2c19-0f0c-49f3-8ae8-8aeb34e2af66"
+    }
+  ]
+}

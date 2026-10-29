@@ -1,0 +1,28 @@
+# R — preparación técnica final
+
+Nuevas BtcResearchR18AnalogueBase1m, BtcResearchR18AnalogueKnn1m y BtcResearchR18AnalogueGlobal1m. Protocolo previo a fuente; nueve readbackscompletos idénticos, padres/deps/antecedentes intactos.
+
+Check final98cb30b8d9ac40a292e01402524fef09 succeeded1169aserciones. Primer1924d886b72041bab1688c2287b27c9d falló al parse del fakeharness por else360 sin espacio; corregido sóloharness. Se conservan ambosjobs/códigos/error. Dos análisissintéticos,1fallo/1éxito;0económicas/0drafts/0backtests técnicos.
+
+Oráculo independiente360features/labels verifica372barras,orígenes6..365,target12..371;current371noentrena,pero suclose sí integra labelmaduro365. Currentfeature365..371. L2/cosine,stabletiesolder,20vecinosadyacentespermitidos,noembargoextra,sharedvalidez20/19/normacurrent0,GLOBALalllabels,historyantiguairrelevante,signohurdle,ocupación/noM1queue/nuevaoportunidad4h/sameexit ySL/noTP/24h/FINAL heredados comprobados. No hipótesis de independencia porN20 ni porconteo deaserciones.
+
+## SHA256
+
+- BtcResearchR18AnalogueBase1m: e8fc9ba9710cef644a41e32608b3132d38d6aca55f5027f259b1c147404e9e2e
+- BtcResearchR18AnalogueKnn1m: f8bf8d35829f07c8d45908fe71bf30c748d94c16b09270de3924976543fe352c
+- BtcResearchR18AnalogueGlobal1m: 21cf68d74099f9a87955c529ff9e4d9191d7a508775a2d6a5a9bf857a328230e
+- BtcResearchR12ArBase1m: 1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343
+- BtcResearchR11Base1m: be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87
+- BtcResearchR10Base4h: 2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9
+- R20PaxgPathAnalogue4h: 0264fe08fcbc8f31b2ef0d40c225558489a98debf7df5b5dc06436a6a9fffc9e
+- AngleBtcProbability4h: d4add40c46e6c46210e77b976e93759da8ee368d182ec5343c453a7dc7ab47c1
+- BtcResearchR13GeometryBase1m: 3968e9a2733fbe9e4a22b32ba71d023defcefa79eae65e992833f1810fb82b97
+
+Check finalcode 7ca6339a51554530b0b2cb7e56e4b36f8948712b42bff3ca68f860fb20860b22; protocolo 28ae05e13292280839e427d1d04fba96399d01d8e47b511baefa258414d14b42.
+
+Recibos guardados en máquinaJesse:
+- strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_R_PROTOCOL_20261021.md
+- strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_R_TECHNICAL_CHECK_20261021.json (CODES completos9fuentes,códigoexacto ambosintentos,hases/readbacks/resultados/error)
+- strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_R_TECHNICAL_PREPARATION_20261021.md
+
+Root revisaantesdedrafts/manifiestogenuino/economía. ConfigBTC1m+BTC4h,warmup4004h,10k,2/6/3,fee.00045fundingBTCfixedsnapshotON/proxy,slip0,[2020-10-15,2026-01-01). Sincoverageprecheck/imports; motorreportafaltantes. Dos económicas y hasta dos reemplazos exclusivamente técnicos; sin vecinos ni cambiosdereglas despuésPnL. Gatesr9 sinrelajar. La comparación es desarrollo adaptativo, no OOS; predicción de precio no es payoffgarantizado constop/costos.

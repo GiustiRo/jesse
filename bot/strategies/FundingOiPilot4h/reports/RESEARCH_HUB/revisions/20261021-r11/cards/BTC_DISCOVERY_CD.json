@@ -1,0 +1,300 @@
+{
+  "id": "BTC_DISCOVERY_CD",
+  "title": "BTC: CUSUM, absorción y reloj de volumen",
+  "asset": "BTC",
+  "family": "detección / absorción / reloj de volumen",
+  "execution": "cerrado",
+  "evidence": "histórico de desarrollo reutilizado; tres hipótesis y un control",
+  "objective": "no alcanzado",
+  "hypothesis": "CUSUM detecta desplazamiento persistente; absorción seguida de escape; reloj de volumen frente a calendario para ruptura de bloques.",
+  "origin": "Autonomía autorizada y revisión de antecedentes; revisiones separadas de medición y mecanismos.",
+  "method": "C dos recetas; D una hipótesis y un control. Protocolos previos, mismos costos/riesgo y nueva medición M1.",
+  "protocol": null,
+  "budget": {
+    "economic_unique": 4,
+    "technical_backtests": 0,
+    "failed_or_replacement_backtests": 0
+  },
+  "versions": "Hashes y dataset en manifiestos C/D. Core R11 be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87; clock 26440c3d83c60fcc96bd7066740dffcd7024778814e1be2f224af71e2ef6cdf5.",
+  "periods": [
+    "2020-10-15 → 2026-01-01 exclusivo; sin nueva economía 2026"
+  ],
+  "results": {
+    "cusum": {
+      "N": 310,
+      "net": 5662.729668888067,
+      "return_pct": 56.62729668888067,
+      "cagr_pct": 8.982412658984828,
+      "pf": 1.1532482476430097,
+      "dd_daily_pct": -18.854954119887957,
+      "fee": 2543.0193259297803,
+      "funding": -199.90464164257898,
+      "funding_applied": true,
+      "proxy_payments": 777,
+      "errors": {
+        "gross_fee_funding_pnl": 1.3642420526593924e-11,
+        "pnl_metrics": -4.547473508864641e-12,
+        "terminal_vs_net": 1.8189894035458565e-12,
+        "funding_vs_metric": 2.842170943040401e-14
+      },
+      "gross": 8405.65363646044,
+      "finish": 15662.729668888069,
+      "raw_open_counter": 0,
+      "long_pnl": 6976.341987908193,
+      "short_pnl": -1313.6123190201197,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 33,
+        "positive_calendar": 33,
+        "median_return": 0.0017141011718483368,
+        "complete_quarters": 20,
+        "positive_quarters": 12,
+        "pnl_without_best_two": 2179.495658845277,
+        "stage": "PRETERMINAL",
+        "equity": 15662.729668888069,
+        "dd_m1_events": -0.19267516481660152,
+        "minute_marks": 2741760,
+        "sequence": 2742381,
+        "signals": 334,
+        "entries": 310,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": true,
+        "concentration": true,
+        "N": true
+      },
+      "status": "NO_CUMPLE"
+    },
+    "absorption": {
+      "N": 40,
+      "net": -571.4170502823615,
+      "return_pct": -5.714170502823615,
+      "cagr_pct": -1.1216212448951435,
+      "pf": 0.8376977097595387,
+      "dd_daily_pct": -12.029133989764684,
+      "fee": 236.92237050891396,
+      "funding": -14.724427633860913,
+      "funding_applied": true,
+      "proxy_payments": 81,
+      "errors": {
+        "gross_fee_funding_pnl": -1.1368683772161603e-13,
+        "pnl_metrics": 2.2737367544323206e-13,
+        "terminal_vs_net": -3.865352482534945e-12,
+        "funding_vs_metric": 2.4868995751603507e-14
+      },
+      "gross": -319.77025213958666,
+      "finish": 9428.582949717635,
+      "raw_open_counter": 0,
+      "long_pnl": 1008.8896799914688,
+      "short_pnl": -1580.3067302738302,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 29,
+        "positive_active": 13,
+        "positive_calendar": 13,
+        "median_return": 0,
+        "complete_quarters": 20,
+        "positive_quarters": 4,
+        "pnl_without_best_two": -1465.1098575184296,
+        "stage": "PRETERMINAL",
+        "equity": 9428.582949717635,
+        "dd_m1_events": -0.13532992641273334,
+        "minute_marks": 2741760,
+        "sequence": 2741841,
+        "signals": 40,
+        "entries": 40,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": false
+      },
+      "status": "NO_CUMPLE"
+    },
+    "volume": {
+      "N": 424,
+      "net": 2573.069281534232,
+      "return_pct": 25.73069281534232,
+      "cagr_pct": 4.4871939102340885,
+      "pf": 1.0570225815008933,
+      "dd_daily_pct": -22.220077839012696,
+      "fee": 3083.8276491722536,
+      "funding": -522.1905274777376,
+      "funding_applied": true,
+      "proxy_payments": 954,
+      "errors": {
+        "gross_fee_funding_pnl": -4.092726157978177e-12,
+        "pnl_metrics": -4.547473508864641e-12,
+        "terminal_vs_net": 4.18367562815547e-11,
+        "funding_vs_metric": -1.2505552149377763e-12
+      },
+      "gross": 6179.087458184219,
+      "finish": 12573.069281534274,
+      "raw_open_counter": 0,
+      "long_pnl": 1347.7139832316084,
+      "short_pnl": 1225.3552983026261,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 32,
+        "positive_calendar": 32,
+        "median_return": 0.0008860367804294222,
+        "complete_quarters": 20,
+        "positive_quarters": 11,
+        "pnl_without_best_two": -1679.5800235487914,
+        "stage": "PRETERMINAL",
+        "equity": 12573.069281534274,
+        "dd_m1_events": -0.22325365402894004,
+        "minute_marks": 2741760,
+        "sequence": 2742609,
+        "signals": 552,
+        "entries": 424,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": true,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE"
+    },
+    "calendar": {
+      "N": 386,
+      "net": -2330.549328560826,
+      "return_pct": -23.305493285608257,
+      "cagr_pct": -4.959411972342965,
+      "pf": 0.9214855433911872,
+      "dd_daily_pct": -38.0965217160628,
+      "fee": 1934.9312476186517,
+      "funding": -488.480907783553,
+      "funding_applied": true,
+      "proxy_payments": 926,
+      "errors": {
+        "gross_fee_funding_pnl": 2.2737367544323206e-12,
+        "pnl_metrics": -1.3642420526593924e-12,
+        "terminal_vs_net": 6.821210263296962e-12,
+        "funding_vs_metric": -1.1368683772161603e-13
+      },
+      "gross": 92.86282684138104,
+      "finish": 7669.450671439181,
+      "raw_open_counter": 0,
+      "long_pnl": 68.78037091887555,
+      "short_pnl": -2399.3296994797006,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 24,
+        "positive_calendar": 24,
+        "median_return": -0.007363112102352631,
+        "complete_quarters": 20,
+        "positive_quarters": 6,
+        "pnl_without_best_two": -4364.1067533128435,
+        "stage": "PRETERMINAL",
+        "equity": 7669.450671439181,
+        "dd_m1_events": -0.389591819065787,
+        "minute_marks": 2741760,
+        "sequence": 2742533,
+        "signals": 485,
+        "entries": 386,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": false,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE"
+    }
+  },
+  "limitations": [
+    "DD muestreado M1 + eventos, no todos los extremos intraminuto.",
+    "Fronteras después de funding según contrato por fase; no agrupación estricta de eventos [inicio,fin).",
+    "Funding con marcas proxy declaradas; slippage cero.",
+    "Misma historia reutilizada: no validación independiente ni prueba de causalidad por superar control."
+  ],
+  "audit": "Snapshots completos 310/40/424/386 trades y telemetría reconciliados a<1e−6 USDT.",
+  "decision": "Ninguna candidata; presupuestos C/D cerrados. Volumen supera calendario pero incumple objetivos absolutos. No rescatar vecinos.",
+  "references": [
+    {
+      "label": "Resultados C/D",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "Resultados y telemetría completos",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/RESULTS.json"
+    },
+    {
+      "label": "Medición M1 y fronteras",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/MEASUREMENT.md"
+    },
+    {
+      "label": "Continuidad r11",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/HANDOFF.md"
+    },
+    {
+      "label": "Protocolo C",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_C_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Corrección de actividad antes de ejecutar C",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_C_ACTIVITY_ADDENDUM_20261021.md"
+    },
+    {
+      "label": "Manifiesto C",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_C_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Protocolo D",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_D_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Manifiesto D",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_D_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Auditoría completa C/D",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_CD_ACCOUNTING_20261021.json"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "BtcResearchR11Cusum1m",
+      "url": "http://localhost:9200/#/backtest/2664ba2b-b192-47ae-95aa-18fd2e6a4d9e"
+    },
+    {
+      "label": "BtcResearchR11Absorption1m",
+      "url": "http://localhost:9200/#/backtest/e8af10d8-200f-4d21-b5dd-b59daa7b116b"
+    },
+    {
+      "label": "BtcResearchR11VolumeClock1m",
+      "url": "http://localhost:9200/#/backtest/72326aa5-947f-410b-b7d7-f2ccadaf3c57"
+    },
+    {
+      "label": "BtcResearchR11CalendarClock1m",
+      "url": "http://localhost:9200/#/backtest/696277c8-e897-4528-8327-dc1b5b621a2e"
+    }
+  ]
+}

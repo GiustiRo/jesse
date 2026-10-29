@@ -1,0 +1,753 @@
+# ATTRIBUTION SPY — código para revisión antes de C0
+
+Adenda definitiva ATTRIBUTION_SPY_FREEZE_ADDENDUM_20261019.md prevalece sobre propuesta.17 clases creadas, readback exacto17/17 y hook cierre conservado17/17. Ningún run. C0 exacto byte-a-byte salvo nombre de clase: true. Fuentes autocontenidas sin imports entre estrategias. BTC/PAXG branches heredadas quedan inactivas por ruta exclusivamente SPY; no se ejecuta ninguna ruta BTC ni se modifica referencia.
+
+| Clase | Delta frente a C0 |
+| --- | --- |
+| AttrSpyCqFreshLimit | Añade helper fresh y guard en _plan antes de features. Gestión intacta. |
+| AttrSpyE1NoBE | Elimina sólo max(stop,entry*(1+2.5fee)) condicionado a BE; resto idéntico. |
+| AttrSpyE2NoTrail | Sólo best_close/2.25R y stopBE; conserva guard ATR válido y ratchet, quita trail/tightening. |
+| AttrSpyE3InitialStop | update_position long no-op, mantiene hook close/ledger. |
+| AttrSpyE4Stop72h | Añade expiry_debt reset on_open y tiempo desde opened_at, helper fresh sólo para liquidar. Mantiene hook close/ledger. |
+| AttrSpyMarket | Fresh Cq, mismos filtros canal, plannedentry=price antes de dimensionar. |
+| R01..05 | Fresh, before hash, _plan de régimen sin canal, MARKET. Todo lo demás C0. |
+| U01..05 | Igual reloj/fresh, _plan sólo calendario/history100/ATR/sizing, MARKET. Todo lo demás C0. |
+
+## Fuente completa C0
+
+```python
+import math
+import numpy as np
+from jesse.strategies import Strategy, cached
+from jesse import utils
+import jesse.indicators as ta
+
+# User-approved research limits; risk is not an optimization parameter.
+TRADE_RISK = 0.01
+PORTFOLIO_RISK = 0.08
+NOTIONAL_CAP = 4.4  # Leaves a margin buffer within the configured isolated 5x leverage.
+SLIPPAGE_RESERVE = 0.001  # 10 bps round trip for sizing only, not simulated fill friction.
+
+
+class AttrSpyC0(Strategy):
+    """Long LIMIT retests plus BTC-only pullback-continuation STOP shorts.
+
+    Shared risk and margin reservations; exploratory research, not approved live.
+    SPY uses a session-filtered SPX CFD proxy; holidays and native parity remain
+    unverified. Parameter-neighbour variants are sensitivity controls, not winners.
+    """
+
+    def hyperparameters(self) -> list:
+        return [
+            {'name': 'donchian_len', 'type': int, 'min': 20, 'max': 40, 'default': 26},
+            {'name': 'ema_fast', 'type': int, 'min': 16, 'max': 32, 'default': 20},
+            {'name': 'ema_slow', 'type': int, 'min': 80, 'max': 140, 'default': 80},
+            {'name': 'adx_min', 'type': int, 'min': 16, 'max': 30, 'default': 26},
+            {'name': 'stop_atr', 'type': float, 'min': 1.6, 'max': 3.0, 'default': 2.0},
+            {'name': 'trail_atr', 'type': float, 'min': 3.0, 'max': 5.0, 'default': 4.2},
+            {'name': 'be_r', 'type': float, 'min': 1.75, 'max': 3.0, 'default': 2.25},
+        ]
+
+    def trading_hours(self):
+        if self.symbol == 'SPY-USDT':
+            # The fixed UTC whole-bar intersection excludes the US index daily
+            # break in both DST regimes. This is an intentional common window,
+            # not an assertion that the source's full session ends at 20:00 UTC.
+            return {'timezone': 'UTC', 'hours': {'Mon-Fri': '00:00-20:00'}}
+        return None
+
+    @property
+    @cached
+    def signal_candles(self):
+        return utils.filter_candles_by_hours(self.candles, self.trading_hours())
+
+    def _entry_window(self) -> bool:
+        if self.symbol != 'SPY-USDT':
+            return True
+        # A closed bar opening at 12:00 triggers at 16:00. Its order expires
+        # at 20:00, before the excluded 20:00-24:00 bucket. A 16:00-open bar
+        # must not arm a new order at 20:00. Pending orders still cancel then.
+        window = {'timezone': 'UTC', 'hours': {'Mon-Fri': '00:00-16:00'}}
+        return self.is_trading_hours and utils.is_in_trading_hours(
+            self.closed_candle_open_time, window)
+
+    def _ledger(self) -> dict:
+        return self.shared_vars.setdefault('phase2_reservations', {})
+
+    def _key(self) -> str:
+        return self.exchange + ':' + self.symbol
+
+    def _capital(self) -> float:
+        # Floating gains do not enlarge the risk budget; floating losses reduce it.
+        return max(0.0, min(float(self.balance), float(self.portfolio_value)))
+
+    def _committed(self) -> tuple:
+        risk, notional = 0.0, 0.0
+        ledger = self._ledger()
+        for route in self.routes:
+            if route.exchange != self.exchange:
+                continue
+            strategy = route.strategy
+            if strategy.is_open:
+                qty = abs(float(strategy.position.qty))
+                entry = float(strategy.position.entry_price)
+                # Risk is measured from the current mark, so protected floating PnL
+                # is not silently treated as free capacity for another trade.
+                value = abs(float(strategy.position.value))
+                mark = value / qty if qty else entry
+                stop = float(strategy.average_stop_loss)
+                distance = max(0.0, mark - stop) if strategy.is_long else max(0.0, stop - mark)
+                risk += qty * (distance + mark * (self.fee_rate + SLIPPAGE_RESERVE))
+                notional += value
+            else:
+                reservation = ledger.get(route.exchange + ':' + route.symbol)
+                if reservation:
+                    # Includes not-yet-filled STOP/LIMIT entries, not only open positions.
+                    risk += reservation['risk']
+                    notional += reservation['notional']
+        return risk, notional
+
+    def _volatility_share(self) -> float:
+        """Reserve a common gross-exposure budget using inverse ATR fractions.
+
+        All configured assets receive an ex-ante share, even while their signal
+        is idle. This prevents the first route from consuming all shared margin.
+        It is a capital-efficiency tradeoff to test, not an optimal allocation.
+        """
+        weights = {}
+        for route in self.routes:
+            if route.exchange != self.exchange:
+                continue
+            c = utils.filter_candles_by_hours(route.strategy.candles, route.strategy.trading_hours())
+            if len(c) < int(self.hp['ema_slow']) + 20:
+                return 0.0
+            atr = float(ta.atr(c))
+            price = float(c[-1, 2])
+            if not math.isfinite(atr) or atr <= 0 or price <= 0:
+                return 0.0
+            # Stops use a common ATR multiple. Equal risk therefore needs
+            # notional proportional to price/ATR before gross-leverage scaling.
+            weights[route.symbol] = price / atr
+        return weights.get(self.symbol, 0.0) / sum(weights.values()) if weights else 0.0
+
+    def _plan(self) -> bool:
+        if self.symbol not in ('BTC-USDT', 'PAXG-USDT', 'SPY-USDT') or not self._entry_window():
+            return False
+        c = self.signal_candles
+        n = int(self.hp['donchian_len'])
+        slow_n = int(self.hp['ema_slow'])
+        if len(c) < max(slow_n + 20, n):
+            return False
+        fast = float(ta.ema(c, period=int(self.hp['ema_fast'])))
+        slow = ta.ema(c, period=slow_n, sequential=True)
+        atr = float(ta.atr(c))
+        adx = float(ta.adx(c))
+        rsi = float(ta.rsi(c))
+        # The closed bar has broken the PRIOR channel. A passive LIMIT at that
+        # boundary can fill only on a future retest within one 4h order lifetime.
+        entry = float(np.max(c[-n-1:-1, 3]))
+        if not all(math.isfinite(v) for v in (fast, slow[-1], slow[-5], atr, adx, rsi, entry)):
+            return False
+        if not (atr > 0 and entry < self.price <= entry + atr and self.price > slow[-1]
+                and fast > slow[-1] > slow[-5] and adx >= self.hp['adx_min']
+                and 52 <= rsi <= 76 and self.high - self.low <= 3 * atr):
+            return False
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        # Fees at both planned entry and stop, plus an explicit adverse-fill reserve.
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        # Historical research precision only. Native symbol lot/min-notional
+        # constraints must be verified before any live use.
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+        }
+        return True
+
+    def _signal(self) -> int:
+        # Compute exactly one plan per bar, with long priority. Checking
+        # should_short after go_long must never overwrite a queued long plan.
+        if self.vars.get('signal_index') != self.index:
+            self.vars['signal_index'] = self.index
+            self.vars['signal_value'] = 1 if self._plan() else (-1 if self._short_plan() else 0)
+        return self.vars['signal_value']
+
+    def should_long(self) -> bool:
+        return self._signal() == 1
+
+    def should_short(self) -> bool:
+        return self._signal() == -1
+
+    def go_long(self) -> None:
+        plan = self.vars['plan']
+        self._ledger()[self._key()] = dict(plan)
+        self.buy = plan['qty'], plan['entry']
+
+    def _short_plan(self) -> bool:
+        """Test selloff continuation instead of buying an oversold dip.
+
+        A rising slow regime can still suffer a fast liquidation leg. This
+        exploratory hypothesis came from the failed long mean-reversion sleeve;
+        it is development evidence, not an independent validation.
+        """
+        if self.symbol != 'BTC-USDT' or not self._entry_window():
+            return False
+        c = self.signal_candles
+        if len(c) < 140:
+            return False
+        macro = ta.ema(c, period=120, sequential=True)
+        fast = float(ta.ema(c, period=20))
+        atr = float(ta.atr(c))
+        quick_rsi = float(ta.rsi(c, period=3))
+        if not all(math.isfinite(v) for v in (macro[-1], macro[-10], fast, atr, quick_rsi)):
+            return False
+        if not (atr > 0 and macro[-1] > macro[-10]
+                and self.price > macro[-1] - atr and quick_rsi <= 20):
+            return False
+        entry = min(float(c[-1, 4]), self.price - 0.25 * atr)
+        distance = fast - entry
+        if not (atr <= distance <= 3 * atr and distance >= 6 * self.fee_rate * entry):
+            return False
+        capital = self._capital()
+        risk, notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - risk))
+        unit_risk = distance + self.fee_rate * (2 * entry + distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        qty = min(budget / unit_risk, room / entry,
+                  max(0.0, float(self.leveraged_available_margin) * 0.90) / entry)
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {'qty': qty, 'entry': entry, 'distance': distance,
+                             'risk': qty * unit_risk, 'notional': qty * entry,
+                             'target_distance': 1.5 * atr}
+        return True
+
+    def go_short(self) -> None:
+        plan = self.vars['plan']
+        self._ledger()[self._key()] = dict(plan)
+        self.sell = plan['qty'], plan['entry']
+
+    def should_cancel_entry(self) -> bool:
+        # One closed 4h bar lifetime: stale channels cannot remain active indefinitely.
+        # Jesse processes cancellation before evaluating the next route.
+        self._ledger().pop(self._key(), None)
+        return True
+
+    def on_open_position(self, order) -> None:
+        entry = float(self.position.entry_price)
+        distance = self.vars['plan']['distance']
+        self.vars['initial_distance'] = distance
+        # An intrabar fill must not inherit highs/closes from before its entry.
+        self.vars['best_close'] = entry
+        if self.is_short:
+            self.vars['opened_time'] = int(self.time)
+            self.stop_loss = abs(self.position.qty), entry + distance
+            self.take_profit = abs(self.position.qty), entry - self.vars['plan']['target_distance']
+        else:
+            self.stop_loss = abs(self.position.qty), entry - distance
+        self._ledger().pop(self._key(), None)
+
+    def update_position(self) -> None:
+        if self.is_short:
+            if self.time - self.vars['opened_time'] >= 72 * 60 * 60 * 1000:
+                self.liquidate()
+            return
+        history = self.signal_candles
+        atr = float(ta.atr(history))
+        if not math.isfinite(atr) or atr <= 0:
+            return
+        entry = float(self.position.entry_price)
+        distance = self.vars['initial_distance']
+        self.vars['best_close'] = max(self.vars['best_close'], float(history[-1, 2]))
+        best_r = (self.vars['best_close'] - entry) / distance
+        mult = float(self.hp['trail_atr'])
+        # Inherited late-trend tightening; retained as a controlled baseline choice.
+        if best_r >= 8:
+            mult *= 0.62
+        elif best_r >= 5:
+            mult *= 0.78
+        stop = self.vars['best_close'] - mult * atr
+        if best_r >= float(self.hp['be_r']):
+            stop = max(stop, entry * (1 + 2.5 * self.fee_rate))
+        if self.average_stop_loss < stop < self.price:
+            self.stop_loss = abs(self.position.qty), stop
+
+    def on_close_position(self, order, closed_trade) -> None:
+        self._ledger().pop(self._key(), None)
+
+```
+
+## Helper fresh Cq/M/R/U y expiración E4
+
+```python
+
+    def _fresh_quote(self) -> bool:
+        """Exact latest M1 quote; absent/stale data makes this tick ineligible."""
+        c = self.get_candles(self.exchange, self.symbol, '1m')
+        if not len(c):
+            return False
+        i = int(np.searchsorted(c[:, 0], self.time - 60000, side='right')) - 1
+        if i < 0 or int(c[i, 0]) + 60000 != int(self.time):
+            return False
+        price = float(c[i, 2])
+        return (math.isfinite(price) and price > 0
+                and math.isclose(price, self.price, rel_tol=1e-10, abs_tol=1e-8))
+
+```
+
+## AttrSpyCqFreshLimit
+
+### _plan
+
+```python
+    def _plan(self) -> bool:
+        if self.symbol not in ('BTC-USDT', 'PAXG-USDT', 'SPY-USDT') or not self._entry_window():
+            return False
+        if not self._fresh_quote():
+            return False
+        c = self.signal_candles
+        n = int(self.hp['donchian_len'])
+        slow_n = int(self.hp['ema_slow'])
+        if len(c) < max(slow_n + 20, n):
+            return False
+        fast = float(ta.ema(c, period=int(self.hp['ema_fast'])))
+        slow = ta.ema(c, period=slow_n, sequential=True)
+        atr = float(ta.atr(c))
+        adx = float(ta.adx(c))
+        rsi = float(ta.rsi(c))
+        # The closed bar has broken the PRIOR channel. A passive LIMIT at that
+        # boundary can fill only on a future retest within one 4h order lifetime.
+        entry = float(np.max(c[-n-1:-1, 3]))
+        if not all(math.isfinite(v) for v in (fast, slow[-1], slow[-5], atr, adx, rsi, entry)):
+            return False
+        if not (atr > 0 and entry < self.price <= entry + atr and self.price > slow[-1]
+                and fast > slow[-1] > slow[-5] and adx >= self.hp['adx_min']
+                and 52 <= rsi <= 76 and self.high - self.low <= 3 * atr):
+            return False
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        # Fees at both planned entry and stop, plus an explicit adverse-fill reserve.
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        # Historical research precision only. Native symbol lot/min-notional
+        # constraints must be verified before any live use.
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+        }
+        return True
+
+
+```
+
+
+## AttrSpyE1NoBE
+
+### update_position
+
+```python
+    def update_position(self) -> None:
+        if self.is_short:
+            if self.time - self.vars['opened_time'] >= 72 * 60 * 60 * 1000:
+                self.liquidate()
+            return
+        history = self.signal_candles
+        atr = float(ta.atr(history))
+        if not math.isfinite(atr) or atr <= 0:
+            return
+        entry = float(self.position.entry_price)
+        distance = self.vars['initial_distance']
+        self.vars['best_close'] = max(self.vars['best_close'], float(history[-1, 2]))
+        best_r = (self.vars['best_close'] - entry) / distance
+        mult = float(self.hp['trail_atr'])
+        # Inherited late-trend tightening; retained as a controlled baseline choice.
+        if best_r >= 8:
+            mult *= 0.62
+        elif best_r >= 5:
+            mult *= 0.78
+        stop = self.vars['best_close'] - mult * atr
+        if self.average_stop_loss < stop < self.price:
+            self.stop_loss = abs(self.position.qty), stop
+
+
+```
+
+## AttrSpyE2NoTrail
+
+### update_position
+
+```python
+    def update_position(self) -> None:
+        if self.is_short:
+            if self.time - self.vars['opened_time'] >= 72 * 60 * 60 * 1000:
+                self.liquidate()
+            return
+        history = self.signal_candles
+        atr = float(ta.atr(history))
+        if not math.isfinite(atr) or atr <= 0:
+            return
+        entry = float(self.position.entry_price)
+        distance = self.vars['initial_distance']
+        self.vars['best_close'] = max(self.vars['best_close'], float(history[-1, 2]))
+        best_r = (self.vars['best_close'] - entry) / distance
+        if best_r < float(self.hp['be_r']):
+            return
+        stop = entry * (1 + 2.5 * self.fee_rate)
+        if self.average_stop_loss < stop < self.price:
+            self.stop_loss = abs(self.position.qty), stop
+
+
+```
+
+## AttrSpyE3InitialStop
+
+### update_position
+
+```python
+    def update_position(self) -> None:
+        # Attribution E3: keep the initial protective stop until exit or engine end.
+        return
+
+
+```
+
+## AttrSpyE4Stop72h
+
+on_open_position añade self.vars['expiry_debt']=False justo después de initial_distance. on_close_position conserva limpieza ledger original.
+
+### update_position
+
+```python
+    def update_position(self) -> None:
+        # Count from the actual fill, not the later strategy clock at intrabar fill.
+        if self.time - int(self.position.opened_at) >= 72 * 60 * 60 * 1000:
+            self.vars['expiry_debt'] = True
+        if self.vars.get('expiry_debt') and self._fresh_quote():
+            self.liquidate()
+
+
+```
+
+## AttrSpyMarket
+
+### _plan
+
+```python
+    def _plan(self) -> bool:
+        if self.symbol not in ('BTC-USDT', 'PAXG-USDT', 'SPY-USDT') or not self._entry_window():
+            return False
+        if not self._fresh_quote():
+            return False
+        c = self.signal_candles
+        n = int(self.hp['donchian_len'])
+        slow_n = int(self.hp['ema_slow'])
+        if len(c) < max(slow_n + 20, n):
+            return False
+        fast = float(ta.ema(c, period=int(self.hp['ema_fast'])))
+        slow = ta.ema(c, period=slow_n, sequential=True)
+        atr = float(ta.atr(c))
+        adx = float(ta.adx(c))
+        rsi = float(ta.rsi(c))
+        # The closed bar has broken the PRIOR channel. A passive LIMIT at that
+        # boundary can fill only on a future retest within one 4h order lifetime.
+        entry = float(np.max(c[-n-1:-1, 3]))
+        if not all(math.isfinite(v) for v in (fast, slow[-1], slow[-5], atr, adx, rsi, entry)):
+            return False
+        if not (atr > 0 and entry < self.price <= entry + atr and self.price > slow[-1]
+                and fast > slow[-1] > slow[-5] and adx >= self.hp['adx_min']
+                and 52 <= rsi <= 76 and self.high - self.low <= 3 * atr):
+            return False
+        # The same breakout qualifies; MARKET replaces the passive retest.
+        entry = float(self.price)
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        # Fees at both planned entry and stop, plus an explicit adverse-fill reserve.
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        # Historical research precision only. Native symbol lot/min-notional
+        # constraints must be verified before any live use.
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+        }
+        return True
+
+
+```
+
+
+## AttrSpyR01
+
+### _plan
+
+```python
+    def _plan(self) -> bool:
+        if self.symbol not in ('BTC-USDT', 'PAXG-USDT', 'SPY-USDT') or not self._entry_window():
+            return False
+        if not self._fresh_quote():
+            return False
+        if not self.vars.get('clock_event', False):
+            return False
+        c = self.signal_candles
+        n = int(self.hp['donchian_len'])
+        slow_n = int(self.hp['ema_slow'])
+        if len(c) < max(slow_n + 20, n):
+            return False
+        fast = float(ta.ema(c, period=int(self.hp['ema_fast'])))
+        slow = ta.ema(c, period=slow_n, sequential=True)
+        atr = float(ta.atr(c))
+        adx = float(ta.adx(c))
+        rsi = float(ta.rsi(c))
+        entry = float(self.price)
+        if not all(math.isfinite(v) for v in (fast, slow[-1], slow[-5], atr, adx, rsi, entry)):
+            return False
+        # Regime retained; channel breakout and distance-to-channel are both removed.
+        if not (atr > 0 and self.price > slow[-1]
+                and fast > slow[-1] > slow[-5] and adx >= self.hp['adx_min']
+                and 52 <= rsi <= 76 and self.high - self.low <= 3 * atr):
+            return False
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        # Fees at both planned entry and stop, plus an explicit adverse-fill reserve.
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        # Historical research precision only. Native symbol lot/min-notional
+        # constraints must be verified before any live use.
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+        }
+        return True
+
+
+```
+
+### before (seed101; las otras copias usan202/303/404/505)
+
+```python
+    def before(self) -> None:
+        # Stateless paired clock evolves even while occupied; no queued events.
+        payload = f'ATTR1|{self.symbol}|101|{self.closed_candle_open_time}'
+        digest = hashlib.sha256(payload.encode('ascii')).digest()
+        self.vars['clock_event'] = int.from_bytes(digest[:8], 'big') % 48 == 0
+
+```
+
+## AttrSpyU01
+
+### _plan
+
+```python
+    def _plan(self) -> bool:
+        if self.symbol not in ('BTC-USDT', 'PAXG-USDT', 'SPY-USDT') or not self._entry_window():
+            return False
+        if not self._fresh_quote():
+            return False
+        if not self.vars.get('clock_event', False):
+            return False
+        c = self.signal_candles
+        n = int(self.hp['donchian_len'])
+        slow_n = int(self.hp['ema_slow'])
+        if len(c) < max(slow_n + 20, n):
+            return False
+        atr = float(ta.atr(c))
+        entry = float(self.price)
+        # U removes EMA/ADX/RSI and range selection, retaining ATR/sizing validity.
+        if not (math.isfinite(atr) and atr > 0 and math.isfinite(entry) and entry > 0):
+            return False
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        # Fees at both planned entry and stop, plus an explicit adverse-fill reserve.
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        # Historical research precision only. Native symbol lot/min-notional
+        # constraints must be verified before any live use.
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+        }
+        return True
+
+
+```
+
+### before (seed101; las otras copias usan202/303/404/505)
+
+```python
+    def before(self) -> None:
+        # Stateless paired clock evolves even while occupied; no queued events.
+        payload = f'ATTR1|{self.symbol}|101|{self.closed_candle_open_time}'
+        digest = hashlib.sha256(payload.encode('ascii')).digest()
+        self.vars['clock_event'] = int.from_bytes(digest[:8], 'big') % 48 == 0
+
+```
+
+## Semillas y readback
+
+```json
+[
+  {
+    "name": "AttrSpyC0",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 12900
+  },
+  {
+    "name": "AttrSpyCqFreshLimit",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13530
+  },
+  {
+    "name": "AttrSpyE1NoBE",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 12795
+  },
+  {
+    "name": "AttrSpyE2NoTrail",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 12630
+  },
+  {
+    "name": "AttrSpyE3InitialStop",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 11970
+  },
+  {
+    "name": "AttrSpyE4Stop72h",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 12765
+  },
+  {
+    "name": "AttrSpyMarket",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13633
+  },
+  {
+    "name": "AttrSpyR01",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13821
+  },
+  {
+    "name": "AttrSpyR02",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13821
+  },
+  {
+    "name": "AttrSpyR03",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13821
+  },
+  {
+    "name": "AttrSpyR04",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13821
+  },
+  {
+    "name": "AttrSpyR05",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13821
+  },
+  {
+    "name": "AttrSpyU01",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13401
+  },
+  {
+    "name": "AttrSpyU02",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13401
+  },
+  {
+    "name": "AttrSpyU03",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13401
+  },
+  {
+    "name": "AttrSpyU04",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13401
+  },
+  {
+    "name": "AttrSpyU05",
+    "exact": true,
+    "hasClose": true,
+    "bytes": 13401
+  }
+]
+```
+
+Pairs R/U sólo cambian nombre de clase y mismo seed frente a receta restringida/no restringida. Hash payload exacto ATTR1|symbol|seed|baropen, sin modo/run. No logging adicional ni configuración global. C0 debe reconciliar económicamente baseline antes de iniciar otras16. Fresh es sólo guard de entry salvo deuda E4; trailing no cambia. Stops iniciales desde fill, BE/trail históricos según variante.

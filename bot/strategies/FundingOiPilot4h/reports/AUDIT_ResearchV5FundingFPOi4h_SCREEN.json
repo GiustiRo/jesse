@@ -1,0 +1,3035 @@
+{
+  "status": "passed",
+  "errors": [],
+  "label": "FUNDING_FPOI",
+  "session_id": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+  "dashboard_url": "http://localhost:9200/#/backtest/e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+  "summary": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+    "session_status": "finished",
+    "title": "MCP Backtest: V5 SCREEN FUNDING_FPOI",
+    "description": "Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.",
+    "description_truncated": false,
+    "created_at": 1792544281000,
+    "updated_at": 1792544655000,
+    "execution_duration": 34.1,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "ResearchV5FundingFPOi4h"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2020-09-01",
+      "finish_date": "2024-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": true,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      }
+    },
+    "metrics": {
+      "total": 132,
+      "total_winning_trades": 47,
+      "total_losing_trades": 85,
+      "starting_balance": 10000,
+      "finishing_balance": 13403.694835098915,
+      "win_rate": 0.3560606060606061,
+      "win_rate_longs": 0.4375,
+      "win_rate_shorts": 0.3448275862068966,
+      "ratio_avg_win_loss": 2.7233346298700765,
+      "longs_count": 16,
+      "longs_percentage": 12.121212121212121,
+      "shorts_percentage": 87.87878787878788,
+      "shorts_count": 116,
+      "fee": 584.2051994359779,
+      "net_profit": 3403.694835098907,
+      "net_profit_percentage": 34.03694835098907,
+      "average_win": 215.5838485972448,
+      "average_loss": 79.16171822319528,
+      "expectancy": 25.785566932567484,
+      "expectancy_percentage": 0.25785566932567483,
+      "expected_net_profit_every_100_trades": 25.785566932567484,
+      "average_holding_period": 194647.72727272726,
+      "average_winning_holding_period": 303931.91489361704,
+      "average_losing_holding_period": 134220,
+      "gross_profit": 10132.440884070505,
+      "gross_loss": -6728.746048971599,
+      "max_drawdown": -13.022950298425695,
+      "max_underwater_period": 499,
+      "annual_return": 9.183473235680717,
+      "annualization": 365,
+      "sharpe_ratio": 0.8476251574693621,
+      "calmar_ratio": 0.7051760949122934,
+      "sortino_ratio": 1.6126834078373182,
+      "omega_ratio": 1.2715276649770824,
+      "serenity_index": null,
+      "total_open_trades": 1,
+      "open_pl": -30.080272651000087,
+      "winning_streak": 6,
+      "losing_streak": 13,
+      "largest_losing_trade": -278.10596160454145,
+      "largest_winning_trade": 1166.9805480451785,
+      "current_streak": -4,
+      "avg_trades_per_day": 0.10846337278407013,
+      "avg_trades_per_week": 0.7592436094884909,
+      "avg_trades_per_month": 3.301625067547095,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 288.98410416471376,
+        "rate_kind": "settled",
+        "event_count": 876,
+        "settlements_processed": 3651,
+        "mark_price_proxy_count": 868,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "max_age_ms": 600000,
+        "applied": true,
+        "status": "applied",
+        "scope": [
+          "BTC-USDT"
+        ],
+        "data": {
+          "archive_assumptions_acknowledged": true,
+          "archive_catalog": {
+            "first_archive_date": "2020-09-01",
+            "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+            "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+            "point_in_time_certified": false,
+            "source": "binance-usdm-metrics-archive-v1"
+          },
+          "availability_lag_ms": 360000,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "import_source": "auto",
+          "original_publication_known": false,
+          "period_ms": 300000,
+          "rest_range": null,
+          "schema": 1,
+          "source": "binance-usdm-metrics-archive-v1",
+          "start": 1598918400000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "observation_count": 560390,
+          "expected_observation_count": 561024,
+          "missing_observation_count": 634,
+          "coverage_complete": false,
+          "status": "incomplete",
+          "leading_gap_ms": 0,
+          "trailing_gap_ms": 0,
+          "first_observation": 1598918400000,
+          "last_observation": 1767225300000,
+          "first_available_at": 1598918760000,
+          "last_available_at": 1767225660000,
+          "largest_gap_ms": 37800000,
+          "gap_count": 156,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+          "point_in_time_certified": false,
+          "missing_policy": "no interpolation; unavailable or stale values return None",
+          "cashflow": false,
+          "archive_file_count": 1948,
+          "archive_verified_file_count": 1948,
+          "archive_missing_days": [],
+          "archive_missing_day_count": 0,
+          "archive_identical_duplicate_rows": 75255
+        },
+        "allow_missing_observations": true,
+        "observation_count": 560390,
+        "cashflow": false,
+        "availability_lag_ms": 360000,
+        "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+        "current": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "observed_at": 1704066600000,
+          "available_at": 1704066960000,
+          "quantity_base": 73951.1,
+          "value_quote": 3128205481.1
+        }
+      }
+    },
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 132
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 1218
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 2021817
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/e5bd6218-1066-4181-9ee6-7d5de2fae0c4"
+  },
+  "provenance": {
+    "kind": "V5_PROVENANCE",
+    "line": "FUNDING_TREND",
+    "use_oi": true,
+    "oi_lag_bars": 0,
+    "stop_multiplier": 3,
+    "bar_ms": 14400000,
+    "oi_reference_bars": 6,
+    "atr_offset_bars": 0,
+    "target_mode": "none",
+    "reward_multiple": 1,
+    "max_hold_bars": 180,
+    "start": 1598918400000,
+    "finish": 1704067200000,
+    "active_windows": null,
+    "force_boundaries": [],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "complete_log_scan": true,
+  "pages": 17,
+  "lines": 6568,
+  "max_line": 1028,
+  "publications": 3651,
+  "hashes_verified": 3651,
+  "raw_accessor_equals_last": 3651,
+  "publication_reasons": {
+    "funding_state": 2879,
+    "funding_mixed": 772
+  },
+  "manifest_sha256": "a8807bab1730e044aa40442553647b9f09d0859ba5ab506da3accca723397fc6",
+  "monthly_buckets": 129,
+  "months": 40,
+  "totals": {
+    "bars": 7302,
+    "entries": 132,
+    "exits": 131,
+    "opportunities": 368
+  },
+  "primary": {
+    "carry_sign_reject": 2677,
+    "oi_nonrising": 234,
+    "allowed": 132,
+    "in_position_or_pending": 1380,
+    "no_setup_price": 1686,
+    "funding_mixed": 1181,
+    "daily_limit": 9,
+    "oi_reference_invalid": 2,
+    "boundary_or_inactive": 1
+  },
+  "feature_reasons": {
+    "carry_sign_reject": 2677,
+    "setup": 1758,
+    "no_setup_price": 1686,
+    "funding_mixed": 1181
+  },
+  "flags": {
+    "oi_nonrising": 234,
+    "oi_reference_invalid": 2
+  },
+  "buckets": [
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-09:all",
+      "bars": 180,
+      "opportunities": 10,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "carry_sign_reject": 42,
+        "oi_nonrising": 6,
+        "allowed": 4,
+        "in_position_or_pending": 61,
+        "no_setup_price": 48,
+        "funding_mixed": 19
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 42,
+        "setup": 71,
+        "no_setup_price": 48,
+        "funding_mixed": 19
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-09:long",
+      "bars": 16,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 14
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 16
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-09:none",
+      "bars": 109,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 42,
+        "no_setup_price": 48,
+        "funding_mixed": 19
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 42,
+        "no_setup_price": 48,
+        "funding_mixed": 19
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-09:short",
+      "bars": 55,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 6,
+        "allowed": 2,
+        "in_position_or_pending": 47
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "setup": 55
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-10:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "carry_sign_reject": 114,
+        "no_setup_price": 26,
+        "oi_nonrising": 5,
+        "funding_mixed": 25,
+        "allowed": 4,
+        "in_position_or_pending": 12
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 114,
+        "no_setup_price": 26,
+        "setup": 21,
+        "funding_mixed": 25
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-10:long",
+      "bars": 15,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 15
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-10:none",
+      "bars": 165,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 114,
+        "no_setup_price": 26,
+        "funding_mixed": 25
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 114,
+        "no_setup_price": 26,
+        "funding_mixed": 25
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-10:short",
+      "bars": 6,
+      "opportunities": 6,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 5,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "setup": 6
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-11:all",
+      "bars": 180,
+      "opportunities": 8,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "funding_mixed": 17,
+        "allowed": 4,
+        "in_position_or_pending": 9,
+        "no_setup_price": 25,
+        "oi_nonrising": 4,
+        "carry_sign_reject": 121
+      },
+      "flags": {
+        "oi_nonrising": 4
+      },
+      "feature_reasons": {
+        "funding_mixed": 17,
+        "setup": 17,
+        "no_setup_price": 25,
+        "carry_sign_reject": 121
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-11:long",
+      "bars": 10,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 7,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 10
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-11:none",
+      "bars": 163,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "funding_mixed": 17,
+        "no_setup_price": 25,
+        "carry_sign_reject": 121
+      },
+      "flags": {},
+      "feature_reasons": {
+        "funding_mixed": 17,
+        "no_setup_price": 25,
+        "carry_sign_reject": 121
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-11:short",
+      "bars": 7,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 7
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-12:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "carry_sign_reject": 141,
+        "no_setup_price": 21,
+        "allowed": 1,
+        "in_position_or_pending": 20,
+        "funding_mixed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 141,
+        "no_setup_price": 21,
+        "setup": 21,
+        "funding_mixed": 3
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-12:none",
+      "bars": 165,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 141,
+        "no_setup_price": 21,
+        "funding_mixed": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 141,
+        "no_setup_price": 21,
+        "funding_mixed": 3
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2020-12:short",
+      "bars": 21,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 21
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-01:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 61,
+        "allowed": 2,
+        "daily_limit": 3,
+        "in_position_or_pending": 41,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 61,
+        "setup": 48
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-01:none",
+      "bars": 138,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 61
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 61
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-01:short",
+      "bars": 48,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "daily_limit": 3,
+        "in_position_or_pending": 41,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 48
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-02:all",
+      "bars": 168,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 24,
+        "carry_sign_reject": 123,
+        "oi_nonrising": 2,
+        "allowed": 1,
+        "in_position_or_pending": 18
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup_price": 24,
+        "carry_sign_reject": 123,
+        "setup": 21
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-02:none",
+      "bars": 147,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 24,
+        "carry_sign_reject": 123
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 24,
+        "carry_sign_reject": 123
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-02:short",
+      "bars": 21,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 2,
+        "allowed": 1,
+        "in_position_or_pending": 18
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 21
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-03:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 5,
+      "exits": 6,
+      "primary": {
+        "in_position_or_pending": 28,
+        "no_setup_price": 59,
+        "allowed": 5,
+        "carry_sign_reject": 90,
+        "daily_limit": 2,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 37,
+        "no_setup_price": 59,
+        "carry_sign_reject": 90
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-03:none",
+      "bars": 149,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 59,
+        "carry_sign_reject": 90
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 59,
+        "carry_sign_reject": 90
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-03:short",
+      "bars": 37,
+      "opportunities": 7,
+      "entries": 5,
+      "exits": 6,
+      "primary": {
+        "in_position_or_pending": 28,
+        "allowed": 5,
+        "daily_limit": 2,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 37
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-04:all",
+      "bars": 180,
+      "opportunities": 16,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 43,
+        "allowed": 2,
+        "in_position_or_pending": 44,
+        "oi_nonrising": 14
+      },
+      "flags": {
+        "oi_nonrising": 14
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 43,
+        "setup": 60
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-04:none",
+      "bars": 120,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 43
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 77,
+        "no_setup_price": 43
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-04:short",
+      "bars": 60,
+      "opportunities": 16,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 44,
+        "oi_nonrising": 14
+      },
+      "flags": {
+        "oi_nonrising": 14
+      },
+      "feature_reasons": {
+        "setup": 60
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-05:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "carry_sign_reject": 43,
+        "no_setup_price": 46,
+        "oi_nonrising": 3,
+        "allowed": 3,
+        "in_position_or_pending": 64,
+        "funding_mixed": 27
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 43,
+        "no_setup_price": 46,
+        "setup": 70,
+        "funding_mixed": 27
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-05:none",
+      "bars": 116,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 43,
+        "no_setup_price": 46,
+        "funding_mixed": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 43,
+        "no_setup_price": 46,
+        "funding_mixed": 27
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-05:short",
+      "bars": 70,
+      "opportunities": 6,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 3,
+        "in_position_or_pending": 64
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 70
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-06:all",
+      "bars": 180,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "in_position_or_pending": 29,
+        "no_setup_price": 49,
+        "carry_sign_reject": 30,
+        "oi_nonrising": 6,
+        "allowed": 2,
+        "funding_mixed": 64
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "setup": 37,
+        "no_setup_price": 49,
+        "carry_sign_reject": 30,
+        "funding_mixed": 64
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-06:none",
+      "bars": 143,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 49,
+        "carry_sign_reject": 30,
+        "funding_mixed": 64
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 49,
+        "carry_sign_reject": 30,
+        "funding_mixed": 64
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-06:short",
+      "bars": 37,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "in_position_or_pending": 29,
+        "oi_nonrising": 6,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "setup": 37
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-07:all",
+      "bars": 186,
+      "opportunities": 17,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "no_setup_price": 43,
+        "oi_nonrising": 10,
+        "allowed": 7,
+        "funding_mixed": 73,
+        "carry_sign_reject": 32,
+        "in_position_or_pending": 21
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "no_setup_price": 43,
+        "setup": 38,
+        "funding_mixed": 73,
+        "carry_sign_reject": 32
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-07:long",
+      "bars": 16,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 4,
+        "allowed": 1,
+        "in_position_or_pending": 11
+      },
+      "flags": {
+        "oi_nonrising": 4
+      },
+      "feature_reasons": {
+        "setup": 16
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-07:none",
+      "bars": 148,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 43,
+        "funding_mixed": 73,
+        "carry_sign_reject": 32
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 43,
+        "funding_mixed": 73,
+        "carry_sign_reject": 32
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-07:short",
+      "bars": 22,
+      "opportunities": 12,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "oi_nonrising": 6,
+        "allowed": 6,
+        "in_position_or_pending": 10
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "setup": 22
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-08:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "carry_sign_reject": 115,
+        "no_setup_price": 69,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 115,
+        "no_setup_price": 69,
+        "setup": 2
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-08:none",
+      "bars": 184,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 115,
+        "no_setup_price": 69
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 115,
+        "no_setup_price": 69
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-08:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-09:all",
+      "bars": 180,
+      "opportunities": 32,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "no_setup_price": 35,
+        "allowed": 5,
+        "carry_sign_reject": 48,
+        "oi_nonrising": 27,
+        "in_position_or_pending": 57,
+        "funding_mixed": 8
+      },
+      "flags": {
+        "oi_nonrising": 27
+      },
+      "feature_reasons": {
+        "no_setup_price": 35,
+        "setup": 89,
+        "carry_sign_reject": 48,
+        "funding_mixed": 8
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-09:none",
+      "bars": 91,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 35,
+        "carry_sign_reject": 48,
+        "funding_mixed": 8
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 35,
+        "carry_sign_reject": 48,
+        "funding_mixed": 8
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-09:short",
+      "bars": 89,
+      "opportunities": 32,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "allowed": 5,
+        "oi_nonrising": 27,
+        "in_position_or_pending": 57
+      },
+      "flags": {
+        "oi_nonrising": 27
+      },
+      "feature_reasons": {
+        "setup": 89
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-10:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup_price": 42,
+        "carry_sign_reject": 123,
+        "funding_mixed": 12,
+        "allowed": 2,
+        "in_position_or_pending": 7
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 42,
+        "carry_sign_reject": 123,
+        "funding_mixed": 12,
+        "setup": 9
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-10:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 42,
+        "carry_sign_reject": 123,
+        "funding_mixed": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 42,
+        "carry_sign_reject": 123,
+        "funding_mixed": 12
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-10:short",
+      "bars": 9,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 7
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 9
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-11:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "carry_sign_reject": 50,
+        "no_setup_price": 40,
+        "oi_nonrising": 1,
+        "in_position_or_pending": 85
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 90,
+        "carry_sign_reject": 50,
+        "no_setup_price": 40
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-11:none",
+      "bars": 90,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 50,
+        "no_setup_price": 40
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 50,
+        "no_setup_price": 40
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-11:short",
+      "bars": 90,
+      "opportunities": 5,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "oi_nonrising": 1,
+        "in_position_or_pending": 85
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 90
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-12:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "in_position_or_pending": 99,
+        "no_setup_price": 37,
+        "funding_mixed": 11,
+        "oi_nonrising": 2,
+        "allowed": 2,
+        "carry_sign_reject": 35
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 103,
+        "no_setup_price": 37,
+        "funding_mixed": 11,
+        "carry_sign_reject": 35
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-12:none",
+      "bars": 83,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 37,
+        "funding_mixed": 11,
+        "carry_sign_reject": 35
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 37,
+        "funding_mixed": 11,
+        "carry_sign_reject": 35
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2021-12:short",
+      "bars": 103,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "in_position_or_pending": 99,
+        "oi_nonrising": 2,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 103
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-01:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 97,
+        "no_setup_price": 59,
+        "funding_mixed": 24,
+        "carry_sign_reject": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 102,
+        "no_setup_price": 59,
+        "funding_mixed": 24,
+        "carry_sign_reject": 1
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-01:none",
+      "bars": 84,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 59,
+        "funding_mixed": 24,
+        "carry_sign_reject": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 59,
+        "funding_mixed": 24,
+        "carry_sign_reject": 1
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-01:short",
+      "bars": 102,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 97
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 102
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-02:all",
+      "bars": 168,
+      "opportunities": 5,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup_price": 51,
+        "funding_mixed": 66,
+        "carry_sign_reject": 39,
+        "oi_nonrising": 2,
+        "allowed": 3,
+        "in_position_or_pending": 7
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "no_setup_price": 51,
+        "funding_mixed": 66,
+        "carry_sign_reject": 39,
+        "setup": 12
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-02:long",
+      "bars": 3,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 3
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-02:none",
+      "bars": 156,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 51,
+        "funding_mixed": 66,
+        "carry_sign_reject": 39
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 51,
+        "funding_mixed": 66,
+        "carry_sign_reject": 39
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-02:short",
+      "bars": 9,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 2,
+        "allowed": 2,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 9
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-03:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "funding_mixed": 59,
+        "carry_sign_reject": 91,
+        "no_setup_price": 24,
+        "allowed": 3,
+        "in_position_or_pending": 4,
+        "oi_reference_invalid": 2,
+        "oi_nonrising": 3
+      },
+      "flags": {
+        "oi_reference_invalid": 2,
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "funding_mixed": 59,
+        "carry_sign_reject": 91,
+        "no_setup_price": 24,
+        "setup": 12
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-03:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-03:none",
+      "bars": 174,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "funding_mixed": 59,
+        "carry_sign_reject": 91,
+        "no_setup_price": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "funding_mixed": 59,
+        "carry_sign_reject": 91,
+        "no_setup_price": 24
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-03:short",
+      "bars": 11,
+      "opportunities": 7,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 4,
+        "oi_reference_invalid": 2,
+        "oi_nonrising": 3
+      },
+      "flags": {
+        "oi_reference_invalid": 2,
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 11
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-04:all",
+      "bars": 180,
+      "opportunities": 10,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "no_setup_price": 59,
+        "carry_sign_reject": 26,
+        "allowed": 5,
+        "in_position_or_pending": 36,
+        "funding_mixed": 49,
+        "oi_nonrising": 5
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "no_setup_price": 59,
+        "carry_sign_reject": 26,
+        "setup": 46,
+        "funding_mixed": 49
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-04:none",
+      "bars": 134,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 59,
+        "carry_sign_reject": 26,
+        "funding_mixed": 49
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 59,
+        "carry_sign_reject": 26,
+        "funding_mixed": 49
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-04:short",
+      "bars": 46,
+      "opportunities": 10,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 36,
+        "oi_nonrising": 5
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "setup": 46
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-05:all",
+      "bars": 186,
+      "opportunities": 30,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 47,
+        "no_setup_price": 35,
+        "carry_sign_reject": 23,
+        "funding_mixed": 51,
+        "oi_nonrising": 25
+      },
+      "flags": {
+        "oi_nonrising": 25
+      },
+      "feature_reasons": {
+        "setup": 77,
+        "no_setup_price": 35,
+        "carry_sign_reject": 23,
+        "funding_mixed": 51
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-05:none",
+      "bars": 109,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 35,
+        "carry_sign_reject": 23,
+        "funding_mixed": 51
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 35,
+        "carry_sign_reject": 23,
+        "funding_mixed": 51
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-05:short",
+      "bars": 77,
+      "opportunities": 30,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 47,
+        "oi_nonrising": 25
+      },
+      "flags": {
+        "oi_nonrising": 25
+      },
+      "feature_reasons": {
+        "setup": 77
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-06:all",
+      "bars": 180,
+      "opportunities": 14,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "carry_sign_reject": 30,
+        "no_setup_price": 49,
+        "funding_mixed": 60,
+        "oi_nonrising": 10,
+        "allowed": 4,
+        "in_position_or_pending": 27
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 30,
+        "no_setup_price": 49,
+        "funding_mixed": 60,
+        "setup": 41
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-06:none",
+      "bars": 139,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 30,
+        "no_setup_price": 49,
+        "funding_mixed": 60
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 30,
+        "no_setup_price": 49,
+        "funding_mixed": 60
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-06:short",
+      "bars": 41,
+      "opportunities": 14,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "oi_nonrising": 10,
+        "allowed": 4,
+        "in_position_or_pending": 27
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "setup": 41
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-07:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "carry_sign_reject": 108,
+        "funding_mixed": 19,
+        "allowed": 3,
+        "in_position_or_pending": 20,
+        "no_setup_price": 30,
+        "oi_nonrising": 6
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 108,
+        "funding_mixed": 19,
+        "setup": 29,
+        "no_setup_price": 30
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-07:none",
+      "bars": 157,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 108,
+        "funding_mixed": 19,
+        "no_setup_price": 30
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 108,
+        "funding_mixed": 19,
+        "no_setup_price": 30
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-07:short",
+      "bars": 29,
+      "opportunities": 9,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 20,
+        "oi_nonrising": 6
+      },
+      "flags": {
+        "oi_nonrising": 6
+      },
+      "feature_reasons": {
+        "setup": 29
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-08:all",
+      "bars": 186,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "carry_sign_reject": 59,
+        "no_setup_price": 46,
+        "funding_mixed": 68,
+        "allowed": 1,
+        "in_position_or_pending": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 59,
+        "no_setup_price": 46,
+        "funding_mixed": 68,
+        "setup": 13
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-08:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 59,
+        "no_setup_price": 46,
+        "funding_mixed": 68
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 59,
+        "no_setup_price": 46,
+        "funding_mixed": 68
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-08:short",
+      "bars": 13,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 13
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-09:all",
+      "bars": 180,
+      "opportunities": 17,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "oi_nonrising": 10,
+        "allowed": 7,
+        "in_position_or_pending": 47,
+        "no_setup_price": 38,
+        "funding_mixed": 48,
+        "carry_sign_reject": 30
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "setup": 64,
+        "no_setup_price": 38,
+        "funding_mixed": 48,
+        "carry_sign_reject": 30
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-09:none",
+      "bars": 116,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 38,
+        "funding_mixed": 48,
+        "carry_sign_reject": 30
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 38,
+        "funding_mixed": 48,
+        "carry_sign_reject": 30
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-09:short",
+      "bars": 64,
+      "opportunities": 17,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "oi_nonrising": 10,
+        "allowed": 7,
+        "in_position_or_pending": 47
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "setup": 64
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-10:all",
+      "bars": 186,
+      "opportunities": 20,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "no_setup_price": 42,
+        "oi_nonrising": 15,
+        "allowed": 5,
+        "in_position_or_pending": 33,
+        "carry_sign_reject": 53,
+        "funding_mixed": 38
+      },
+      "flags": {
+        "oi_nonrising": 15
+      },
+      "feature_reasons": {
+        "no_setup_price": 42,
+        "setup": 53,
+        "carry_sign_reject": 53,
+        "funding_mixed": 38
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-10:none",
+      "bars": 133,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 42,
+        "carry_sign_reject": 53,
+        "funding_mixed": 38
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 42,
+        "carry_sign_reject": 53,
+        "funding_mixed": 38
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-10:short",
+      "bars": 53,
+      "opportunities": 20,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "oi_nonrising": 15,
+        "allowed": 5,
+        "in_position_or_pending": 33
+      },
+      "flags": {
+        "oi_nonrising": 15
+      },
+      "feature_reasons": {
+        "setup": 53
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-11:all",
+      "bars": 180,
+      "opportunities": 11,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup_price": 45,
+        "funding_mixed": 71,
+        "carry_sign_reject": 44,
+        "oi_nonrising": 9,
+        "allowed": 2,
+        "in_position_or_pending": 9
+      },
+      "flags": {
+        "oi_nonrising": 9
+      },
+      "feature_reasons": {
+        "no_setup_price": 45,
+        "funding_mixed": 71,
+        "carry_sign_reject": 44,
+        "setup": 20
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-11:none",
+      "bars": 160,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 45,
+        "funding_mixed": 71,
+        "carry_sign_reject": 44
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 45,
+        "funding_mixed": 71,
+        "carry_sign_reject": 44
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-11:short",
+      "bars": 20,
+      "opportunities": 11,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 9,
+        "allowed": 2,
+        "in_position_or_pending": 9
+      },
+      "flags": {
+        "oi_nonrising": 9
+      },
+      "feature_reasons": {
+        "setup": 20
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-12:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "carry_sign_reject": 48,
+        "funding_mixed": 45,
+        "no_setup_price": 48,
+        "oi_nonrising": 5,
+        "allowed": 4,
+        "in_position_or_pending": 36
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 48,
+        "funding_mixed": 45,
+        "no_setup_price": 48,
+        "setup": 45
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-12:none",
+      "bars": 141,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 48,
+        "funding_mixed": 45,
+        "no_setup_price": 48
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 48,
+        "funding_mixed": 45,
+        "no_setup_price": 48
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2022-12:short",
+      "bars": 45,
+      "opportunities": 9,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "oi_nonrising": 5,
+        "allowed": 4,
+        "in_position_or_pending": 36
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "setup": 45
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-01:all",
+      "bars": 186,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 6,
+        "no_setup_price": 20,
+        "carry_sign_reject": 148,
+        "funding_mixed": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 6,
+        "no_setup_price": 20,
+        "carry_sign_reject": 148,
+        "funding_mixed": 12
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-01:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 20,
+        "carry_sign_reject": 148,
+        "funding_mixed": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 20,
+        "carry_sign_reject": 148,
+        "funding_mixed": 12
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-01:short",
+      "bars": 6,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 6
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 6
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-02:all",
+      "bars": 168,
+      "opportunities": 7,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "carry_sign_reject": 63,
+        "no_setup_price": 51,
+        "allowed": 4,
+        "oi_nonrising": 3,
+        "in_position_or_pending": 41,
+        "funding_mixed": 6
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 63,
+        "no_setup_price": 51,
+        "setup": 48,
+        "funding_mixed": 6
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-02:none",
+      "bars": 120,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 63,
+        "no_setup_price": 51,
+        "funding_mixed": 6
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 63,
+        "no_setup_price": 51,
+        "funding_mixed": 6
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-02:short",
+      "bars": 48,
+      "opportunities": 7,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "oi_nonrising": 3,
+        "in_position_or_pending": 41
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 48
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-03:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "no_setup_price": 37,
+        "carry_sign_reject": 74,
+        "oi_nonrising": 7,
+        "funding_mixed": 41,
+        "allowed": 1,
+        "in_position_or_pending": 26
+      },
+      "flags": {
+        "oi_nonrising": 7
+      },
+      "feature_reasons": {
+        "no_setup_price": 37,
+        "carry_sign_reject": 74,
+        "setup": 34,
+        "funding_mixed": 41
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-03:none",
+      "bars": 152,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 37,
+        "carry_sign_reject": 74,
+        "funding_mixed": 41
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 37,
+        "carry_sign_reject": 74,
+        "funding_mixed": 41
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-03:short",
+      "bars": 34,
+      "opportunities": 8,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 7,
+        "allowed": 1,
+        "in_position_or_pending": 26
+      },
+      "flags": {
+        "oi_nonrising": 7
+      },
+      "feature_reasons": {
+        "setup": 34
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-04:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "carry_sign_reject": 64,
+        "no_setup_price": 48,
+        "oi_nonrising": 4,
+        "allowed": 2,
+        "funding_mixed": 32,
+        "in_position_or_pending": 30
+      },
+      "flags": {
+        "oi_nonrising": 4
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 64,
+        "no_setup_price": 48,
+        "setup": 36,
+        "funding_mixed": 32
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-04:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-04:none",
+      "bars": 144,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 64,
+        "no_setup_price": 48,
+        "funding_mixed": 32
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 64,
+        "no_setup_price": 48,
+        "funding_mixed": 32
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-04:short",
+      "bars": 34,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 1,
+        "in_position_or_pending": 30
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 34
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-05:all",
+      "bars": 186,
+      "opportunities": 18,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "no_setup_price": 41,
+        "funding_mixed": 25,
+        "allowed": 6,
+        "in_position_or_pending": 70,
+        "carry_sign_reject": 32,
+        "oi_nonrising": 12
+      },
+      "flags": {
+        "oi_nonrising": 12
+      },
+      "feature_reasons": {
+        "no_setup_price": 41,
+        "funding_mixed": 25,
+        "setup": 88,
+        "carry_sign_reject": 32
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-05:none",
+      "bars": 98,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 41,
+        "funding_mixed": 25,
+        "carry_sign_reject": 32
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 41,
+        "funding_mixed": 25,
+        "carry_sign_reject": 32
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-05:short",
+      "bars": 88,
+      "opportunities": 18,
+      "entries": 6,
+      "exits": 6,
+      "primary": {
+        "allowed": 6,
+        "in_position_or_pending": 70,
+        "oi_nonrising": 12
+      },
+      "flags": {
+        "oi_nonrising": 12
+      },
+      "feature_reasons": {
+        "setup": 88
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-06:all",
+      "bars": 180,
+      "opportunities": 13,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup_price": 46,
+        "allowed": 3,
+        "in_position_or_pending": 40,
+        "oi_nonrising": 10,
+        "funding_mixed": 22,
+        "carry_sign_reject": 59
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "no_setup_price": 46,
+        "setup": 53,
+        "funding_mixed": 22,
+        "carry_sign_reject": 59
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-06:none",
+      "bars": 127,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 46,
+        "funding_mixed": 22,
+        "carry_sign_reject": 59
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 46,
+        "funding_mixed": 22,
+        "carry_sign_reject": 59
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-06:short",
+      "bars": 53,
+      "opportunities": 13,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 40,
+        "oi_nonrising": 10
+      },
+      "flags": {
+        "oi_nonrising": 10
+      },
+      "feature_reasons": {
+        "setup": 53
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-07:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "carry_sign_reject": 40,
+        "no_setup_price": 48,
+        "oi_nonrising": 3,
+        "funding_mixed": 13,
+        "allowed": 2,
+        "in_position_or_pending": 80
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 40,
+        "no_setup_price": 48,
+        "setup": 85,
+        "funding_mixed": 13
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-07:none",
+      "bars": 101,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 40,
+        "no_setup_price": 48,
+        "funding_mixed": 13
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 40,
+        "no_setup_price": 48,
+        "funding_mixed": 13
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-07:short",
+      "bars": 85,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 2,
+        "in_position_or_pending": 80
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 85
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-08:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "in_position_or_pending": 49,
+        "no_setup_price": 49,
+        "carry_sign_reject": 46,
+        "allowed": 2,
+        "funding_mixed": 35,
+        "oi_nonrising": 5
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "setup": 56,
+        "no_setup_price": 49,
+        "carry_sign_reject": 46,
+        "funding_mixed": 35
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-08:none",
+      "bars": 130,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 49,
+        "carry_sign_reject": 46,
+        "funding_mixed": 35
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 49,
+        "carry_sign_reject": 46,
+        "funding_mixed": 35
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-08:short",
+      "bars": 56,
+      "opportunities": 7,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "in_position_or_pending": 49,
+        "allowed": 2,
+        "oi_nonrising": 5
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "setup": 56
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-09:all",
+      "bars": 180,
+      "opportunities": 17,
+      "entries": 8,
+      "exits": 8,
+      "primary": {
+        "no_setup_price": 30,
+        "oi_nonrising": 9,
+        "allowed": 8,
+        "in_position_or_pending": 25,
+        "funding_mixed": 91,
+        "carry_sign_reject": 17
+      },
+      "flags": {
+        "oi_nonrising": 9
+      },
+      "feature_reasons": {
+        "no_setup_price": 30,
+        "setup": 42,
+        "funding_mixed": 91,
+        "carry_sign_reject": 17
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-09:long",
+      "bars": 16,
+      "opportunities": 5,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 11,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 16
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-09:none",
+      "bars": 138,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 30,
+        "funding_mixed": 91,
+        "carry_sign_reject": 17
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 30,
+        "funding_mixed": 91,
+        "carry_sign_reject": 17
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-09:short",
+      "bars": 26,
+      "opportunities": 12,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "oi_nonrising": 7,
+        "allowed": 5,
+        "in_position_or_pending": 14
+      },
+      "flags": {
+        "oi_nonrising": 7
+      },
+      "feature_reasons": {
+        "setup": 26
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-10:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "carry_sign_reject": 83,
+        "funding_mixed": 47,
+        "allowed": 4,
+        "in_position_or_pending": 27,
+        "no_setup_price": 21,
+        "daily_limit": 2,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 83,
+        "funding_mixed": 47,
+        "setup": 35,
+        "no_setup_price": 21
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-10:long",
+      "bars": 12,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 8,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      },
+      "feature_reasons": {
+        "setup": 12
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-10:none",
+      "bars": 151,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 83,
+        "funding_mixed": 47,
+        "no_setup_price": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 83,
+        "funding_mixed": 47,
+        "no_setup_price": 21
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-10:short",
+      "bars": 23,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 19,
+        "daily_limit": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 23
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-11:all",
+      "bars": 180,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 135,
+        "no_setup_price": 44,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 135,
+        "no_setup_price": 44,
+        "setup": 1
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-11:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 135,
+        "no_setup_price": 44
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 135,
+        "no_setup_price": 44
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-11:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 1
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-12:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "carry_sign_reject": 103,
+        "no_setup_price": 57,
+        "allowed": 4,
+        "in_position_or_pending": 15,
+        "oi_nonrising": 4,
+        "daily_limit": 2,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 4
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 103,
+        "no_setup_price": 57,
+        "setup": 26
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-12:none",
+      "bars": 160,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 103,
+        "no_setup_price": 57
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 103,
+        "no_setup_price": 57
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2023-12:short",
+      "bars": 26,
+      "opportunities": 8,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 15,
+        "oi_nonrising": 4,
+        "daily_limit": 2,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 4
+      },
+      "feature_reasons": {
+        "setup": 26
+      }
+    }
+  ],
+  "post_audit_forced_closes": 1,
+  "entry_count": 132,
+  "plans_checked": 132,
+  "plan_errors": 0,
+  "indicator_exits": 123,
+  "close_reasons": {
+    "funding_adverse": 78,
+    "stop-loss": 8,
+    "trend_adverse": 45,
+    "fold_end": 1
+  },
+  "entry_evidence_files": [
+    "V5_FUNDING_FPOI_ENTRY_EVIDENCE_01.json",
+    "V5_FUNDING_FPOI_ENTRY_EVIDENCE_02.json",
+    "V5_FUNDING_FPOI_ENTRY_EVIDENCE_03.json",
+    "V5_FUNDING_FPOI_ENTRY_EVIDENCE_04.json"
+  ],
+  "sample_publications": [
+    {
+      "kind": "V5_FUNDING_PUBLICATION",
+      "time": 1598932800000,
+      "valid": true,
+      "reason": "funding_state",
+      "rows": [
+        [
+          1598860800001,
+          1598860860000,
+          0.0001
+        ],
+        [
+          1598889600001,
+          1598889660000,
+          0.00015461
+        ],
+        [
+          1598918400000,
+          1598918460000,
+          0.0001
+        ]
+      ],
+      "sha256": "c5ccef300116133c1fb335866fe52f4946f818d0a445f26169c822d4c2e58963",
+      "settled_at": 1598918400000,
+      "direction": -1,
+      "available_at": 1598918460000,
+      "rate_decimal": 0.0001
+    },
+    {
+      "kind": "V5_FUNDING_PUBLICATION",
+      "time": 1651492800000,
+      "valid": true,
+      "reason": "funding_state",
+      "rows": [
+        [
+          1651420800010,
+          1651420860000,
+          0.0001
+        ],
+        [
+          1651449600018,
+          1651449660000,
+          0.0001
+        ],
+        [
+          1651478400007,
+          1651478460000,
+          0.00009
+        ]
+      ],
+      "sha256": "b4f84b1fc53b7968f424031f863edfa022e1c5ce161c903f11f1470563860e1d",
+      "settled_at": 1651478400007,
+      "direction": -1,
+      "available_at": 1651478460000,
+      "rate_decimal": 0.00009
+    },
+    {
+      "kind": "V5_FUNDING_PUBLICATION",
+      "time": 1704052800000,
+      "valid": true,
+      "reason": "funding_state",
+      "rows": [
+        [
+          1703980800000,
+          1703980860000,
+          0.00027855
+        ],
+        [
+          1704009600001,
+          1704009660000,
+          0.00034573
+        ],
+        [
+          1704038400000,
+          1704038460000,
+          0.00033597
+        ]
+      ],
+      "sha256": "9615e9b00a0c71be4769eeb8d17b3bdbba6215ea980d20a8a7b4185457fcba14",
+      "settled_at": 1704038400000,
+      "direction": -1,
+      "available_at": 1704038460000,
+      "rate_decimal": 0.00033597
+    }
+  ],
+  "coverage": "Every log page, publication hash, entry/plan/features and close checked. All entry evidence persisted in numbered chunks; other publication windows remain in original logs. Financial/order/equity reconciliation belongs to root. Price values checked from recorded contexts; pure/static checks certify window construction.",
+  "audited_at": "2026-10-21T01:05:45.106Z",
+  "audit_clock_note": "Log pages count back from newest, each page oldest-first; concatenated pages are not globally chronological. Final forced-close count uses reason=fold_end and time=provenance.finish, not array position."
+}

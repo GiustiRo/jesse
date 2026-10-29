@@ -1,0 +1,47 @@
+{
+  "id": "BTC_R32_A",
+  "title": "Aceptación temporal frente a cierre fuera",
+  "asset": "BTC",
+  "status": "cerrado",
+  "execution": "2 motores terminados; auditoría completa PASS",
+  "family": "R32 especialistas por comportamiento",
+  "question": "Aceptación temporal frente a cierre fuera",
+  "verdict": "NO_CUMPLE: ambos netos negativos y múltiples objetivos pendientes; ninguna candidata.",
+  "sessions": [
+    {
+      "name": "A_ACCEPTED",
+      "session_id": "339e9161-6e59-4acf-a75e-9ddcad2ad902",
+      "dashboard_url": "http://localhost:9200/#/backtest/339e9161-6e59-4acf-a75e-9ddcad2ad902",
+      "cagr": -0.05425310421326435,
+      "pf": 0.9985435418457833,
+      "dd_m1_pct": 20.71798732245892,
+      "N": 435,
+      "positive_active": 31,
+      "active_months": 62,
+      "positive_quarters": 9
+    },
+    {
+      "name": "A_CLOSE_ONLY",
+      "session_id": "56d170b7-1aa6-49c0-8ba9-116eaebaefee",
+      "dashboard_url": "http://localhost:9200/#/backtest/56d170b7-1aa6-49c0-8ba9-116eaebaefee",
+      "cagr": -0.7626250955920622,
+      "pf": 0.9878926254794554,
+      "dd_m1_pct": 25.014801486832873,
+      "N": 755,
+      "positive_active": 29,
+      "active_months": 62,
+      "positive_quarters": 11
+    }
+  ],
+  "sources": [
+    {
+      "label": "Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R32_A_FINAL_20261022.md"
+    },
+    {
+      "label": "Resultados yrecibos",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R32_A_RESULTS_20261022.json"
+    }
+  ],
+  "not_independent_samples": true
+}

@@ -27,7 +27,8 @@ LOCATION = (
 )
 
 
-def _call(action: str, route: str, payload: dict, timeout: float = REQUEST_TIMEOUT_SECONDS) -> dict:
+def _call(action: str, route: str, payload: dict, timeout: float = REQUEST_TIMEOUT_SECONDS, *,
+          domain_status_field: Optional[str] = None, accepted_domain_statuses: tuple[str, ...] = ()) -> dict:
     """POST to a Jesse API route and return its result, or an error with a stable error_type."""
     failed = {'status': 'error', 'action': action}
     if not mcp_config.JESSE_API_URL or not mcp_config.JESSE_PASSWORD:
@@ -51,6 +52,12 @@ def _call(action: str, route: str, payload: dict, timeout: float = REQUEST_TIMEO
     if not isinstance(data, dict):
         data = {}
 
+    if (response.status_code == 200 and domain_status_field and not data.get('error_type')
+            and data.get('status') in accepted_domain_statuses):
+        # Some result sections expose a domain state in the response's status
+        # slot. Preserve that state separately from MCP transport success;
+        # callers must opt in so other API failures keep their original meaning.
+        data = {**data, domain_status_field: data['status'], 'status': 'success'}
     if response.status_code == 200 and data.get('status') == 'success':
         return {'action': action, **data, 'location': LOCATION}
     if data.get('error_type'):

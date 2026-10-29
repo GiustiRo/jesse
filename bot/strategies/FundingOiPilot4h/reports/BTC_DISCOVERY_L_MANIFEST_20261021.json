@@ -1,0 +1,204 @@
+{
+  "phase": "pre_economic_execution",
+  "protocol": "BTC_DISCOVERY_L_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 19:03:56 UTC",
+  "sources": {
+    "BtcResearchR13RoundBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR13ExternalBase1m import HOUR, closed_hour_window\nfrom strategies.BtcResearchR10Base4h import atr14, entry_plan\n\n\ndef round_event(rows, consumed, offset):\n    \"\"\"Fixed grids, no favorable choice among multiple barriers in one bar.\"\"\"\n    consumed = dict(consumed)\n    atr = atr14(rows[:-1])\n    if atr is None:\n        return None, {}\n    previous, close = float(rows[-2, 2]), float(rows[-1, 2])\n    low, high = float(rows[-1, 4]), float(rows[-1, 3])\n    rearmed = set()\n    for level in list(consumed):\n        if abs(close-level) > atr:\n            consumed.pop(level)\n            rearmed.add(level)\n    first, last = math.ceil((low-offset)/1000), math.floor((high-offset)/1000)\n    if last-first+1 != 1:\n        return None, consumed\n    level = float(1000*first+offset)\n    if level in consumed or level in rearmed:\n        return None, consumed\n    direction = 0\n    if previous < level and high >= level+.25*atr and close < level:\n        direction = -1\n    elif previous > level and low <= level-.25*atr and close > level:\n        direction = 1\n    if not direction:\n        return None, consumed\n    consumed[level] = int(rows[-1, 0])+HOUR\n    return dict(direction=direction, distance=atr), consumed\n\n\nclass BtcResearchR13RoundBase1m(BtcResearchR11Base1m):\n    OFFSET = 0\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % HOUR:\n            return\n        rows = closed_hour_window(self.get_candles(self.exchange, self.symbol, \"1h\"), now)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            self.vars[\"round_consumed\"] = {}\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.OFFSET in (0, 500)\n        event, consumed = round_event(rows, self.vars.get(\"round_consumed\", {}), self.OFFSET)\n        self.vars[\"round_consumed\"] = consumed\n        if event is None or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = event[\"direction\"]\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, event[\"distance\"])\n        if plan is None or self.price+direction*2*plan[\"distance\"] <= 0:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n\n    def update_position(self):\n        if int(self.time) % HOUR == 0 and int(self.time)-int(self.position.opened_at) >= 12*HOUR:\n            self.liquidate()\n",
+    "BtcResearchR13Round1000m": "from strategies.BtcResearchR13RoundBase1m import BtcResearchR13RoundBase1m\n\n\nclass BtcResearchR13Round1000m(BtcResearchR13RoundBase1m):\n    OFFSET = 0\n",
+    "BtcResearchR13RoundShift1m": "from strategies.BtcResearchR13RoundBase1m import BtcResearchR13RoundBase1m\n\n\nclass BtcResearchR13RoundShift1m(BtcResearchR13RoundBase1m):\n    OFFSET = 500\n"
+  },
+  "check": {
+    "status": "passed",
+    "source_sha256": "4b6bff9fb5739ddc4aedad4636c1fca1438976f0da0f3d11b0bfcba4b61fbef8",
+    "checks": "AST, rejection mirror, shifted grid, multiple-level ambiguity, consume, strict rearm/equality/no samebar, preATR invariance"
+  },
+  "check_job": "96760aa41f6f419fa468edaa5c69d7dc",
+  "dependencies": {
+    "BtcResearchR11Base1m": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+    "BtcResearchR13ExternalBase1m_closed_hour_window": "aea8fe53975ab2a75efdccc1f254cd15c07299faa3acdeab6466be985f91106a",
+    "BtcResearchR10Base4h_helpers": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9"
+  },
+  "independent_review": "No material errors in levels/offset, previousATR, consumed/rearm,1ATR/2ATR/12h.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "431ae3a6-de3d-480c-a891-903804e5c655",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery L | BtcResearchR13Round1000m",
+      "description": "RechazonivelesBTC1000n vs1000n+500,rejillasequidensas. StopATRprev/TP2ATR/12h. ProtocoloLprevio,2%/6%/3x,fee.00045+funding,slippage0,sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792609416000,
+      "updated_at": 1792609417000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR13Round1000m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/431ae3a6-de3d-480c-a891-903804e5c655"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "038b592a-dc86-4d81-b93f-16abf2fcae99",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery L | BtcResearchR13RoundShift1m",
+      "description": "RechazonivelesBTC1000n vs1000n+500,rejillasequidensas. StopATRprev/TP2ATR/12h. ProtocoloLprevio,2%/6%/3x,fee.00045+funding,slippage0,sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792609417000,
+      "updated_at": 1792609417000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR13RoundShift1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/038b592a-dc86-4d81-b93f-16abf2fcae99"
+    }
+  ]
+}

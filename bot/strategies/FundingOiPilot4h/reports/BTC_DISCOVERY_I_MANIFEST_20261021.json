@@ -1,0 +1,200 @@
+{
+  "phase": "pre_economic_execution",
+  "protocol": "BTC_DISCOVERY_I_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 18:42:18 UTC",
+  "sources": {
+    "BtcResearchR12ParticipationBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef participation_event(rows, require_phase):\n    \"\"\"Same-UTC baselines are strictly prior to S, even for B's time slot.\"\"\"\n    window = rows[-170:]\n    volume = window[:, 5]\n    if not np.all(np.isfinite(volume)) or np.any(volume <= 0):\n        return None\n    setup, confirmation = window[-2], window[-1]\n    previous = float(window[-3, 2])\n    atr = atr14(window[:-2])\n    displacement = float(setup[2])-previous\n    if atr is None or abs(displacement) < atr:\n        return None\n    fraction = (float(confirmation[2])-float(setup[2]))/(-displacement)\n    if not .5 <= fraction < 1:\n        return None\n    # The170-row exact4h window makes these28 prior daily observations\n    # of each distinct UTC slot. Neither event bar enters either baseline.\n    setup_reference = volume[np.arange(0, 168, 6)]\n    confirmation_reference = volume[np.arange(1, 169, 6)]\n    setup_median = float(np.median(setup_reference))\n    confirmation_median = float(np.median(confirmation_reference))\n    if require_phase and not (setup[5] <= .5*setup_median and confirmation[5] >= confirmation_median):\n        return None\n    return dict(direction=-1 if displacement > 0 else 1, distance=2*atr)\n\n\nclass BtcResearchR12ParticipationBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 170)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"PHASE\", \"PRICE\")\n        event = participation_event(rows, self.MODE == \"PHASE\")\n        if event is None or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = event[\"direction\"]\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, event[\"distance\"])\n        if plan is None or self.price+direction*2*plan[\"distance\"] <= 0:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n",
+    "BtcResearchR12Participation1m": "from strategies.BtcResearchR12ParticipationBase1m import BtcResearchR12ParticipationBase1m\n\n\nclass BtcResearchR12Participation1m(BtcResearchR12ParticipationBase1m):\n    MODE = \"PHASE\"\n",
+    "BtcResearchR12RepairPrice1m": "from strategies.BtcResearchR12ParticipationBase1m import BtcResearchR12ParticipationBase1m\n\n\nclass BtcResearchR12RepairPrice1m(BtcResearchR12ParticipationBase1m):\n    MODE = \"PRICE\"\n"
+  },
+  "check": {
+    "status": "passed",
+    "source_sha256": "3928d2b3fd4ba9ffab43b89e134e982fb65e941cccaba9ba38e3c845bf9acfba",
+    "checks": "AST, mirrors, halfrepair/fullrepair boundaries, phase vs price control, invalid volumes,28 strictly prior sameUTC baselines, future exclusion, pre-SATR invariant"
+  },
+  "check_job": "29ddfe3edf6046fb8d02e16eff4cb3cb",
+  "parent_hash": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+  "independent_review": "No material errors; both28-day baselines strictly preS, causal recovery, shareddata/protection.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "17494d8a-eaf8-437e-8b7d-fac709a8d092",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery I | BtcResearchR12Participation1m",
+      "description": "Creativa: impulsobajaparticipación→reparaciónalvolvervolumen vs precio solo. Medianas28d mismobloqueUTC anterioresS. ProtocoloIprevio,2%/6%/3x,fee.00045+funding,slippage0,sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792608137000,
+      "updated_at": 1792608137000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR12Participation1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/17494d8a-eaf8-437e-8b7d-fac709a8d092"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "a091d445-a502-4214-b153-182eb3d2af8d",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery I | BtcResearchR12RepairPrice1m",
+      "description": "Creativa: impulsobajaparticipación→reparaciónalvolvervolumen vs precio solo. Medianas28d mismobloqueUTC anterioresS. ProtocoloIprevio,2%/6%/3x,fee.00045+funding,slippage0,sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792608138000,
+      "updated_at": 1792608138000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR12RepairPrice1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/a091d445-a502-4214-b153-182eb3d2af8d"
+    }
+  ]
+}

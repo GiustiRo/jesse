@@ -329,7 +329,10 @@ def get_backtest_sessions(limit: int = 50, offset: int = 0, title_search: str = 
     Returns a list of BacktestSession objects sorted by most recently updated.
     Excludes draft sessions by default.
     """
-    query = BacktestSession.select().where(BacktestSession.status != 'draft').order_by(BacktestSession.updated_at.desc())
+    # Explicit draft selection is used to configure feeds before executing.
+    query = BacktestSession.select().order_by(BacktestSession.updated_at.desc())
+    if status_filter != 'draft':
+        query = query.where(BacktestSession.status != 'draft')
     
     # Apply title filter (case-insensitive)
     if title_search:

@@ -146,6 +146,9 @@ cython_debug/
 testing-*.py
 /storage/full-reports/*.html
 /storage/logs/*
+/storage/funding/
+/storage/open-interest/
+/storage/live-funding/
 
 # lsp
 jesse/lsp/
@@ -160,3 +163,66 @@ pyrightconfig.json
 !/bot/storage/logs/.gitkeep
 /bot/storage/trading_switches.json
 /bot/docs/raspberry-pi.md
+/bot/storage/backtest-charts/
+/bot/storage/mcp/
+/bot/storage/temp/
+/bot/storage/funding/
+/bot/storage/open-interest/
+/bot/storage/live-funding/
+
+# Reproducible local research outputs; keep strategies, scripts and audit summaries.
+/bot/storage/json/
+/bot/storage/research-jobs/
+/bot/research_scripts/candle_exports/
+/bot/research_scripts/data/**/*.zip
+/bot/research_scripts/data/**/*.bi5
+/bot/research_scripts/data/**/*.partial
+/bot/research_scripts/data/**/*_1m_*.csv
+!/bot/research_scripts/data/**/*.daily_counts.csv
+!/bot/research_scripts/data/**/*.ny_hour_counts.csv
+
+# Research report dumps: chunked copies of Jesse session logs, records, funding
+# payments and analysis artifacts. They are regenerable from the Jesse DB and the
+# pre-cleanup history lives at tag research-archive-r48. Protocols, verdicts and
+# TRIAL_REGISTRY.json stay tracked.
+/bot/strategies/**/reports/*_PART_[0-9][0-9]*.json
+/bot/strategies/**/reports/*_LOGS_[0-9][0-9].json
+/bot/strategies/**/reports/*RAW_RECEIPT*.json
+
+# r52 raw universe data (data.binance.vision), regenerable with r52_download.py
+bot/research_scripts/data/r52/*.npy
+bot/research_scripts/data/r52/download.log
+bot/research_scripts/data/r51/*.csv
+bot/research_scripts/data/r51/cache/
+bot/research_scripts/data/r51/*.npy
+bot/research_scripts/data/r55/*.npy
+bot/research_scripts/data/r56/*.npz
+bot/research_scripts/data/r56/*.npy
+bot/research_scripts/data/r56/n2/*.npy
+
+# r57/r58 regenerable arrays and raw downloads
+bot/research_scripts/data/r57/*.npz
+bot/research_scripts/data/r57/*.npy
+bot/research_scripts/data/r58/*.npy
+bot/research_scripts/data/r58/*.npz
+bot/research_scripts/data/r58/*.csv
+bot/research_scripts/data/r58/n3/*.npy
+# r59 oracle: sealed holdout statistics stay off git (PROTOCOL_R59 §1.2)
+bot/research_scripts/data/r59/oracle_sealed/
+bot/research_scripts/data/r59/capture/
+# r60 F0b: raw unlock documents (48 MB, untrusted third-party data; only the normalized CSVs are versioned)
+bot/research_scripts/data/r60/unlocks/raw/
+bot/research_scripts/data/r62/raw/
+bot/research_scripts/data/r62/bars/
+bot/research_scripts/data/r62/synth/
+bot/research_scripts/data/r62/factory_log*.jsonl
+bot/research_scripts/data/r62/oi_*.npz
+bot/research_scripts/data/r62/runs/*/state.*
+bot/research_scripts/data/r62/runs/*/log.jsonl
+bot/research_scripts/data/r62/runs/*/aliases_*.pkl
+bot/research_scripts/data/r59/series/r62.npz
+# r63: regenerable bars (r63_data.py), synthetic panels, run state and the factory series store
+bot/research_scripts/data/r63/bars/
+bot/research_scripts/data/r63/synth/
+bot/research_scripts/data/r63/runs/*/state.*
+bot/research_scripts/data/r63/runs/*/log.jsonl

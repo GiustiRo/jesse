@@ -1,0 +1,5 @@
+# Continuidad r15
+
+O2económicas terminadas/snapshotscompletos/M1verificados/reportesporMCPguardados;sin candidata.28desde r9. NorescatarvecinosOniN. MCPrecuperado, sinrestart/ejecucionesduplicadas. Pprotocolo BTC_DISCOVERY_P_PROTOCOL_20261021.md aprobado porroot conenmiendanoprecheckcandles;geometry_implementationpreparafuentes/checks,btc_next_materialreviewreadonly. ÚnicoanálisisslotreservadoPcheck;noeconomíadraftsP hasta revisiónsource/readback/hash/manifiesto reales.2motoresslotslibres. K/Nlegacy completoBTCaislado, no cifrascarteracomoindividual;ta.atr y LIMIT/STOP/gestión4hpreservados,M1/funding100%BTCadaptacionesdeclaradas,riesgo2%/6%/3x/10k/.00045+fundingON. .001reserva sizing no slippageaplicado;noquitarla trasPnL.
+
+No estrés/nuevos2026/live/paper/Pi/global/instalaciones;Dockerlocalrestart autorizado sólosifallaMCP,identificarservicioysesionesantes. Objetivoautónomonoalcanzado,continuartraspreguntamaterialsinrepetirrecetas. Hubinmutablearchivosprimero/índiceúltimo.

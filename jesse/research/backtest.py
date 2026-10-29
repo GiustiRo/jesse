@@ -248,6 +248,10 @@ def _execute_isolated_backtest(
             )
 
     # run backtest simulation
+    start = max(int(v['candles'][0, 0]) for v in trading_candles_dict.values())
+    finish = max(int(v['candles'][-1, 0]) + 60_000 for v in trading_candles_dict.values())
+    store.funding.configure(config.get('funding'), start, finish, router.routes)
+    store.open_interest.configure(config.get('open_interest'), start, finish, router.routes)
     backtest_result = simulator(
         trading_candles_dict,
         run_silently,

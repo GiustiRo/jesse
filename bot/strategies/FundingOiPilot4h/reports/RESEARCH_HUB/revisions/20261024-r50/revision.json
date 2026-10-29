@@ -1,0 +1,284 @@
+{
+  "format_version": 1,
+  "id": "20261024-r50",
+  "updated_at_utc": "2026-10-25 23:15:00 UTC",
+  "objective": "Varios motores con perfiles distintos (tendencia v2, reversión de corto plazo, corto con régimen, valor relativo ETH/BTC) sobre un núcleo de 7 activos operables en Binance USDT-M, validados con motores congelados en 3 activos no vistos. Se mantiene la ambición r9 de cartera (CAGR 30%, DD 20%, M65, Q80) y se reporta en cada fase qué tan lejos queda.",
+  "latest": "r50 cerrada. Candidata final P1 = R1 (7 activos) + C6 (rupturas cripto), 100% futuros, congelada en 5caf4a53: 2018-09+ CAGR 36,9% / DD −14,3% / Sharpe 1,60 / DSR 0,99 (6/8 metas r9); 2021–25 24,6% / 1,44 (3/8). Nunca se alcanzan M65/Q80. Revalidación en activos de validación ya usados (opción c, no independiente): Sharpe 1,40–1,56. N=98, 0/10 Jesse.",
+  "next": "r51 a definir con el usuario: F4 (Jesse) y validación independiente de P1 con activos operables nuevos y 2026; decisión sobre bono y WTI; paper trading con autorización.",
+  "blockers": "Ninguno. F4 y la validación independiente pasan a r51.",
+  "counts": {
+    "r50": {
+      "n_declared_start": 57,
+      "jesse_runs_budget_f4": 10,
+      "jesse_runs_used": 0,
+      "phase0_report": "strategies/FundingOiPilot4h/reports/R50_PHASE0_RESULTS_20261025.md",
+      "phase1_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1_RESULTS_20261025.md",
+      "n_declared_after_f1": 63,
+      "phase1b_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1B_RESULTS_20261025.md",
+      "n_declared_after_f1b": 73,
+      "phase1c_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1C_RESULTS_20261025.md",
+      "n_declared_after_f1c": 80,
+      "phase2_report": "strategies/FundingOiPilot4h/reports/R50_PHASE2_RESULTS_20261025.md",
+      "n_declared_after_f2": 81,
+      "phase3_report": "strategies/FundingOiPilot4h/reports/R50_PHASE3_RESULTS_20261025.md",
+      "phase1d_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1D_RESULTS_20261025.md",
+      "n_declared_after_f1d": 90,
+      "phase1e_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1E_RESULTS_20261025.md",
+      "n_declared_after_f1e": 92,
+      "phase1f_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1F_RESULTS_20261025.md",
+      "n_declared_after_f1f": 94,
+      "phase1g_report": "strategies/FundingOiPilot4h/reports/R50_PHASE1G_RESULTS_20261025.md",
+      "n_declared_after_f1g": 98,
+      "close_report": "strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md",
+      "n_final": 98
+    }
+  },
+  "decisions": [
+    "2026-10-25 r50 cerrada por decisión del usuario: candidata P1 = R1 + C6 (congelada 5caf4a53), revalidada en activos ya usados (opción c); validación con activos nuevos y F4 pasan a la próxima ronda.",
+    "2026-10-25 r50 F1g: las anomalías de calendario/pánico en acciones no tienen ventaja sostenida; la diversificación con ventaja está dentro de R1 (7 activos) + C6.",
+    "2026-10-25 r50 F1f: ampliar la tendencia a todo el universo TradFi operable no mejora; la ventaja fuerte está en cripto.",
+    "2026-10-25 r50: toda la operativa debe funcionar en futuros USDT-M de Binance (usuario). Spot solo como proxy de datos. K1/K1r y P3 quedan fuera de alcance; la candidata operable es P1 = R1 + C6.",
+    "2026-10-25 r50 F1e: K1r pasa compuertas de carry; P3 queda a un paso (CAGR común 23,9% por techo de apalancamiento). No se avanza a confirmación sin decisión del usuario.",
+    "2026-10-25 r50 F1d: M65/Q80 pasan a seguimiento y 2026 autorizado solo para confirmar R1/R2/R3 (usuario). La cartera R1+C6 no pasa en la ventana común; no se avanza a confirmación.",
+    "2026-10-25 r50 F3: no pasa; no se re-ajusta. M2a y N1 refutados fuera del núcleo; R1, R2 y R3 generalizan.",
+    "2026-10-25 r50 F2: cartera final C0+C6 (N4 no mejora); pasa CAGR, DD, PF, mediana, sin 2 mejores y DSR; fallan M65 (56%) y Q80 (75%).",
+    "2026-10-25 r50 F1c: pasan C0 (cartera por clase) y C6 (rupturas cripto); la asignación de C0 se eligió mirando F1/F1b y se declara in-sample; F3 es la prueba honesta para acciones y metales.",
+    "2026-10-25 r50 F1b: solo N4 (R1+M2a) pasa; corrección técnica del evaluador de puertas (top-5 omitida por numpy.bool_), re-evaluado sobre las mismas métricas.",
+    "2026-10-25 r50 F1: ninguna manga pasa las puertas prerregistradas; por regla no se rescatan variantes vecinas; se espera decisión del usuario.",
+    "2026-10-25 r50 F0: bono solo Dukascopy 2018+, sin lente larga (decisión del usuario); platino excluido por datos; validación con plata, Nasdaq, cobre, EWJ y EWY (EWJ/EWY diarios de Yahoo); slippage extra por lado: bono 15 bp, gas/cobre 5 bp, EWJ 10 bp (enmienda 4b, antes de resultados).",
+    "2026-10-24 r50 aprobado por el usuario: varios motores (M1 tendencia v2, M2 reversión de corto plazo, M3 corto con régimen, M4 valor relativo ETH/BTC; M5 funding solo como freno o filtro) sin dar ninguno por sentado.",
+    "2026-10-24 r50: universo de 10 activos. Núcleo de diseño y calibración: BTC, ETH, oro, SPX, WTI, gas natural y bono largo EE.UU. Validación, solo con motores congelados en F3: plata, Nasdaq 100 y cobre.",
+    "2026-10-24 r50: dos lentes. Ventana común (decide): 2020-10 → 2025, o 2018 → 2025 en motores cripto con spot. Ventana larga por activo (solo veta): oro, SPX, WTI y gas desde 2012; BTC/ETH spot desde 2017-08. Una manga entra solo si pasa la común y no falla en la larga.",
+    "2026-10-24 r50: BTC/ETH spot de Binance desde 2017-08 como símbolos separados, sin funding y sin empalmar con el perpetuo.",
+    "2026-10-24 r50: 2026 queda reservado por definición; ningún dato posterior al 2025-12-31 se mira ni se usa hasta que el usuario lo apruebe.",
+    "2026-10-24 r50: Jesse ≤10 corridas en F4, máximo 2 simultáneas; la iteración usa el arnés, que debe reproducir Jesse con error de equity < 0,5% antes de decidir nada.",
+    "Historial r1–r49: ver HISTORY_SUMMARY.md de r49, R49_CLOSE_20261024.md y las revisiones anteriores."
+  ],
+  "lines": [
+    "M1 tendencia v2: velocidades 10–20 d / media / lenta, señal continua, vol targeting y reducción por correlación; solo-largo en BTC, oro y SPX; L/S en WTI, gas y bono.",
+    "M2 reversión de corto plazo: IBS/RSI(2) con filtro de 200 d, salida a 1–5 días; canasta oro, SPX, WTI, gas y bono.",
+    "M3 corto con régimen: bajo la media de 200 d y la de 50 d cayendo; ruptura de mínimos 10–20 d; salida rápida; funding real.",
+    "M4 valor relativo ETH/BTC: momentum del ratio a 4–12 semanas."
+  ],
+  "methodology": [
+    "Arnés vectorizado en research_scripts/r50_harness.py validado contra Jesse (tabla de reproducción en el informe de F0).",
+    "Deflated Sharpe con N declarado (parte de 57) en TRIAL_REGISTRY.json; cada variante suma.",
+    "Costes: taker 0,045% o maker 0,018% según la orden, funding real en cripto, slippage de stop 3–5 bps.",
+    "Protocolo de screening commiteado antes de mirar resultados (F1)."
+  ],
+  "supersedes": "20261024-r49",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 infraestructura y datos",
+      "state": "completada",
+      "depends": "MCP jesse-local",
+      "gate": "Tabla de reproducción arnés vs Jesse (< 0,5%) e inventario de los 10 activos."
+    },
+    {
+      "order": 1,
+      "title": "F1 screening de motores",
+      "state": "completada: ninguna manga pasa",
+      "depends": "F0 y protocolo commiteado",
+      "gate": "Puertas de falsación por motor×activo en las dos ventanas."
+    },
+    {
+      "order": 1.5,
+      "title": "F1b 10 candidatas todo terreno",
+      "state": "completada: pasa N4",
+      "depends": "F1 y aprobación del usuario",
+      "gate": "PHASE1B_PROTOCOL.md §3"
+    },
+    {
+      "order": 1.7,
+      "title": "F1c asignación por clase y 6 familias",
+      "state": "completada: pasan C0 y C6",
+      "depends": "F1b y aprobación del usuario",
+      "gate": "PHASE1C_PROTOCOL.md §3"
+    },
+    {
+      "order": 2,
+      "title": "F2 combinación",
+      "state": "completada: 7/9 puertas r9 (fallan M65 y Q80)",
+      "depends": "F1 reportada al usuario",
+      "gate": "Puertas r9 y DSR de cartera en las dos ventanas."
+    },
+    {
+      "order": 2.5,
+      "title": "F1d agenda cerrada",
+      "state": "completada: la cartera final no pasa en la ventana común",
+      "depends": "F3 y aprobación del usuario",
+      "gate": "PHASE1D_PROTOCOL.md §3"
+    },
+    {
+      "order": 2.7,
+      "title": "F1e carry de funding realista y P3",
+      "state": "completada: K1r pasa; P3 falla solo CAGR común (24%)",
+      "depends": "F1d y aprobación del usuario",
+      "gate": "PHASE1E_PROTOCOL.md"
+    },
+    {
+      "order": 2.8,
+      "title": "F1f repaso en futuros y universo amplio",
+      "state": "completada: no mejora",
+      "depends": "F1e",
+      "gate": "PHASE1F_PROTOCOL.md"
+    },
+    {
+      "order": 2.9,
+      "title": "F1g descorrelacionadas fuera de cripto",
+      "state": "completada: ninguna pasa",
+      "depends": "F1f",
+      "gate": "PHASE1G_PROTOCOL.md"
+    },
+    {
+      "order": 3,
+      "title": "F3 validación en plata, Nasdaq y cobre",
+      "state": "completada: no pasa (la reversión no generaliza)",
+      "depends": "F2, motores congelados",
+      "gate": "Sharpe > 0 en la mayoría de motor×activo, sin derrumbes."
+    },
+    {
+      "order": 4,
+      "title": "F4 confirmación en Jesse",
+      "state": "pendiente",
+      "depends": "F3",
+      "gate": "Arnés y Jesse coinciden por manga (≤10 corridas)."
+    },
+    {
+      "order": 5,
+      "title": "F5 freno y congelamiento",
+      "state": "pendiente",
+      "depends": "F4",
+      "gate": "Código, parámetros y pesos congelados; 2026 o paper los decide el usuario."
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r50: plan aprobado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PLAN.md"
+    },
+    {
+      "label": "r50: handoff de ejecución",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/HANDOFF.md"
+    },
+    {
+      "label": "r49: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R49_CLOSE_20261024.md"
+    },
+    {
+      "label": "Historial r1–r48 resumido",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r49/HISTORY_SUMMARY.md"
+    },
+    {
+      "label": "Registro de ensayos",
+      "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    },
+    {
+      "label": "r50 F0: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE0_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1: protocolo de screening (fijado antes de resultados)",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1b: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1B_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1b: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1B_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1c: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1C_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1c: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1C_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F2: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE2_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F2: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE2_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F3: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE3_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F3: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE3_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1d: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1D_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1d: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1D_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1e: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1E_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1e: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1E_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1f: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1F_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1f: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1F_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50 F1g: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/PHASE1G_PROTOCOL.md"
+    },
+    {
+      "label": "r50 F1g: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R50_PHASE1G_RESULTS_20261025.md"
+    },
+    {
+      "label": "r50: congelamiento de P1",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261024-r50/P1_FREEZE.md"
+    },
+    {
+      "label": "r50: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r50_multimotor",
+    "execution_status": "r50_closed",
+    "current_focus": "Infraestructura: arnés validado y descargas del universo de 10 activos",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Descargas de los 10 activos del plan e importación de BTC/ETH spot.",
+      "Push de la rama exploration/gpt-6.1-sol.",
+      "≤10 corridas Jesse en F4, máximo 2 simultáneas."
+    ],
+    "excluded": [
+      "Live/paper y la Pi.",
+      "Configuración global, reinicios del servidor e instalación de paquetes sin autorización específica.",
+      "Datos posteriores al 2025-12-31.",
+      "Usar plata, Nasdaq o cobre para diseñar o calibrar."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r50 aprobado por el usuario el 2026-10-24; reportar al cerrar cada fase y no pasar a F2 sin reportar F1.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "closed"
+  }
+}

@@ -114,7 +114,7 @@ def register_session_results_tools(mcp):
                 "significance_test", or "live" (live and paper trading sessions).
             session_id (str): The session UUID (from the list tools or the run tools).
             section (str): "summary" (default) or, per type:
-                backtest: "trades", "equity_curve", "hyperparameters", "logs"
+                backtest: "trades", "equity_curve", "hyperparameters", "logs", "funding", "open_interest"
                 optimization: "best_trials" (best first, with training/testing metrics),
                     "objective_curve", "logs"
                 monte_carlo: "confidence_analysis", "scenario_metrics" (original + each

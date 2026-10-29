@@ -1,0 +1,49 @@
+{
+  "code": "import json,math\nfrom pathlib import Path\nrows=[]\nfor p in sorted(Path(\"inputs\").glob(\"s*.json\")):\n d=json.load(open(p)); ts={t[\"id\"]:t for t in d[\"trades\"]};bad=[];err=0.;qerr=0.\n for x in d[\"metrics\"][\"funding\"][\"ledger\"]:\n  t=ts[x[\"trade_id\"]]; sign=1 if t[\"type\"]==\"long\" else -1\n  err=max(err,abs(x[\"cashflow\"]+x[\"qty\"]*x[\"mark_price\"]*x[\"rate_decimal\"]));qerr=max(qerr,abs(x[\"qty\"]-sign*t[\"qty\"]))\n  if not t[\"opened_at\"]<=x[\"settled_at\"]<=t[\"closed_at\"]:bad.append({\"ledger\":x,\"trade\":{k:t[k] for k in (\"id\",\"type\",\"opened_at\",\"closed_at\",\"qty\")},\"start_delta\":x[\"settled_at\"]-t[\"opened_at\"],\"end_delta\":x[\"settled_at\"]-t[\"closed_at\"]})\n rows.append({\"session\":d[\"summary\"][\"session_id\"],\"bad_raw_time_count\":len(bad),\"first_bad\":bad[:4],\"max_formula_error\":err,\"max_qty_error\":qerr})\nprint(json.dumps(rows))\n",
+  "result": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "899493ff13e6404db57ee22078fc24fa",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/899493ff13e6404db57ee22078fc24fa",
+      "inputs": [
+        {
+          "name": "s0",
+          "file": "inputs/s0.json",
+          "session_type": "backtest",
+          "session_id": "eea52bae-9a68-4d87-959b-208a497c6594",
+          "session_status": "finished",
+          "title": "MCP Backtest: V3 CONFIRM CHANNEL_P C2T",
+          "size_bytes": 750020
+        },
+        {
+          "name": "s1",
+          "file": "inputs/s1.json",
+          "session_type": "backtest",
+          "session_id": "e9aac0d1-947b-447b-8268-ed7bb3b9d491",
+          "session_status": "finished",
+          "title": "MCP Backtest: V3 CONFIRM CHANNEL_POI C2T",
+          "size_bytes": 654162
+        }
+      ],
+      "status": "succeeded",
+      "pid": 6805,
+      "exit_code": 0,
+      "started_at": "2026-10-20T23:33:38+00:00",
+      "finished_at": "2026-10-20T23:33:38+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-21T23:33:38+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [],
+    "artifacts_truncated": false,
+    "output": "[{\"session\": \"eea52bae-9a68-4d87-959b-208a497c6594\", \"bad_raw_time_count\": 5, \"first_bad\": [{\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1608451200011, \"rate_decimal\": 0.00037486, \"mark_price\": 23644.76379576, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": 0.28353392, \"cashflow\": -2.513096139472909, \"trade_id\": \"d2706ae3-e066-4c13-96cd-a8fc14eb22d9\", \"effective_at\": 1608451200000}, \"trade\": {\"id\": \"d2706ae3-e066-4c13-96cd-a8fc14eb22d9\", \"type\": \"long\", \"opened_at\": 1607846400000.0, \"closed_at\": 1608451200000.0, \"qty\": 0.28353392}, \"start_delta\": 604800011.0, \"end_delta\": 11.0}, {\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1621440000018, \"rate_decimal\": -0.00089697, \"mark_price\": 37304.58, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": -0.06097247, \"cashflow\": -2.040205252695055, \"trade_id\": \"ee294b2a-1ed8-4d92-a42e-b4a8c5a48f9b\", \"effective_at\": 1621440000000}, \"trade\": {\"id\": \"ee294b2a-1ed8-4d92-a42e-b4a8c5a48f9b\", \"type\": \"short\", \"opened_at\": 1621195200000.0, \"closed_at\": 1621440000000.0, \"qty\": 0.06097247}, \"start_delta\": 244800018.0, \"end_delta\": 18.0}, {\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1652371200007, \"rate_decimal\": -0.00014678, \"mark_price\": 29018.03511518, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": -0.11269701, \"cashflow\": -0.48000667757811905, \"trade_id\": \"c0183793-da3d-4e08-be2c-168287ba82dd\", \"effective_at\": 1652371200000}, \"trade\": {\"id\": \"c0183793-da3d-4e08-be2c-168287ba82dd\", \"type\": \"short\", \"opened_at\": 1651766400000.0, \"closed_at\": 1652371200000.0, \"qty\": 0.11269701}, \"start_delta\": 604800007.0, \"end_delta\": 7.0}, {\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1665676800009, \"rate_decimal\": 3.936e-05, \"mark_price\": 18943.1, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": -0.55806271, \"cashflow\": 0.4160917887300873, \"trade_id\": \"9ba0550a-bb17-4be7-ac3b-1f4f370364d9\", \"effective_at\": 1665676800000}, \"trade\": {\"id\": \"9ba0550a-bb17-4be7-ac3b-1f4f370364d9\", \"type\": \"short\", \"opened_at\": 1665662400000.0, \"closed_at\": 1665676800000.0, \"qty\": 0.55806271}, \"start_delta\": 14400009.0, \"end_delta\": 9.0}], \"max_formula_error\": 0.0, \"max_qty_error\": 0.0}, {\"session\": \"e9aac0d1-947b-447b-8268-ed7bb3b9d491\", \"bad_raw_time_count\": 4, \"first_bad\": [{\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1608451200011, \"rate_decimal\": 0.00037486, \"mark_price\": 23644.76379576, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": 0.29908136, \"cashflow\": -2.650900503207191, \"trade_id\": \"bb7a2f6a-96d9-4d62-a8b1-f5c7f1ff7652\", \"effective_at\": 1608451200000}, \"trade\": {\"id\": \"bb7a2f6a-96d9-4d62-a8b1-f5c7f1ff7652\", \"type\": \"long\", \"opened_at\": 1607846400000.0, \"closed_at\": 1608451200000.0, \"qty\": 0.29908136}, \"start_delta\": 604800011.0, \"end_delta\": 11.0}, {\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1621440000018, \"rate_decimal\": -0.00089697, \"mark_price\": 37304.58, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": -0.06390831, \"cashflow\": -2.138441656584749, \"trade_id\": \"0801af79-ee94-40a7-ad77-b80098dc8409\", \"effective_at\": 1621440000000}, \"trade\": {\"id\": \"0801af79-ee94-40a7-ad77-b80098dc8409\", \"type\": \"short\", \"opened_at\": 1621195200000.0, \"closed_at\": 1621440000000.0, \"qty\": 0.06390831}, \"start_delta\": 244800018.0, \"end_delta\": 18.0}, {\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1652371200007, \"rate_decimal\": -0.00014678, \"mark_price\": 29018.03511518, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": -0.1184863, \"cashflow\": -0.5046648105528646, \"trade_id\": \"51c46cb3-3c22-49b7-a3c0-83c57338fde7\", \"effective_at\": 1652371200000}, \"trade\": {\"id\": \"51c46cb3-3c22-49b7-a3c0-83c57338fde7\", \"type\": \"short\", \"opened_at\": 1651766400000.0, \"closed_at\": 1652371200000.0, \"qty\": 0.1184863}, \"start_delta\": 604800007.0, \"end_delta\": 7.0}, {\"ledger\": {\"exchange\": \"Binance Perpetual Futures\", \"symbol\": \"BTC-USDT\", \"settled_at\": 1665676800009, \"rate_decimal\": 3.936e-05, \"mark_price\": 18943.1, \"mark_price_source\": \"markPriceKlines.1h_open_proxy\", \"qty\": -0.59314777, \"cashflow\": 0.44225122406147227, \"trade_id\": \"0f52a482-af4f-48d8-99b1-c7c71ef980f6\", \"effective_at\": 1665676800000}, \"trade\": {\"id\": \"0f52a482-af4f-48d8-99b1-c7c71ef980f6\", \"type\": \"short\", \"opened_at\": 1665662400000.0, \"closed_at\": 1665676800000.0, \"qty\": 0.59314777}, \"start_delta\": 14400009.0, \"end_delta\": 9.0}], \"max_formula_error\": 0.0, \"max_qty_error\": 0.0}]\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "interpretation": "Raw settled_at vendor jitter11/18/7/9 milliseconds may be after closing timestamp. Engine effective_at is minute-normalized time; all cashflow and signed quantities reconcile exactly. Correct auditor to use effective_at for holding interval and require raw-effective within documented1000ms. No strategy or economics altered; failed audit preserved."
+}

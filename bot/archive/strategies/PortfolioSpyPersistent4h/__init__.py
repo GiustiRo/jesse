@@ -1,0 +1,410 @@
+import math
+from datetime import datetime, timezone
+import numpy as np
+from jesse.strategies import Strategy, cached
+from jesse import utils
+import jesse.indicators as ta
+import jesse.helpers as jh
+
+# User-approved research limits; risk is not an optimization parameter.
+TRADE_RISK = 0.03
+PORTFOLIO_RISK = 0.08
+NOTIONAL_CAP = 4.4  # Leaves a margin buffer within the configured isolated 5x leverage.
+SLIPPAGE_RESERVE = 0.001  # 10 bps round trip for sizing only, not simulated fill friction.
+
+
+class PortfolioSpyPersistent4h(Strategy):
+    """Baseline; SPY tests persistent MARKET participation with a fixed7d pause.
+
+    Shared risk and margin reservations; exploratory research, not approved live.
+    SPY uses a session-filtered SPX CFD proxy; holidays and native parity remain
+    unverified. Parameter-neighbour variants are sensitivity controls, not winners.
+    """
+
+
+    def _spy_stats(self):
+        return self.vars.setdefault('spy_persistent_stats', {
+            'year': None, 'annual': {}, 'total': {},
+        })
+
+    def _spy_log(self, label, values):
+        jh.debug('PORTFOLIO_SPY_PERSISTENT ' + label + ' ' + repr(values))
+
+    def _spy_roll_year(self):
+        stats = self._spy_stats()
+        year = datetime.fromtimestamp(self.time / 1000, timezone.utc).year
+        if stats['year'] is not None and year != stats['year']:
+            self._spy_log('year_' + str(stats['year']), stats['annual'])
+            stats['annual'] = {}
+        stats['year'] = year
+        return stats
+
+    def _spy_bump(self, key):
+        stats = self._spy_roll_year()
+        for bucket in ('annual', 'total'):
+            stats[bucket][key] = stats[bucket].get(key, 0) + 1
+
+    def before(self):
+        if self.symbol == 'SPY-USDT':
+            assert self.timeframe == '4h', 'SPY_PERSISTENT_REQUIRES_4H'
+            self._spy_roll_year()
+
+    def _spy_plan(self):
+        """Economic participation control, not a forecast of another alpha."""
+        self._spy_bump('eligible_flat_callbacks')
+        last_close = self.vars.get('spy_last_closed_at')
+        # One complete weekly cycle is a fixed churn buffer after EVERY actual
+        # full close; no day/month selection, reset by outcomes, or initial wait.
+        if last_close is not None and self.time < last_close + 7 * 24 * 60 * 60 * 1000:
+            self._spy_bump('cooldown_blocked')
+            return False
+        minutes = self.get_candles(self.exchange, self.symbol, '1m')
+        if len(minutes) == 0:
+            self._spy_bump('missing_m1_quote')
+            return False
+        # Auxiliary arrays may expose a forming row at/after T. Select the
+        # exact CLOSED T-60s row by timestamp; never inspect forming quote prices.
+        expected_quote_at = int(self.time) - 60 * 1000
+        quote_index = int(np.searchsorted(minutes[:, 0], expected_quote_at, side='left'))
+        if quote_index >= len(minutes) or minutes[quote_index, 0] != expected_quote_at:
+            self._spy_bump('stale_m1_quote')
+            return False
+        quote = minutes[quote_index]
+        if not np.isfinite(quote[:5]).all() or np.any(quote[1:5] <= 0):
+            self._spy_bump('invalid_m1_quote')
+            return False
+        # An available partial/gapped 4h aggregate must not masquerade as a
+        # currently executable quote. Never carry a price through a closure.
+        quote_at = int(quote[0])
+        price = float(self.price)
+        if not math.isfinite(price) or price <= 0:
+            self._spy_bump('invalid_current_price')
+            return False
+        # Tolerances allow floating representation only, not stale/future prices.
+        if not np.isclose(float(quote[2]), price, rtol=1e-10, atol=1e-8):
+            self._spy_bump('quote_close_mismatch')
+            return False
+        self._spy_bump('fresh_quote')
+        c = self.signal_candles
+        # The same retained history required by the original ATR-share cap.
+        if len(c) < int(self.hp['ema_slow']) + 20:
+            self._spy_bump('insufficient_filtered_history')
+            return False
+        atr = float(ta.atr(c))
+        if not math.isfinite(atr) or atr <= 0:
+            self._spy_bump('invalid_atr')
+            return False
+        entry = price
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            self._spy_bump('invalid_stop_distance')
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        qty = math.floor(qty / 0.001) * 0.001
+        # Signal must stay False when quantity is zero; go_long always supplies
+        # a valid buy tuple, preserving Jesse's entry-method contract.
+        if qty <= 0:
+            self._spy_bump('zero_quantity')
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+            'spy_quote_at': quote_at, 'spy_decision_at': int(self.time),
+        }
+        self._spy_bump('positive_plans')
+        return True
+
+    def before_terminate(self):
+        if self.symbol != 'SPY-USDT':
+            return
+        self.vars['spy_terminal_pending'] = bool(self.is_open)
+        if self.is_open:
+            self._spy_bump('open_at_termination')
+        stats = self._spy_roll_year()
+        self._spy_log('year_' + str(stats['year']) + '_through_termination', stats['annual'])
+        # Synthetic terminal closure happens after this hook in the engine.
+        self._spy_log('final_preterminal_close', stats['total'])
+
+    def hyperparameters(self) -> list:
+        return [
+            {'name': 'donchian_len', 'type': int, 'min': 20, 'max': 40, 'default': 26},
+            {'name': 'ema_fast', 'type': int, 'min': 16, 'max': 32, 'default': 20},
+            {'name': 'ema_slow', 'type': int, 'min': 80, 'max': 140, 'default': 80},
+            {'name': 'adx_min', 'type': int, 'min': 16, 'max': 30, 'default': 26},
+            {'name': 'stop_atr', 'type': float, 'min': 1.6, 'max': 3.0, 'default': 2.0},
+            {'name': 'trail_atr', 'type': float, 'min': 3.0, 'max': 5.0, 'default': 4.2},
+            {'name': 'be_r', 'type': float, 'min': 1.75, 'max': 3.0, 'default': 2.25},
+        ]
+
+    def trading_hours(self):
+        if self.symbol == 'SPY-USDT':
+            # The fixed UTC whole-bar intersection excludes the US index daily
+            # break in both DST regimes. This is an intentional common window,
+            # not an assertion that the source's full session ends at 20:00 UTC.
+            return {'timezone': 'UTC', 'hours': {'Mon-Fri': '00:00-20:00'}}
+        return None
+
+    @property
+    @cached
+    def signal_candles(self):
+        return utils.filter_candles_by_hours(self.candles, self.trading_hours())
+
+    def _entry_window(self) -> bool:
+        if self.symbol != 'SPY-USDT':
+            return True
+        # A closed bar opening at 12:00 triggers at 16:00. Its order expires
+        # at 20:00, before the excluded 20:00-24:00 bucket. A 16:00-open bar
+        # must not arm a new order at 20:00. Pending orders still cancel then.
+        window = {'timezone': 'UTC', 'hours': {'Mon-Fri': '00:00-16:00'}}
+        return self.is_trading_hours and utils.is_in_trading_hours(
+            self.closed_candle_open_time, window)
+
+    def _ledger(self) -> dict:
+        return self.shared_vars.setdefault('phase2_reservations', {})
+
+    def _key(self) -> str:
+        return self.exchange + ':' + self.symbol
+
+    def _capital(self) -> float:
+        # Floating gains do not enlarge the risk budget; floating losses reduce it.
+        return max(0.0, min(float(self.balance), float(self.portfolio_value)))
+
+    def _committed(self) -> tuple:
+        risk, notional = 0.0, 0.0
+        ledger = self._ledger()
+        for route in self.routes:
+            if route.exchange != self.exchange:
+                continue
+            strategy = route.strategy
+            if strategy.is_open:
+                qty = abs(float(strategy.position.qty))
+                entry = float(strategy.position.entry_price)
+                # Risk is measured from the current mark, so protected floating PnL
+                # is not silently treated as free capacity for another trade.
+                value = abs(float(strategy.position.value))
+                mark = value / qty if qty else entry
+                stop = float(strategy.average_stop_loss)
+                distance = max(0.0, mark - stop) if strategy.is_long else max(0.0, stop - mark)
+                risk += qty * (distance + mark * (self.fee_rate + SLIPPAGE_RESERVE))
+                notional += value
+            else:
+                reservation = ledger.get(route.exchange + ':' + route.symbol)
+                if reservation:
+                    # Includes not-yet-filled STOP/LIMIT entries, not only open positions.
+                    risk += reservation['risk']
+                    notional += reservation['notional']
+        return risk, notional
+
+    def _volatility_share(self) -> float:
+        """Reserve a common gross-exposure budget using inverse ATR fractions.
+
+        All configured assets receive an ex-ante share, even while their signal
+        is idle. This prevents the first route from consuming all shared margin.
+        It is a capital-efficiency tradeoff to test, not an optimal allocation.
+        """
+        weights = {}
+        for route in self.routes:
+            if route.exchange != self.exchange:
+                continue
+            c = utils.filter_candles_by_hours(route.strategy.candles, route.strategy.trading_hours())
+            if len(c) < int(self.hp['ema_slow']) + 20:
+                return 0.0
+            atr = float(ta.atr(c))
+            price = float(c[-1, 2])
+            if not math.isfinite(atr) or atr <= 0 or price <= 0:
+                return 0.0
+            # Stops use a common ATR multiple. Equal risk therefore needs
+            # notional proportional to price/ATR before gross-leverage scaling.
+            weights[route.symbol] = price / atr
+        return weights.get(self.symbol, 0.0) / sum(weights.values()) if weights else 0.0
+
+    def _plan(self) -> bool:
+        if self.symbol not in ('BTC-USDT', 'PAXG-USDT', 'SPY-USDT') or not self._entry_window():
+            return False
+        if self.symbol == 'SPY-USDT':
+            return self._spy_plan()
+        c = self.signal_candles
+        n = int(self.hp['donchian_len'])
+        slow_n = int(self.hp['ema_slow'])
+        if len(c) < max(slow_n + 20, n):
+            return False
+        fast = float(ta.ema(c, period=int(self.hp['ema_fast'])))
+        slow = ta.ema(c, period=slow_n, sequential=True)
+        atr = float(ta.atr(c))
+        adx = float(ta.adx(c))
+        rsi = float(ta.rsi(c))
+        # The closed bar has broken the PRIOR channel. A passive LIMIT at that
+        # boundary can fill only on a future retest within one 4h order lifetime.
+        entry = float(np.max(c[-n-1:-1, 3]))
+        if not all(math.isfinite(v) for v in (fast, slow[-1], slow[-5], atr, adx, rsi, entry)):
+            return False
+        if not (atr > 0 and entry < self.price <= entry + atr and self.price > slow[-1]
+                and fast > slow[-1] > slow[-5] and adx >= self.hp['adx_min']
+                and 52 <= rsi <= 76 and self.high - self.low <= 3 * atr):
+            return False
+        distance = float(self.hp['stop_atr']) * atr
+        if not 0 < distance < entry:
+            return False
+        capital = self._capital()
+        committed_risk, committed_notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - committed_risk))
+        # Fees at both planned entry and stop, plus an explicit adverse-fill reserve.
+        unit_risk = distance + self.fee_rate * (entry + entry - distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - committed_notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        margin_room = max(0.0, float(self.leveraged_available_margin) * 0.90)
+        qty = min(budget / unit_risk, room / entry, margin_room / entry)
+        # Historical research precision only. Native symbol lot/min-notional
+        # constraints must be verified before any live use.
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {
+            'qty': qty, 'entry': entry, 'distance': distance,
+            'risk': qty * unit_risk, 'notional': qty * entry,
+        }
+        return True
+
+    def _signal(self) -> int:
+        # Compute exactly one plan per bar, with long priority. Checking
+        # should_short after go_long must never overwrite a queued long plan.
+        if self.vars.get('signal_index') != self.index:
+            self.vars['signal_index'] = self.index
+            self.vars['signal_value'] = 1 if self._plan() else (-1 if self._short_plan() else 0)
+        return self.vars['signal_value']
+
+    def should_long(self) -> bool:
+        return self._signal() == 1
+
+    def should_short(self) -> bool:
+        return self._signal() == -1
+
+    def go_long(self) -> None:
+        plan = self.vars['plan']
+        self._ledger()[self._key()] = dict(plan)
+        self.buy = plan['qty'], plan['entry']
+
+    def _short_plan(self) -> bool:
+        """Test selloff continuation instead of buying an oversold dip.
+
+        A rising slow regime can still suffer a fast liquidation leg. This
+        exploratory hypothesis came from the failed long mean-reversion sleeve;
+        it is development evidence, not an independent validation.
+        """
+        if self.symbol != 'BTC-USDT' or not self._entry_window():
+            return False
+        c = self.signal_candles
+        if len(c) < 140:
+            return False
+        macro = ta.ema(c, period=120, sequential=True)
+        fast = float(ta.ema(c, period=20))
+        atr = float(ta.atr(c))
+        quick_rsi = float(ta.rsi(c, period=3))
+        if not all(math.isfinite(v) for v in (macro[-1], macro[-10], fast, atr, quick_rsi)):
+            return False
+        if not (atr > 0 and macro[-1] > macro[-10]
+                and self.price > macro[-1] - atr and quick_rsi <= 20):
+            return False
+        entry = min(float(c[-1, 4]), self.price - 0.25 * atr)
+        distance = fast - entry
+        if not (atr <= distance <= 3 * atr and distance >= 6 * self.fee_rate * entry):
+            return False
+        capital = self._capital()
+        risk, notional = self._committed()
+        budget = min(capital * TRADE_RISK, max(0.0, capital * PORTFOLIO_RISK - risk))
+        unit_risk = distance + self.fee_rate * (2 * entry + distance) + SLIPPAGE_RESERVE * entry
+        room = min(max(0.0, capital * NOTIONAL_CAP - notional),
+                   capital * NOTIONAL_CAP * self._volatility_share())
+        qty = min(budget / unit_risk, room / entry,
+                  max(0.0, float(self.leveraged_available_margin) * 0.90) / entry)
+        step = 0.001 if self.symbol in ('BTC-USDT', 'SPY-USDT') else 0.0001
+        qty = math.floor(qty / step) * step
+        if qty <= 0:
+            return False
+        self.vars['plan'] = {'qty': qty, 'entry': entry, 'distance': distance,
+                             'risk': qty * unit_risk, 'notional': qty * entry,
+                             'target_distance': 1.5 * atr}
+        return True
+
+    def go_short(self) -> None:
+        plan = self.vars['plan']
+        self._ledger()[self._key()] = dict(plan)
+        self.sell = plan['qty'], plan['entry']
+
+    def should_cancel_entry(self) -> bool:
+        # One closed 4h bar lifetime: stale channels cannot remain active indefinitely.
+        # Jesse processes cancellation before evaluating the next route.
+        self._ledger().pop(self._key(), None)
+        return True
+
+    def on_open_position(self, order) -> None:
+        entry = float(self.position.entry_price)
+        distance = self.vars['plan']['distance']
+        self.vars['initial_distance'] = distance
+        # An intrabar fill must not inherit highs/closes from before its entry.
+        self.vars['best_close'] = entry
+        if self.is_short:
+            self.vars['opened_time'] = int(self.time)
+            self.stop_loss = abs(self.position.qty), entry + distance
+            self.take_profit = abs(self.position.qty), entry - self.vars['plan']['target_distance']
+        else:
+            self.stop_loss = abs(self.position.qty), entry - distance
+            if self.symbol == 'SPY-USDT':
+                opened_at = int(self.position.opened_at)
+                last_close = self.vars.get('spy_last_closed_at')
+                if last_close is not None:
+                    assert opened_at >= last_close + 7 * 24 * 60 * 60 * 1000, 'SPY_COOLDOWN_FILL'
+                plan = self.vars['plan']
+                assert opened_at == plan['spy_decision_at'], 'SPY_MARKET_FILL_CLOCK'
+                assert plan['spy_quote_at'] == opened_at - 60 * 1000, 'SPY_MARKET_QUOTE_CLOCK'
+                self._spy_bump('long_fills')
+                self._spy_log('long_fill', {
+                    'opened_at': opened_at, 'previous_closed_at': last_close,
+                    'quote_at': plan['spy_quote_at'], 'entry': entry,
+                    'qty': abs(float(self.position.qty)), 'initial_distance': distance,
+                })
+        self._ledger().pop(self._key(), None)
+
+    def update_position(self) -> None:
+        if self.is_short:
+            if self.time - self.vars['opened_time'] >= 72 * 60 * 60 * 1000:
+                self.liquidate()
+            return
+        history = self.signal_candles
+        atr = float(ta.atr(history))
+        if not math.isfinite(atr) or atr <= 0:
+            return
+        entry = float(self.position.entry_price)
+        distance = self.vars['initial_distance']
+        self.vars['best_close'] = max(self.vars['best_close'], float(history[-1, 2]))
+        best_r = (self.vars['best_close'] - entry) / distance
+        mult = float(self.hp['trail_atr'])
+        # Inherited late-trend tightening; retained as a controlled baseline choice.
+        if best_r >= 8:
+            mult *= 0.62
+        elif best_r >= 5:
+            mult *= 0.78
+        stop = self.vars['best_close'] - mult * atr
+        if best_r >= float(self.hp['be_r']):
+            stop = max(stop, entry * (1 + 2.5 * self.fee_rate))
+        if self.average_stop_loss < stop < self.price:
+            self.stop_loss = abs(self.position.qty), stop
+
+    def on_close_position(self, order, closed_trade) -> None:
+        self._ledger().pop(self._key(), None)
+        if self.symbol == 'SPY-USDT':
+            closed_at = int(closed_trade.closed_at)
+            assert closed_at <= int(self.time), 'SPY_CLOSE_CLOCK_IN_FUTURE'
+            self.vars['spy_last_closed_at'] = closed_at
+            self._spy_bump('full_closes')
+            if self.vars.pop('spy_terminal_pending', False):
+                self._spy_bump('terminal_full_closes')
+                self._spy_log('final_after_terminal_close', self._spy_stats()['total'])

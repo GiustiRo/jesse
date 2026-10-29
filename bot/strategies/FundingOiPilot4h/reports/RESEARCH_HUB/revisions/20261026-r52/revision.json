@@ -1,0 +1,92 @@
+{
+  "format_version": 1,
+  "id": "20261026-r52",
+  "updated_at_utc": "2026-10-26 06:00:00 UTC",
+  "objective": "Ampliar el universo a 50 perpetuos cripto y buscar ventaja fuera de la tendencia: ranking transversal con ML, reloj del flujo de órdenes y permiso de régimen.",
+  "latest": "r52 cerrada: ninguna manga pasa; P1 sin cambios; 2025 sigue sellado. Hallazgos: el ranking ML tiene IC semanal 0,106 (t 5,6) pero las colas de la pata corta anulan el spread medio; el QOI replica (t 2,9) pero no paga costos solo. N=116.",
+  "next": "r53: cobrar el IC del ranking sin la cola (pesos por rango, recorte de extremos, holding 2–4 semanas, largo cubierto), reversión semanal y QOI como variable/filtro de C6.",
+  "blockers": "Ninguno. Informes guardados por MCP el 2026-10-26 tras reiniciar Docker Desktop.",
+  "counts": {
+    "r52": {
+      "n_declared_start": 108,
+      "n_final": 116,
+      "jesse_runs_used": 0
+    }
+  },
+  "decisions": [
+    "2026-10-26 r52 cerrada: P1 sin cambios; ninguna manga nueva pasa; 2025 sellado sin abrir.",
+    "2026-10-25 r52: universo de 50 perpetuos activos sin deslistados, N sin techo (usuario)."
+  ],
+  "supersedes": "20261025-r51",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 universo y datos",
+      "state": "completada",
+      "depends": "plan",
+      "gate": "verify.json"
+    },
+    {
+      "order": 1,
+      "title": "F1 ranking transversal",
+      "state": "completada: no pasa",
+      "depends": "F0",
+      "gate": "PROTOCOL_R52 F1"
+    },
+    {
+      "order": 2,
+      "title": "F2 reloj del flujo",
+      "state": "completada: Q1 pasa, Q2/Q3 no",
+      "depends": "F0",
+      "gate": "PROTOCOL_R52 F2"
+    },
+    {
+      "order": 3,
+      "title": "F3 jump model",
+      "state": "completada: no pasa",
+      "depends": "—",
+      "gate": "regla r51"
+    },
+    {
+      "order": 4,
+      "title": "F4 cartera",
+      "state": "completada: P2 = P1",
+      "depends": "F1–F3",
+      "gate": "inclusión"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r52: plan",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r52/PLAN.md"
+    },
+    {
+      "label": "r52: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r52/PROTOCOL_R52.md"
+    },
+    {
+      "label": "r52 F3: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R52_PHASE3_RESULTS_20261026.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r52_universo",
+    "execution_status": "r52_closed",
+    "current_focus": "handoff a r53",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Descargas de data.binance.vision.",
+      "Push de la rama."
+    ],
+    "excluded": [
+      "Live/paper y la Pi.",
+      "Datos 2026.",
+      "Abrir 2025 sin una manga candidata."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r52 aprobado 2026-10-25; investigación autónoma; r53+ en sesiones nuevas.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "closed"
+  }
+}

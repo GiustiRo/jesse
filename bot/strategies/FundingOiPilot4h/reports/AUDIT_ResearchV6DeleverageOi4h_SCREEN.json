@@ -1,0 +1,4063 @@
+{
+  "status": "passed",
+  "errors": [],
+  "label": "POI",
+  "session_id": "3421d437-5eb7-4c74-8c44-9942162b7892",
+  "dashboard_url": "http://localhost:9200/#/backtest/3421d437-5eb7-4c74-8c44-9942162b7892",
+  "summary": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "3421d437-5eb7-4c74-8c44-9942162b7892",
+    "session_status": "finished",
+    "title": "MCP Backtest: V6 SCREEN DELEVERAGING_POI",
+    "description": "Frozen V6 24h displacement reversal plus OIbase0/OIbase24<=.98; declining explicitly, no rising gate. Stop2ATR/target2R/hold48h, same economics as P. Draft only until root motor GO.",
+    "description_truncated": false,
+    "created_at": 1792544495000,
+    "updated_at": 1792545434000,
+    "execution_duration": 28.55,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "ResearchV6DeleverageOi4h"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2020-09-01",
+      "finish_date": "2024-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": true,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      }
+    },
+    "metrics": {
+      "total": 86,
+      "total_winning_trades": 29,
+      "total_losing_trades": 57,
+      "starting_balance": 10000,
+      "finishing_balance": 7110.319453503639,
+      "win_rate": 0.3372093023255814,
+      "win_rate_longs": 0.3333333333333333,
+      "win_rate_shorts": 0.3409090909090909,
+      "ratio_avg_win_loss": 1.0731302283797062,
+      "longs_count": 42,
+      "longs_percentage": 48.837209302325576,
+      "shorts_percentage": 51.162790697674424,
+      "shorts_count": 44,
+      "fee": 311.39848733890216,
+      "net_profit": -2889.6805464963572,
+      "net_profit_percentage": -28.89680546496357,
+      "average_win": 119.82598935188307,
+      "average_loss": 111.66024978422747,
+      "expectancy": -33.60093658716695,
+      "expectancy_percentage": -0.33600936587166946,
+      "expected_net_profit_every_100_trades": -33.60093658716695,
+      "average_holding_period": 129845.58139534884,
+      "average_winning_holding_period": 158313.10344827586,
+      "average_losing_holding_period": 115362.1052631579,
+      "gross_profit": 3474.9536912046087,
+      "gross_loss": -6364.634237700966,
+      "max_drawdown": -32.061812944205414,
+      "max_underwater_period": 1215,
+      "annual_return": -9.722628836821235,
+      "annualization": 365,
+      "sharpe_ratio": -1.1027279818255504,
+      "calmar_ratio": -0.303246383906635,
+      "sortino_ratio": -1.4288259765465552,
+      "omega_ratio": 0.6717154832296479,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0,
+      "winning_streak": 3,
+      "losing_streak": 7,
+      "largest_losing_trade": -202.16616209386353,
+      "largest_winning_trade": 307.9205045345249,
+      "current_streak": 2,
+      "avg_trades_per_day": 0.07066553075325781,
+      "avg_trades_per_week": 0.49465871527280464,
+      "avg_trades_per_month": 2.1510587561291676,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 55.64409691790065,
+        "rate_kind": "settled",
+        "event_count": 379,
+        "settlements_processed": 3651,
+        "mark_price_proxy_count": 365,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "max_age_ms": 600000,
+        "applied": true,
+        "status": "applied",
+        "scope": [
+          "BTC-USDT"
+        ],
+        "data": {
+          "archive_assumptions_acknowledged": true,
+          "archive_catalog": {
+            "first_archive_date": "2020-09-01",
+            "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+            "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+            "point_in_time_certified": false,
+            "source": "binance-usdm-metrics-archive-v1"
+          },
+          "availability_lag_ms": 360000,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "import_source": "auto",
+          "original_publication_known": false,
+          "period_ms": 300000,
+          "rest_range": null,
+          "schema": 1,
+          "source": "binance-usdm-metrics-archive-v1",
+          "start": 1598918400000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "observation_count": 560390,
+          "expected_observation_count": 561024,
+          "missing_observation_count": 634,
+          "coverage_complete": false,
+          "status": "incomplete",
+          "leading_gap_ms": 0,
+          "trailing_gap_ms": 0,
+          "first_observation": 1598918400000,
+          "last_observation": 1767225300000,
+          "first_available_at": 1598918760000,
+          "last_available_at": 1767225660000,
+          "largest_gap_ms": 37800000,
+          "gap_count": 156,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+          "point_in_time_certified": false,
+          "missing_policy": "no interpolation; unavailable or stale values return None",
+          "cashflow": false,
+          "archive_file_count": 1948,
+          "archive_verified_file_count": 1948,
+          "archive_missing_days": [],
+          "archive_missing_day_count": 0,
+          "archive_identical_duplicate_rows": 75255
+        },
+        "allow_missing_observations": true,
+        "observation_count": 560390,
+        "cashflow": false,
+        "availability_lag_ms": 360000,
+        "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+        "current": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "observed_at": 1704066600000,
+          "available_at": 1704066960000,
+          "quantity_base": 73951.1,
+          "value_quote": 3128205481.1
+        }
+      }
+    },
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 86
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 1218
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 360337
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/3421d437-5eb7-4c74-8c44-9942162b7892"
+  },
+  "log_pages": 12,
+  "log_lines": 2287,
+  "max_line": 1112,
+  "total_buckets": 157,
+  "months": 40,
+  "totals": {
+    "bars": 7302,
+    "entries": 86,
+    "exits": 86,
+    "opportunities": 319
+  },
+  "primary": {
+    "deleverage_displacement_below": 6008,
+    "deleverage_correction_reject": 933,
+    "allowed": 86,
+    "in_position_or_pending": 40,
+    "oi_decline_below_threshold": 233,
+    "daily_limit": 1,
+    "boundary_or_inactive": 1
+  },
+  "feature_reasons": {
+    "deleverage_displacement_below": 6009,
+    "deleverage_correction_reject": 933,
+    "deleverage_setup": 360
+  },
+  "provenance": {
+    "line": "DELEVERAGING",
+    "use_oi": true,
+    "oi_lag_bars": 0,
+    "oi_rule": "declining",
+    "oi_decline_fraction": 0.02,
+    "stop_multiplier": 2,
+    "bar_ms": 14400000,
+    "oi_reference_bars": 6,
+    "atr_offset_bars": 0,
+    "target_mode": "r_multiple",
+    "reward_multiple": 2,
+    "max_hold_bars": 12,
+    "start": 1598918400000,
+    "finish": 1704067200000,
+    "active_windows": null,
+    "force_boundaries": [],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "closes": [
+    {
+      "time": 1599135120000,
+      "trade_id": "9d77a1b0-839c-4ee5-aa43-958912b06a2d",
+      "reason": "stop-loss",
+      "pnl": -202.16616209386353,
+      "balance": 9797.833837906135,
+      "gross": -194.98809691439973,
+      "risk_budget": 200,
+      "realized_loss": 202.16616209386353,
+      "loss_over_budget": 2.1661620938635338
+    },
+    {
+      "time": 1599175800000,
+      "trade_id": "bd828be5-2a37-4eef-9087-83a5e6cf1159",
+      "reason": "stop-loss",
+      "pnl": -195.9566756942745,
+      "balance": 9601.87716221186,
+      "gross": -192.4916552670143,
+      "risk_budget": 195.9566767581227,
+      "realized_loss": 195.9566756942745,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1599364800000,
+      "trade_id": "701a1ab5-37e9-4710-a023-9fe3401a22e5",
+      "reason": "maximum_hold",
+      "pnl": -34.776821431949905,
+      "balance": 9567.10034077991,
+      "gross": -30.237361112400446,
+      "risk_budget": 192.0375432442372,
+      "realized_loss": 34.776821431949905,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1600099500000,
+      "trade_id": "8f21a328-5283-4f6b-9868-4efbd1f69a73",
+      "reason": "stop-loss",
+      "pnl": -173.36065245785437,
+      "balance": 9393.739688322057,
+      "gross": -167.57340200691374,
+      "risk_budget": 191.3420068155982,
+      "realized_loss": 173.36065245785437,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1601179200000,
+      "trade_id": "3099dc20-2363-4c31-b501-8a9f065fcd35",
+      "reason": "maximum_hold",
+      "pnl": -75.18579750500855,
+      "balance": 9318.55389081705,
+      "gross": -72.67273384250014,
+      "risk_budget": 187.87479376644114,
+      "realized_loss": 75.18579750500855,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1602201600000,
+      "trade_id": "47242c6c-5c9b-408c-bf07-a54397ba4853",
+      "reason": "maximum_hold",
+      "pnl": 276.01245834517056,
+      "balance": 9594.566349162222,
+      "gross": 286.58534364000093,
+      "risk_budget": 186.371077816341,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1603512000000,
+      "trade_id": "e76c6150-e21d-4ddc-a098-6ccbc5d9b287",
+      "reason": "maximum_hold",
+      "pnl": -90.82810684657586,
+      "balance": 9503.738242315647,
+      "gross": -89.44183143,
+      "risk_budget": 191.89132698324443,
+      "realized_loss": 90.82810684657586,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1604808000000,
+      "trade_id": "05482c94-2b38-42cf-9e79-93846d77aa52",
+      "reason": "maximum_hold",
+      "pnl": 110.47467691785434,
+      "balance": 9614.212919233501,
+      "gross": 107.79149668860019,
+      "risk_budget": 190.07476484631295,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1605673020000,
+      "trade_id": "20285e2a-0b7f-4695-b004-d48b5e9061d4",
+      "reason": "stop-loss",
+      "pnl": -192.28425459280038,
+      "balance": 9421.9286646407,
+      "gross": -187.42459869257178,
+      "risk_budget": 192.28425838467004,
+      "realized_loss": 192.28425459280038,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1606608000000,
+      "trade_id": "6d9ed64f-c857-4d66-b89a-5a094782330a",
+      "reason": "maximum_hold",
+      "pnl": 73.24482343121102,
+      "balance": 9495.173488071909,
+      "gross": 76.79396531200021,
+      "risk_budget": 188.438573292814,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1608394680000,
+      "trade_id": "1368a072-8828-4bcf-87dd-f348585a3bd0",
+      "reason": "stop-loss",
+      "pnl": -181.9688957605873,
+      "balance": 9313.204592311322,
+      "gross": -186.93235414800034,
+      "risk_budget": 189.90346976143817,
+      "realized_loss": 181.9688957605873,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1609257600000,
+      "trade_id": "49645ed7-f6e9-4fad-b542-4d9aa2f5f5e0",
+      "reason": "maximum_hold",
+      "pnl": 90.87645608249488,
+      "balance": 9404.081048393818,
+      "gross": 85.29767864760011,
+      "risk_budget": 186.26409184622645,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1609650720000,
+      "trade_id": "9f5342a7-3d3a-4a34-968a-2818cebb5ca2",
+      "reason": "stop-loss",
+      "pnl": -188.0816059763222,
+      "balance": 9215.999442417497,
+      "gross": -185.1308491594289,
+      "risk_budget": 188.08162096787638,
+      "realized_loss": 188.0816059763222,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1610568000000,
+      "trade_id": "c2f56dc5-bde6-476e-967f-8f1f7cccd946",
+      "reason": "maximum_hold",
+      "pnl": 138.19601323569339,
+      "balance": 9354.195455653191,
+      "gross": 142.64880669549996,
+      "risk_budget": 184.31998884834994,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1611460800000,
+      "trade_id": "f088b2a7-1b84-40a6-abfd-d23e41ed06a2",
+      "reason": "maximum_hold",
+      "pnl": 84.44357531813415,
+      "balance": 9438.639030971324,
+      "gross": 87.17636656819988,
+      "risk_budget": 187.0839091130638,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1614057240000,
+      "trade_id": "6395ba19-0d1d-4150-a452-ce04bb625c5f",
+      "reason": "stop-loss",
+      "pnl": -189.35372132573394,
+      "balance": 9249.285309645593,
+      "gross": -186.77971136725748,
+      "risk_budget": 188.7727806194265,
+      "realized_loss": 189.35372132573394,
+      "loss_over_budget": 0.5809407063074445
+    },
+    {
+      "time": 1614767700000,
+      "trade_id": "698054fe-4ee7-4e8a-8d56-cc0a3cfd8be8",
+      "reason": "stop-loss",
+      "pnl": -183.69030379915603,
+      "balance": 9065.595005846435,
+      "gross": -182.6045282498427,
+      "risk_budget": 184.98570619291186,
+      "realized_loss": 183.69030379915603,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1618905600000,
+      "trade_id": "ce9c97ec-ebcc-4a84-ac05-a4fc6abbe713",
+      "reason": "maximum_hold",
+      "pnl": -85.00722202155009,
+      "balance": 8980.587783824885,
+      "gross": -81.21711670000013,
+      "risk_budget": 181.3119001169287,
+      "realized_loss": 85.00722202155009,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1619625600000,
+      "trade_id": "0e11dd43-25b6-4d5e-ad38-4450709cd035",
+      "reason": "maximum_hold",
+      "pnl": -50.16385110366128,
+      "balance": 8930.423932721224,
+      "gross": -49.182039655000054,
+      "risk_budget": 179.61175567649772,
+      "realized_loss": 50.16385110366128,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1621051200000,
+      "trade_id": "cef647ef-421d-4886-bd05-02c4df764378",
+      "reason": "maximum_hold",
+      "pnl": -38.460807140474635,
+      "balance": 8891.963125580747,
+      "gross": -33.757121887999645,
+      "risk_budget": 178.6084786544245,
+      "realized_loss": 38.460807140474635,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1622928900000,
+      "trade_id": "32970644-2bad-4abc-b1e7-0771254a5b34",
+      "reason": "stop-loss",
+      "pnl": -178.49591356903838,
+      "balance": 8713.46721201171,
+      "gross": -174.97235532297105,
+      "risk_budget": 177.83926251161495,
+      "realized_loss": 178.49591356903838,
+      "loss_over_budget": 0.6566510574234314
+    },
+    {
+      "time": 1624184760000,
+      "trade_id": "951fdefb-7d68-4498-b18f-9892fd270fcc",
+      "reason": "stop-loss",
+      "pnl": -174.81033651248308,
+      "balance": 8538.656875499226,
+      "gross": -171.6354215436,
+      "risk_budget": 174.2693442402342,
+      "realized_loss": 174.81033651248308,
+      "loss_over_budget": 0.5409922722488716
+    },
+    {
+      "time": 1624852800000,
+      "trade_id": "ee79b918-278b-41b0-9638-fb84d001a956",
+      "reason": "maximum_hold",
+      "pnl": 180.28515206154248,
+      "balance": 8718.94202756077,
+      "gross": 179.37853707070025,
+      "risk_budget": 170.7731375099845,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1626233100000,
+      "trade_id": "f40df61b-0f2e-4083-b497-316c0b071327",
+      "reason": "stop-loss",
+      "pnl": -175.34489660673754,
+      "balance": 8543.597130954031,
+      "gross": -170.10189416754253,
+      "risk_budget": 174.3788405512154,
+      "realized_loss": 175.34489660673754,
+      "loss_over_budget": 0.9660560555221309
+    },
+    {
+      "time": 1627070400000,
+      "trade_id": "b1def75c-b9f5-45da-b300-a45bd53aa282",
+      "reason": "maximum_hold",
+      "pnl": -73.83401341053752,
+      "balance": 8469.763117543493,
+      "gross": -69.36919135319998,
+      "risk_budget": 170.8719426190806,
+      "realized_loss": 73.83401341053752,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1627256160000,
+      "trade_id": "7771e43b-33ba-44ca-a37d-0e6757d3d666",
+      "reason": "stop-loss",
+      "pnl": -172.05720295000785,
+      "balance": 8297.705914593485,
+      "gross": -164.8418547128573,
+      "risk_budget": 169.39526235086984,
+      "realized_loss": 172.05720295000785,
+      "loss_over_budget": 2.6619405991380063
+    },
+    {
+      "time": 1627459200000,
+      "trade_id": "b48e659c-1f80-497c-accb-142a5142adf7",
+      "reason": "maximum_hold",
+      "pnl": -93.11585627265868,
+      "balance": 8204.590058320828,
+      "gross": -91.97323354760017,
+      "risk_budget": 165.95411829186972,
+      "realized_loss": 93.11585627265868,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1627920000000,
+      "trade_id": "f1c0f563-ff01-49be-8731-c261610b5c69",
+      "reason": "maximum_hold",
+      "pnl": 157.78792009973702,
+      "balance": 8362.377978420565,
+      "gross": 158.82879036989985,
+      "risk_budget": 164.09180116641656,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1628265840000,
+      "trade_id": "7c53f669-228c-4d73-a4c6-c574880a8efc",
+      "reason": "stop-loss",
+      "pnl": -166.92250292701695,
+      "balance": 8195.455475493547,
+      "gross": -164.36514531017136,
+      "risk_budget": 167.2475595684113,
+      "realized_loss": 166.92250292701695,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1628496000000,
+      "trade_id": "216e149a-6df3-45dc-8cab-50bfd4abc2a1",
+      "reason": "maximum_hold",
+      "pnl": -38.8106141047861,
+      "balance": 8156.644861388759,
+      "gross": -37.98191017980021,
+      "risk_budget": 163.90910950987094,
+      "realized_loss": 38.8106141047861,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1629475260000,
+      "trade_id": "57e2016f-b05a-415d-a347-e457b97ff267",
+      "reason": "stop-loss",
+      "pnl": -162.55807022610338,
+      "balance": 7994.086791162655,
+      "gross": -159.57714369737144,
+      "risk_budget": 163.13289722777517,
+      "realized_loss": 162.55807022610338,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1630296000000,
+      "trade_id": "9b7d2e7e-a4c2-420e-8063-855d0eceac18",
+      "reason": "maximum_hold",
+      "pnl": 74.8363374712427,
+      "balance": 8068.923128633899,
+      "gross": 74.5917911759997,
+      "risk_budget": 159.8817358232531,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1631217600000,
+      "trade_id": "146e3008-d99c-48ee-95b7-17ba77951f5f",
+      "reason": "maximum_hold",
+      "pnl": -10.180675229002379,
+      "balance": 8058.742453404896,
+      "gross": -6.437851994400015,
+      "risk_budget": 161.378462572678,
+      "realized_loss": 10.180675229002379,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1632183600000,
+      "trade_id": "b51f67a1-41ef-4bf6-b955-1c118e5c1dcf",
+      "reason": "stop-loss",
+      "pnl": -161.5171794127397,
+      "balance": 7897.225273992156,
+      "gross": -158.1068847133715,
+      "risk_budget": 161.17484906809793,
+      "realized_loss": 161.5171794127397,
+      "loss_over_budget": 0.34233034464176626
+    },
+    {
+      "time": 1633752000000,
+      "trade_id": "aa0c0f75-0e98-4982-bfa9-1cb3aadfce89",
+      "reason": "maximum_hold",
+      "pnl": 18.495790521246416,
+      "balance": 7915.721064513402,
+      "gross": 16.746218416199707,
+      "risk_budget": 157.94450547984312,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1634306040000,
+      "trade_id": "ec413b34-68b8-479f-934c-ac6475f0045c",
+      "reason": "stop-loss",
+      "pnl": -156.16641526280853,
+      "balance": 7759.554649250594,
+      "gross": -155.2768156211999,
+      "risk_budget": 158.31442129026803,
+      "realized_loss": 156.16641526280853,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1635321780000,
+      "trade_id": "3d3b5f43-3f2d-4b53-a5c4-7fcd90992ace",
+      "reason": "take-profit",
+      "pnl": 307.9205045345249,
+      "balance": 8067.475153785118,
+      "gross": 301.6701738149138,
+      "risk_budget": 155.19109298501186,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1638285180000,
+      "trade_id": "436cd7dc-cf1c-44cc-aa6a-88729eb489fd",
+      "reason": "stop-loss",
+      "pnl": -158.74580899576313,
+      "balance": 7908.729344789356,
+      "gross": -157.30886546820096,
+      "risk_budget": 161.34950307570236,
+      "realized_loss": 158.74580899576313,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1638806400000,
+      "trade_id": "c7418865-fca6-4a2c-8a9d-0978de561456",
+      "reason": "maximum_hold",
+      "pnl": 23.816067566827535,
+      "balance": 7932.545412356183,
+      "gross": 26.29480835640009,
+      "risk_budget": 158.17458689578712,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1641530040000,
+      "trade_id": "72afb36e-7f27-4ab9-a400-e66a45edf1c8",
+      "reason": "stop-loss",
+      "pnl": -159.28455699298792,
+      "balance": 7773.260855363195,
+      "gross": -155.8557088944997,
+      "risk_budget": 158.65090824712365,
+      "realized_loss": 159.28455699298792,
+      "loss_over_budget": 0.6336487458642637
+    },
+    {
+      "time": 1643025600000,
+      "trade_id": "79471673-3401-4e79-95b2-58e3cdf5839a",
+      "reason": "maximum_hold",
+      "pnl": -95.50341293583146,
+      "balance": 7677.757442427364,
+      "gross": -93.2869626333997,
+      "risk_budget": 155.4652171072639,
+      "realized_loss": 95.50341293583146,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1645948800000,
+      "trade_id": "c9d1509a-d109-41f8-851d-542784bd014a",
+      "reason": "maximum_hold",
+      "pnl": -19.550107135126645,
+      "balance": 7658.207335292239,
+      "gross": -18.305866350000173,
+      "risk_budget": 153.5551488485473,
+      "realized_loss": 19.550107135126645,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1647100800000,
+      "trade_id": "8bbb5d9f-3e3d-4b97-9139-5a997a86b5ba",
+      "reason": "maximum_hold",
+      "pnl": -10.842448207298633,
+      "balance": 7647.364887084941,
+      "gross": -8.916159425999622,
+      "risk_budget": 153.1641467058448,
+      "realized_loss": 10.842448207298633,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1648493580000,
+      "trade_id": "f15639e6-385a-4af6-8803-b3b1a5696bf0",
+      "reason": "stop-loss",
+      "pnl": -152.34243731747435,
+      "balance": 7495.022449767466,
+      "gross": -147.48600191242855,
+      "risk_budget": 152.94729774169883,
+      "realized_loss": 152.34243731747435,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1649059200000,
+      "trade_id": "a9e05854-3e1e-4927-bee0-e48bb1c3a8f0",
+      "reason": "maximum_hold",
+      "pnl": 37.60859582702871,
+      "balance": 7532.631045594495,
+      "gross": 38.90564858699973,
+      "risk_budget": 149.90044899534934,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1650052800000,
+      "trade_id": "d6ff011a-0781-406f-9a55-4d07bf8de0db",
+      "reason": "maximum_hold",
+      "pnl": 60.77795688001084,
+      "balance": 7593.409002474506,
+      "gross": 63.88466502600013,
+      "risk_budget": 150.6526209118899,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1650454800000,
+      "trade_id": "b26d9cae-0c48-48ba-aaf5-b637af83037b",
+      "reason": "stop-loss",
+      "pnl": -151.2245750512254,
+      "balance": 7442.184427423281,
+      "gross": -147.72550746399986,
+      "risk_budget": 151.86818004949012,
+      "realized_loss": 151.2245750512254,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1651004100000,
+      "trade_id": "36d7e133-567b-4911-972f-1ffe1b374661",
+      "reason": "take-profit",
+      "pnl": 286.28030410357474,
+      "balance": 7728.464731526856,
+      "gross": 289.6740432825719,
+      "risk_budget": 148.84368854846562,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1651763340000,
+      "trade_id": "07e40a81-2471-49ab-891f-c4ea8ffc30f8",
+      "reason": "take-profit",
+      "pnl": 296.3072523771091,
+      "balance": 8024.771983903965,
+      "gross": 300.12113389885707,
+      "risk_budget": 154.56929463053712,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1652302560000,
+      "trade_id": "b7a81824-3554-4e24-a78c-cf93c97e7230",
+      "reason": "stop-loss",
+      "pnl": -161.1666015700388,
+      "balance": 7863.605382333924,
+      "gross": -158.654293211143,
+      "risk_budget": 160.4954396780793,
+      "realized_loss": 161.1666015700388,
+      "loss_over_budget": 0.6711618919595139
+    },
+    {
+      "time": 1654329600000,
+      "trade_id": "ede64a92-c904-4f0c-9a89-239e10a3f9c2",
+      "reason": "maximum_hold",
+      "pnl": -39.3584401810331,
+      "balance": 7824.24694215289,
+      "gross": -35.3729255249999,
+      "risk_budget": 157.27210764667848,
+      "realized_loss": 39.3584401810331,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1654790400000,
+      "trade_id": "c9aed7b2-de4c-434e-a161-20c8b724847f",
+      "reason": "maximum_hold",
+      "pnl": 46.23333961699764,
+      "balance": 7870.480281769888,
+      "gross": 51.95208355199991,
+      "risk_budget": 156.48493884305782,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1657609500000,
+      "trade_id": "32162232-5cc2-44cd-9270-a8f95367c609",
+      "reason": "stop-loss",
+      "pnl": -158.107470727661,
+      "balance": 7712.372811042227,
+      "gross": -153.6229939435719,
+      "risk_budget": 157.40960563539778,
+      "realized_loss": 158.107470727661,
+      "loss_over_budget": 0.6978650922632141
+    },
+    {
+      "time": 1658592000000,
+      "trade_id": "b73cda83-66f0-4d69-a737-b99fee718697",
+      "reason": "maximum_hold",
+      "pnl": -49.735492146014565,
+      "balance": 7662.6373188962125,
+      "gross": -46.395047295999525,
+      "risk_budget": 154.24745622084455,
+      "realized_loss": 49.735492146014565,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1661140800000,
+      "trade_id": "108f0bc4-05ce-4ac6-88ed-37b98b04eba6",
+      "reason": "maximum_hold",
+      "pnl": 44.29622191974562,
+      "balance": 7706.933540815959,
+      "gross": 46.4917609,
+      "risk_budget": 153.25274637792424,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1663300800000,
+      "trade_id": "be553516-022e-498e-958b-5139ae04cf11",
+      "reason": "maximum_hold",
+      "pnl": -70.86954810102652,
+      "balance": 7636.063992714932,
+      "gross": -68.23369178399992,
+      "risk_budget": 154.13867081631918,
+      "realized_loss": 70.86954810102652,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1663761600000,
+      "trade_id": "7dc8a0da-e86f-4f4a-9eef-e5d6d9c1a9ff",
+      "reason": "maximum_hold",
+      "pnl": 102.73045083276523,
+      "balance": 7738.7944435476975,
+      "gross": 107.48957309999919,
+      "risk_budget": 152.72127985429864,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1664524800000,
+      "trade_id": "e71b1ed2-220c-439a-b6a8-bc75c8d4c34e",
+      "reason": "maximum_hold",
+      "pnl": 122.2203915137594,
+      "balance": 7861.014835061458,
+      "gross": 126.3906804420001,
+      "risk_budget": 154.77588887095396,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1665921600000,
+      "trade_id": "53937a13-ae9c-4659-aa20-5221d351c22f",
+      "reason": "maximum_hold",
+      "pnl": 102.24061240487208,
+      "balance": 7963.255447466331,
+      "gross": 105.21569181599966,
+      "risk_budget": 157.22029670122916,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1667877540000,
+      "trade_id": "2bae55d4-5bce-4f49-8b66-c43cd2c161af",
+      "reason": "stop-loss",
+      "pnl": -148.61678899085368,
+      "balance": 7814.638658475477,
+      "gross": -140.20016802000072,
+      "risk_budget": 159.26510894932662,
+      "realized_loss": 148.61678899085368,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1668008220000,
+      "trade_id": "fb3673a5-d50f-4150-a6a8-780c4f62db54",
+      "reason": "stop-loss",
+      "pnl": -156.44936268494862,
+      "balance": 7658.189295790528,
+      "gross": -154.40031220500003,
+      "risk_budget": 156.29277316950956,
+      "realized_loss": 156.44936268494862,
+      "loss_over_budget": 0.15658951543906596
+    },
+    {
+      "time": 1670889060000,
+      "trade_id": "f1c05646-b573-4c76-a73f-8558a0e3d766",
+      "reason": "take-profit",
+      "pnl": 136.34555091354562,
+      "balance": 7794.534846704073,
+      "gross": 143.17382427914282,
+      "risk_budget": 153.16378591581056,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1671422400000,
+      "trade_id": "4161063f-1637-40da-87e7-bff138129157",
+      "reason": "maximum_hold",
+      "pnl": -4.7345423517512915,
+      "balance": 7789.800304352322,
+      "gross": 1.9253023739995405,
+      "risk_budget": 155.89069693408146,
+      "realized_loss": 4.7345423517512915,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1671753600000,
+      "trade_id": "d9a97205-76d2-4e2b-a150-03df7cd70c54",
+      "reason": "maximum_hold",
+      "pnl": 24.500203864660307,
+      "balance": 7814.300508216983,
+      "gross": 27.509662410000278,
+      "risk_budget": 155.79600608704644,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1673545020000,
+      "trade_id": "f12cc991-994b-44fa-b714-a2094417d6a8",
+      "reason": "stop-loss",
+      "pnl": -155.52031553517696,
+      "balance": 7658.7801926818065,
+      "gross": -149.30959831999937,
+      "risk_budget": 156.28601016433967,
+      "realized_loss": 155.52031553517696,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1673856000000,
+      "trade_id": "e8810b1c-554c-4903-af7a-1484b7cc374b",
+      "reason": "maximum_hold",
+      "pnl": -32.580490345600865,
+      "balance": 7626.199702336207,
+      "gross": -32.10323162600023,
+      "risk_budget": 153.17560385363615,
+      "realized_loss": 32.580490345600865,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1674295440000,
+      "trade_id": "7c608dbb-4800-4e15-a66e-27b4d15f6c1f",
+      "reason": "stop-loss",
+      "pnl": -152.0148372397983,
+      "balance": 7474.184865096409,
+      "gross": -147.89350865685742,
+      "risk_budget": 152.52399404672414,
+      "realized_loss": 152.0148372397983,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1675296000000,
+      "trade_id": "d690d877-dde6-417f-be7b-eeb39e16e0eb",
+      "reason": "maximum_hold",
+      "pnl": 179.38104039610724,
+      "balance": 7653.565905492515,
+      "gross": 186.52261963900045,
+      "risk_budget": 149.4836973019282,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1676174400000,
+      "trade_id": "82dd789b-5bdd-42ec-b2ee-aa9002cdb4a4",
+      "reason": "maximum_hold",
+      "pnl": -17.727422158661327,
+      "balance": 7635.838483333855,
+      "gross": -10.796360620001211,
+      "risk_budget": 153.07131810985032,
+      "realized_loss": 17.727422158661327,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678003200000,
+      "trade_id": "e3eb121e-0827-4efa-825e-2aa9ea1569c6",
+      "reason": "maximum_hold",
+      "pnl": -0.870204052244836,
+      "balance": 7634.968279281611,
+      "gross": 3.2560712220002723,
+      "risk_budget": 152.7167696666771,
+      "realized_loss": 0.870204052244836,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678636800000,
+      "trade_id": "a5a171c5-9d4a-43d3-9d5b-58f444bccd1d",
+      "reason": "maximum_hold",
+      "pnl": 59.256375830304975,
+      "balance": 7694.224655111915,
+      "gross": 62.59125801100026,
+      "risk_budget": 152.69936558563222,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1678716600000,
+      "trade_id": "290c2532-a07c-4ff9-acc7-e9b08129bff3",
+      "reason": "stop-loss",
+      "pnl": -153.88448704231362,
+      "balance": 7540.340168069601,
+      "gross": -150.75881753499988,
+      "risk_budget": 153.8844931022383,
+      "realized_loss": 153.88448704231362,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1681416000000,
+      "trade_id": "635eb9bb-a1eb-4a95-a8ad-e5f09a1399cf",
+      "reason": "maximum_hold",
+      "pnl": -36.5347411904154,
+      "balance": 7503.805426879185,
+      "gross": -34.00575763999951,
+      "risk_budget": 150.806803361392,
+      "realized_loss": 36.5347411904154,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1686283200000,
+      "trade_id": "3aeb6bdc-7cac-4dc9-9b57-c2d28191bd67",
+      "reason": "maximum_hold",
+      "pnl": 63.2235237790194,
+      "balance": 7567.028950658203,
+      "gross": 65.554247925,
+      "risk_budget": 150.0761085375837,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1687535640000,
+      "trade_id": "44c4b73e-35e4-4567-9eb1-81bedd7edbc3",
+      "reason": "stop-loss",
+      "pnl": -149.8891161536589,
+      "balance": 7417.1398345045445,
+      "gross": -147.93890729142865,
+      "risk_budget": 151.34057901316407,
+      "realized_loss": 149.8891161536589,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1689552000000,
+      "trade_id": "fc8f8085-2e4b-4b4b-998a-42bfe30cc302",
+      "reason": "maximum_hold",
+      "pnl": -16.555805801783777,
+      "balance": 7400.5840287027595,
+      "gross": -11.437589204998911,
+      "risk_budget": 148.3427966900909,
+      "realized_loss": 16.555805801783777,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1692518400000,
+      "trade_id": "5135f473-705c-42ce-b199-40a4becfb66e",
+      "reason": "maximum_hold",
+      "pnl": -49.817107473707914,
+      "balance": 7350.766921229051,
+      "gross": -46.857998124000105,
+      "risk_budget": 148.0116805740552,
+      "realized_loss": 49.817107473707914,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1693589400000,
+      "trade_id": "e87b8215-eb8d-4dc4-b62b-7796f947e355",
+      "reason": "stop-loss",
+      "pnl": -147.63345280799032,
+      "balance": 7203.133468421061,
+      "gross": -142.49529022857106,
+      "risk_budget": 147.01533842458102,
+      "realized_loss": 147.63345280799032,
+      "loss_over_budget": 0.6181143834093064
+    },
+    {
+      "time": 1694716620000,
+      "trade_id": "a7e3b9db-6883-41b6-8e43-254580334818",
+      "reason": "stop-loss",
+      "pnl": -143.80770748656442,
+      "balance": 7059.3257609344955,
+      "gross": -140.0154049285709,
+      "risk_budget": 144.0626693684212,
+      "realized_loss": 143.80770748656442,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1696449600000,
+      "trade_id": "79130970-c158-4770-a9e2-9070dff6ff0a",
+      "reason": "maximum_hold",
+      "pnl": 64.09622573349031,
+      "balance": 7123.421986667986,
+      "gross": 68.01837163799915,
+      "risk_budget": 141.18651521868992,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1697688000000,
+      "trade_id": "e8d374c0-5b70-4ce5-9fa6-f59138900915",
+      "reason": "maximum_hold",
+      "pnl": -1.9443767394888951,
+      "balance": 7121.477609928495,
+      "gross": 1.7533650480001004,
+      "risk_budget": 142.46843973335973,
+      "realized_loss": 1.9443767394888951,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1698307200000,
+      "trade_id": "bd82fb48-3cd8-4456-8262-8d1679f1582c",
+      "reason": "maximum_hold",
+      "pnl": -46.1579756580162,
+      "balance": 7075.319634270479,
+      "gross": -45.402599555999686,
+      "risk_budget": 142.42955219856992,
+      "realized_loss": 46.1579756580162,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1701642840000,
+      "trade_id": "0f1dc55c-dd35-45bf-b1a2-6489ac6f168b",
+      "reason": "stop-loss",
+      "pnl": -138.8811988677145,
+      "balance": 6936.438435402764,
+      "gross": -133.16616222000025,
+      "risk_budget": 141.50639268540957,
+      "realized_loss": 138.8811988677145,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1702318020000,
+      "trade_id": "ccb5f8d2-a3a8-445e-a2e3-697bbc2f0b2b",
+      "reason": "stop-loss",
+      "pnl": -139.18485152506236,
+      "balance": 6797.253583877701,
+      "gross": -134.63328039685695,
+      "risk_budget": 138.7287687080553,
+      "realized_loss": 139.18485152506236,
+      "loss_over_budget": 0.4560828170070579
+    },
+    {
+      "time": 1702512000000,
+      "trade_id": "7fde04ad-7ae9-469b-86ea-7f7acc9a0155",
+      "reason": "maximum_hold",
+      "pnl": 133.93415474598694,
+      "balance": 6931.187738623688,
+      "gross": 139.58126696,
+      "risk_budget": 135.94507167755404,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "time": 1703908800000,
+      "trade_id": "a1597521-d1fe-4738-be63-ab0b50cc5fd2",
+      "reason": "maximum_hold",
+      "pnl": 179.13171487995078,
+      "balance": 7110.319453503639,
+      "gross": 169.91071013700068,
+      "risk_budget": 138.62375477247377,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    }
+  ],
+  "close_reasons": {
+    "stop-loss": 32,
+    "maximum_hold": 50,
+    "take-profit": 4
+  },
+  "post_audit_final_closes": [],
+  "oi_entries_checked": 86,
+  "p_allowed_without_passing_decline_gate": 0,
+  "limits": "Full logs traversed and all entry plans/close contexts checked. Source-window hashes establish construction identity, not independent candle recomputation. Root owns complete-snapshot monetary ledger/accounting and yearly selection gates. No new motors or analysis jobs.",
+  "buckets": [
+    {
+      "key": "2020-09:all",
+      "bars": 180,
+      "opportunities": 9,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23,
+        "allowed": 5,
+        "in_position_or_pending": 3,
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23,
+        "deleverage_setup": 12
+      }
+    },
+    {
+      "key": "2020-09:long",
+      "bars": 8,
+      "opportunities": 5,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 3,
+        "oi_decline_below_threshold": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2020-09:none",
+      "bars": 168,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 145,
+        "deleverage_correction_reject": 23
+      }
+    },
+    {
+      "key": "2020-09:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "oi_decline_below_threshold": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2020-10:all",
+      "bars": 186,
+      "opportunities": 10,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 8
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2020-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2020-10:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2020-10:short",
+      "bars": 10,
+      "opportunities": 9,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 8,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2020-11:all",
+      "bars": 180,
+      "opportunities": 8,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30,
+        "oi_decline_below_threshold": 5,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2020-11:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2020-11:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 141,
+        "deleverage_correction_reject": 30
+      }
+    },
+    {
+      "key": "2020-11:short",
+      "bars": 8,
+      "opportunities": 7,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_decline_below_threshold": 5,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2020-12:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_decline_below_threshold": 3,
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6,
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151
+      }
+    },
+    {
+      "key": "2020-12:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 151
+      }
+    },
+    {
+      "key": "2020-12:short",
+      "bars": 6,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_decline_below_threshold": 3,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-01:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27,
+        "allowed": 3,
+        "daily_limit": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27,
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-01:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-01:none",
+      "bars": 181,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 154,
+        "deleverage_correction_reject": 27
+      }
+    },
+    {
+      "key": "2021-01:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "daily_limit": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-02:all",
+      "bars": 168,
+      "opportunities": 8,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "oi_decline_below_threshold": 7,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2021-02:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2021-02:none",
+      "bars": 160,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-02:short",
+      "bars": 7,
+      "opportunities": 7,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 7
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-03:all",
+      "bars": 186,
+      "opportunities": 10,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21,
+        "allowed": 1,
+        "oi_decline_below_threshold": 9
+      },
+      "flags": {
+        "oi_decline_below_threshold": 9
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2021-03:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-03:short",
+      "bars": 7,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_decline_below_threshold": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-04:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19,
+        "oi_decline_below_threshold": 4,
+        "allowed": 2,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2021-04:long",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 2,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2021-04:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 19
+      }
+    },
+    {
+      "key": "2021-04:short",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 3,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-05:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_correction_reject": 21,
+        "oi_decline_below_threshold": 7,
+        "deleverage_displacement_below": 156,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 9,
+        "deleverage_displacement_below": 156
+      }
+    },
+    {
+      "key": "2021-05:long",
+      "bars": 6,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-05:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 21,
+        "deleverage_displacement_below": 156
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 21,
+        "deleverage_displacement_below": 156
+      }
+    },
+    {
+      "key": "2021-05:short",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-06:all",
+      "bars": 180,
+      "opportunities": 10,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21,
+        "allowed": 3,
+        "oi_decline_below_threshold": 7
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2021-06:long",
+      "bars": 6,
+      "opportunities": 6,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-06:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-06:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2021-07:all",
+      "bars": 186,
+      "opportunities": 13,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20,
+        "oi_decline_below_threshold": 8,
+        "allowed": 5,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 15
+      }
+    },
+    {
+      "key": "2021-07:long",
+      "bars": 9,
+      "opportunities": 8,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 7,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2021-07:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 20
+      }
+    },
+    {
+      "key": "2021-07:short",
+      "bars": 6,
+      "opportunities": 5,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2021-08:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23,
+        "allowed": 4,
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23,
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-08:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-08:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 23
+      }
+    },
+    {
+      "key": "2021-08:short",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "allowed": 4,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-09:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16,
+        "oi_decline_below_threshold": 3,
+        "allowed": 2,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2021-09:long",
+      "bars": 5,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 3
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-09:none",
+      "bars": 172,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 16
+      }
+    },
+    {
+      "key": "2021-09:short",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-10:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "oi_decline_below_threshold": 6,
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2021-10:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-10:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2021-10:short",
+      "bars": 9,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2021-11:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27,
+        "oi_decline_below_threshold": 6,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27,
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2021-11:long",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2021-11:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 27
+      }
+    },
+    {
+      "key": "2021-11:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2021-12:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21,
+        "allowed": 1,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2021-12:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2021-12:none",
+      "bars": 178,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 157,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2021-12:short",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-01:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13,
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13,
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-01:long",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-01:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 13
+      }
+    },
+    {
+      "key": "2022-02:all",
+      "bars": 168,
+      "opportunities": 11,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124,
+        "oi_decline_below_threshold": 10,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 10
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2022-02:long",
+      "bars": 6,
+      "opportunities": 6,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-02:none",
+      "bars": 157,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 33,
+        "deleverage_displacement_below": 124
+      }
+    },
+    {
+      "key": "2022-02:short",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-03:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_decline_below_threshold": 6,
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10,
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149
+      }
+    },
+    {
+      "key": "2022-03:long",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 2,
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 27,
+        "deleverage_displacement_below": 149
+      }
+    },
+    {
+      "key": "2022-03:short",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-04:all",
+      "bars": 180,
+      "opportunities": 14,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "deleverage_correction_reject": 19,
+        "oi_decline_below_threshold": 10,
+        "deleverage_displacement_below": 146,
+        "allowed": 4,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 10
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 19,
+        "deleverage_setup": 15,
+        "deleverage_displacement_below": 146
+      }
+    },
+    {
+      "key": "2022-04:long",
+      "bars": 10,
+      "opportunities": 10,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 10
+      },
+      "flags": {
+        "oi_decline_below_threshold": 10
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2022-04:none",
+      "bars": 165,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 19,
+        "deleverage_displacement_below": 146
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 19,
+        "deleverage_displacement_below": 146
+      }
+    },
+    {
+      "key": "2022-04:short",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-05:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27,
+        "allowed": 2,
+        "oi_decline_below_threshold": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2022-05:long",
+      "bars": 6,
+      "opportunities": 6,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 5,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-05:none",
+      "bars": 178,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 27
+      }
+    },
+    {
+      "key": "2022-05:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2022-06:all",
+      "bars": 180,
+      "opportunities": 9,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33,
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 7
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2022-06:long",
+      "bars": 8,
+      "opportunities": 7,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2022-06:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 137,
+        "deleverage_correction_reject": 33
+      }
+    },
+    {
+      "key": "2022-06:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2022-07:all",
+      "bars": 186,
+      "opportunities": 10,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24,
+        "oi_decline_below_threshold": 8,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2022-07:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-07:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 152,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2022-07:short",
+      "bars": 7,
+      "opportunities": 7,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 7
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2022-08:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24,
+        "oi_decline_below_threshold": 6,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2022-08:long",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 2,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-08:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2022-08:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-09:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22,
+        "oi_decline_below_threshold": 4,
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2022-09:long",
+      "bars": 6,
+      "opportunities": 5,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "oi_decline_below_threshold": 2,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-09:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 149,
+        "deleverage_correction_reject": 22
+      }
+    },
+    {
+      "key": "2022-09:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-10:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22,
+        "oi_decline_below_threshold": 3,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22,
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-10:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 160,
+        "deleverage_correction_reject": 22
+      }
+    },
+    {
+      "key": "2022-10:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 3,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2022-11:all",
+      "bars": 180,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29,
+        "oi_decline_below_threshold": 6,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2022-11:long",
+      "bars": 6,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2022-11:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 142,
+        "deleverage_correction_reject": 29
+      }
+    },
+    {
+      "key": "2022-11:short",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2022-12:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20,
+        "oi_decline_below_threshold": 6,
+        "allowed": 3,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 11
+      }
+    },
+    {
+      "key": "2022-12:long",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2022-12:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 155,
+        "deleverage_correction_reject": 20
+      }
+    },
+    {
+      "key": "2022-12:short",
+      "bars": 6,
+      "opportunities": 6,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 5,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 6
+      }
+    },
+    {
+      "key": "2023-01:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28,
+        "oi_decline_below_threshold": 4,
+        "allowed": 4,
+        "in_position_or_pending": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28,
+        "deleverage_setup": 12
+      }
+    },
+    {
+      "key": "2023-01:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2023-01:none",
+      "bars": 174,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 28
+      }
+    },
+    {
+      "key": "2023-01:short",
+      "bars": 10,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 3,
+        "in_position_or_pending": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2023-02:all",
+      "bars": 168,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "oi_decline_below_threshold": 6,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21,
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2023-02:long",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "oi_decline_below_threshold": 2,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 2
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-02:none",
+      "bars": 160,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 139,
+        "deleverage_correction_reject": 21
+      }
+    },
+    {
+      "key": "2023-02:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-03:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30,
+        "allowed": 3,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2023-03:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2023-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 30
+      }
+    },
+    {
+      "key": "2023-03:short",
+      "bars": 7,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_decline_below_threshold": 6
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2023-04:all",
+      "bars": 180,
+      "opportunities": 9,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25,
+        "oi_decline_below_threshold": 8,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2023-04:long",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-04:none",
+      "bars": 171,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 146,
+        "deleverage_correction_reject": 25
+      }
+    },
+    {
+      "key": "2023-04:short",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-05:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26,
+        "oi_decline_below_threshold": 9
+      },
+      "flags": {
+        "oi_decline_below_threshold": 9
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2023-05:long",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-05:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 26
+      }
+    },
+    {
+      "key": "2023-05:short",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-06:all",
+      "bars": 180,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141,
+        "oi_decline_below_threshold": 6,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 6
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141,
+        "deleverage_setup": 10
+      }
+    },
+    {
+      "key": "2023-06:long",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 5
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-06:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 29,
+        "deleverage_displacement_below": 141
+      }
+    },
+    {
+      "key": "2023-06:short",
+      "bars": 5,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-07:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12,
+        "oi_decline_below_threshold": 4,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12,
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-07:long",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-07:none",
+      "bars": 181,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 169,
+        "deleverage_correction_reject": 12
+      }
+    },
+    {
+      "key": "2023-07:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2023-08:all",
+      "bars": 186,
+      "opportunities": 9,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "deleverage_correction_reject": 20,
+        "oi_decline_below_threshold": 8,
+        "deleverage_displacement_below": 155,
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 8
+      },
+      "feature_reasons": {
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 11,
+        "deleverage_displacement_below": 155
+      }
+    },
+    {
+      "key": "2023-08:long",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_decline_below_threshold": 1,
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-08:none",
+      "bars": 175,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 20,
+        "deleverage_displacement_below": 155
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 20,
+        "deleverage_displacement_below": 155
+      }
+    },
+    {
+      "key": "2023-08:short",
+      "bars": 7,
+      "opportunities": 7,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 7
+      },
+      "flags": {
+        "oi_decline_below_threshold": 7
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7
+      }
+    },
+    {
+      "key": "2023-09:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "deleverage_correction_reject": 16,
+        "in_position_or_pending": 1,
+        "deleverage_displacement_below": 157,
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 7,
+        "deleverage_correction_reject": 16,
+        "deleverage_displacement_below": 157
+      }
+    },
+    {
+      "key": "2023-09:long",
+      "bars": 5,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1,
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 5
+      }
+    },
+    {
+      "key": "2023-09:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_correction_reject": 16,
+        "deleverage_displacement_below": 157
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_correction_reject": 16,
+        "deleverage_displacement_below": 157
+      }
+    },
+    {
+      "key": "2023-09:short",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2023-10:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24,
+        "oi_decline_below_threshold": 5,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 5
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24,
+        "deleverage_setup": 9
+      }
+    },
+    {
+      "key": "2023-10:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2023-10:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 153,
+        "deleverage_correction_reject": 24
+      }
+    },
+    {
+      "key": "2023-10:short",
+      "bars": 8,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "oi_decline_below_threshold": 4,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_setup": 8
+      }
+    },
+    {
+      "key": "2023-11:all",
+      "bars": 180,
+      "opportunities": 4,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20,
+        "oi_decline_below_threshold": 4
+      },
+      "flags": {
+        "oi_decline_below_threshold": 4
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20,
+        "deleverage_setup": 4
+      }
+    },
+    {
+      "key": "2023-11:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 1
+      },
+      "feature_reasons": {
+        "deleverage_setup": 1
+      }
+    },
+    {
+      "key": "2023-11:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 156,
+        "deleverage_correction_reject": 20
+      }
+    },
+    {
+      "key": "2023-11:short",
+      "bars": 3,
+      "opportunities": 3,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_decline_below_threshold": 3
+      },
+      "flags": {
+        "oi_decline_below_threshold": 3
+      },
+      "feature_reasons": {
+        "deleverage_setup": 3
+      }
+    },
+    {
+      "key": "2023-12:all",
+      "bars": 186,
+      "opportunities": 13,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "deleverage_displacement_below": 150,
+        "deleverage_correction_reject": 22,
+        "oi_decline_below_threshold": 9,
+        "allowed": 4,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_decline_below_threshold": 9
+      },
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 22,
+        "deleverage_setup": 13
+      }
+    },
+    {
+      "key": "2023-12:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_setup": 2
+      }
+    },
+    {
+      "key": "2023-12:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "deleverage_displacement_below": 150,
+        "deleverage_correction_reject": 22,
+        "boundary_or_inactive": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "deleverage_displacement_below": 151,
+        "deleverage_correction_reject": 22
+      }
+    },
+    {
+      "key": "2023-12:short",
+      "bars": 11,
+      "opportunities": 11,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_decline_below_threshold": 9,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_decline_below_threshold": 9
+      },
+      "feature_reasons": {
+        "deleverage_setup": 11
+      }
+    }
+  ],
+  "raw_log_pages": [
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_01.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_02.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_03.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_04.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_05.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_06.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_07.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_08.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_09.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_10.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_11.json",
+    "V6_DELEVERAGING_POI_SCREEN_LOGS_12.json"
+  ],
+  "entry_plan_file": "V6_DELEVERAGING_POI_ENTRYPLAN_AUDIT.json"
+}

@@ -8,6 +8,7 @@ from jesse.enums import exchanges, order_types
 from jesse.exchanges.exchange import Exchange
 from jesse.models.Order import Order
 from jesse.services import logger, order_service
+from jesse.store import store
 import jesse.helpers as jh
 
 from jesse_live.binance import BinanceFuturesClient
@@ -55,6 +56,18 @@ class BinancePerpetualFuturesDriver(Exchange):
         return self.vars["precisions"].get(symbol, {"price_precision": 1, "qty_precision": 3})
 
     def _maybe_place(self, payload: dict) -> str | None:
+        # A stale required input blocks new exposure while reduce-only stops and
+        # exits remain available. Existing sessions with inputs disabled match
+        # their original execution path.
+        if payload.get('reduceOnly') != 'true':
+            for name in ('funding', 'open_interest'):
+                state = store.app.session_info.get(name, {})
+                if state.get('mode') == 'live' and state.get('status') != 'ready':
+                    raise ValueError(f'New entry blocked: {name} data is {state.get("status", "unavailable")}')
+                if state.get('entry_cancellations', {}).get('pending_count', 0):
+                    raise ValueError('New entry blocked: previous entry cancellation is unconfirmed')
+            if store.app.session_info.get('live_position', {}).get('status') == 'error':
+                raise ValueError('New entry blocked: account position reconciliation failed')
         if not allow_trading():
             logger.info(f"DRY-RUN Binance order skipped (allow_trading switch off): {payload}")
             return None
@@ -143,7 +156,7 @@ class BinancePerpetualFuturesDriver(Exchange):
         from jesse.store import store
         order = store.orders.get_order_by_id(self.name, symbol, order_id)
         if allow_trading() and order and order.exchange_id:
-            self.client.cancel_order(symbol, order.exchange_id)
+            self.client.cancel_order(symbol, order.exchange_id, is_algo=order.type == order_types.STOP)
         if order:
             order_service.cancel_order(order)
 

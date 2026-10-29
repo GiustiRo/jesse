@@ -1,0 +1,1280 @@
+{
+  "cycle": "V5",
+  "sector": "VWAP",
+  "owner": "/root/atr_oi",
+  "status": "SCREEN_COMPLETE_BOTH_REJECTED_WAIT_ROOT_FINANCE",
+  "at": "2026-10-21T00:50:23.714Z",
+  "protocol": "RESEARCH_PROTOCOL_V5_20261020.md",
+  "proposal": "V5_VWAP_PROPOSAL.md",
+  "sources": {
+    "strategies/ResearchV5Base1h/vwap_features.py": "\"\"\"Finite rolling24 HLC3/volume reversal; this is not anchored-day/tick VWAP.\"\"\"\n\nimport hashlib\nimport json\nimport math\n\nimport numpy as np\n\nfrom strategies.ResearchV5Base1h import BAR, atr_window, closed_window\n\n\ndef vwap_state(candles, now, dispersion=True):\n    \"\"\"Exit may use mean alone even when variance/ATR cannot be evaluated.\"\"\"\n    rows = closed_window(candles, now, 24)\n    if rows is None or rows.shape[1] < 6:\n        return None\n    volume = rows[:, 5]\n    if not np.all(np.isfinite(volume)) or np.any(volume < 0):\n        return None\n    maximum = float(np.max(volume))\n    if maximum <= 0:\n        return None\n    # Scaling weights prevents overflow in a sum of otherwise finite large volumes.\n    with np.errstate(over=\"ignore\", invalid=\"ignore\"):\n        weights = volume / maximum\n        weights = weights / np.sum(weights)\n        typical = rows[:, 3] / 3. + rows[:, 4] / 3. + rows[:, 2] / 3.\n        mean = float(np.sum(weights * typical))\n    if not math.isfinite(mean) or mean <= 0:\n        return None\n    state = dict(mean=mean, close=float(rows[-1, 2]), first=int(rows[0, 0]),\n                 last=int(rows[-1, 0]), zero_volumes=int(np.sum(volume == 0)))\n    if dispersion:\n        with np.errstate(over=\"ignore\", invalid=\"ignore\"):\n            variance = float(np.sum(weights * (typical - mean) ** 2))\n        if not math.isfinite(variance) or variance < 0:\n            return None\n        state[\"sigma\"] = math.sqrt(variance)\n    state[\"sha256\"] = hashlib.sha256(json.dumps(\n        rows[:, :6].tolist(), separators=(\",\", \":\"), allow_nan=False).encode()).hexdigest()\n    return state\n\n\ndef entry_direction(c0, c1, m0, m1, s0, s1, multiplier):\n    \"\"\"Closed reentry includes outer equality but never enters past the mean.\"\"\"\n    values = (c0, c1, m0, m1, s0, s1, multiplier)\n    if not all(math.isfinite(v) for v in values) or min(s0, s1, multiplier) <= 0:\n        return 0\n    lower0, upper0 = m0 - multiplier * s0, m0 + multiplier * s0\n    lower1, upper1 = m1 - multiplier * s1, m1 + multiplier * s1\n    if not all(math.isfinite(v) for v in (lower0, upper0, lower1, upper1)):\n        return 0\n    if c1 < lower1 and lower0 <= c0 < m0 and c0 > c1:\n        return 1\n    if c1 > upper1 and m0 < c0 <= upper0 and c0 < c1:\n        return -1\n    return 0\n\n\ndef features(candles, now, atr, band_multiplier=2.0):\n    invalid = dict(valid=False, direction=0, reason=\"vwap_data_invalid\", details={})\n    rows = closed_window(candles, now, 25)\n    if rows is None or rows.shape[1] < 6:\n        return invalid\n    try:\n        if not math.isfinite(band_multiplier) or band_multiplier <= 0:\n            return invalid\n        if (atr is None or atr[\"offset_bars\"] != 0 or\n                atr[\"first\"] != now - 15 * BAR or atr[\"last\"] != now - BAR or\n                not math.isfinite(atr[\"value\"]) or atr[\"value\"] <= 0):\n            return invalid\n    except (KeyError, TypeError, ValueError):\n        return invalid\n    current = vwap_state(candles, now)\n    previous = vwap_state(candles, now - BAR)\n    atr_previous = atr_window(candles, now, 1)\n    if current is None or previous is None or atr_previous is None:\n        return invalid\n    scale0 = max(current[\"sigma\"], float(atr[\"value\"]))\n    scale1 = max(previous[\"sigma\"], atr_previous[\"value\"])\n    # Reject overflow instead of allowing an unbounded band to produce a false reentry.\n    if not all(math.isfinite(v) for v in (\n            current[\"mean\"] - band_multiplier * scale0,\n            current[\"mean\"] + band_multiplier * scale0,\n            previous[\"mean\"] - band_multiplier * scale1,\n            previous[\"mean\"] + band_multiplier * scale1)):\n        return invalid\n    direction = entry_direction(current[\"close\"], previous[\"close\"], current[\"mean\"],\n        previous[\"mean\"], scale0, scale1, band_multiplier)\n    details = dict(close=current[\"close\"], close_previous=previous[\"close\"],\n        mean=current[\"mean\"], mean_previous=previous[\"mean\"],\n        sigma=current[\"sigma\"], sigma_previous=previous[\"sigma\"],\n        atr=float(atr[\"value\"]), atr_previous=atr_previous[\"value\"],\n        scale=scale0, scale_previous=scale1, band_multiplier=float(band_multiplier),\n        first=int(rows[0, 0]), last=int(rows[-1, 0]),\n        current_sha256=current[\"sha256\"], previous_sha256=previous[\"sha256\"],\n        zero_volumes=current[\"zero_volumes\"], zero_volumes_previous=previous[\"zero_volumes\"])\n    return dict(valid=True, direction=int(direction),\n                reason=\"vwap_reentry\" if direction else \"vwap_no_reentry\", details=details)\n\n\ndef exit_state(candles, now, direction):\n    \"\"\"State condition; no ATR, dispersion, fresh crossing or previous25th row.\"\"\"\n    state = vwap_state(candles, now, dispersion=False)\n    if state is None or direction not in (-1, 1):\n        return dict(valid=False, exit=False, details={})\n    return dict(valid=True, exit=bool(direction * (state[\"close\"] - state[\"mean\"]) >= 0),\n                details=state)\n\n\ndef self_checks():\n    \"\"\"Pure algebra/window checks; broker/time priorities remain common checks.\"\"\"\n    count = 0\n\n    def check(value):\n        nonlocal count\n        assert value\n        count += 1\n\n    now = 25 * BAR\n    flat = np.array([[i * BAR, 100., 100., 101., 99., 1.] for i in range(25)])\n    state = vwap_state(flat, now)\n    check(abs(state[\"mean\"] - 100.) < 1e-12)\n    check(state[\"sigma\"] < 1e-12)\n    check(state[\"first\"] == BAR and state[\"last\"] == 24 * BAR)\n    weighted = flat.copy()\n    for i in range(25):\n        p = 100. + i\n        weighted[i, 1:5] = [p, p, p + 1., p - 1.]\n        weighted[i, 5] = i + 1.\n    oracle_mean = sum((i + 1.) * (100. + i) for i in range(1, 25)) / sum(range(2, 26))\n    oracle_var = sum((i + 1.) * (100. + i - oracle_mean) ** 2 for i in range(1, 25)) / sum(range(2, 26))\n    result = vwap_state(weighted, now)\n    check(abs(result[\"mean\"] - oracle_mean) < 1e-12)\n    check(abs(result[\"sigma\"] - math.sqrt(oracle_var)) < 1e-12)\n    scaled = weighted.copy()\n    scaled[:, 5] *= 8.\n    scaled_result = vwap_state(scaled, now)\n    check(result[\"mean\"] == scaled_result[\"mean\"])\n    check(result[\"sigma\"] == scaled_result[\"sigma\"])\n    large = flat.copy()\n    large[:, 5] = 1e308\n    check(vwap_state(large, now) is not None)\n    single = flat.copy()\n    single[:, 5] = 0.\n    single[-1, 5] = 3.\n    check(vwap_state(single, now)[\"mean\"] == 100.)\n    check(vwap_state(single, now)[\"sigma\"] == 0.)\n    check(vwap_state(single, now)[\"zero_volumes\"] == 23)\n    all_zero = single.copy()\n    all_zero[-1, 5] = 0.\n    check(vwap_state(all_zero, now) is None)\n    # One prior outlier then a recovering close; volume stays positive and unchanged.\n    setup = flat.copy()\n    setup[-2, 1:5] = [80., 80., 81., 79.]\n    setup[-1, 1:5] = [90., 90., 91., 89.]\n    atr = atr_window(setup, now)\n    signal = features(setup, now, atr)\n    check(signal[\"valid\"] and signal[\"direction\"] == 1)\n    mirror = setup.copy()\n    mirror[:, 1] = 200. - setup[:, 1]\n    mirror[:, 2] = 200. - setup[:, 2]\n    mirror[:, 3] = 200. - setup[:, 4]\n    mirror[:, 4] = 200. - setup[:, 3]\n    check(features(mirror, now, atr_window(mirror, now))[\"direction\"] == -1)\n    check(signal[\"details\"][\"atr_previous\"] == atr_window(setup, now - BAR)[\"value\"])\n    check(signal[\"details\"][\"mean_previous\"] == vwap_state(setup[:-1], now - BAR)[\"mean\"])\n    check(entry_direction(96., 95., 100., 100., 2., 2., 2.) == 1)\n    check(entry_direction(104., 105., 100., 100., 2., 2., 2.) == -1)\n    check(entry_direction(96., 96., 100., 100., 2., 2., 2.) == 0)\n    check(entry_direction(100., 95., 100., 100., 2., 2., 2.) == 0)\n    check(entry_direction(100., 105., 100., 100., 2., 2., 2.) == 0)\n    check(entry_direction(95., 94., 100., 100., 2., 2., 2.) == 0)\n    check(entry_direction(105., 106., 100., 100., 2., 2., 2.) == 0)\n    check(entry_direction(96., 95., 100., 110., 2., 2., 2.) == 1)\n    check(entry_direction(95., 95., 100., 110., 3., 2., 2.) == 0)\n    check(features(setup, now, atr, 1.8)[\"valid\"])\n    check(features(setup, now, atr, 2.2)[\"valid\"])\n    future = np.array([[now, 100., 100., 101., 99., float(\"nan\")]])\n    check(features(np.vstack((setup, future)), now, atr) == signal)\n    older = flat.copy()\n    older[:, 0] -= 25 * BAR\n    check(features(np.vstack((older, setup)), now, atr) == signal)\n    original = setup.copy()\n    features(setup, now, atr)\n    check(np.array_equal(setup, original))\n    check(not features(setup[-24:], now, atr)[\"valid\"])\n    check(exit_state(flat[-24:], now, 1)[\"valid\"])\n    check(exit_state(single[-24:], now, 1)[\"exit\"])\n    check(exit_state(single[-24:], now, -1)[\"exit\"])\n    check(not exit_state(setup[-24:], now, 1)[\"exit\"])\n    check(exit_state(setup[-24:], now, -1)[\"exit\"])\n    check(not exit_state(flat[-23:], now, 1)[\"valid\"])\n    check(not features(setup, now + 1, atr)[\"valid\"])\n    check(not features(setup, now, None)[\"valid\"])\n    check(not features(setup, now, atr_window(setup, now, 1))[\"valid\"])\n    check(not features(setup[:, :5], now, atr)[\"valid\"])\n    for column, value in ((0, 3 * BAR), (1, 0.), (2, float(\"nan\")),\n                          (3, 50.), (4, 150.), (5, -1.), (5, float(\"inf\"))):\n        bad = setup.copy()\n        bad[2, column] = value\n        check(not features(bad, now, atr)[\"valid\"])\n    bad = setup.copy()\n    bad[:, 5] = 0.\n    check(not features(bad, now, atr)[\"valid\"])\n    bad = setup.copy()\n    bad[-1, 5] = 0.\n    check(features(bad, now, atr)[\"valid\"])\n    for k in (0., -1., float(\"nan\"), float(\"inf\")):\n        check(not features(setup, now, atr, k)[\"valid\"])\n    check(len(\"V5_FEATURES \" + json.dumps(dict(time=int(now), line=\"VWAP\", **signal),\n                                        allow_nan=False, separators=(\",\", \":\"))) <= 1900)\n    check(\"sigma\" not in exit_state(flat, now, 1)[\"details\"])\n    return dict(status=\"passed\", assertions=count)\n",
+    "strategies/ResearchV5VwapPV1h/__init__.py": "from strategies.ResearchV5Base1h import ResearchV5Base1h\nfrom strategies.ResearchV5Base1h.vwap_features import features as vwap_features, exit_state\n\n\nclass ResearchV5VwapPV1h(ResearchV5Base1h):\n    LINE = \"VWAP\"\n    USE_OI = False\n    ATR_OFFSET_BARS = 0\n    STOP_MULTIPLIER = 2.\n    TARGET_MODE = \"none\"\n    MAX_HOLD_BARS = 24\n    BAND_MULTIPLIER = 2.\n\n    def features(self, candles, now, atr):\n        return vwap_features(candles, now, atr, self.BAND_MULTIPLIER)\n\n    def manage_position(self, atr):\n        # Exit normalization needs24 valid volume bars, not entry25 or a valid ATR.\n        if int(self.time) <= int(self.position.opened_at):\n            return\n        result = exit_state(self.candles, int(self.time), 1 if self.is_long else -1)\n        if not result[\"valid\"]:\n            self._log_json(\"V5_VWAP_EXIT_SKIPPED\", dict(time=int(self.time), reason=\"vwap_invalid\"))\n        elif result[\"exit\"]:\n            self._log_json(\"V5_VWAP_EXIT_CONTEXT\", dict(time=int(self.time), **result[\"details\"]))\n            self.request_exit(\"vwap_normalization\")\n",
+    "strategies/ResearchV5VwapPVOi1h/__init__.py": "from strategies.ResearchV5VwapPV1h import ResearchV5VwapPV1h\n\n\nclass ResearchV5VwapPVOi1h(ResearchV5VwapPV1h):\n    USE_OI = True\n",
+    "strategies/ResearchV5VwapSmoke1h/__init__.py": "from strategies.ResearchV5VwapPV1h import ResearchV5VwapPV1h\nfrom strategies.ResearchV5Base1h.vwap_features import self_checks\nfrom strategies.ResearchV5Base1h.common_checks import self_checks as common_checks\n\n\nclass ResearchV5VwapSmoke1h(ResearchV5VwapPV1h):\n    FINISH = 1599523200000\n\n    def before(self):\n        if \"self_checks\" not in self.vars:\n            self.vars[\"self_checks\"] = self_checks()\n            self.vars[\"base_checks\"] = common_checks()\n            self._log_json(\"V5_SELF_CHECKS\", self.vars[\"self_checks\"])\n            self._log_json(\"V5_BASE_CHECKS\", self.vars[\"base_checks\"])\n        super().before()\n"
+  },
+  "base_captured": "import hashlib\nimport json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\n\nfrom strategies.ResearchV2Core4h import (\n    ResearchV2Core4h, ACCOUNTING_TOLERANCE,\n)\n\n# V5 1h decisions use explicit local clocks; only neutral V2 hooks are inherited.\nBAR = 3600000\nDAY = 86400000\nOI_REFERENCE_BARS = 24\n\n\ndef closed_window(candles, now, count):\n    \"\"\"Finite OHLC with exactly the causal, consecutive window requested.\"\"\"\n    if (not isinstance(candles, np.ndarray) or candles.ndim != 2 or\n            candles.shape[1] < 5 or count < 1 or now % BAR):\n        return None\n    rows = candles[candles[:, 0] + BAR <= now][-count:]\n    if len(rows) != count or rows[-1, 0] != now - BAR or not np.all(np.diff(rows[:, 0]) == BAR):\n        return None\n    if not np.all(np.isfinite(rows[:, :5])) or np.any(rows[:, 1:5] <= 0):\n        return None\n    o, c, h, low = (rows[:, i] for i in (1, 2, 3, 4))\n    if np.any(h < np.maximum(o, c)) or np.any(low > np.minimum(o, c)) or np.any(h < low):\n        return None\n    return rows\n\n\ndef atr_window(candles, now, offset_bars=0):\n    \"\"\"Arithmetic TR, with shock risk frozen before the event when offset is one.\"\"\"\n    if offset_bars not in (0, 1):\n        return None\n    rows = closed_window(candles, now, 15 + offset_bars)\n    if rows is None:\n        return None\n    if offset_bars:\n        rows = rows[:-offset_bars]\n    close, high, low = (rows[:, i] for i in (2, 3, 4))\n    tr = np.maximum(high[1:] - low[1:],\n                    np.maximum(abs(high[1:] - close[:-1]), abs(low[1:] - close[:-1])))\n    value = float(np.mean(tr))\n    if not math.isfinite(value) or value <= 0:\n        return None\n    return dict(value=value, first=int(rows[0, 0]), last=int(rows[-1, 0]),\n                bars=rows[:, :5].tolist(), offset_bars=offset_bars)\n\n\ndef _oi_record_valid(record):\n    \"\"\"Freshness remains attached to its original decision, including delayed tests.\"\"\"\n    try:\n        value, label, available, observed = (record[k] for k in\n                                             (\"value\", \"label\", \"available_at\", \"time\"))\n        return (record[\"status\"] == \"valid\" and value is not None and\n                math.isfinite(value) and value > 0 and label is not None and\n                available == label + 360000 and available <= observed <= available + 600000)\n    except (KeyError, TypeError, ValueError):\n        # Missing/malformed provenance is invalid data, never an as-of replacement.\n        return False\n\n\ndef oi_context(history, now, lag_bars=0):\n    target = now - lag_bars * BAR\n    current = next((r for r in reversed(history) if r[\"time\"] == target), None)\n    reference = next((r for r in reversed(history) if r[\"time\"] == target - DAY), None)\n    result = dict(quality=\"initialization\", passed=False, current=current, reference=reference)\n    if current is None:\n        return result\n    if current[\"status\"] != \"valid\":\n        result[\"quality\"] = current[\"status\"]\n    elif not _oi_record_valid(current):\n        result[\"quality\"] = \"invalid\"\n    elif reference is None:\n        result[\"quality\"] = \"initialization\"\n    elif not _oi_record_valid(reference):\n        result[\"quality\"] = \"reference_invalid\"\n    else:\n        result[\"quality\"] = \"valid\"\n        result[\"passed\"] = bool(current[\"value\"] > reference[\"value\"])\n    return result\n\n\ndef v5_entry_plan(price, capital, fee, direction, distance):\n    \"\"\"Risk includes both taker fees; absence of TP does not create a fake target.\"\"\"\n    stop = price - direction * distance\n    if direction not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in (price, capital, distance, stop)):\n        return dict(reason=\"distance_invalid\")\n    if not math.isfinite(fee) or fee < 0:\n        return dict(reason=\"distance_invalid\")\n    unit = distance + fee * (price + stop)\n    # Eight decimals and 2% plus the notional cap are frozen research conventions.\n    qty = math.floor(min(capital / price, .02 * capital / unit) * 1e8) / 1e8\n    if qty <= 0:\n        return dict(reason=\"qty_invalid\")\n    assert qty * unit <= .02 * capital + ACCOUNTING_TOLERANCE\n    assert qty * price <= capital + ACCOUNTING_TOLERANCE\n    return dict(reason=\"allowed\", price=price, capital=capital, fee=fee, qty=qty,\n                distance=distance, stop=stop, unit_loss=unit,\n                risk_budget=.02 * capital, planned_stop_loss=qty * unit)\n\n\nclass ResearchV5Base1h(ResearchV2Core4h):\n    \"\"\"1h context and execution; frozen V2 contributes only clock-neutral hooks.\"\"\"\n    LINE = \"abstract\"\n    TARGET_MODE = \"none\"\n    REWARD_MULTIPLE = 1.\n    MAX_HOLD_BARS = 24\n    STOP_MULTIPLIER = 2.\n    ATR_OFFSET_BARS = 0\n    START = 1598918400000\n    FINISH = 1704067200000\n    USE_OI = False\n    OI_LAG_BARS = 0\n    ACTIVE_WINDOWS = None\n    FORCE_BOUNDARIES = ()\n\n    def features(self, candles, now, atr):\n        raise NotImplementedError\n\n    def on_v5_open(self):\n        pass\n\n    def manage_position(self, atr):\n        pass\n\n    def _log_json(self, label, payload):\n        # Preserve inherited accounting labels while identifying this new hourly cycle.\n        if label.startswith(\"V2_\"):\n            label = \"V5_\" + label[3:]\n        super()._log_json(label, payload)\n\n    def _entry_window(self, now):\n        return (self.START < now < self.FINISH and\n                (self.ACTIVE_WINDOWS is None or any(a < now < b for a, b in self.ACTIVE_WINDOWS)))\n\n    def _target(self, price, direction, distance, features):\n        if self.TARGET_MODE == \"none\":\n            return None\n        assert self.TARGET_MODE == \"r_multiple\"\n        return price + direction * self.REWARD_MULTIPLE * distance\n\n    @staticmethod\n    def _target_valid(target, price, direction):\n        return target is None or (math.isfinite(target) and target > 0 and direction * (target - price) > 0)\n\n    def before(self):\n        now = int(self.time)\n        atr = atr_window(self.candles, now, self.ATR_OFFSET_BARS)\n        features = self.features(self.candles, now, atr)\n        assert isinstance(features, dict) and features[\"direction\"] in (-1, 0, 1)\n        assert isinstance(features[\"valid\"], bool) and isinstance(features.get(\"reason\", \"no_setup\"), str)\n        direction = int(features[\"direction\"])\n        value, label = self.open_interest, self.open_interest_timestamp\n        if value is not None:\n            # Frozen retrospective policy: availability label+6m, freshness another10m.\n            assert math.isfinite(value) and value >= 0 and label is not None and label + 360000 <= now <= label + 960000\n            self.vars[\"last_oi_label\"] = label\n            status = \"zero\" if value == 0 else \"valid\"\n        else:\n            assert label is None\n            status = \"stale\" if \"last_oi_label\" in self.vars else \"absent\"\n        history = self.vars.setdefault(\"oi_history\", [])\n        history.append(dict(time=now, value=value, label=label,\n                            available_at=label + 360000 if label is not None else None, status=status))\n        # Exact 24h reference in this clock, delayed scenario and one spare; no backfill.\n        history[:] = history[-(OI_REFERENCE_BARS + 2 + self.OI_LAG_BARS):]\n        oi = oi_context(history, now, self.OI_LAG_BARS)\n        funding_rows = self.get_funding_history(count=1)\n        assert all(r[\"available_at\"] <= now for r in funding_rows)\n        funding = funding_rows[-1] if funding_rows else None\n        day = now // DAY * DAY\n        opportunity = bool(direction and self.is_close and not self.entry_orders and\n                           self.vars.get(\"entry_day\") != day and self.vars.get(\"v5_last_exit_at\") != now and\n                           self._entry_window(now))\n        flags = []\n        current, reference = oi[\"current\"], oi[\"reference\"]\n        if current is None:\n            flags.append(\"oi_initialization\")\n        elif current[\"status\"] != \"valid\":\n            flags.append(\"oi_\" + current[\"status\"])\n        if reference is None:\n            if \"oi_initialization\" not in flags:\n                flags.append(\"oi_initialization\")\n        elif reference[\"status\"] != \"valid\":\n            flags.append(\"oi_reference_invalid\")\n        if oi[\"quality\"] == \"valid\" and not oi[\"passed\"]:\n            flags.append(\"oi_nonrising\")\n        if atr is None:\n            flags.append(\"atr_invalid\")\n        if not features[\"valid\"]:\n            flags.append(\"features_invalid\")\n        plan = None\n        reason = \"allowed\"\n        if not self._entry_window(now):\n            reason = \"boundary_or_inactive\"\n        elif atr is None:\n            reason = \"atr_invalid\"\n        elif not features[\"valid\"]:\n            reason = \"features_invalid\"\n        elif direction == 0:\n            reason = features.get(\"reason\", \"no_setup\")\n        elif self.vars.get(\"v5_last_exit_at\") == now:\n            reason = \"same_decision_exit\"\n        elif not self.is_close or self.entry_orders:\n            reason = \"in_position_or_pending\"\n        elif self.vars.get(\"entry_day\") == day:\n            reason = \"daily_limit\"\n        elif self.USE_OI and oi[\"quality\"] != \"valid\":\n            reason = \"oi_\" + oi[\"quality\"]\n        elif self.USE_OI and not oi[\"passed\"]:\n            reason = \"oi_nonrising\"\n        else:\n            distance = self.STOP_MULTIPLIER * atr[\"value\"]\n            plan = v5_entry_plan(self.price, self.available_margin, self.fee_rate, direction, distance)\n            reason = plan[\"reason\"]\n            if reason == \"allowed\":\n                target = self._target(plan[\"price\"], direction, distance, features)\n                if not self._target_valid(target, plan[\"price\"], direction):\n                    reason = \"target_invalid\"\n        if reason in (\"distance_invalid\", \"qty_invalid\", \"target_invalid\"):\n            flags.append(reason)\n        month = datetime.fromtimestamp((now - 1) / 1000, timezone.utc).strftime(\"%Y-%m\")\n        key = \"long\" if direction == 1 else \"short\" if direction == -1 else \"none\"\n        for bucket_direction in (\"all\", key):\n            bucket = self._bucket(month, bucket_direction)\n            feature_reason = features.get(\"reason\", \"no_setup\")\n            reasons = bucket.setdefault(\"feature_reasons\", {})\n            reasons[feature_reason] = reasons.get(feature_reason, 0) + 1\n            bucket[\"bars\"] += 1\n            bucket[\"opportunities\"] += int(opportunity)\n            bucket[\"primary\"][reason] = bucket[\"primary\"].get(reason, 0) + 1\n            if opportunity:\n                for flag in flags:\n                    bucket[\"flags\"][flag] = bucket[\"flags\"].get(flag, 0) + 1\n        self.vars[\"context\"] = dict(time=now, day=day, month=month, direction=direction,\n            allowed=reason == \"allowed\", oi=oi, atr=atr, plan=plan, funding=funding, features=features)\n\n    def request_exit(self, reason):\n        # Multiple close conditions at the same decision must not double-submit exits.\n        if not self.is_open or self.vars.get(\"v5_exit_requested_at\") == int(self.time):\n            return\n        self.vars[\"v5_exit_requested_at\"] = int(self.time)\n        self.vars[\"exit_reason\"] = reason\n        self._log_json(\"V5_EXIT_REQUEST\", dict(time=int(self.time), reason=reason))\n        self.liquidate()\n\n    def on_open_position(self, order):\n        intent = self.vars[\"intent\"]\n        context, plan = intent[\"context\"], intent[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = self.position.entry_price, abs(self.position.qty)\n        distance = plan[\"distance\"]\n        stop = entry - direction * distance\n        target = self._target(entry, direction, distance, context[\"features\"])\n        self.vars.pop(\"v5_exit_requested_at\", None)\n        self.vars[\"entry_day\"] = context[\"day\"]\n        for side in (\"all\", \"long\" if direction == 1 else \"short\"):\n            self._bucket(context[\"month\"], side)[\"entries\"] += 1\n        atr = context[\"atr\"]\n        digest = hashlib.sha256(json.dumps(atr[\"bars\"], separators=(\",\", \":\"), allow_nan=False).encode()).hexdigest()\n        self._log_json(\"V5_FEATURES\", dict(time=int(self.time), line=self.LINE,\n                                        **context[\"features\"]))\n        self._log_json(\"V5_ENTRY\", dict(time=int(self.time), direction=direction, decision=plan[\"price\"],\n            fill=entry, capital=plan[\"capital\"], qty=qty, distance_pre=distance, distance_fill=distance,\n            planned_stop_loss=plan[\"planned_stop_loss\"], risk_budget=plan[\"risk_budget\"],\n            stop=stop, target=target, atr=dict(value=atr[\"value\"], first=atr[\"first\"], last=atr[\"last\"],\n                                             bars=15, offset_bars=self.ATR_OFFSET_BARS, sha256=digest), oi=context[\"oi\"], funding=context[\"funding\"]))\n        self.vars[\"v5_trade\"] = dict(entry_at=int(self.position.opened_at), entry_atr=atr[\"value\"],\n                                    entry_fill=entry, distance=distance, stop_price=stop, target_price=target)\n        if not math.isfinite(stop) or stop <= 0 or not self._target_valid(target, entry, direction):\n            for side in (\"all\", \"long\" if direction == 1 else \"short\"):\n                bucket = self._bucket(context[\"month\"], side)\n                bucket[\"flags\"][\"invalid_after_fill\"] = bucket[\"flags\"].get(\"invalid_after_fill\", 0) + 1\n            self.request_exit(\"invalid_after_fill\")\n            return\n        self.stop_loss = qty, stop\n        if target is not None:\n            self.take_profit = qty, target\n        self.on_v5_open()\n\n    def update_position(self):\n        # Calendar and elapsed holding exits take priority over indicator normalization.\n        if any(self.time - BAR < boundary <= self.time for boundary in self.FORCE_BOUNDARIES):\n            self.request_exit(\"calendar_boundary\")\n            return\n        if self.time - self.position.opened_at >= self.MAX_HOLD_BARS * BAR:\n            self.request_exit(\"maximum_hold\")\n            return\n        # Indicator exits may only use a close after the fill, never its entry decision.\n        if self.time > self.position.opened_at:\n            self.manage_position(self.vars[\"context\"][\"atr\"])\n\n    def on_close_position(self, order, closed_trade):\n        self.vars[\"v5_last_exit_at\"] = int(closed_trade.closed_at)\n        super().on_close_position(order, closed_trade)\n\n    def before_terminate(self):\n        if self.is_open:\n            self.vars[\"exit_reason\"] = \"fold_end\"\n            self._log_json(\"V5_EXIT_REQUEST\", dict(time=int(self.time), reason=\"fold_end\"))\n        for key, value in sorted(self.vars.get(\"audit\", {}).items()):\n            assert value[\"bars\"] == sum(value[\"primary\"].values())\n            assert value[\"entries\"] == value[\"primary\"].get(\"allowed\", 0)\n            assert value[\"bars\"] == sum(value.get(\"feature_reasons\", {}).values())\n            self._log_json(\"V5_AUDIT\", dict(key=key, **value))\n        self._log_json(\"V5_PROVENANCE\", dict(line=self.LINE, use_oi=self.USE_OI,\n            oi_lag_bars=self.OI_LAG_BARS, stop_multiplier=self.STOP_MULTIPLIER,\n            bar_ms=BAR, oi_reference_bars=OI_REFERENCE_BARS,\n            atr_offset_bars=self.ATR_OFFSET_BARS, target_mode=self.TARGET_MODE,\n            reward_multiple=self.REWARD_MULTIPLE, max_hold_bars=self.MAX_HOLD_BARS,\n            start=self.START, finish=self.FINISH, active_windows=self.ACTIVE_WINDOWS,\n            force_boundaries=self.FORCE_BOUNDARIES, final_exit_may_follow=True,\n            self_checks=self.vars.get(\"self_checks\")))\n",
+  "common_checks_captured": "import json\nimport math\nfrom types import SimpleNamespace\nimport numpy as np\nfrom strategies.ResearchV5Base1h import (\n    ResearchV5Base1h, BAR, DAY, closed_window, atr_window, oi_context, v5_entry_plan,\n)\n\ndef self_checks():\n    \"\"\"Artificial scalar state checks scheduling/risk; it does not simulate broker fills.\"\"\"\n    checks = 0\n    def check(value):\n        nonlocal checks\n        assert value\n        checks += 1\n    now = 400 * BAR\n    candles = np.array([[t,100.,100.,101.,99.,1.] for t in range(now-240*BAR,now,BAR)])\n    check(closed_window(candles,now,224).shape == (224,6))\n    future = np.vstack([candles,[now,100,100,1000,1,1]])\n    check(np.array_equal(closed_window(future,now,224),closed_window(candles,now,224)))\n    check(closed_window(candles,now+1,15) is None)\n    for column,value in ((0,now-2*BAR),(2,float(\"nan\")),(3,98.)):\n        bad=candles.copy(); bad[-1,column]=value\n        check(closed_window(bad,now,15) is None)\n    check(closed_window(candles[:-1],now,15) is None)\n    check(atr_window(candles,now)[\"value\"] == 2.)\n    shock=candles.copy();shock[-1,3]=129.\n    check(atr_window(shock,now)[\"value\"] > 2.)\n    check(atr_window(shock,now,1)[\"value\"] == 2.)\n    check(atr_window(candles[-15:],now,1) is None)\n    check(atr_window(candles,now,2) is None)\n    reference_bars=DAY//BAR\n    lag_bars=14400000//BAR\n    history=[dict(time=now+i*BAR,value=100.+i,label=now+i*BAR-600000,\n                  available_at=now+i*BAR-240000,status=\"valid\")\n             for i in range(reference_bars+lag_bars+3)]\n    check(oi_context(history[:reference_bars],now+(reference_bars-1)*BAR)[\"quality\"] == \"initialization\")\n    check(oi_context(history[:reference_bars+1],now+reference_bars*BAR)[\"passed\"])\n    check(oi_context(history[:reference_bars+lag_bars],now+(reference_bars+lag_bars-1)*BAR,lag_bars)[\"quality\"] == \"initialization\")\n    check(oi_context(history[:reference_bars+lag_bars+1],now+(reference_bars+lag_bars)*BAR,lag_bars)[\"passed\"])\n    bad=[dict(r) for r in history];bad[0][\"value\"]=0\n    check(oi_context(bad,now+reference_bars*BAR)[\"quality\"] == \"reference_invalid\")\n    bad=[dict(r) for r in history];bad[reference_bars][\"value\"]=100.\n    check(not oi_context(bad,now+reference_bars*BAR)[\"passed\"])\n    bad=[dict(r) for r in history];bad[reference_bars][\"available_at\"]=bad[reference_bars][\"time\"]+1\n    check(oi_context(bad,now+reference_bars*BAR)[\"quality\"] == \"invalid\")\n    for direction in (-1,1):\n        plan=v5_entry_plan(100.,10000.,.00045,direction,4.)\n        check(plan[\"reason\"] == \"allowed\")\n        check(plan[\"qty\"]*plan[\"unit_loss\"] <= 200.+1e-8)\n        check(plan[\"qty\"]*100 <= 10000.)\n        check(plan[\"qty\"] == math.floor(plan[\"qty\"]*1e8+.01)/1e8)\n    check(v5_entry_plan(100.,10000.,-.1,1,4.)[\"reason\"] == \"distance_invalid\")\n    check(v5_entry_plan(100.,10000.,.00045,1,101.)[\"reason\"] == \"distance_invalid\")\n    class Surface:\n        _entry_window=ResearchV5Base1h._entry_window\n        _target=ResearchV5Base1h._target\n        _target_valid=staticmethod(ResearchV5Base1h._target_valid)\n        request_exit=ResearchV5Base1h.request_exit\n        def __init__(self):\n            self.vars={};self.time=now;self.START=now-50*BAR;self.FINISH=now+100*BAR\n            self.ACTIVE_WINDOWS=None;self.FORCE_BOUNDARIES=()\n            self.TARGET_MODE=\"none\";self.REWARD_MULTIPLE=1.;self.MAX_HOLD_BARS=24\n            self.STOP_MULTIPLIER=2.;self.ATR_OFFSET_BARS=0;self.OI_LAG_BARS=0\n            self.USE_OI=False;self.LINE=\"test\";self.candles=candles\n            self.open_interest=100.;self.open_interest_timestamp=now-600000\n            self.price=100.;self.available_margin=10000.;self.fee_rate=.00045\n            self.is_open=False;self.is_close=True;self.is_long=True;self.entry_orders=[]\n            self.position=SimpleNamespace(opened_at=now,entry_price=100.,qty=1.)\n            self.exits=0;self.managed=0;self.opened=0;self.logs=[]\n        def features(self,*args):return dict(valid=True,direction=1,reason=\"setup\")\n        def get_funding_history(self,**kwargs):return []\n        def _bucket(self,month,direction):\n            return self.vars.setdefault(\"audit\",{}).setdefault(month+direction,\n                dict(bars=0,entries=0,opportunities=0,primary={},flags={}))\n        def _log_json(self,label,payload):\n            check(len(label+\" \"+json.dumps(payload,allow_nan=False,separators=(\",\",\":\"))) <= 1900)\n            self.logs.append((label,payload))\n        def liquidate(self):self.exits+=1\n        def manage_position(self,atr):self.managed+=1\n        def on_v5_open(self):self.opened+=1\n    surface=Surface()\n    check(surface._entry_window(now))\n    check(not surface._entry_window(surface.START))\n    surface.ACTIVE_WINDOWS=()\n    check(not surface._entry_window(now))\n    surface=Surface();ResearchV5Base1h.before(surface)\n    check(surface.vars[\"context\"][\"allowed\"])\n    surface=Surface();surface.vars[\"v5_last_exit_at\"]=now\n    ResearchV5Base1h.before(surface)\n    check(not surface.vars[\"context\"][\"allowed\"])\n    check(any(b[\"primary\"].get(\"same_decision_exit\") for b in surface.vars[\"audit\"].values()))\n    surface=Surface();surface.vars[\"entry_day\"]=now//DAY*DAY\n    ResearchV5Base1h.before(surface)\n    check(not surface.vars[\"context\"][\"allowed\"])\n    check(any(b[\"primary\"].get(\"daily_limit\") for b in surface.vars[\"audit\"].values()))\n    surface=Surface();surface.vars[\"entry_day\"]=(now//DAY-1)*DAY\n    ResearchV5Base1h.before(surface)\n    check(surface.vars[\"context\"][\"allowed\"])\n    surface=Surface();surface.USE_OI=True\n    ResearchV5Base1h.before(surface)\n    check(not surface.vars[\"context\"][\"allowed\"])\n    surface=Surface();surface.is_open=True\n    surface.request_exit(\"first\");surface.request_exit(\"second\")\n    check(surface.exits == 1 and surface.vars[\"exit_reason\"] == \"first\")\n    surface.time+=BAR;surface.request_exit(\"next\")\n    check(surface.exits == 2)\n    surface=Surface();surface.vars[\"context\"]={\"atr\":None}\n    ResearchV5Base1h.update_position(surface)\n    check(surface.managed == 0)\n    surface.time+=BAR;ResearchV5Base1h.update_position(surface)\n    check(surface.managed == 1)\n    surface.time=now+24*BAR;surface.is_open=True\n    ResearchV5Base1h.update_position(surface)\n    check(surface.vars[\"exit_reason\"] == \"maximum_hold\")\n    surface=Surface();surface.is_open=True;surface.time=now+24*BAR\n    surface.FORCE_BOUNDARIES=(surface.time,)\n    ResearchV5Base1h.update_position(surface)\n    check(surface.vars[\"exit_reason\"] == \"calendar_boundary\")\n    for direction in (-1,1):\n        surface=Surface()\n        ResearchV5Base1h.before(surface)\n        context=surface.vars[\"context\"];plan=context[\"plan\"]\n        surface.vars[\"intent\"]=dict(context=context,plan=plan)\n        surface.is_long=direction==1;surface.is_open=True\n        surface.position.entry_price=100.+direction*.05\n        surface.position.qty=direction*plan[\"qty\"]\n        surface.TARGET_MODE=\"r_multiple\"\n        surface.vars[\"v5_exit_requested_at\"]=now\n        ResearchV5Base1h.on_open_position(surface,None)\n        check(surface.stop_loss[1] == surface.position.entry_price-direction*4.)\n        check(surface.take_profit[1] == surface.position.entry_price+direction*4.)\n        check(surface.opened == 1 and surface.vars[\"entry_day\"] == context[\"day\"])\n        check(\"v5_exit_requested_at\" not in surface.vars)\n    return dict(status=\"passed\",assertions=checks)\n",
+  "source_readbacks": [
+    {
+      "key": "strategies/ResearchV5Base1h/vwap_features.py",
+      "status": "success",
+      "has_more": false,
+      "exact": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"read_project_file\",\n  \"status\": \"success\",\n  \"path\": \"strategies/ResearchV5Base1h/vwap_features.py\",\n  \"kind\": \"text\",\n  \"content\": \"\\\"\\\"\\\"Finite rolling24 HLC3/volume reversal; this is not anchored-day/tick VWAP.\\\"\\\"\\\"\\n\\nimport hashlib\\nimport json\\nimport math\\n\\nimport numpy as np\\n\\nfrom strategies.ResearchV5Base1h import BAR, atr_window, closed_window\\n\\n\\ndef vwap_state(candles, now, dispersion=True):\\n    \\\"\\\"\\\"Exit may use mean alone even when variance/ATR cannot be evaluated.\\\"\\\"\\\"\\n    rows = closed_window(candles, now, 24)\\n    if rows is None or rows.shape[1] < 6:\\n        return None\\n    volume = rows[:, 5]\\n    if not np.all(np.isfinite(volume)) or np.any(volume < 0):\\n        return None\\n    maximum = float(np.max(volume))\\n    if maximum <= 0:\\n        return None\\n    # Scaling weights prevents overflow in a sum of otherwise finite large volumes.\\n    with np.errstate(over=\\\"ignore\\\", invalid=\\\"ignore\\\"):\\n        weights = volume / maximum\\n        weights = weights / np.sum(weights)\\n        typical = rows[:, 3] / 3. + rows[:, 4] / 3. + rows[:, 2] / 3.\\n        mean = float(np.sum(weights * typical))\\n    if not math.isfinite(mean) or mean <= 0:\\n        return None\\n    state = dict(mean=mean, close=float(rows[-1, 2]), first=int(rows[0, 0]),\\n                 last=int(rows[-1, 0]), zero_volumes=int(np.sum(volume == 0)))\\n    if dispersion:\\n        with np.errstate(over=\\\"ignore\\\", invalid=\\\"ignore\\\"):\\n            variance = float(np.sum(weights * (typical - mean) ** 2))\\n        if not math.isfinite(variance) or variance < 0:\\n            return None\\n        state[\\\"sigma\\\"] = math.sqrt(variance)\\n    state[\\\"sha256\\\"] = hashlib.sha256(json.dumps(\\n        rows[:, :6].tolist(), separators=(\\\",\\\", \\\":\\\"), allow_nan=False).encode()).hexdigest()\\n    return state\\n\\n\\ndef entry_direction(c0, c1, m0, m1, s0, s1, multiplier):\\n    \\\"\\\"\\\"Closed reentry includes outer equality but never enters past the mean.\\\"\\\"\\\"\\n    values = (c0, c1, m0, m1, s0, s1, multiplier)\\n    if not all(math.isfinite(v) for v in values) or min(s0, s1, multiplier) <= 0:\\n        return 0\\n    lower0, upper0 = m0 - multiplier * s0, m0 + multiplier * s0\\n    lower1, upper1 = m1 - multiplier * s1, m1 + multiplier * s1\\n    if not all(math.isfinite(v) for v in (lower0, upper0, lower1, upper1)):\\n        return 0\\n    if c1 < lower1 and lower0 <= c0 < m0 and c0 > c1:\\n        return 1\\n    if c1 > upper1 and m0 < c0 <= upper0 and c0 < c1:\\n        return -1\\n    return 0\\n\\n\\ndef features(candles, now, atr, band_multiplier=2.0):\\n    invalid = dict(valid=False, direction=0, reason=\\\"vwap_data_invalid\\\", details={})\\n    rows = closed_window(candles, now, 25)\\n    if rows is None or rows.shape[1] < 6:\\n        return invalid\\n    try:\\n        if not math.isfinite(band_multiplier) or band_multiplier <= 0:\\n            return invalid\\n        if (atr is None or atr[\\\"offset_bars\\\"] != 0 or\\n                atr[\\\"first\\\"] != now - 15 * BAR or atr[\\\"last\\\"] != now - BAR or\\n                not math.isfinite(atr[\\\"value\\\"]) or atr[\\\"value\\\"] <= 0):\\n            return invalid\\n    except (KeyError, TypeError, ValueError):\\n        return invalid\\n    current = vwap_state(candles, now)\\n    previous = vwap_state(candles, now - BAR)\\n    atr_previous = atr_window(candles, now, 1)\\n    if current is None or previous is None or atr_previous is None:\\n        return invalid\\n    scale0 = max(current[\\\"sigma\\\"], float(atr[\\\"value\\\"]))\\n    scale1 = max(previous[\\\"sigma\\\"], atr_previous[\\\"value\\\"])\\n    # Reject overflow instead of allowing an unbounded band to produce a false reentry.\\n    if not all(math.isfinite(v) for v in (\\n            current[\\\"mean\\\"] - band_multiplier * scale0,\\n            current[\\\"mean\\\"] + band_multiplier * scale0,\\n            previous[\\\"mean\\\"] - band_multiplier * scale1,\\n            previous[\\\"mean\\\"] + band_multiplier * scale1)):\\n        return invalid\\n    direction = entry_direction(current[\\\"close\\\"], previous[\\\"close\\\"], current[\\\"mean\\\"],\\n        previous[\\\"mean\\\"], scale0, scale1, band_multiplier)\\n    details = dict(close=current[\\\"close\\\"], close_previous=previous[\\\"close\\\"],\\n        mean=current[\\\"mean\\\"], mean_previous=previous[\\\"mean\\\"],\\n        sigma=current[\\\"sigma\\\"], sigma_previous=previous[\\\"sigma\\\"],\\n        atr=float(atr[\\\"value\\\"]), atr_previous=atr_previous[\\\"value\\\"],\\n        scale=scale0, scale_previous=scale1, band_multiplier=float(band_multiplier),\\n        first=int(rows[0, 0]), last=int(rows[-1, 0]),\\n        current_sha256=current[\\\"sha256\\\"], previous_sha256=previous[\\\"sha256\\\"],\\n        zero_volumes=current[\\\"zero_volumes\\\"], zero_volumes_previous=previous[\\\"zero_volumes\\\"])\\n    return dict(valid=True, direction=int(direction),\\n                reason=\\\"vwap_reentry\\\" if direction else \\\"vwap_no_reentry\\\", details=details)\\n\\n\\ndef exit_state(candles, now, direction):\\n    \\\"\\\"\\\"State condition; no ATR, dispersion, fresh crossing or previous25th row.\\\"\\\"\\\"\\n    state = vwap_state(candles, now, dispersion=False)\\n    if state is None or direction not in (-1, 1):\\n        return dict(valid=False, exit=False, details={})\\n    return dict(valid=True, exit=bool(direction * (state[\\\"close\\\"] - state[\\\"mean\\\"]) >= 0),\\n                details=state)\\n\\n\\ndef self_checks():\\n    \\\"\\\"\\\"Pure algebra/window checks; broker/time priorities remain common checks.\\\"\\\"\\\"\\n    count = 0\\n\\n    def check(value):\\n        nonlocal count\\n        assert value\\n        count += 1\\n\\n    now = 25 * BAR\\n    flat = np.array([[i * BAR, 100., 100., 101., 99., 1.] for i in range(25)])\\n    state = vwap_state(flat, now)\\n    check(abs(state[\\\"mean\\\"] - 100.) < 1e-12)\\n    check(state[\\\"sigma\\\"] < 1e-12)\\n    check(state[\\\"first\\\"] == BAR and state[\\\"last\\\"] == 24 * BAR)\\n    weighted = flat.copy()\\n    for i in range(25):\\n        p = 100. + i\\n        weighted[i, 1:5] = [p, p, p + 1., p - 1.]\\n        weighted[i, 5] = i + 1.\\n    oracle_mean = sum((i + 1.) * (100. + i) for i in range(1, 25)) / sum(range(2, 26))\\n    oracle_var = sum((i + 1.) * (100. + i - oracle_mean) ** 2 for i in range(1, 25)) / sum(range(2, 26))\\n    result = vwap_state(weighted, now)\\n    check(abs(result[\\\"mean\\\"] - oracle_mean) < 1e-12)\\n    check(abs(result[\\\"sigma\\\"] - math.sqrt(oracle_var)) < 1e-12)\\n    scaled = weighted.copy()\\n    scaled[:, 5] *= 8.\\n    scaled_result = vwap_state(scaled, now)\\n    check(result[\\\"mean\\\"] == scaled_result[\\\"mean\\\"])\\n    check(result[\\\"sigma\\\"] == scaled_result[\\\"sigma\\\"])\\n    large = flat.copy()\\n    large[:, 5] = 1e308\\n    check(vwap_state(large, now) is not None)\\n    single = flat.copy()\\n    single[:, 5] = 0.\\n    single[-1, 5] = 3.\\n    check(vwap_state(single, now)[\\\"mean\\\"] == 100.)\\n    check(vwap_state(single, now)[\\\"sigma\\\"] == 0.)\\n    check(vwap_state(single, now)[\\\"zero_volumes\\\"] == 23)\\n    all_zero = single.copy()\\n    all_zero[-1, 5] = 0.\\n    check(vwap_state(all_zero, now) is None)\\n    # One prior outlier then a recovering close; volume stays positive and unchanged.\\n    setup = flat.copy()\\n    setup[-2, 1:5] = [80., 80., 81., 79.]\\n    setup[-1, 1:5] = [90., 90., 91., 89.]\\n    atr = atr_window(setup, now)\\n    signal = features(setup, now, atr)\\n    check(signal[\\\"valid\\\"] and signal[\\\"direction\\\"] == 1)\\n    mirror = setup.copy()\\n    mirror[:, 1] = 200. - setup[:, 1]\\n    mirror[:, 2] = 200. - setup[:, 2]\\n    mirror[:, 3] = 200. - setup[:, 4]\\n    mirror[:, 4] = 200. - setup[:, 3]\\n    check(features(mirror, now, atr_window(mirror, now))[\\\"direction\\\"] == -1)\\n    check(signal[\\\"details\\\"][\\\"atr_previous\\\"] == atr_window(setup, now - BAR)[\\\"value\\\"])\\n    check(signal[\\\"details\\\"][\\\"mean_previous\\\"] == vwap_state(setup[:-1], now - BAR)[\\\"mean\\\"])\\n    check(entry_direction(96., 95., 100., 100., 2., 2., 2.) == 1)\\n    check(entry_direction(104., 105., 100., 100., 2., 2., 2.) == -1)\\n    check(entry_direction(96., 96., 100., 100., 2., 2., 2.) == 0)\\n    check(entry_direction(100., 95., 100., 100., 2., 2., 2.) == 0)\\n    check(entry_direction(100., 105., 100., 100., 2., 2., 2.) == 0)\\n    check(entry_direction(95., 94., 100., 100., 2., 2., 2.) == 0)\\n    check(entry_direction(105., 106., 100., 100., 2., 2., 2.) == 0)\\n    check(entry_direction(96., 95., 100., 110., 2., 2., 2.) == 1)\\n    check(entry_direction(95., 95., 100., 110., 3., 2., 2.) == 0)\\n    check(features(setup, now, atr, 1.8)[\\\"valid\\\"])\\n    check(features(setup, now, atr, 2.2)[\\\"valid\\\"])\\n    future = np.array([[now, 100., 100., 101., 99., float(\\\"nan\\\")]])\\n    check(features(np.vstack((setup, future)), now, atr) == signal)\\n    older = flat.copy()\\n    older[:, 0] -= 25 * BAR\\n    check(features(np.vstack((older, setup)), now, atr) == signal)\\n    original = setup.copy()\\n    features(setup, now, atr)\\n    check(np.array_equal(setup, original))\\n    check(not features(setup[-24:], now, atr)[\\\"valid\\\"])\\n    check(exit_state(flat[-24:], now, 1)[\\\"valid\\\"])\\n    check(exit_state(single[-24:], now, 1)[\\\"exit\\\"])\\n    check(exit_state(single[-24:], now, -1)[\\\"exit\\\"])\\n    check(not exit_state(setup[-24:], now, 1)[\\\"exit\\\"])\\n    check(exit_state(setup[-24:], now, -1)[\\\"exit\\\"])\\n    check(not exit_state(flat[-23:], now, 1)[\\\"valid\\\"])\\n    check(not features(setup, now + 1, atr)[\\\"valid\\\"])\\n    check(not features(setup, now, None)[\\\"valid\\\"])\\n    check(not features(setup, now, atr_window(setup, now, 1))[\\\"valid\\\"])\\n    check(not features(setup[:, :5], now, atr)[\\\"valid\\\"])\\n    for column, value in ((0, 3 * BAR), (1, 0.), (2, float(\\\"nan\\\")),\\n                          (3, 50.), (4, 150.), (5, -1.), (5, float(\\\"inf\\\"))):\\n        bad = setup.copy()\\n        bad[2, column] = value\\n        check(not features(bad, now, atr)[\\\"valid\\\"])\\n    bad = setup.copy()\\n    bad[:, 5] = 0.\\n    check(not features(bad, now, atr)[\\\"valid\\\"])\\n    bad = setup.copy()\\n    bad[-1, 5] = 0.\\n    check(features(bad, now, atr)[\\\"valid\\\"])\\n    for k in (0., -1., float(\\\"nan\\\"), float(\\\"inf\\\")):\\n        check(not features(setup, now, atr, k)[\\\"valid\\\"])\\n    check(len(\\\"V5_FEATURES \\\" + json.dumps(dict(time=int(now), line=\\\"VWAP\\\", **signal),\\n                                        allow_nan=False, separators=(\\\",\\\", \\\":\\\"))) <= 1900)\\n    check(\\\"sigma\\\" not in exit_state(flat, now, 1)[\\\"details\\\"])\\n    return dict(status=\\\"passed\\\", assertions=count)\\n\",\n  \"start_line\": 1,\n  \"end_line\": 214,\n  \"has_more\": false,\n  \"size_bytes\": 9796,\n  \"modified_at\": \"2026-10-21T00:50:23+00:00\",\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "key": "ResearchV5VwapPV1h",
+      "status": "success",
+      "has_more": false,
+      "exact": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_read\",\n  \"strategy_name\": \"ResearchV5VwapPV1h\",\n  \"message\": \"Strategy 'ResearchV5VwapPV1h' content read successfully\",\n  \"content\": \"from strategies.ResearchV5Base1h import ResearchV5Base1h\\nfrom strategies.ResearchV5Base1h.vwap_features import features as vwap_features, exit_state\\n\\n\\nclass ResearchV5VwapPV1h(ResearchV5Base1h):\\n    LINE = \\\"VWAP\\\"\\n    USE_OI = False\\n    ATR_OFFSET_BARS = 0\\n    STOP_MULTIPLIER = 2.\\n    TARGET_MODE = \\\"none\\\"\\n    MAX_HOLD_BARS = 24\\n    BAND_MULTIPLIER = 2.\\n\\n    def features(self, candles, now, atr):\\n        return vwap_features(candles, now, atr, self.BAND_MULTIPLIER)\\n\\n    def manage_position(self, atr):\\n        # Exit normalization needs24 valid volume bars, not entry25 or a valid ATR.\\n        if int(self.time) <= int(self.position.opened_at):\\n            return\\n        result = exit_state(self.candles, int(self.time), 1 if self.is_long else -1)\\n        if not result[\\\"valid\\\"]:\\n            self._log_json(\\\"V5_VWAP_EXIT_SKIPPED\\\", dict(time=int(self.time), reason=\\\"vwap_invalid\\\"))\\n        elif result[\\\"exit\\\"]:\\n            self._log_json(\\\"V5_VWAP_EXIT_CONTEXT\\\", dict(time=int(self.time), **result[\\\"details\\\"]))\\n            self.request_exit(\\\"vwap_normalization\\\")\\n\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "key": "ResearchV5VwapPVOi1h",
+      "status": "success",
+      "has_more": false,
+      "exact": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_read\",\n  \"strategy_name\": \"ResearchV5VwapPVOi1h\",\n  \"message\": \"Strategy 'ResearchV5VwapPVOi1h' content read successfully\",\n  \"content\": \"from strategies.ResearchV5VwapPV1h import ResearchV5VwapPV1h\\n\\n\\nclass ResearchV5VwapPVOi1h(ResearchV5VwapPV1h):\\n    USE_OI = True\\n\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "key": "ResearchV5VwapSmoke1h",
+      "status": "success",
+      "has_more": false,
+      "exact": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_read\",\n  \"strategy_name\": \"ResearchV5VwapSmoke1h\",\n  \"message\": \"Strategy 'ResearchV5VwapSmoke1h' content read successfully\",\n  \"content\": \"from strategies.ResearchV5VwapPV1h import ResearchV5VwapPV1h\\nfrom strategies.ResearchV5Base1h.vwap_features import self_checks\\nfrom strategies.ResearchV5Base1h.common_checks import self_checks as common_checks\\n\\n\\nclass ResearchV5VwapSmoke1h(ResearchV5VwapPV1h):\\n    FINISH = 1599523200000\\n\\n    def before(self):\\n        if \\\"self_checks\\\" not in self.vars:\\n            self.vars[\\\"self_checks\\\"] = self_checks()\\n            self.vars[\\\"base_checks\\\"] = common_checks()\\n            self._log_json(\\\"V5_SELF_CHECKS\\\", self.vars[\\\"self_checks\\\"])\\n            self._log_json(\\\"V5_BASE_CHECKS\\\", self.vars[\\\"base_checks\\\"])\\n        super().before()\\n\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ],
+  "self_checks": {
+    "status": "prepared_not_executed",
+    "pure": true,
+    "coverage": [
+      "weighted manual oracle",
+      "population dispersion and scale invariance",
+      "large volume normalization",
+      "zero weights/all-zero rejection",
+      "long/short mirror",
+      "strict/inclusive reentry boundaries",
+      "prior state versus own prefix",
+      "future/prefix noninterference",
+      "ATR offset0 and prior own ATR",
+      "exit24 withoutATR/variance",
+      "malformed OHLC/volume/gaps/NaN",
+      "bounded JSON"
+    ],
+    "no_job": true
+  },
+  "nominal": {
+    "ATR_OFFSET_BARS": 0,
+    "STOP_MULTIPLIER": 2,
+    "TARGET_MODE": "none",
+    "MAX_HOLD_BARS": 24,
+    "BAND_MULTIPLIER": 2
+  },
+  "sector_changes_after_first_write": "Equality-exit fixtures changed to a single positive volume weight to isolate exact equality from harmless mean summation roundoff; no signal/source economic changes.",
+  "sessions": [
+    {
+      "stage": "SMOKE",
+      "session_id": "996568bc-0c12-4db0-9f7e-4235556b57ab",
+      "dashboard_url": "http://localhost:9200/#/backtest/996568bc-0c12-4db0-9f7e-4235556b57ab",
+      "status": "finished",
+      "summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "996568bc-0c12-4db0-9f7e-4235556b57ab",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 TECH VWAP 1h",
+        "description": "Seven-day technical smoke; no economic tuning.",
+        "description_truncated": false,
+        "created_at": 1792543983000,
+        "updated_at": 1792544042000,
+        "execution_duration": 1.34,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV5VwapSmoke1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2020-09-08",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": {
+          "total": 3,
+          "total_winning_trades": 1,
+          "total_losing_trades": 2,
+          "starting_balance": 10000,
+          "finishing_balance": 9681.401287693072,
+          "win_rate": 0.3333333333333333,
+          "win_rate_longs": 0,
+          "win_rate_shorts": 1,
+          "ratio_avg_win_loss": 0.12571434916761712,
+          "longs_count": 2,
+          "longs_percentage": 66.66666666666666,
+          "shorts_percentage": 33.33333333333334,
+          "shorts_count": 1,
+          "fee": 24.35387165329699,
+          "net_profit": -318.598712306925,
+          "net_profit_percentage": -3.18598712306925,
+          "average_win": 21.36943733497528,
+          "average_loss": 169.98407482095016,
+          "expectancy": -106.19957076897502,
+          "expectancy_percentage": -1.0619957076897502,
+          "expected_net_profit_every_100_trades": -106.19957076897502,
+          "average_holding_period": 24460,
+          "average_winning_holding_period": 61200,
+          "average_losing_holding_period": 6090,
+          "gross_profit": 21.36943733497528,
+          "gross_loss": -339.9681496419003,
+          "max_drawdown": -3.219141129836567,
+          "max_underwater_period": 5,
+          "annual_return": -81.51673442071576,
+          "annualization": 365,
+          "sharpe_ratio": -10.612923870702733,
+          "calmar_ratio": -25.32251030101756,
+          "sortino_ratio": -10.509400770308849,
+          "omega_ratio": 0.010560157712404327,
+          "serenity_index": null,
+          "total_open_trades": 0,
+          "open_pl": 0,
+          "winning_streak": 1,
+          "losing_streak": 2,
+          "largest_losing_trade": -198.31307788217,
+          "largest_winning_trade": 21.36943733497528,
+          "current_streak": -2,
+          "avg_trades_per_day": 0.4285289157821645,
+          "avg_trades_per_week": 2.9997024104751517,
+          "avg_trades_per_month": 13.044420196409089,
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "cashflow": 7.307522155741157,
+            "rate_kind": "settled",
+            "event_count": 3,
+            "settlements_processed": 21,
+            "mark_price_proxy_count": 3,
+            "status": "applied",
+            "applied": true,
+            "scope": [
+              "BTC-USDT"
+            ],
+            "excluded_symbols": [],
+            "data": {
+              "allow_mark_price_proxy": true,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "mark_price_proxy_count": 4198,
+              "schema": 1,
+              "source": "binance-usdm-fundingRate-v1",
+              "start": 1577836800000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+              "event_count": 6576,
+              "first_settlement": 1577836800000,
+              "last_settlement": 1767196800001,
+              "largest_gap_ms": 28800047,
+              "status": "ready",
+              "coverage_complete": true,
+              "supported_timestamps": true,
+              "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+              "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+              "publication_delay_ms": 60000,
+              "rate_unit": "decimal_fraction",
+              "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+            },
+            "effective_fast_mode": false,
+            "boundary_policy": "before_strategy_decisions; finish_exclusive",
+            "publication_delay_ms": 60000
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "max_age_ms": 600000,
+            "applied": true,
+            "status": "applied",
+            "scope": [
+              "BTC-USDT"
+            ],
+            "data": {
+              "archive_assumptions_acknowledged": true,
+              "archive_catalog": {
+                "first_archive_date": "2020-09-01",
+                "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+                "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+                "point_in_time_certified": false,
+                "source": "binance-usdm-metrics-archive-v1"
+              },
+              "availability_lag_ms": 360000,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "import_source": "auto",
+              "original_publication_known": false,
+              "period_ms": 300000,
+              "rest_range": null,
+              "schema": 1,
+              "source": "binance-usdm-metrics-archive-v1",
+              "start": 1598918400000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "observation_count": 560390,
+              "expected_observation_count": 561024,
+              "missing_observation_count": 634,
+              "coverage_complete": false,
+              "status": "incomplete",
+              "leading_gap_ms": 0,
+              "trailing_gap_ms": 0,
+              "first_observation": 1598918400000,
+              "last_observation": 1767225300000,
+              "first_available_at": 1598918760000,
+              "last_available_at": 1767225660000,
+              "largest_gap_ms": 37800000,
+              "gap_count": 156,
+              "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+              "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+              "point_in_time_certified": false,
+              "missing_policy": "no interpolation; unavailable or stale values return None",
+              "cashflow": false,
+              "archive_file_count": 1948,
+              "archive_verified_file_count": 1948,
+              "archive_missing_days": [],
+              "archive_missing_day_count": 0,
+              "archive_identical_duplicate_rows": 75255
+            },
+            "allow_missing_observations": true,
+            "observation_count": 560390,
+            "cashflow": false,
+            "availability_lag_ms": 360000,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "current": {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "observed_at": 1599522600000,
+              "available_at": 1599522960000,
+              "quantity_base": 34363.148,
+              "value_quote": 356242641.54030424
+            }
+          }
+        },
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": true,
+        "sections": {
+          "trades": {
+            "count": 3
+          },
+          "equity_curve": {
+            "series": [
+              {
+                "name": "Portfolio",
+                "points": 8
+              }
+            ]
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": 10434
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/996568bc-0c12-4db0-9f7e-4235556b57ab"
+      },
+      "audit_ref": "AUDIT_ResearchV5VwapSmoke1h.json",
+      "checks": {
+        "finished": true,
+        "logs_complete": true,
+        "bars168": true,
+        "entries_closes_trades3": true,
+        "no_forced": true,
+        "sector_common": true,
+        "primary_partition": true,
+        "features_partition": true,
+        "direction_partition": true,
+        "one_entry_UTCday": true,
+        "config_exact": true,
+        "asof_entry_windows": true,
+        "feature_25_windows": true,
+        "reentry_inequalities": true,
+        "scales": true,
+        "stop2A_noTP": true,
+        "riskcap": true,
+        "actual_order_entries_match": true,
+        "actual_order_exits_match": true,
+        "VWAP_exit_state": true,
+        "funding_asof": true,
+        "OI_asof": true,
+        "PV_not_OI_gated": true,
+        "logsize": true,
+        "provenance": true
+      },
+      "coverage": {
+        "entries": 3,
+        "long": 2,
+        "short": 1,
+        "stop_loss": 2,
+        "vwap_normalization": 1,
+        "maximum_hold24h": 0,
+        "calendar_boundary": 0,
+        "forced_fold_end": 0,
+        "funding_nonzero": true,
+        "OI_gate_enabled": false,
+        "normalization_side": "short",
+        "runtime_checks": {
+          "sector": 56,
+          "common": 61
+        }
+      },
+      "started_by": "root; HTTPtimeout resolved sameID"
+    }
+  ],
+  "jobs": [],
+  "no_drafts_motors": true,
+  "runtime_checks": {
+    "sector": 56,
+    "common": 61
+  },
+  "completed_smoke_at": "2026-10-21T00:56:09.500Z",
+  "screening": [
+    {
+      "id": "VWAP_PV",
+      "session_id": "46f494e4-aca0-455e-979e-f279d3d87106",
+      "dashboard_url": "http://localhost:9200/#/backtest/46f494e4-aca0-455e-979e-f279d3d87106",
+      "prerun": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "46f494e4-aca0-455e-979e-f279d3d87106",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V5 SCREEN VWAP_PV",
+        "description": "Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.",
+        "description_truncated": false,
+        "created_at": 1792544277000,
+        "updated_at": 1792544278000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV5VwapPV1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/46f494e4-aca0-455e-979e-f279d3d87106"
+      },
+      "status": "finished_audited",
+      "at": "2026-10-21T01:05:25.952Z",
+      "started_at": "2026-10-21T01:05:26.021Z",
+      "raw_start": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"46f494e4-aca0-455e-979e-f279d3d87106\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"1h\",\n      \"strategy\": \"ResearchV5VwapPV1h\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/46f494e4-aca0-455e-979e-f279d3d87106\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": {
+        "status": "started",
+        "backtest_id": "46f494e4-aca0-455e-979e-f279d3d87106",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h",
+            "strategy": "ResearchV5VwapPV1h"
+          }
+        ],
+        "dashboard_url": "http://localhost:9200/#/backtest/46f494e4-aca0-455e-979e-f279d3d87106",
+        "message": "Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \"finished\"."
+      },
+      "last_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "46f494e4-aca0-455e-979e-f279d3d87106",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 SCREEN VWAP_PV",
+        "description": "Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.",
+        "description_truncated": false,
+        "created_at": 1792544277000,
+        "updated_at": 1792544881000,
+        "execution_duration": 117.39,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV5VwapPV1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": {
+          "total": 546,
+          "total_winning_trades": 301,
+          "total_losing_trades": 245,
+          "starting_balance": 10000,
+          "finishing_balance": 6613.058281762283,
+          "win_rate": 0.5512820512820513,
+          "win_rate_longs": 0.5333333333333333,
+          "win_rate_shorts": 0.565359477124183,
+          "ratio_avg_win_loss": 0.7188133031594295,
+          "longs_count": 240,
+          "longs_percentage": 43.956043956043956,
+          "shorts_percentage": 56.043956043956044,
+          "shorts_count": 306,
+          "fee": 3258.876677977054,
+          "net_profit": -3386.941718237705,
+          "net_profit_percentage": -33.86941718237705,
+          "average_win": 85.01456586156607,
+          "average_loss": 118.27071854109832,
+          "expectancy": -6.2031899601423035,
+          "expectancy_percentage": -0.06203189960142303,
+          "expected_net_profit_every_100_trades": -6.2031899601423035,
+          "average_holding_period": 32076.593406593405,
+          "average_winning_holding_period": 33667.77408637874,
+          "average_losing_holding_period": 30121.714285714286,
+          "gross_profit": 25589.384324331386,
+          "gross_loss": -28976.32604256909,
+          "max_drawdown": -40.95158368707581,
+          "max_underwater_period": 1140,
+          "annual_return": -11.664461175070883,
+          "annualization": 365,
+          "sharpe_ratio": -0.5592235229706345,
+          "calmar_ratio": -0.28483541110895183,
+          "sortino_ratio": -0.7671861379597278,
+          "omega_ratio": 0.9057755510338971,
+          "serenity_index": null,
+          "total_open_trades": 0,
+          "open_pl": 0,
+          "winning_streak": 10,
+          "losing_streak": 8,
+          "largest_losing_trade": -207.87837518392075,
+          "largest_winning_trade": 421.4768916290893,
+          "current_streak": 1,
+          "avg_trades_per_day": 0.448643951061381,
+          "avg_trades_per_week": 3.140507657429667,
+          "avg_trades_per_month": 13.656721870308438,
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "cashflow": 236.73260602146522,
+            "rate_kind": "settled",
+            "event_count": 594,
+            "settlements_processed": 3651,
+            "mark_price_proxy_count": 578,
+            "status": "applied",
+            "applied": true,
+            "scope": [
+              "BTC-USDT"
+            ],
+            "excluded_symbols": [],
+            "data": {
+              "allow_mark_price_proxy": true,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "mark_price_proxy_count": 4198,
+              "schema": 1,
+              "source": "binance-usdm-fundingRate-v1",
+              "start": 1577836800000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+              "event_count": 6576,
+              "first_settlement": 1577836800000,
+              "last_settlement": 1767196800001,
+              "largest_gap_ms": 28800047,
+              "status": "ready",
+              "coverage_complete": true,
+              "supported_timestamps": true,
+              "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+              "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+              "publication_delay_ms": 60000,
+              "rate_unit": "decimal_fraction",
+              "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+            },
+            "effective_fast_mode": false,
+            "boundary_policy": "before_strategy_decisions; finish_exclusive",
+            "publication_delay_ms": 60000
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "max_age_ms": 600000,
+            "applied": true,
+            "status": "applied",
+            "scope": [
+              "BTC-USDT"
+            ],
+            "data": {
+              "archive_assumptions_acknowledged": true,
+              "archive_catalog": {
+                "first_archive_date": "2020-09-01",
+                "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+                "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+                "point_in_time_certified": false,
+                "source": "binance-usdm-metrics-archive-v1"
+              },
+              "availability_lag_ms": 360000,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "import_source": "auto",
+              "original_publication_known": false,
+              "period_ms": 300000,
+              "rest_range": null,
+              "schema": 1,
+              "source": "binance-usdm-metrics-archive-v1",
+              "start": 1598918400000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "observation_count": 560390,
+              "expected_observation_count": 561024,
+              "missing_observation_count": 634,
+              "coverage_complete": false,
+              "status": "incomplete",
+              "leading_gap_ms": 0,
+              "trailing_gap_ms": 0,
+              "first_observation": 1598918400000,
+              "last_observation": 1767225300000,
+              "first_available_at": 1598918760000,
+              "last_available_at": 1767225660000,
+              "largest_gap_ms": 37800000,
+              "gap_count": 156,
+              "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+              "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+              "point_in_time_certified": false,
+              "missing_policy": "no interpolation; unavailable or stale values return None",
+              "cashflow": false,
+              "archive_file_count": 1948,
+              "archive_verified_file_count": 1948,
+              "archive_missing_days": [],
+              "archive_missing_day_count": 0,
+              "archive_identical_duplicate_rows": 75255
+            },
+            "allow_missing_observations": true,
+            "observation_count": 560390,
+            "cashflow": false,
+            "availability_lag_ms": 360000,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "current": {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "observed_at": 1704066600000,
+              "available_at": 1704066960000,
+              "quantity_base": 73951.1,
+              "value_quote": 3128205481.1
+            }
+          }
+        },
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": true,
+        "sections": {
+          "trades": {
+            "count": 546
+          },
+          "equity_curve": {
+            "series": [
+              {
+                "name": "Portfolio",
+                "points": 1218
+              }
+            ]
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": 1708042
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/46f494e4-aca0-455e-979e-f279d3d87106"
+      },
+      "audit": "AUDIT_ResearchV5VwapPV1h_SCREEN.json",
+      "audit_counts": {
+        "primary": {
+          "vwap_no_reentry": 28517,
+          "allowed": 546,
+          "daily_limit": 99,
+          "in_position_or_pending": 45,
+          "boundary_or_inactive": 1
+        },
+        "feature_reasons": {
+          "vwap_no_reentry": 28518,
+          "vwap_reentry": 690
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 207,
+          "oi_stale": 1,
+          "oi_zero": 1
+        },
+        "bars": 29208,
+        "entries": 546,
+        "exits": 546,
+        "opportunities": 546
+      },
+      "audit_checks": {
+        "months40": true,
+        "bars29208": true,
+        "primary_partition": true,
+        "feature_partition": true,
+        "direction_partition": true,
+        "entries_trades_metric": true,
+        "close_count": true,
+        "oneUTCday": true,
+        "no_samedecision_reentry": true,
+        "config_exact": true,
+        "window25": true,
+        "ATR0": true,
+        "entry_rules": true,
+        "scale": true,
+        "stop2A_noTP": true,
+        "entryplan": true,
+        "actualfills": true,
+        "actualcloses": true,
+        "exit_state": true,
+        "exit_context_counts": true,
+        "hold24": true,
+        "asof": true,
+        "OI_if_required": true,
+        "linebounds": true,
+        "provenance": true
+      },
+      "branch_coverage": {
+        "stop-loss": 223,
+        "vwap_normalization": 314,
+        "maximum_hold": 9
+      },
+      "finished_at": "2026-10-21T01:09:08.091Z"
+    },
+    {
+      "id": "VWAP_PVOI",
+      "session_id": "6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+      "dashboard_url": "http://localhost:9200/#/backtest/6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+      "prerun": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V5 SCREEN VWAP_PVOI",
+        "description": "Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.",
+        "description_truncated": false,
+        "created_at": 1792544279000,
+        "updated_at": 1792544279000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV5VwapPVOi1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/6b21c3d2-69f7-4d70-8f8d-56d69974c270"
+      },
+      "status": "finished_audited",
+      "at": "2026-10-21T01:05:25.952Z",
+      "started_at": "2026-10-21T01:05:48.941Z",
+      "raw_start": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"6b21c3d2-69f7-4d70-8f8d-56d69974c270\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"1h\",\n      \"strategy\": \"ResearchV5VwapPVOi1h\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/6b21c3d2-69f7-4d70-8f8d-56d69974c270\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "start_response": {
+        "status": "started",
+        "backtest_id": "6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h",
+            "strategy": "ResearchV5VwapPVOi1h"
+          }
+        ],
+        "dashboard_url": "http://localhost:9200/#/backtest/6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+        "message": "Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \"finished\"."
+      },
+      "last_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "6b21c3d2-69f7-4d70-8f8d-56d69974c270",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 SCREEN VWAP_PVOI",
+        "description": "Preregistered V5 screening; fixed rules, costs and datasets; no tuning. Waiting root motor token.",
+        "description_truncated": false,
+        "created_at": 1792544279000,
+        "updated_at": 1792544900000,
+        "execution_duration": 110.25,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV5VwapPVOi1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": {
+          "total": 350,
+          "total_winning_trades": 183,
+          "total_losing_trades": 167,
+          "starting_balance": 10000,
+          "finishing_balance": 6686.117649641052,
+          "win_rate": 0.5228571428571429,
+          "win_rate_longs": 0.5197368421052632,
+          "win_rate_shorts": 0.5252525252525253,
+          "ratio_avg_win_loss": 0.7719597537800982,
+          "longs_count": 152,
+          "longs_percentage": 43.42857142857143,
+          "shorts_percentage": 56.57142857142857,
+          "shorts_count": 198,
+          "fee": 2249.920054233421,
+          "net_profit": -3313.8823503589465,
+          "net_profit_percentage": -33.138823503589464,
+          "average_win": 99.4188919806216,
+          "average_loss": 128.78766217253113,
+          "expectancy": -9.468235286739834,
+          "expectancy_percentage": -0.09468235286739833,
+          "expected_net_profit_every_100_trades": -9.468235286739834,
+          "average_holding_period": 30225.6,
+          "average_winning_holding_period": 32124.590163934427,
+          "average_losing_holding_period": 28144.670658682633,
+          "gross_profit": 18193.657232453752,
+          "gross_loss": -21507.5395828127,
+          "max_drawdown": -38.28299595938446,
+          "max_underwater_period": 1145,
+          "annual_return": -11.372893722527289,
+          "annualization": 365,
+          "sharpe_ratio": -0.6743786401602423,
+          "calmar_ratio": -0.2970742868346334,
+          "sortino_ratio": -0.92944659538958,
+          "omega_ratio": 0.864964557922585,
+          "serenity_index": null,
+          "total_open_trades": 0,
+          "open_pl": 0,
+          "winning_streak": 8,
+          "losing_streak": 10,
+          "largest_losing_trade": -209.79972467602013,
+          "largest_winning_trade": 450.2043286007747,
+          "current_streak": 1,
+          "avg_trades_per_day": 0.28759227632139805,
+          "avg_trades_per_week": 2.0131459342497866,
+          "avg_trades_per_month": 8.754308891223356,
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+            "cashflow": 176.84234296538528,
+            "rate_kind": "settled",
+            "event_count": 365,
+            "settlements_processed": 3651,
+            "mark_price_proxy_count": 355,
+            "status": "applied",
+            "applied": true,
+            "scope": [
+              "BTC-USDT"
+            ],
+            "excluded_symbols": [],
+            "data": {
+              "allow_mark_price_proxy": true,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "mark_price_proxy_count": 4198,
+              "schema": 1,
+              "source": "binance-usdm-fundingRate-v1",
+              "start": 1577836800000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+              "event_count": 6576,
+              "first_settlement": 1577836800000,
+              "last_settlement": 1767196800001,
+              "largest_gap_ms": 28800047,
+              "status": "ready",
+              "coverage_complete": true,
+              "supported_timestamps": true,
+              "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+              "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+              "publication_delay_ms": 60000,
+              "rate_unit": "decimal_fraction",
+              "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+            },
+            "effective_fast_mode": false,
+            "boundary_policy": "before_strategy_decisions; finish_exclusive",
+            "publication_delay_ms": 60000
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "max_age_ms": 600000,
+            "applied": true,
+            "status": "applied",
+            "scope": [
+              "BTC-USDT"
+            ],
+            "data": {
+              "archive_assumptions_acknowledged": true,
+              "archive_catalog": {
+                "first_archive_date": "2020-09-01",
+                "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+                "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+                "point_in_time_certified": false,
+                "source": "binance-usdm-metrics-archive-v1"
+              },
+              "availability_lag_ms": 360000,
+              "exchange": "Binance Perpetual Futures",
+              "finish": 1767225600000,
+              "import_source": "auto",
+              "original_publication_known": false,
+              "period_ms": 300000,
+              "rest_range": null,
+              "schema": 1,
+              "source": "binance-usdm-metrics-archive-v1",
+              "start": 1598918400000,
+              "symbol": "BTC-USDT",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "observation_count": 560390,
+              "expected_observation_count": 561024,
+              "missing_observation_count": 634,
+              "coverage_complete": false,
+              "status": "incomplete",
+              "leading_gap_ms": 0,
+              "trailing_gap_ms": 0,
+              "first_observation": 1598918400000,
+              "last_observation": 1767225300000,
+              "first_available_at": 1598918760000,
+              "last_available_at": 1767225660000,
+              "largest_gap_ms": 37800000,
+              "gap_count": 156,
+              "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+              "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+              "point_in_time_certified": false,
+              "missing_policy": "no interpolation; unavailable or stale values return None",
+              "cashflow": false,
+              "archive_file_count": 1948,
+              "archive_verified_file_count": 1948,
+              "archive_missing_days": [],
+              "archive_missing_day_count": 0,
+              "archive_identical_duplicate_rows": 75255
+            },
+            "allow_missing_observations": true,
+            "observation_count": 560390,
+            "cashflow": false,
+            "availability_lag_ms": 360000,
+            "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+            "current": {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "observed_at": 1704066600000,
+              "available_at": 1704066960000,
+              "quantity_base": 73951.1,
+              "value_quote": 3128205481.1
+            }
+          }
+        },
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": true,
+        "sections": {
+          "trades": {
+            "count": 350
+          },
+          "equity_curve": {
+            "series": [
+              {
+                "name": "Portfolio",
+                "points": 1218
+              }
+            ]
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": 1135497
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/6b21c3d2-69f7-4d70-8f8d-56d69974c270"
+      },
+      "audit": "AUDIT_ResearchV5VwapPVOi1h_SCREEN.json",
+      "audit_counts": {
+        "primary": {
+          "vwap_no_reentry": 28517,
+          "oi_initialization": 1,
+          "oi_nonrising": 247,
+          "allowed": 350,
+          "in_position_or_pending": 28,
+          "daily_limit": 62,
+          "oi_stale": 1,
+          "oi_zero": 1,
+          "boundary_or_inactive": 1
+        },
+        "feature_reasons": {
+          "vwap_no_reentry": 28518,
+          "vwap_reentry": 690
+        },
+        "flags": {
+          "oi_initialization": 1,
+          "oi_nonrising": 247,
+          "oi_stale": 1,
+          "oi_zero": 1
+        },
+        "bars": 29208,
+        "entries": 350,
+        "exits": 350,
+        "opportunities": 600
+      },
+      "audit_checks": {
+        "months40": true,
+        "bars29208": true,
+        "primary_partition": true,
+        "feature_partition": true,
+        "direction_partition": true,
+        "entries_trades_metric": true,
+        "close_count": true,
+        "oneUTCday": true,
+        "no_samedecision_reentry": true,
+        "config_exact": true,
+        "window25": true,
+        "ATR0": true,
+        "entry_rules": true,
+        "scale": true,
+        "stop2A_noTP": true,
+        "entryplan": true,
+        "actualfills": true,
+        "actualcloses": true,
+        "exit_state": true,
+        "exit_context_counts": true,
+        "hold24": true,
+        "asof": true,
+        "OI_if_required": true,
+        "linebounds": true,
+        "provenance": true
+      },
+      "branch_coverage": {
+        "maximum_hold": 5,
+        "stop-loss": 155,
+        "vwap_normalization": 190
+      },
+      "finished_at": "2026-10-21T01:09:19.691Z"
+    }
+  ],
+  "motor_tokens_released": 2,
+  "completed_at": "2026-10-21T01:10:05.389Z",
+  "no_future_sector_runs": true,
+  "audit_harness_repairs": [
+    {
+      "initial_false_checks": [
+        "actualfills exact floating equality",
+        "asof demanded published OI on PV missing record"
+      ],
+      "fix": "Compare stored weighted mean entry_price with logged broker fill within1e-8; allow explicit absent/stale null provenance in PV while retaining strict required-OI validation on PVOI.",
+      "scope": "audit only, no productive sources/jobs/reruns",
+      "final": "all checks passed both"
+    }
+  ]
+}

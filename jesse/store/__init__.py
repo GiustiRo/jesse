@@ -8,6 +8,8 @@ from .state_orders import OrdersState
 from .state_positions import PositionsState
 from .state_tickers import TickersState
 from .state_trades import TradesState
+from jesse.services.funding import FundingState
+from jesse.services.open_interest import OpenInterestState
 
 
 class StoreClass:
@@ -21,6 +23,8 @@ class StoreClass:
     tickers = TickersState()
     trades = TradesState()
     orderbooks = OrderbookState()
+    funding = FundingState()
+    open_interest = OpenInterestState()
 
     def __init__(self) -> None:
         # used in self.shared_vars property of Strategy class
@@ -38,6 +42,8 @@ class StoreClass:
         self.tickers = TickersState()
         self.trades = TradesState()
         self.orderbooks = OrderbookState()
+        self.funding = FundingState()
+        self.open_interest = OpenInterestState()
 
 
 store = StoreClass()

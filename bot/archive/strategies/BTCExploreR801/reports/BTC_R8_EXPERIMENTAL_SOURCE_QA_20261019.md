@@ -1,0 +1,3 @@
+# R8 experimental QA
+
+184 PASS, 0 FAIL. Job 02f73c58f2c3422cbd48344fcc4cb74e, succeeded. Syntax/ASTprotectedmethods, helper mechanics/boundaries/ties, exactM1clock/OHLC/volume/partition/missing/mismatch, fullsetup latch advances occupied and no deferred retry, fixedgeometry. Synthetic helpers and stub ATR validate invariants, not engine execution or financial reconciliation. Initial harness job cc7c020110a04a60bff6402394ef9b7a failed because its stub ATR=2 put the fixture distance12.5 outside1..3ATR; corrected only harness stubATR5, expected13.25; zero source changes and no financial result used. All5sources read back exact. 2026closed. Freeze central BTC_R8_FROZEN_PROTOCOL_20261019.md. No runs yet.

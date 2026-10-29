@@ -1,0 +1,993 @@
+# R20 PAXG: auditoría completa 06–10 y comparadores
+
+Job a703e1e367cf4d868defe61e9dc17a7c succeeded / exit 0. Snapshots completos: 18 / 27 / 3 / 108 / 20 trades, más 35 retest y 60 fin de semana. Cohortes de cierre NO son MTM anual. Costes extra RT: mitad del recargo en cada lado sobre TODOS los fills, sin modificar sizing o decisiones. Ausencia de métricas se conservaría como tal; esta tanda tuvo trades en las diez recetas.
+
+```json
+{
+  "exp06": {
+    "session_id": "351eb0d1-160b-4079-a4d6-7aa50fec5ed4",
+    "title": "MCP Backtest: PAXG20-06 R20PaxgBreakevenRevisit4h",
+    "trades": 18,
+    "stored_metrics": {
+      "total": 18,
+      "total_winning_trades": 8,
+      "total_losing_trades": 10,
+      "starting_balance": 10000.0,
+      "finishing_balance": 9897.322464711271,
+      "win_rate": 0.4444444444444444,
+      "win_rate_longs": 0.375,
+      "win_rate_shorts": 0.5,
+      "ratio_avg_win_loss": 1.0441030894462484,
+      "longs_count": 8,
+      "longs_percentage": 44.44444444444444,
+      "shorts_percentage": 55.55555555555556,
+      "shorts_count": 10,
+      "fee": 138.82749561913815,
+      "net_profit": -102.67753528872845,
+      "net_profit_percentage": -1.0267753528872845,
+      "average_win": 65.08471370658347,
+      "average_loss": 62.33552449413962,
+      "expectancy": -5.704307516040473,
+      "expectancy_percentage": -0.05704307516040472,
+      "expected_net_profit_every_100_trades": -5.704307516040473,
+      "average_holding_period": 87413.33333333333,
+      "average_winning_holding_period": 74767.5,
+      "average_losing_holding_period": 97530.0,
+      "gross_profit": 520.6777096526678,
+      "gross_loss": -623.3552449413962,
+      "max_drawdown": -2.2109715806395203,
+      "max_underwater_period": 1035.0,
+      "annual_return": -0.19776022090421952,
+      "annualization": 365,
+      "sharpe_ratio": -0.1511714525506993,
+      "calmar_ratio": -0.0894449402407143,
+      "sortino_ratio": -0.2074185329341361,
+      "omega_ratio": 0.8683464609369393,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 2,
+      "losing_streak": 3,
+      "largest_losing_trade": -92.03204102366433,
+      "largest_winning_trade": 84.72037869775878,
+      "current_streak": -3,
+      "avg_trades_per_day": 0.009458745891448484,
+      "avg_trades_per_week": 0.06621122124013938,
+      "avg_trades_per_month": 0.28792422493569186
+    },
+    "directions": {
+      "long": {
+        "n": 8,
+        "net": -133.6741920543668,
+        "fees": 61.0495623730434,
+        "before_fees": -72.62462968132341
+      },
+      "short": {
+        "n": 10,
+        "net": 30.996656765638328,
+        "fees": 77.7779332460947,
+        "before_fees": 108.77459001173311
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2021": {
+        "n": 3,
+        "net": 54.17505136385917,
+        "static_5bps_RT": 44.254923051277544,
+        "static_10bps_RT": 34.33479473869591
+      },
+      "2022": {
+        "n": 2,
+        "net": -14.475427487592597,
+        "static_5bps_RT": -24.438388663249746,
+        "static_10bps_RT": -34.401349838906896
+      },
+      "2023": {
+        "n": 6,
+        "net": 7.688080936534078,
+        "static_5bps_RT": -22.21162731027976,
+        "static_10bps_RT": -52.1113355570936
+      },
+      "2024": {
+        "n": 5,
+        "net": -27.42365037005885,
+        "static_5bps_RT": -47.23061254056857,
+        "static_10bps_RT": -67.03757471107829
+      },
+      "2025": {
+        "n": 2,
+        "net": -122.64158973147025,
+        "static_5bps_RT": -130.17821628098466,
+        "static_10bps_RT": -137.71484283049907
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": -102.67753528872845,
+    "fees": 138.82749561913812,
+    "before_fees": 36.14996033040967,
+    "pf_net": 0.8352824715569988,
+    "no_losses": false,
+    "dd_engine": -2.2109715806395203,
+    "cagr_engine": -0.19776022090421952,
+    "sharpe_engine": -0.1511714525506993,
+    "entry_notional_sum": 154343.47252,
+    "executed_fill_notional_sum": 308505.545820307,
+    "net_bps_entry_notional": -6.652534999523442,
+    "before_fee_bps_entry_notional": 2.3421761698231403,
+    "extra_5bps_RT_all_fills_static": -179.8039217438052,
+    "extra_10bps_RT_all_fills_static": -256.93030819888196,
+    "top3_net": 243.19536859622605,
+    "top3_share_of_net": null,
+    "net_ex_top3_descriptive": -345.8729038849545,
+    "mean_hold_hours": 24.28148148148148,
+    "median_hold_hours": 19.366666666666667,
+    "max_hold_hours": 48.0,
+    "holding_hours": 437.06666666666666,
+    "time_exposure_pct": 0.9569685292228646,
+    "recent_closed_cohort_2023_2025": -142.37715916499502,
+    "recent_static_5bps_RT": -199.62045613183298,
+    "recent_static_10bps_RT": -256.86375309867094,
+    "descriptive_initial_gate_pass": false,
+    "sample_inconclusive": true,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 1.7763568394002505e-15,
+      "max_pnl_error": 1.3642420526593924e-12,
+      "max_qty_error": 0.0,
+      "wallet_error": 0.0,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_MARKET": 18,
+        "exit_LIMIT": 7,
+        "exit_MARKET": 5,
+        "exit_STOP": 6
+      }
+    }
+  },
+  "exp07": {
+    "session_id": "ffc75a3c-81cb-43cd-8b2f-65fb2201d19b",
+    "title": "MCP Backtest: PAXG20-07 R20PaxgStaircase4h",
+    "trades": 27,
+    "stored_metrics": {
+      "total": 27,
+      "total_winning_trades": 10,
+      "total_losing_trades": 17,
+      "starting_balance": 10000.0,
+      "finishing_balance": 9474.000408280146,
+      "win_rate": 0.37037037037037035,
+      "win_rate_longs": 0.375,
+      "win_rate_shorts": 0.36363636363636365,
+      "ratio_avg_win_loss": 0.43975087627868625,
+      "longs_count": 16,
+      "longs_percentage": 59.25925925925925,
+      "shorts_percentage": 40.74074074074075,
+      "shorts_count": 11,
+      "fee": 166.31351066366776,
+      "net_profit": -525.9995917198481,
+      "net_profit_percentage": -5.259995917198481,
+      "average_win": 18.35421084825012,
+      "average_loss": 41.737747070726435,
+      "expectancy": -19.48146635999438,
+      "expectancy_percentage": -0.1948146635999438,
+      "expected_net_profit_every_100_trades": -19.48146635999438,
+      "average_holding_period": 80264.44444444444,
+      "average_winning_holding_period": 86400.0,
+      "average_losing_holding_period": 76655.29411764706,
+      "gross_profit": 183.5421084825012,
+      "gross_loss": -709.5417002023494,
+      "max_drawdown": -6.113260360253436,
+      "max_underwater_period": 1653.0,
+      "annual_return": -1.0310302802883586,
+      "annualization": 365,
+      "sharpe_ratio": -0.9456091255079719,
+      "calmar_ratio": -0.1686547307868326,
+      "sortino_ratio": -1.0870596828531136,
+      "omega_ratio": 0.39881800492871033,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 3,
+      "losing_streak": 3,
+      "largest_losing_trade": -93.55530781,
+      "largest_winning_trade": 52.82933811650007,
+      "current_streak": 1,
+      "avg_trades_per_day": 0.014188118837172725,
+      "avg_trades_per_week": 0.09931683186020908,
+      "avg_trades_per_month": 0.43188633740353777
+    },
+    "directions": {
+      "short": {
+        "n": 11,
+        "net": -307.9440078817347,
+        "fees": 72.1413810561715,
+        "before_fees": -235.8026268255632
+      },
+      "long": {
+        "n": 16,
+        "net": -218.0555838381133,
+        "fees": 94.17212960749622,
+        "before_fees": -123.8834542306171
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2021": {
+        "n": 5,
+        "net": -5.045788466599235,
+        "static_5bps_RT": -20.035206503599237,
+        "static_10bps_RT": -35.02462454059924
+      },
+      "2022": {
+        "n": 1,
+        "net": -93.55530781,
+        "static_5bps_RT": -98.83592326,
+        "static_10bps_RT": -104.11653871
+      },
+      "2023": {
+        "n": 7,
+        "net": -154.8033428364376,
+        "static_5bps_RT": -183.89587459274105,
+        "static_10bps_RT": -212.9884063490445
+      },
+      "2024": {
+        "n": 9,
+        "net": -136.73046897915546,
+        "static_5bps_RT": -164.27904758602716,
+        "static_10bps_RT": -191.82762619289886
+      },
+      "2025": {
+        "n": 5,
+        "net": -135.86468362765578,
+        "static_5bps_RT": -151.34993459062935,
+        "static_10bps_RT": -166.83518555360294
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": -525.999591719848,
+    "fees": 166.31351066366773,
+    "before_fees": -359.6860810561803,
+    "pf_net": 0.2586769860462861,
+    "no_losses": false,
+    "dd_engine": -6.113260360253436,
+    "cagr_engine": -1.0310302802883586,
+    "sharpe_engine": -0.9456091255079719,
+    "entry_notional_sum": 184736.83004,
+    "executed_fill_notional_sum": 369585.57925259497,
+    "net_bps_entry_notional": -28.472914231880907,
+    "before_fee_bps_entry_notional": -19.470187995447336,
+    "extra_5bps_RT_all_fills_static": -618.3959865329967,
+    "extra_10bps_RT_all_fills_static": -710.7923813461455,
+    "top3_net": 113.39111922750055,
+    "top3_share_of_net": null,
+    "net_ex_top3_descriptive": -639.3907109473486,
+    "mean_hold_hours": 22.29567901234568,
+    "median_hold_hours": 24.0,
+    "max_hold_hours": 24.0,
+    "holding_hours": 601.9833333333333,
+    "time_exposure_pct": 1.3180577450808666,
+    "recent_closed_cohort_2023_2025": -427.3984954432488,
+    "recent_static_5bps_RT": -499.52485676939756,
+    "recent_static_10bps_RT": -571.6512180955463,
+    "descriptive_initial_gate_pass": false,
+    "sample_inconclusive": true,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 1.7763568394002505e-15,
+      "max_pnl_error": 8.384404281969182e-13,
+      "max_qty_error": 0.0,
+      "wallet_error": 5.4569682106375694e-12,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_MARKET": 27,
+        "exit_MARKET": 22,
+        "exit_STOP": 5
+      }
+    }
+  },
+  "exp08": {
+    "session_id": "842e4385-1c19-4f61-b5d5-acd8f96c9ce9",
+    "title": "MCP Backtest: PAXG20-08 R20PaxgSemivariance4h",
+    "trades": 3,
+    "stored_metrics": {
+      "total": 3,
+      "total_winning_trades": 0,
+      "total_losing_trades": 3,
+      "starting_balance": 10000.0,
+      "finishing_balance": 9867.428965770581,
+      "win_rate": 0.0,
+      "win_rate_longs": 0.0,
+      "win_rate_shorts": 0.0,
+      "ratio_avg_win_loss": null,
+      "longs_count": 0,
+      "longs_percentage": 0.0,
+      "shorts_percentage": 100.0,
+      "shorts_count": 3,
+      "fee": 13.59542914788669,
+      "net_profit": -132.57103422941697,
+      "net_profit_percentage": -1.3257103422941696,
+      "average_win": null,
+      "average_loss": 44.190344743138986,
+      "expectancy": -44.190344743138986,
+      "expectancy_percentage": -0.4419034474313899,
+      "expected_net_profit_every_100_trades": -44.190344743138986,
+      "average_holding_period": 143420.0,
+      "average_winning_holding_period": null,
+      "average_losing_holding_period": 143420.0,
+      "gross_profit": 0.0,
+      "gross_loss": -132.57103422941697,
+      "max_drawdown": -1.325710342294184,
+      "max_underwater_period": 1877.0,
+      "annual_return": -0.25564762899171756,
+      "annualization": 365,
+      "sharpe_ratio": -0.6783401883236454,
+      "calmar_ratio": -0.1928382247884641,
+      "sortino_ratio": -0.7129644042353511,
+      "omega_ratio": 0.20420010318335122,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 0,
+      "losing_streak": 3,
+      "largest_losing_trade": -95.61164433261644,
+      "largest_winning_trade": 0.0,
+      "current_streak": -3,
+      "avg_trades_per_day": 0.0015764576485747474,
+      "avg_trades_per_week": 0.011035203540023231,
+      "avg_trades_per_month": 0.04798737082261531
+    },
+    "directions": {
+      "short": {
+        "n": 3,
+        "net": -132.57103422941697,
+        "fees": 13.59542914788669,
+        "before_fees": -118.97560508153026
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2020": {
+        "n": 3,
+        "net": -132.57103422941697,
+        "static_5bps_RT": -140.12405042268736,
+        "static_10bps_RT": -147.67706661595773
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": -132.57103422941697,
+    "fees": 13.595429147886689,
+    "before_fees": -118.97560508153028,
+    "pf_net": 0.0,
+    "no_losses": false,
+    "dd_engine": -1.325710342294184,
+    "cagr_engine": -0.25564762899171756,
+    "sharpe_engine": -0.6783401883236454,
+    "entry_notional_sum": 15046.544584,
+    "executed_fill_notional_sum": 30212.064773081533,
+    "net_bps_entry_notional": -88.10729499342237,
+    "before_fee_bps_entry_notional": -79.07171272269717,
+    "extra_5bps_RT_all_fills_static": -140.12405042268736,
+    "extra_10bps_RT_all_fills_static": -147.67706661595773,
+    "top3_net": -132.57103422941697,
+    "top3_share_of_net": null,
+    "net_ex_top3_descriptive": 0.0,
+    "mean_hold_hours": 39.83888888888889,
+    "median_hold_hours": 48.0,
+    "max_hold_hours": 48.0,
+    "holding_hours": 119.51666666666667,
+    "time_exposure_pct": 0.26168476674257024,
+    "recent_closed_cohort_2023_2025": 0,
+    "recent_static_5bps_RT": 0,
+    "recent_static_10bps_RT": 0,
+    "descriptive_initial_gate_pass": false,
+    "sample_inconclusive": true,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 0.0,
+      "max_pnl_error": 3.197442310920451e-13,
+      "max_qty_error": 0.0,
+      "wallet_error": 1.8189894035458565e-12,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_MARKET": 3,
+        "exit_STOP": 1,
+        "exit_MARKET": 2
+      }
+    }
+  },
+  "exp09": {
+    "session_id": "f081dc32-7dc3-4f28-9a60-77275d6c155c",
+    "title": "MCP Backtest: PAXG20-09 R20PaxgTrendExhaustion4h",
+    "trades": 108,
+    "stored_metrics": {
+      "total": 108,
+      "total_winning_trades": 39,
+      "total_losing_trades": 69,
+      "starting_balance": 10000.0,
+      "finishing_balance": 7977.570315702648,
+      "win_rate": 0.3611111111111111,
+      "win_rate_longs": 0.41025641025641024,
+      "win_rate_shorts": 0.3333333333333333,
+      "ratio_avg_win_loss": 0.93031608858439,
+      "longs_count": 39,
+      "longs_percentage": 36.11111111111111,
+      "shorts_percentage": 63.88888888888889,
+      "shorts_count": 69,
+      "fee": 705.5440873216876,
+      "net_profit": -2022.4296842973529,
+      "net_profit_percentage": -20.22429684297353,
+      "average_win": 57.50711242471937,
+      "average_loss": 61.814595200889976,
+      "expectancy": -18.726200780531045,
+      "expectancy_percentage": -0.18726200780531047,
+      "expected_net_profit_every_100_trades": -18.726200780531048,
+      "average_holding_period": 138770.55555555556,
+      "average_winning_holding_period": 172800.0,
+      "average_losing_holding_period": 119536.52173913043,
+      "gross_profit": 2242.7773845640554,
+      "gross_loss": -4265.2070688614085,
+      "max_drawdown": -22.12843210561617,
+      "max_underwater_period": 1876.0,
+      "annual_return": -4.241231611630525,
+      "annualization": 365,
+      "sharpe_ratio": -1.1257210862397378,
+      "calmar_ratio": -0.19166435251208355,
+      "sortino_ratio": -1.5385567776468918,
+      "omega_ratio": 0.6292129980664605,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 3,
+      "losing_streak": 8,
+      "largest_losing_trade": -95.11156926000109,
+      "largest_winning_trade": 249.32572776000004,
+      "current_streak": -3,
+      "avg_trades_per_day": 0.0567524753486909,
+      "avg_trades_per_week": 0.3972673274408363,
+      "avg_trades_per_month": 1.727545349614151
+    },
+    "directions": {
+      "short": {
+        "n": 69,
+        "net": -1725.1342572546644,
+        "fees": 459.6999628915635,
+        "before_fees": -1265.4342943631011
+      },
+      "long": {
+        "n": 39,
+        "net": -297.2954270426888,
+        "fees": 245.84412443012434,
+        "before_fees": -51.45130261256459
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2020": {
+        "n": 4,
+        "net": 60.284013193387736,
+        "static_5bps_RT": 48.88311972374742,
+        "static_10bps_RT": 37.482226254107104
+      },
+      "2021": {
+        "n": 12,
+        "net": -13.116046462263945,
+        "static_5bps_RT": -53.19609008325007,
+        "static_10bps_RT": -93.2761337042362
+      },
+      "2022": {
+        "n": 21,
+        "net": -618.0031672581638,
+        "static_5bps_RT": -704.8518250567635,
+        "static_10bps_RT": -791.7004828553631
+      },
+      "2023": {
+        "n": 19,
+        "net": -649.2796280549153,
+        "static_5bps_RT": -728.1805142076357,
+        "static_10bps_RT": -807.0814003603563
+      },
+      "2024": {
+        "n": 20,
+        "net": -405.9697049152881,
+        "static_5bps_RT": -469.91171459417154,
+        "static_10bps_RT": -533.8537242730549
+      },
+      "2025": {
+        "n": 32,
+        "net": -396.3451508001097,
+        "static_5bps_RT": -507.14159748021734,
+        "static_10bps_RT": -617.938044160325
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": -2022.4296842973529,
+    "fees": 705.5440873216877,
+    "before_fees": -1316.885596975665,
+    "pf_net": 0.5258308326781332,
+    "no_losses": false,
+    "dd_engine": -22.12843210561617,
+    "cagr_engine": -4.241231611630525,
+    "sharpe_engine": -1.1257210862397378,
+    "entry_notional_sum": 783330.883306,
+    "executed_fill_notional_sum": 1567875.7496037506,
+    "net_bps_entry_notional": -25.818332040756673,
+    "before_fee_bps_entry_notional": -16.811358074098013,
+    "extra_5bps_RT_all_fills_static": -2414.3986216982903,
+    "extra_10bps_RT_all_fills_static": -2806.367559099228,
+    "top3_net": 657.2394704446517,
+    "top3_share_of_net": null,
+    "net_ex_top3_descriptive": -2679.6691547420046,
+    "mean_hold_hours": 38.54737654320988,
+    "median_hold_hours": 48.0,
+    "max_hold_hours": 48.0,
+    "holding_hours": 4163.116666666667,
+    "time_exposure_pct": 9.115249313948738,
+    "recent_closed_cohort_2023_2025": -1451.594483770313,
+    "recent_static_5bps_RT": -1705.2338262820244,
+    "recent_static_10bps_RT": -1958.8731687937366,
+    "descriptive_initial_gate_pass": false,
+    "sample_inconclusive": false,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 1.7763568394002505e-15,
+      "max_pnl_error": 1.6768808563938364e-12,
+      "max_qty_error": 0.0,
+      "wallet_error": -9.094947017729282e-13,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_MARKET": 108,
+        "exit_MARKET": 69,
+        "exit_STOP": 39
+      }
+    }
+  },
+  "exp10": {
+    "session_id": "105bd7cf-90dd-454a-b2f8-8942dad5e30f",
+    "title": "MCP Backtest: PAXG20-10 R20PaxgMonthEndRebalance1h",
+    "trades": 20,
+    "stored_metrics": {
+      "total": 20,
+      "total_winning_trades": 5,
+      "total_losing_trades": 15,
+      "starting_balance": 10000.0,
+      "finishing_balance": 9574.71204861194,
+      "win_rate": 0.25,
+      "win_rate_longs": 0.3333333333333333,
+      "win_rate_shorts": 0.125,
+      "ratio_avg_win_loss": 1.7836218242788353,
+      "longs_count": 12,
+      "longs_percentage": 60.0,
+      "shorts_percentage": 40.0,
+      "shorts_count": 8,
+      "fee": 133.19197251509044,
+      "net_profit": -425.28795138805935,
+      "net_profit_percentage": -4.252879513880593,
+      "average_win": 124.72319659119985,
+      "average_loss": 69.92692895627059,
+      "expectancy": -21.264397569402977,
+      "expectancy_percentage": -0.21264397569402976,
+      "expected_net_profit_every_100_trades": -21.264397569402977,
+      "average_holding_period": 318231.0,
+      "average_winning_holding_period": 501120.0,
+      "average_losing_holding_period": 257268.0,
+      "gross_profit": 623.6159829559992,
+      "gross_loss": -1048.9039343440588,
+      "max_drawdown": -7.984042899202571,
+      "max_underwater_period": 1337.0,
+      "annual_return": -0.8301017095982743,
+      "annualization": 365,
+      "sharpe_ratio": -0.31501854401447865,
+      "calmar_ratio": -0.10397009636323262,
+      "sortino_ratio": -0.431502102564969,
+      "omega_ratio": 0.7906557999000835,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 3,
+      "losing_streak": 11,
+      "largest_losing_trade": -95.47820025121761,
+      "largest_winning_trade": 205.45987077000078,
+      "current_streak": 1,
+      "avg_trades_per_day": 0.010509717657164982,
+      "avg_trades_per_week": 0.07356802360015488,
+      "avg_trades_per_month": 0.3199158054841021
+    },
+    "directions": {
+      "short": {
+        "n": 8,
+        "net": -493.8755052520362,
+        "fees": 51.84705449284164,
+        "before_fees": -442.0284507591945
+      },
+      "long": {
+        "n": 12,
+        "net": 68.58755386397692,
+        "fees": 81.3449180222488,
+        "before_fees": 149.9324718862257
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2021": {
+        "n": 4,
+        "net": 58.1656636324806,
+        "static_5bps_RT": 48.78841748965299,
+        "static_10bps_RT": 39.411171346825384
+      },
+      "2022": {
+        "n": 4,
+        "net": -121.99748487955199,
+        "static_5bps_RT": -136.85308344020407,
+        "static_10bps_RT": -151.70868200085613
+      },
+      "2023": {
+        "n": 6,
+        "net": -387.26756124661995,
+        "static_5bps_RT": -414.87673627226036,
+        "static_10bps_RT": -442.4859112979008
+      },
+      "2024": {
+        "n": 3,
+        "net": -1.7222870587107764,
+        "static_5bps_RT": -13.305132167244938,
+        "static_10bps_RT": -24.8879772757791
+      },
+      "2025": {
+        "n": 3,
+        "net": 27.533718164342787,
+        "static_5bps_RT": 16.9630427158357,
+        "static_10bps_RT": 6.392367267328616
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": -425.2879513880593,
+    "fees": 133.19197251509044,
+    "before_fees": -292.0959788729689,
+    "pf_net": 0.5945406080929451,
+    "no_losses": false,
+    "dd_engine": -7.984042899202571,
+    "cagr_engine": -0.8301017095982743,
+    "sharpe_engine": -0.31501854401447865,
+    "entry_notional_sum": 147695.100111,
+    "executed_fill_notional_sum": 295982.1611446454,
+    "net_bps_entry_notional": -28.794993948237607,
+    "before_fee_bps_entry_notional": -19.77695797988184,
+    "extra_5bps_RT_all_fills_static": -499.28349167422067,
+    "extra_10bps_RT_all_fills_static": -573.279031960382,
+    "top3_net": 504.2964926060006,
+    "top3_share_of_net": null,
+    "net_ex_top3_descriptive": -929.5844439940599,
+    "mean_hold_hours": 88.3975,
+    "median_hold_hours": 83.99166666666667,
+    "max_hold_hours": 168.0,
+    "holding_hours": 1767.95,
+    "time_exposure_pct": 3.8709712734279207,
+    "recent_closed_cohort_2023_2025": -361.45613014098797,
+    "recent_static_5bps_RT": -411.21882572366957,
+    "recent_static_10bps_RT": -460.9815213063513,
+    "descriptive_initial_gate_pass": false,
+    "sample_inconclusive": true,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 1.7763568394002505e-15,
+      "max_pnl_error": 1.4210854715202004e-12,
+      "max_qty_error": 0.0,
+      "wallet_error": 0.0,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_MARKET": 20,
+        "exit_STOP": 11,
+        "exit_MARKET": 9
+      }
+    }
+  },
+  "retest": {
+    "session_id": "93a16137-e819-41a3-b325-0631a6627a6c",
+    "title": "MCP Backtest: PAXG isolated retest control1pct2020-25",
+    "trades": 35,
+    "stored_metrics": {
+      "total": 35,
+      "total_winning_trades": 14,
+      "total_losing_trades": 21,
+      "starting_balance": 10000.0,
+      "finishing_balance": 10546.110572353738,
+      "win_rate": 0.4,
+      "win_rate_longs": 0.4,
+      "win_rate_shorts": 0.0,
+      "ratio_avg_win_loss": 1.9625021019167472,
+      "longs_count": 35,
+      "longs_percentage": 100.0,
+      "shorts_percentage": 0.0,
+      "shorts_count": 0,
+      "fee": 246.60888105483386,
+      "net_profit": 546.110572353739,
+      "net_profit_percentage": 5.461105723537391,
+      "average_win": 165.5194247738157,
+      "average_loss": 84.34101783236578,
+      "expectancy": 15.60315921010681,
+      "expectancy_percentage": 0.1560315921010681,
+      "expected_net_profit_every_100_trades": 15.60315921010681,
+      "average_holding_period": 627476.5714285715,
+      "average_winning_holding_period": 1211267.142857143,
+      "average_losing_holding_period": 238282.85714285713,
+      "gross_profit": 2317.27194683342,
+      "gross_loss": -1771.1613744796814,
+      "max_drawdown": -6.919378335744097,
+      "max_underwater_period": 1191.0,
+      "annual_return": 1.0250706618597727,
+      "annualization": 365,
+      "sharpe_ratio": 0.23075746266424707,
+      "calmar_ratio": 0.14814490726203924,
+      "sortino_ratio": 0.32889418412578003,
+      "omega_ratio": 1.0888643148234043,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 3,
+      "losing_streak": 5,
+      "largest_losing_trade": -101.07354463690129,
+      "largest_winning_trade": 637.4985528227819,
+      "current_streak": -1,
+      "avg_trades_per_day": 0.018392005900038717,
+      "avg_trades_per_week": 0.128744041300271,
+      "avg_trades_per_month": 0.5598526595971786
+    },
+    "directions": {
+      "long": {
+        "n": 35,
+        "net": 546.1105723537391,
+        "fees": 246.60888105483383,
+        "before_fees": 792.7194534085729
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2021": {
+        "n": 6,
+        "net": -203.7127948722217,
+        "static_5bps_RT": -222.8870458834587,
+        "static_10bps_RT": -242.06129689469572
+      },
+      "2022": {
+        "n": 3,
+        "net": -87.13692885508894,
+        "static_5bps_RT": -96.948923070272,
+        "static_10bps_RT": -106.76091728545506
+      },
+      "2023": {
+        "n": 5,
+        "net": -55.78962675646495,
+        "static_5bps_RT": -80.47088461581254,
+        "static_10bps_RT": -105.15214247516013
+      },
+      "2024": {
+        "n": 7,
+        "net": 495.49747740212723,
+        "static_5bps_RT": 470.88797330593343,
+        "static_10bps_RT": 446.27846920973957
+      },
+      "2025": {
+        "n": 14,
+        "net": 397.25244543538753,
+        "static_5bps_RT": 338.5245186979969,
+        "static_10bps_RT": 279.7965919606062
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": 546.1105723537391,
+    "fees": 246.60888105483386,
+    "before_fees": 792.719453408573,
+    "pf_net": 1.308334734611165,
+    "no_losses": false,
+    "dd_engine": -6.919378335744097,
+    "cagr_engine": 1.0250706618597727,
+    "sharpe_engine": 0.23075746266424707,
+    "entry_notional_sum": 273613.508112,
+    "executed_fill_notional_sum": 548019.7356774086,
+    "net_bps_entry_notional": 19.95919631753693,
+    "before_fee_bps_entry_notional": 28.972233822757172,
+    "extra_5bps_RT_all_fills_static": 409.10563843438695,
+    "extra_10bps_RT_all_fills_static": 272.1007045150348,
+    "top3_net": 1466.657905102516,
+    "top3_share_of_net": 2.6856427605516107,
+    "net_ex_top3_descriptive": -920.5473327487769,
+    "mean_hold_hours": 174.29904761904763,
+    "median_hold_hours": 98.4,
+    "max_hold_hours": 916.75,
+    "holding_hours": 6100.466666666668,
+    "time_exposure_pct": 13.357126175045252,
+    "recent_closed_cohort_2023_2025": 836.9602960810497,
+    "recent_static_5bps_RT": 728.9416073881175,
+    "recent_static_10bps_RT": 620.9229186951853,
+    "descriptive_initial_gate_pass": true,
+    "sample_inconclusive": false,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 1.7763568394002505e-15,
+      "max_pnl_error": 1.0516032489249483e-12,
+      "max_qty_error": 0.0,
+      "wallet_error": 0.0,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_LIMIT": 35,
+        "exit_STOP": 35
+      }
+    }
+  },
+  "weekend": {
+    "session_id": "ff199ebe-dab0-4c09-9078-fff98188e97c",
+    "title": "MCP Backtest: ResearchPaxgWeekendEvent0751h robustness2020-25",
+    "trades": 60,
+    "stored_metrics": {
+      "total": 60,
+      "total_winning_trades": 42,
+      "total_losing_trades": 18,
+      "starting_balance": 10000.0,
+      "finishing_balance": 10764.035579346746,
+      "win_rate": 0.7,
+      "win_rate_longs": 0.5555555555555556,
+      "win_rate_shorts": 0.7619047619047619,
+      "ratio_avg_win_loss": 0.742178959113402,
+      "longs_count": 18,
+      "longs_percentage": 30.0,
+      "shorts_percentage": 70.0,
+      "shorts_count": 42,
+      "fee": 414.31927019361717,
+      "net_profit": 764.0355793467392,
+      "net_profit_percentage": 7.640355793467392,
+      "average_win": 43.051317618401214,
+      "average_loss": 58.0066533681173,
+      "expectancy": 12.733926322445658,
+      "expectancy_percentage": 0.1273392632244566,
+      "expected_net_profit_every_100_trades": 12.73392632244566,
+      "average_holding_period": 39588.0,
+      "average_winning_holding_period": 30201.428571428572,
+      "average_losing_holding_period": 61490.0,
+      "gross_profit": 1808.155339972851,
+      "gross_loss": -1044.1197606261114,
+      "max_drawdown": -2.990690170671495,
+      "max_underwater_period": 331.0,
+      "annual_return": 1.4221718304768594,
+      "annualization": 365,
+      "sharpe_ratio": 0.744986681862599,
+      "calmar_ratio": 0.47553298714240977,
+      "sortino_ratio": 1.062638461255163,
+      "omega_ratio": 1.571013312993865,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0.0,
+      "winning_streak": 7,
+      "losing_streak": 4,
+      "largest_losing_trade": -102.357336675,
+      "largest_winning_trade": 144.33149316630096,
+      "current_streak": 4,
+      "avg_trades_per_day": 0.031529152971494945,
+      "avg_trades_per_week": 0.2207040708004646,
+      "avg_trades_per_month": 0.9597474164523062
+    },
+    "directions": {
+      "short": {
+        "n": 42,
+        "net": 821.2603218360483,
+        "fees": 276.12920735946204,
+        "before_fees": 1097.3895291955102
+      },
+      "long": {
+        "n": 18,
+        "net": -57.224742489308916,
+        "fees": 138.19006283415516,
+        "before_fees": 80.96532034484626
+      }
+    },
+    "closed_year_cohorts_not_MTM": {
+      "2020": {
+        "n": 3,
+        "net": 133.49872632610044,
+        "static_5bps_RT": 123.82643984060044,
+        "static_10bps_RT": 114.15415335510043
+      },
+      "2021": {
+        "n": 9,
+        "net": 78.27333818556586,
+        "static_5bps_RT": 54.73512036163302,
+        "static_10bps_RT": 31.196902537700176
+      },
+      "2022": {
+        "n": 9,
+        "net": 241.5001311414926,
+        "static_5bps_RT": 208.6977232078481,
+        "static_10bps_RT": 175.8953152742036
+      },
+      "2023": {
+        "n": 17,
+        "net": 123.2046939996445,
+        "static_5bps_RT": 42.200302049521966,
+        "static_10bps_RT": -38.80408990060057
+      },
+      "2024": {
+        "n": 12,
+        "net": 177.67280505569028,
+        "static_5bps_RT": 133.13268545060407,
+        "static_10bps_RT": 88.59256584551785
+      },
+      "2025": {
+        "n": 10,
+        "net": 9.88588463824573,
+        "static_5bps_RT": -28.734063893255534,
+        "static_10bps_RT": -67.3540124247568
+      }
+    },
+    "status": "economic_result",
+    "terminal_counter_reconciled": false,
+    "net": 764.0355793467394,
+    "fees": 414.3192701936172,
+    "before_fees": 1178.3548495403566,
+    "pf_net": 1.7317509045979385,
+    "no_losses": false,
+    "dd_engine": -2.990690170671495,
+    "cagr_engine": 1.4221718304768594,
+    "sharpe_engine": 0.744986681862599,
+    "entry_notional_sum": 460862.956764,
+    "executed_fill_notional_sum": 920709.4893191494,
+    "net_bps_entry_notional": 16.57836821408905,
+    "before_fee_bps_entry_notional": 25.568443552380625,
+    "extra_5bps_RT_all_fills_static": 533.8582070169521,
+    "extra_10bps_RT_all_fills_static": 303.6808346871647,
+    "top3_net": 302.3193192659005,
+    "top3_share_of_net": 0.39568748817219684,
+    "net_ex_top3_descriptive": 461.7162600808389,
+    "mean_hold_hours": 10.996666666666666,
+    "median_hold_hours": 7.916666666666667,
+    "max_hold_hours": 24.0,
+    "holding_hours": 659.7999999999997,
+    "time_exposure_pct": 1.4446488001401292,
+    "recent_closed_cohort_2023_2025": 310.76338369358047,
+    "recent_static_5bps_RT": 146.59892360687053,
+    "recent_static_10bps_RT": -17.56553647983952,
+    "descriptive_initial_gate_pass": true,
+    "sample_inconclusive": false,
+    "terminal": [],
+    "curve_clock_counts": {
+      "00:00:00": 2,
+      "00:01:00": 1902
+    },
+    "audit": {
+      "max_fee_error": 1.7763568394002505e-15,
+      "max_pnl_error": 1.4566126083082054e-12,
+      "max_qty_error": 0.0,
+      "wallet_error": -7.275957614183426e-12,
+      "overlaps": 0,
+      "ordertypes": {
+        "entry_MARKET": 60,
+        "exit_MARKET": 15,
+        "exit_LIMIT": 37,
+        "exit_STOP": 8
+      }
+    }
+  }
+}
+```

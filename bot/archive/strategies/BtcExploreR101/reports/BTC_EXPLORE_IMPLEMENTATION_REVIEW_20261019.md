@@ -1,0 +1,13 @@
+# BTC explore implementation review — 2026-10-19
+
+Three frozen recipes BtcExploreR101/R102/R103 implemented through Jesse MCP. No drafts or backtests created. Root source review and tickets remain required. Source readback equals submitted content for all three.
+
+Each source is self-contained from PortCompareBtc4h. Sixteen base methods remain byte-identical: hyperparameters, trading_hours, signal_candles, _entry_window, _ledger, _key, _capital, _committed, _volatility_share, _plan, should_long, should_short, go_long, go_short, should_cancel_entry, _record_capacity. R101/R103 also keep _short_plan byte-identical. R102 keeps _signal byte-identical and replaces only short generation. No changes to PAXG/SPY, risk, quotas, indicators or original long management.
+
+Changed existing methods R101/R103: _signal, on_open_position, update_position, on_close_position, terminate. Changed R102: _short_plan and the same lifecycle hooks. Added before, _explore_window and _explore_size. In lifecycle hooks a plan kind branch returns before original management; the remainder of the long runner remains original. Original plans have priority. Supplemental MARKET plans use the same shared capital, committed risk, margin, inverse-ATR quota, fee/reserve formulas and lot step. Original plans have no kind, resetting explore_kind on fill.
+
+Events are computed in before independently of occupancy; each before clears its event and advances once per closed bar. R101 is a completed two-bar event. R102 requires observed false before true; invalid history resets its eligibility rather than pretending false. R103 latches first false-to-true of the complete two-bar setup, not the first half. All windows check closed timestamp equality, exact 4h spacing, finite positive OHLCV and high>=low. ATR uses only historical closed candles. R101 shock ATR is computed with t excluded; R103 VWAP and q use only bars ending s=t-1. Position stops and targets use actual fill plus frozen signal distance. Timeouts use actual fill deadline at first eligible 4h callback.
+
+BTC_EXPLORE_FILL logs recipe/time/side/entry/qty/distance/target_distance/deadline. BTC_EXPLORE terminate logs events/fills/closes/events_occupied; event counts include consumed events during occupancy and are not an independent opportunity estimate. Existing PORT_CAPACITY retained. No trade rules changed for diagnostics.
+
+Static source/diff checks passed. Dynamic causal/state QA requested from root and pending analysis slot; this report does not claim synthetic execution yet. Protocol: strategies/MultiAssetRetestBtcShort4h/reports/BTC_R1_FROZEN_PROTOCOL_20261019.md. Existing development sample reused; 2026 closed.

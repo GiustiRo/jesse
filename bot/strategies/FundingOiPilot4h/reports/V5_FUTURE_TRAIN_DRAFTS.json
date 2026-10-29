@@ -1,0 +1,1149 @@
+{
+  "cycle": "V5",
+  "stage": "FUTURE_TRAINS_DRAFTS_ONLY",
+  "status": "ALL_FOUR_PRECREATED_TRAINS_FINISHED",
+  "manifest_ref": "V5_CONFIRMATION_WRAPPERS_VERIFIED.json",
+  "sessions": [
+    {
+      "fold": "C3",
+      "stage": "C3T",
+      "label": "FUNDING_FPOI",
+      "strategy": "ResearchV5FT_OI_C3T",
+      "id": "74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+      "dashboard_url": "http://localhost:9200/#/backtest/74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+      "status": "finished",
+      "source": "from strategies.ResearchV5FundingFPOi4h import ResearchV5FundingFPOi4h\n\n\nclass ResearchV5FT_OI_C3T(ResearchV5FundingFPOi4h):\n    START = 1598918400000\n    FINISH = 1735689600000\n",
+      "create_raw": {
+        "status": "success",
+        "backtest_id": "74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "strategy": "ResearchV5FT_OI_C3T",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2025-01-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": false,
+                "order_cancellation": false,
+                "order_execution": false,
+                "position_opened": false,
+                "position_increased": false,
+                "position_reduced": false,
+                "position_closed": false,
+                "shorter_period_candles": false,
+                "trading_candles": false,
+                "balance_update": false
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 3,
+                "slippage_bps": 0
+              },
+              "funding": {
+                "mode": "historical",
+                "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+              },
+              "open_interest": {
+                "mode": "historical",
+                "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+                "allow_missing_observations": true,
+                "max_age_ms": 600000
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV5FT_OI_C3T",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV5FT_OI_C3T"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "notes": {
+          "title": "MCP Backtest: V5 C3 TRAIN FUNDING_FPOI",
+          "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+          "strategy_code_keys": [
+            "Binance Perpetual Futures-BTC-USDT"
+          ],
+          "strategy_codes_captured": 1
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+        "message": "Backtest draft created with ID: 74f1cbc5-5eee-4e87-98c8-36f1062aa2d7"
+      },
+      "update_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"74f1cbc5-5eee-4e87-98c8-36f1062aa2d7\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"strategy\": \"ResearchV5FT_OI_C3T\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"4h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2025-01-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": false,\n          \"order_cancellation\": false,\n          \"order_execution\": false,\n          \"position_opened\": false,\n          \"position_increased\": false,\n          \"position_reduced\": false,\n          \"position_closed\": false,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": false,\n          \"balance_update\": false\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 3,\n          \"slippage_bps\": 0\n        },\n        \"funding\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n        },\n        \"open_interest\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n          \"allow_missing_observations\": true,\n          \"max_age_ms\": 600000\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"4h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV5FT_OI_C3T\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"4h\",\n        \"strategy\": \"ResearchV5FT_OI_C3T\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/74f1cbc5-5eee-4e87-98c8-36f1062aa2d7\",\n  \"message\": \"Backtest draft updated successfully\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "ResearchV5FT_OI_C3T",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "readback_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V5 C3 TRAIN FUNDING_FPOI",
+        "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+        "description_truncated": false,
+        "created_at": 1792545800000,
+        "updated_at": 1792545800000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "strategy": "ResearchV5FT_OI_C3T",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2025-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/74f1cbc5-5eee-4e87-98c8-36f1062aa2d7"
+      },
+      "prepared_at": "2026-10-21T01:23:20.636Z",
+      "start_requested_at": "2026-10-21T01:27:02.006Z",
+      "finished_observed_at": "2026-10-21T01:28:54.407Z",
+      "current_evidence_ref": "V5_WF_BRANCH_PROGRESS.json"
+    },
+    {
+      "fold": "C3",
+      "stage": "C3T",
+      "label": "FUNDING_FP",
+      "strategy": "ResearchV5FT_FP_C3T",
+      "id": "554153ca-048c-4568-9916-6d450f71ab65",
+      "dashboard_url": "http://localhost:9200/#/backtest/554153ca-048c-4568-9916-6d450f71ab65",
+      "status": "finished",
+      "source": "from strategies.ResearchV5FundingFP4h import ResearchV5FundingFP4h\n\n\nclass ResearchV5FT_FP_C3T(ResearchV5FundingFP4h):\n    START = 1598918400000\n    FINISH = 1735689600000\n",
+      "create_raw": {
+        "status": "success",
+        "backtest_id": "554153ca-048c-4568-9916-6d450f71ab65",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "strategy": "ResearchV5FT_FP_C3T",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2025-01-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": false,
+                "order_cancellation": false,
+                "order_execution": false,
+                "position_opened": false,
+                "position_increased": false,
+                "position_reduced": false,
+                "position_closed": false,
+                "shorter_period_candles": false,
+                "trading_candles": false,
+                "balance_update": false
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 3,
+                "slippage_bps": 0
+              },
+              "funding": {
+                "mode": "historical",
+                "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+              },
+              "open_interest": {
+                "mode": "historical",
+                "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+                "allow_missing_observations": true,
+                "max_age_ms": 600000
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV5FT_FP_C3T",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV5FT_FP_C3T"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "notes": {
+          "title": "MCP Backtest: V5 C3 TRAIN FUNDING_FP",
+          "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+          "strategy_code_keys": [
+            "Binance Perpetual Futures-BTC-USDT"
+          ],
+          "strategy_codes_captured": 1
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/554153ca-048c-4568-9916-6d450f71ab65",
+        "message": "Backtest draft created with ID: 554153ca-048c-4568-9916-6d450f71ab65"
+      },
+      "update_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"554153ca-048c-4568-9916-6d450f71ab65\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"strategy\": \"ResearchV5FT_FP_C3T\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"4h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2025-01-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": false,\n          \"order_cancellation\": false,\n          \"order_execution\": false,\n          \"position_opened\": false,\n          \"position_increased\": false,\n          \"position_reduced\": false,\n          \"position_closed\": false,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": false,\n          \"balance_update\": false\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 3,\n          \"slippage_bps\": 0\n        },\n        \"funding\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n        },\n        \"open_interest\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n          \"allow_missing_observations\": true,\n          \"max_age_ms\": 600000\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"4h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV5FT_FP_C3T\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"4h\",\n        \"strategy\": \"ResearchV5FT_FP_C3T\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/554153ca-048c-4568-9916-6d450f71ab65\",\n  \"message\": \"Backtest draft updated successfully\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "ResearchV5FT_FP_C3T",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "readback_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "554153ca-048c-4568-9916-6d450f71ab65",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V5 C3 TRAIN FUNDING_FP",
+        "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+        "description_truncated": false,
+        "created_at": 1792545800000,
+        "updated_at": 1792545801000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "strategy": "ResearchV5FT_FP_C3T",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2025-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/554153ca-048c-4568-9916-6d450f71ab65"
+      },
+      "prepared_at": "2026-10-21T01:23:21.239Z",
+      "start_requested_at": "2026-10-21T01:28:54.792Z",
+      "finished_observed_at": "2026-10-21T01:30:04.027Z",
+      "current_evidence_ref": "V5_WF_BRANCH_PROGRESS.json"
+    },
+    {
+      "fold": "C4",
+      "stage": "C4T",
+      "label": "FUNDING_FPOI",
+      "strategy": "ResearchV5FT_OI_C4T",
+      "id": "d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e",
+      "dashboard_url": "http://localhost:9200/#/backtest/d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e",
+      "status": "finished",
+      "source": "from strategies.ResearchV5FundingFPOi4h import ResearchV5FundingFPOi4h\n\n\nclass ResearchV5FT_OI_C4T(ResearchV5FundingFPOi4h):\n    START = 1598918400000\n    FINISH = 1751328000000\n",
+      "create_raw": {
+        "status": "success",
+        "backtest_id": "d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "strategy": "ResearchV5FT_OI_C4T",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2025-07-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": false,
+                "order_cancellation": false,
+                "order_execution": false,
+                "position_opened": false,
+                "position_increased": false,
+                "position_reduced": false,
+                "position_closed": false,
+                "shorter_period_candles": false,
+                "trading_candles": false,
+                "balance_update": false
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 3,
+                "slippage_bps": 0
+              },
+              "funding": {
+                "mode": "historical",
+                "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+              },
+              "open_interest": {
+                "mode": "historical",
+                "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+                "allow_missing_observations": true,
+                "max_age_ms": 600000
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV5FT_OI_C4T",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV5FT_OI_C4T"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "notes": {
+          "title": "MCP Backtest: V5 C4 TRAIN FUNDING_FPOI",
+          "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+          "strategy_code_keys": [
+            "Binance Perpetual Futures-BTC-USDT"
+          ],
+          "strategy_codes_captured": 1
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e",
+        "message": "Backtest draft created with ID: d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e"
+      },
+      "update_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"strategy\": \"ResearchV5FT_OI_C4T\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"4h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2025-07-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": false,\n          \"order_cancellation\": false,\n          \"order_execution\": false,\n          \"position_opened\": false,\n          \"position_increased\": false,\n          \"position_reduced\": false,\n          \"position_closed\": false,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": false,\n          \"balance_update\": false\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 3,\n          \"slippage_bps\": 0\n        },\n        \"funding\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n        },\n        \"open_interest\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n          \"allow_missing_observations\": true,\n          \"max_age_ms\": 600000\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"4h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV5FT_OI_C4T\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"4h\",\n        \"strategy\": \"ResearchV5FT_OI_C4T\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e\",\n  \"message\": \"Backtest draft updated successfully\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "ResearchV5FT_OI_C4T",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "readback_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V5 C4 TRAIN FUNDING_FPOI",
+        "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+        "description_truncated": false,
+        "created_at": 1792545801000,
+        "updated_at": 1792545801000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "strategy": "ResearchV5FT_OI_C4T",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2025-07-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e"
+      },
+      "prepared_at": "2026-10-21T01:23:21.901Z",
+      "start_requested_at": "2026-10-21T01:33:12.444Z",
+      "finished_observed_at": "2026-10-21T01:34:26.924Z",
+      "current_evidence_ref": "V5_WF_BRANCH_PROGRESS.json"
+    },
+    {
+      "fold": "C4",
+      "stage": "C4T",
+      "label": "FUNDING_FP",
+      "strategy": "ResearchV5FT_FP_C4T",
+      "id": "0b0fea0e-c7cd-4abb-b746-56427cf792a6",
+      "dashboard_url": "http://localhost:9200/#/backtest/0b0fea0e-c7cd-4abb-b746-56427cf792a6",
+      "status": "finished",
+      "source": "from strategies.ResearchV5FundingFP4h import ResearchV5FundingFP4h\n\n\nclass ResearchV5FT_FP_C4T(ResearchV5FundingFP4h):\n    START = 1598918400000\n    FINISH = 1751328000000\n",
+      "create_raw": {
+        "status": "success",
+        "backtest_id": "0b0fea0e-c7cd-4abb-b746-56427cf792a6",
+        "draft_state": {
+          "form": {
+            "exchange": "Binance Perpetual Futures",
+            "routes": [
+              {
+                "exchange": "Binance Perpetual Futures",
+                "strategy": "ResearchV5FT_FP_C4T",
+                "symbol": "BTC-USDT",
+                "timeframe": "4h"
+              }
+            ],
+            "data_routes": [],
+            "start_date": "2020-09-01",
+            "finish_date": "2025-07-01",
+            "debug_mode": true,
+            "export_csv": false,
+            "export_json": false,
+            "export_chart": false,
+            "fast_mode": true,
+            "benchmark": false,
+            "config": {
+              "logging": {
+                "order_submission": false,
+                "order_cancellation": false,
+                "order_execution": false,
+                "position_opened": false,
+                "position_increased": false,
+                "position_reduced": false,
+                "position_closed": false,
+                "shorter_period_candles": false,
+                "trading_candles": false,
+                "balance_update": false
+              },
+              "warm_up_candles": 240,
+              "exchange": {
+                "name": "Binance Perpetual Futures",
+                "type": "futures",
+                "balance": 10000,
+                "fee": 0.00045,
+                "futures_leverage_mode": "isolated",
+                "futures_leverage": 3,
+                "slippage_bps": 0
+              },
+              "funding": {
+                "mode": "historical",
+                "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+              },
+              "open_interest": {
+                "mode": "historical",
+                "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+                "allow_missing_observations": true,
+                "max_age_ms": 600000
+              }
+            }
+          },
+          "results": {
+            "showResults": false,
+            "executing": false,
+            "logsModal": false,
+            "progressbar": {
+              "current": 0,
+              "estimated_remaining_seconds": 0
+            },
+            "routes_info": [
+              [
+                {
+                  "value": "BTC-USDT",
+                  "style": ""
+                },
+                {
+                  "value": "4h",
+                  "style": ""
+                },
+                {
+                  "value": "ResearchV5FT_FP_C4T",
+                  "style": ""
+                }
+              ]
+            ],
+            "metrics": {},
+            "hyperparameters": [],
+            "generalInfo": {
+              "title": null,
+              "description": null
+            },
+            "infoLogs": "",
+            "exception": {
+              "error": "",
+              "traceback": ""
+            },
+            "charts": {
+              "equity_curve": []
+            },
+            "selectedRoute": {
+              "symbol": "BTC-USDT",
+              "timeframe": "4h",
+              "strategy": "ResearchV5FT_FP_C4T"
+            },
+            "alert": {
+              "message": "",
+              "type": ""
+            },
+            "info": [],
+            "trades": []
+          }
+        },
+        "notes": {
+          "title": "MCP Backtest: V5 C4 TRAIN FUNDING_FP",
+          "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+          "strategy_code_keys": [
+            "Binance Perpetual Futures-BTC-USDT"
+          ],
+          "strategy_codes_captured": 1
+        },
+        "dashboard_url": "http://localhost:9200/#/backtest/0b0fea0e-c7cd-4abb-b746-56427cf792a6",
+        "message": "Backtest draft created with ID: 0b0fea0e-c7cd-4abb-b746-56427cf792a6"
+      },
+      "update_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"0b0fea0e-c7cd-4abb-b746-56427cf792a6\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"strategy\": \"ResearchV5FT_FP_C4T\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"4h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2025-07-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": false,\n          \"order_cancellation\": false,\n          \"order_execution\": false,\n          \"position_opened\": false,\n          \"position_increased\": false,\n          \"position_reduced\": false,\n          \"position_closed\": false,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": false,\n          \"balance_update\": false\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 3,\n          \"slippage_bps\": 0\n        },\n        \"funding\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n        },\n        \"open_interest\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n          \"allow_missing_observations\": true,\n          \"max_age_ms\": 600000\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"4h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV5FT_FP_C4T\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"4h\",\n        \"strategy\": \"ResearchV5FT_FP_C4T\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/0b0fea0e-c7cd-4abb-b746-56427cf792a6\",\n  \"message\": \"Backtest draft updated successfully\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "ResearchV5FT_FP_C4T",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2025-07-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "readback_summary": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "0b0fea0e-c7cd-4abb-b746-56427cf792a6",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V5 C4 TRAIN FUNDING_FP",
+        "description": "Pre-created date-only V5 Funding train draft; frozen nominal10000; no engine start until root stage/token GO.",
+        "description_truncated": false,
+        "created_at": 1792545802000,
+        "updated_at": 1792545802000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "strategy": "ResearchV5FT_FP_C4T",
+              "symbol": "BTC-USDT",
+              "timeframe": "4h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2025-07-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/0b0fea0e-c7cd-4abb-b746-56427cf792a6"
+      },
+      "prepared_at": "2026-10-21T01:23:22.622Z",
+      "start_requested_at": "2026-10-21T01:34:27.203Z",
+      "finished_observed_at": "2026-10-21T01:35:46.501Z",
+      "current_evidence_ref": "V5_WF_BRANCH_PROGRESS.json"
+    }
+  ],
+  "created_at": "2026-10-21T01:23:20.001Z"
+}

@@ -110,14 +110,61 @@ class BinanceFuturesClient:
     def exchange_info(self, symbol: str) -> dict:
         return self._public("/fapi/v1/exchangeInfo", {"symbol": self.to_binance_symbol(symbol)})
 
+    def premium_index(self, symbol: str) -> dict:
+        """Current mark and indicative funding rate; not a settled payment."""
+        return self._public('/fapi/v1/premiumIndex', {'symbol': self.to_binance_symbol(symbol)})
+
+    def open_interest(self, symbol: str) -> dict:
+        """Current outstanding base quantity; USD notional is a different measure."""
+        return self._public('/fapi/v1/openInterest', {'symbol': self.to_binance_symbol(symbol)})
+
+    def latest_funding_settlements(self, symbol: str) -> list[dict]:
+        """Final public settlements, separate from the premium-index estimate."""
+        return self._public('/fapi/v1/fundingRate', {'symbol': self.to_binance_symbol(symbol), 'limit': 2})
+
+    def funding_income(self, symbol: str, start: int, finish: int) -> list[dict]:
+        """Account cashflows inclusive at both ends; Binance retains three months."""
+        if not self.api_key or not self.api_secret:
+            raise ValueError('Funding reconciliation requires authenticated account read access')
+        return self._signed('GET', '/fapi/v1/income', {
+            'symbol': self.to_binance_symbol(symbol), 'incomeType': 'FUNDING_FEE',
+            'startTime': start, 'endTime': finish, 'limit': 1000,
+        })
+
+    def position_information(self, symbol: str) -> list[dict]:
+        """V3 omits symbols without a position or open orders (an empty list is flat)."""
+        if not self.api_key or not self.api_secret:
+            raise ValueError('Position reconciliation requires authenticated account read access')
+        return self._signed('GET', '/fapi/v3/positionRisk', {'symbol': self.to_binance_symbol(symbol)})
+
+    def position_mode(self) -> dict:
+        if not self.api_key or not self.api_secret:
+            raise ValueError('Position mode check requires authenticated account read access')
+        return self._signed('GET', '/fapi/v1/positionSide/dual')
+
+    def open_orders(self, symbol: str) -> list[dict]:
+        """Both order namespaces must be empty before a new session claims BTC."""
+        params = {'symbol': self.to_binance_symbol(symbol)}
+        normal = self._signed('GET', '/fapi/v1/openOrders', params)
+        conditional = self._signed('GET', '/fapi/v1/openAlgoOrders', params)
+        if not isinstance(normal, list) or not isinstance(conditional, list):
+            raise ValueError('Invalid Binance open-order response')
+        return normal + conditional
+
     def place_order(self, params: dict) -> dict:
         order_type = str(params.get("type") or "").upper()
         if order_type in CONDITIONAL_ORDER_TYPES:
             return self._normalize_order(self._signed("POST", "/fapi/v1/algoOrder", algo_order_payload(params)))
         return self._normalize_order(self._signed("POST", "/fapi/v1/order", params))
 
-    def cancel_order(self, symbol: str, order_id: str) -> dict:
+    def cancel_order(self, symbol: str, order_id: str, *, is_algo: bool = False) -> dict:
         symbol_b = self.to_binance_symbol(symbol)
+        if is_algo:
+            algorithm = self._signed('GET', '/fapi/v1/algoOrder', {'symbol': symbol_b, 'algoId': order_id})
+            actual_id = algorithm.get('actualOrderId')
+            if actual_id:
+                return self._signed('DELETE', '/fapi/v1/order', {'symbol': symbol_b, 'orderId': actual_id})
+            return self._signed('DELETE', '/fapi/v1/algoOrder', {'symbol': symbol_b, 'algoId': order_id})
         try:
             return self._signed("DELETE", "/fapi/v1/order", {"symbol": symbol_b, "orderId": order_id})
         except Exception:
@@ -136,16 +183,23 @@ class BinanceFuturesClient:
             raise last_error
         return result or {}
 
-    def get_order(self, symbol: str, order_id: str) -> dict:
+    def get_order(self, symbol: str, order_id: str, *, is_algo: bool = False) -> dict:
         symbol_b = self.to_binance_symbol(symbol)
+        if is_algo:
+            algorithm = self._signed('GET', '/fapi/v1/algoOrder', {'symbol': symbol_b, 'algoId': order_id})
+            # A triggered conditional order has a distinct normal order ID. Its
+            # execution quantity/price/status, not the algo trigger, proves a fill.
+            actual_id = algorithm.get('actualOrderId')
+            if actual_id:
+                actual = self._signed('GET', '/fapi/v1/order', {'symbol': symbol_b, 'orderId': actual_id})
+                return self._normalize_order(actual) | {'algoId': order_id, 'actualOrderId': actual_id}
+            return self._normalize_order(algorithm)
         try:
             return self._normalize_order(
                 self._signed("GET", "/fapi/v1/order", {"symbol": symbol_b, "orderId": order_id})
             )
         except Exception:
-            return self._normalize_order(
-                self._signed("GET", "/fapi/v1/algoOrder", {"symbol": symbol_b, "algoId": order_id})
-            )
+            return self.get_order(symbol, order_id, is_algo=True)
 
     @staticmethod
     def _normalize_order(remote: dict | list) -> dict:

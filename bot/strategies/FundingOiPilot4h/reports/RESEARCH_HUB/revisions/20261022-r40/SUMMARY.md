@@ -1,0 +1,1 @@
+R40 prerregistrada: BTC único operado, PAXG Spot proxy sólo contexto; retroceso frente a espera fija. Fuentes y controles previos en preparación; ningún motor nuevo aún.

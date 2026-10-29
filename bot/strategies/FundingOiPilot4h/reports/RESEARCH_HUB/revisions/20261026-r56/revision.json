@@ -1,0 +1,171 @@
+{
+  "format_version": 1,
+  "id": "20261026-r56",
+  "updated_at_utc": "2026-10-27 01:00:00 UTC",
+  "objective": "Detección de régimen cripto como pronóstico probabilístico de estados (vol, tendencia, rango) sobre las 50 monedas de U50, evaluado sin PnL contra etiquetas fijadas en F0.",
+  "latest": "r56 cerrada (2026-10-26): ningún detector pasa el puente. T1 (Chronos-Bolt zero-shot sobre la vol) es el mejor: holdout BSS +0,176, 16/16 monedas; falla solo ≤12 cambios/año (26). Tendencia a 20 días impronosticable. N_régimen=22; N=140.",
+  "next": "Decisión del usuario: ¿habilitar usos continuos del pronóstico de vol (dimensionamiento, freno de riesgo) en r57? Ver HANDOFF_R57.md.",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r56": {
+      "n_regime": 22,
+      "n_regime_ceiling": 30,
+      "n_strategies": 140
+    }
+  },
+  "decisions": [
+    "2026-10-26 r56: plan aprobado por el usuario; exclusión HMM/LightGBM levantada solo para r56 en formato agrupado; autorizada la instalación de torch + chronos-forecasting para la familia T.",
+    "2026-10-26 r56 F0: enmienda F0-1, la etiqueta de vol pasa de cociente a nivel porque el cociente anticorrelaciona la persistencia por construcción.",
+    "2026-10-26 r56 F5-1: una configuración de holdout por eje del puente, fijada antes de los resultados de F4.",
+    "2026-10-26 r56 cerrada: ningún detector pasa el puente; T1 falla solo la cantidad de cambios. Usos continuos quedan a decisión del usuario."
+  ],
+  "supersedes": "20261026-r55",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 panel, etiquetas, varas, holdout y pruebas sintéticas",
+      "state": "completada",
+      "depends": "-",
+      "gate": "no suma a N_régimen"
+    },
+    {
+      "order": 1,
+      "title": "F1 clásicos y memoria (A1–A3, B1–B2)",
+      "state": "completada: vol y rango con señal; tendencia no",
+      "depends": "F0",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 2,
+      "title": "F2 modelos de estados y quiebres (C1a, C1b, C2, C3, C4, D1)",
+      "state": "completada: estados persistentes sin más capacidad",
+      "depends": "F0",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 3,
+      "title": "F3 vol, geometría y signatures (V1–V3, E1–E2, S1)",
+      "state": "completada: HAR-RV mejor detector de vol hasta F3",
+      "depends": "F0",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 4,
+      "title": "F4 modelos globales, Y_exit y fundacional (G1, G2, X1, T1–T2)",
+      "state": "completada: Chronos-Bolt mejor vol; globales sobreajustan",
+      "depends": "F1–F3",
+      "gate": "PROTOCOL_R56 §4"
+    },
+    {
+      "order": 5,
+      "title": "F5 holdout de monedas y puente a r57",
+      "state": "completada: ningún detector pasa el puente",
+      "depends": "F4",
+      "gate": "PROTOCOL_R56 §6"
+    },
+    {
+      "order": 6,
+      "title": "F6 infraestructura, factor de mercado y set N2",
+      "state": "completada: f_mkt 1,00–1,06; N2 de 20 monedas descargado",
+      "depends": "F5",
+      "gate": "PROTOCOL_R56 Extensión r56-B"
+    },
+    {
+      "order": 7,
+      "title": "F7 estabilizadores del estado operable (Z1–Z3 sobre T1 y V1)",
+      "state": "completada: los cambios bajan a la tasa de la etiqueta",
+      "depends": "F6",
+      "gate": "PROTOCOL_R56 Extensión r56-B"
+    },
+    {
+      "order": 8,
+      "title": "F8 mejor pronóstico de vol (H1, H2, K1, O1, T3)",
+      "state": "completada: T3 Chronos-2 + covariables mejor vol",
+      "depends": "F7",
+      "gate": "PROTOCOL_R56 Extensión r56-B"
+    },
+    {
+      "order": 9,
+      "title": "F9 horizonte de 40 días (P1–P5)",
+      "state": "completada: rango a 40 días se puede pronosticar; tendencia no",
+      "depends": "F8",
+      "gate": "PROTOCOL_R56 Extensión r56-B"
+    },
+    {
+      "order": 10,
+      "title": "F10 validación única en N2",
+      "state": "completada: ninguna pasa el puente; T3/P4/P5 fallan solo la anticipación",
+      "depends": "F9",
+      "gate": "PROTOCOL_R56 Extensión r56-B"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r56: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/PROTOCOL_R56.md"
+    },
+    {
+      "label": "r56 F0: etiquetas y varas",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE0_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56 F1: clásicos y memoria",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE1_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56 F2: modelos de estados",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE2_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56 F3: HAR, geometría y signatures",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE3_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56 F4: globales y fundacionales",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE4_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R56_CLOSE_20261026.md"
+    },
+    {
+      "label": "r56: handoff a r57",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261026-r56/HANDOFF_R57.md"
+    },
+    {
+      "label": "r56-B F7: estabilizadores",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE7_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56-B F8: mejor vol",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE8_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56-B F9: 40 días",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE9_RESULTS_20261026.md"
+    },
+    {
+      "label": "r56-B F10: N2 y cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R56_PHASE10_CLOSE_B_20261026.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r56B_cerrada",
+    "execution_status": "r56B_closed",
+    "current_focus": "esperando decisión del usuario sobre usos continuos (U1 dimensionamiento, U2 freno de riesgo, U3 filtro de rango a 40 días)",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Instalar torch + chronos-forecasting en el contenedor de investigación (familia T)."
+    ],
+    "excluded": [
+      "PnL y N de estrategias.",
+      "Live/paper/Pi.",
+      "2025 y 2026."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r56 y extensión r56-B (F6–F10) aprobados por el usuario 2026-10-26.",
+    "economic_status": "P-r55 congelada (sin cambios en r56)",
+    "goal_status": "closed"
+  }
+}

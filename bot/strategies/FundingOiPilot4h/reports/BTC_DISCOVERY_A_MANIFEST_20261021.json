@@ -1,0 +1,186 @@
+{
+  "batch": "BTC_DISCOVERY_A_20261021",
+  "registered_before_run_utc": "2026-10-21 16:09:35 UTC",
+  "source_sha256": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+  "base_source": "import json\nimport math\n\nimport numpy as np\nfrom jesse.strategies import Strategy\n\nBAR = 14400000\nDAY = 86400000\n\n\ndef closed_window(candles, now, count):\n    \"\"\"Use only consecutive, closed 4h bars; no synthetic gap repair.\"\"\"\n    rows = candles[candles[:, 0] + BAR <= now][-count:]\n    if len(rows) != count or rows[-1, 0] != now - BAR:\n        return None\n    if not np.all(np.diff(rows[:, 0]) == BAR):\n        return None\n    if not np.all(np.isfinite(rows[:, :5])) or np.any(rows[:, 1:5] <= 0):\n        return None\n    if np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2])):\n        return None\n    if np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2])):\n        return None\n    return rows\n\n\ndef atr14(rows):\n    previous = rows[-15:-1, 2]\n    current = rows[-14:]\n    tr = np.maximum(current[:, 3] - current[:, 4],\n                    np.maximum(abs(current[:, 3] - previous), abs(current[:, 4] - previous)))\n    value = float(np.mean(tr))\n    return value if math.isfinite(value) and value > 0 else None\n\n\ndef breadth_state(closes):\n    changes = np.diff(closes)\n    positive = changes > 0\n    negative = changes < 0\n    if int(positive[-6:].sum()) >= 4 and int(positive[-24:].sum()) >= 16:\n        return 1\n    if int(negative[-6:].sum()) >= 4 and int(negative[-24:].sum()) >= 16:\n        return -1\n    return 0\n\n\ndef breadth_signal(rows):\n    \"\"\"Count sign persistence, not return magnitudes; consume only new states.\"\"\"\n    now_state = breadth_state(rows[-25:, 2])\n    old_state = breadth_state(rows[-26:-1, 2])\n    return now_state if now_state != old_state else 0\n\n\ndef funding_failure_signal(rows, now, events):\n    \"\"\"Observe a full post-payment bar; never know or collect the next payment.\"\"\"\n    event_start = now - BAR\n    matching = []\n    for event in events:\n        raw = int(event[\"settled_at\"])\n        effective = raw // 60000 * 60000\n        if effective == event_start and 0 <= raw - effective <= 1000:\n            if int(event[\"available_at\"]) <= now and int(event[\"available_at\"]) > raw:\n                matching.append(event)\n    if len(matching) != 1:\n        return 0, None\n    event = matching[0]\n    rate = float(event[\"rate_decimal\"])\n    if not math.isfinite(rate):\n        return 0, None\n    pre, post = rows[-2], rows[-1]\n    if rate > 0 and pre[2] > pre[1] and post[2] < pre[1]:\n        return -1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    if rate < 0 and pre[2] < pre[1] and post[2] > pre[1]:\n        return 1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    return 0, None\n\n\ndef entry_plan(price, capital, margin, leverage, fee, direction, distance):\n    stop = price - direction * distance\n    values = (price, capital, margin, leverage, distance, stop)\n    if direction not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in values):\n        return None\n    if not math.isfinite(fee) or fee < 0:\n        return None\n    unit_loss = distance + fee * (price + stop)\n    # 2% includes both execution fees. The 90% margin ceiling retains the\n    # historical reserve and does not increase the stop's monetary risk.\n    risk_qty = 0.02 * capital / unit_loss\n    margin_qty = 0.90 * margin * leverage / (price * (1 + fee * leverage))\n    qty = math.floor(min(risk_qty, margin_qty) * 1e8) / 1e8\n    if qty <= 0:\n        return None\n    assert qty * unit_loss <= 0.02 * capital + 1e-6\n    return dict(qty=qty, price=price, capital=capital, distance=distance,\n                stop=stop, risk_budget=0.02 * capital,\n                planned_loss=qty * unit_loss, margin_capped=margin_qty < risk_qty)\n\n\nclass BtcResearchR10Base4h(Strategy):\n    \"\"\"R10 discovery harness: one BTC position, fixed risk and base costs only.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, value):\n        self.log(label + \" \" + json.dumps(value, separators=(\",\", \":\"), allow_nan=False))\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\"\n            assert self.leverage == 3\n            assert abs(self.fee_rate - 0.00045) < 1e-12\n            self.vars[\"checked\"] = True\n            self._log(\"R10_CONFIG\", dict(mode=self.MODE, risk=0.02, aggregate=0.06,\n                                        leverage=self.leverage, fee=self.fee_rate,\n                                        margin_buffer=0.90, stop_atr=2, target_r=2, hold_hours=48))\n        self.vars[\"direction\"] = 0\n        rows = closed_window(self.candles, now, 26)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            return\n        if self.MODE == \"BREADTH\":\n            direction = breadth_signal(rows)\n            evidence = None\n        else:\n            assert self.MODE == \"POST_FUNDING\"\n            events = self.get_funding_history(count=6)\n            assert all(int(e[\"available_at\"]) <= now for e in events)\n            direction, evidence = funding_failure_signal(rows, now, events)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        # Signals are evaluated and consumed while occupied as well. No deferred\n        # order or re-entry from a previously blocked funding/breadth event.\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        capital = max(0.0, min(float(self.balance), float(self.portfolio_value)))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or float(self.price) + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n        self.vars[\"evidence\"] = evidence\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        plan = self.vars[\"plan\"]\n        self.buy = plan[\"qty\"], self.price\n\n    def go_short(self):\n        plan = self.vars[\"plan\"]\n        self.sell = plan[\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        distance = plan[\"distance\"]\n        stop = entry - direction * distance\n        target = entry + direction * 2 * distance\n        assert qty * (distance + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._log(\"R10_ENTRY\", dict(time=int(self.time), direction=direction, entry=entry,\n                                   qty=qty, stop=stop, target=target, plan=plan,\n                                   evidence=self.vars.get(\"evidence\")))\n\n    def update_position(self):\n        # No ratchet, discretionary exit or same-close reversal. Funding applies\n        # continuously to actual held quantity, independently of signal inputs.\n        if int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        self.vars[\"last_exit_at\"] = int(self.time)\n\n    def before_terminate(self):\n        self._log(\"R10_COUNTERS\", dict(signals=self.vars.get(\"signals\", 0),\n                                     occupied=self.vars.get(\"occupied\", 0),\n                                     entries=self.vars.get(\"entries\", 0),\n                                     invalid_windows=self.vars.get(\"invalid_windows\", 0)))\n",
+  "wrappers": {
+    "BtcResearchR10Breadth4h": "from strategies.BtcResearchR10Base4h import BtcResearchR10Base4h\n\n\nclass BtcResearchR10Breadth4h(BtcResearchR10Base4h):\n    MODE = \"BREADTH\"\n",
+    "BtcResearchR10FundingEvent4h": "from strategies.BtcResearchR10Base4h import BtcResearchR10Base4h\n\n\nclass BtcResearchR10FundingEvent4h(BtcResearchR10Base4h):\n    MODE = \"POST_FUNDING\"\n"
+  },
+  "static_check_job": "04192cbe5b474278b6de56ea0bb5e7ae",
+  "static_checks": "passed, AST and synthetic pure functions; declared numeric case count not an independent evidence sample",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_A_PROTOCOL_20261021.md",
+  "data_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+  "funding_mark_proxies_in_full_dataset": 4198,
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "438b717c-7b5e-4589-a84a-687fa63f8645",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery A | BtcResearchR10Breadth4h",
+      "description": "Tanda autónoma A preregistrada. BTC individual, riesgo2%/6%/3x, fundingON+fee.00045, sin slippage modelado ni estrés. Desarrollo2020–25 reutilizado. No OOS.",
+      "description_truncated": false,
+      "created_at": 1792598929000,
+      "updated_at": 1792598937000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "BtcResearchR10Breadth4h",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/438b717c-7b5e-4589-a84a-687fa63f8645"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "b3fa7fff-0b6b-44de-ac23-230c118a94b0",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery A | BtcResearchR10FundingEvent4h",
+      "description": "Tanda autónoma A preregistrada. BTC individual, riesgo2%/6%/3x, fundingON+fee.00045, sin slippage modelado ni estrés. Desarrollo2020–25 reutilizado. No OOS.",
+      "description_truncated": false,
+      "created_at": 1792598929000,
+      "updated_at": 1792598937000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "strategy": "BtcResearchR10FundingEvent4h",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/b3fa7fff-0b6b-44de-ac23-230c118a94b0"
+    }
+  ],
+  "independent_source_review": "creative_btc: rules/clocks/sizing agree; runtime API/fill checks remain"
+}

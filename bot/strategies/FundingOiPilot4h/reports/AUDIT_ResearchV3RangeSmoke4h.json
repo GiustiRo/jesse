@@ -1,0 +1,377 @@
+{
+  "session_id": "7fcfb052-a9b8-4a9b-bc7f-2add6e3dd278",
+  "dashboard_url": "http://localhost:9200/#/backtest/7fcfb052-a9b8-4a9b-bc7f-2add6e3dd278",
+  "scope": "Technical7days, no economic selection",
+  "complete_logs": true,
+  "summary": {
+    "bars": 42,
+    "trades": 3,
+    "entries": 3,
+    "exits_before_final_audit": 3,
+    "forced_following_audit": 0,
+    "exits_total": 3,
+    "base_checks": 28,
+    "sector_checks": 58,
+    "feature_target_stop_provenance_passed": true,
+    "max_line_length": 1017,
+    "primary": {
+      "no_setup": 25,
+      "allowed": 3,
+      "in_position_or_pending": 1,
+      "regime_reject": 12,
+      "boundary_or_inactive": 1
+    }
+  },
+  "markers": [
+    {
+      "kind": "V3_BASE_CHECKS",
+      "status": "passed",
+      "assertions": 28
+    },
+    {
+      "kind": "V3_SELF_CHECKS",
+      "status": "passed",
+      "assertions": 58
+    },
+    {
+      "kind": "V3_FEATURES",
+      "time": 1598947200000,
+      "line": "RANGE",
+      "valid": true,
+      "direction": -1,
+      "mean_target": 11628.644500000002,
+      "reason": "signal",
+      "details": {
+        "mean20": 11628.644500000002,
+        "std20": 110.55707396973732,
+        "z": 2.7536501199672725,
+        "mean20_prev": 11608.333000000002,
+        "std20_prev": 87.71754044089454,
+        "z_prev": 1.0307744556622862,
+        "slow_mean": 11687.730000000001,
+        "slow_mean_lag24": 11707.563333333334,
+        "regime_ratio": 0.16323347285581147,
+        "regime_passed": true,
+        "atr": 121.50285714285721,
+        "first_open": 1596873600000,
+        "last_open": 1598932800000,
+        "bars": 144,
+        "window_sha256": "97635b31ef83ed1d1e337821c77bc16d7634778db49a915c4f4fbc250f22b636",
+        "reason": "signal"
+      }
+    },
+    {
+      "kind": "V3_ENTRY",
+      "time": 1598947200000,
+      "direction": -1,
+      "decision": 11933.08,
+      "fill": 11933.08,
+      "capital": 10000,
+      "qty": 0.78785183,
+      "distance_pre": 243.00571428571442,
+      "distance_fill": 243.00571428571442,
+      "planned_stop_loss": 199.99999934795522,
+      "risk_budget": 200,
+      "stop": 12176.085714285715,
+      "target": 11628.644500000002,
+      "atr": {
+        "value": 121.50285714285721,
+        "first": 1598731200000,
+        "last": 1598932800000,
+        "bars": 15,
+        "sha256": "e8643977e02829dc54e3d9c70e90f26f188bf8b897b35457b7c05cd9e9232d7b"
+      },
+      "oi": {
+        "quality": "initialization",
+        "passed": false,
+        "current": {
+          "time": 1598947200000,
+          "value": 39643.026,
+          "label": 1598946600000,
+          "available_at": 1598946960000,
+          "status": "valid"
+        },
+        "reference": null
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1598918400000,
+        "rate_decimal": 0.0001,
+        "mark_price": 11656.74760273,
+        "mark_price_source": "markPriceKlines.1h_open_proxy",
+        "available_at": 1598918460000
+      }
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1599042600000,
+      "trade_id": "8ebad153-d4c5-403d-8418-7a61c00f8b3f",
+      "reason": "take-profit",
+      "pnl": 242.28027164010103,
+      "balance": 10242.280271640102,
+      "gross": 239.85006579196326,
+      "risk_budget": 200,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V3_FEATURES",
+      "time": 1599048000000,
+      "line": "RANGE",
+      "valid": true,
+      "direction": 1,
+      "mean_target": 11739.143999999998,
+      "reason": "signal",
+      "details": {
+        "mean20": 11739.143999999998,
+        "std20": 149.59269950101188,
+        "z": -2.1501985128480343,
+        "mean20_prev": 11749.0875,
+        "std20_prev": 133.64068728777934,
+        "z_prev": -0.0854343107007025,
+        "slow_mean": 11704.298083333333,
+        "slow_mean_lag24": 11694.181583333333,
+        "regime_ratio": 0.055524366960824446,
+        "regime_passed": true,
+        "atr": 182.1992857142855,
+        "first_open": 1596974400000,
+        "last_open": 1599033600000,
+        "bars": 144,
+        "window_sha256": "04da66f388f72438ff0fdbd1b6481244c24e5bcc8b89e1f6d17ddadf75dbd697",
+        "reason": "signal"
+      }
+    },
+    {
+      "kind": "V3_ENTRY",
+      "time": 1599048000000,
+      "direction": 1,
+      "decision": 11417.49,
+      "fill": 11417.49,
+      "capital": 10242.280271640102,
+      "qty": 0.54696916,
+      "distance_pre": 364.398571428571,
+      "distance_fill": 364.398571428571,
+      "planned_stop_loss": 204.84560229139925,
+      "risk_budget": 204.84560543280205,
+      "stop": 11053.091428571428,
+      "target": 11739.143999999998,
+      "atr": {
+        "value": 182.1992857142855,
+        "first": 1598832000000,
+        "last": 1599033600000,
+        "bars": 15,
+        "sha256": "e60ec85a70914d78d7cff132465991e7b3bbaf782a3122e8772f0509c24e7aed"
+      },
+      "oi": {
+        "quality": "valid",
+        "passed": false,
+        "current": {
+          "time": 1599048000000,
+          "value": 35109.969,
+          "label": 1599047400000,
+          "available_at": 1599047760000,
+          "status": "valid"
+        },
+        "reference": {
+          "time": 1598961600000,
+          "value": 40987.503,
+          "label": 1598961000000,
+          "available_at": 1598961360000,
+          "status": "valid"
+        }
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1599033600006,
+        "rate_decimal": 0.00035074,
+        "mark_price": 11737.41,
+        "mark_price_source": "markPriceKlines.1h_open_proxy",
+        "available_at": 1599033660000
+      }
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1599135120000,
+      "trade_id": "05f2ae60-26e1-4cf2-b025-0303a76bdf31",
+      "reason": "stop-loss",
+      "pnl": -210.02234708899468,
+      "balance": 10032.25792455111,
+      "gross": -199.3147805194859,
+      "risk_budget": 204.84560543280205,
+      "realized_loss": 210.02234708899468,
+      "loss_over_budget": 5.1767416561926325
+    },
+    {
+      "kind": "V3_FEATURES",
+      "time": 1599148800000,
+      "line": "RANGE",
+      "valid": true,
+      "direction": 1,
+      "mean_target": 11604.706499999998,
+      "reason": "signal",
+      "details": {
+        "mean20": 11604.706499999998,
+        "std20": 319.50956120709446,
+        "z": -2.8829074676828346,
+        "mean20_prev": 11651.7945,
+        "std20_prev": 239.7240232741601,
+        "z_prev": -1.8055115798928563,
+        "slow_mean": 11679.572166666667,
+        "slow_mean_lag24": 11680.349916666666,
+        "regime_ratio": 0.0030725925925897788,
+        "regime_passed": true,
+        "atr": 253.12499999999974,
+        "first_open": 1597075200000,
+        "last_open": 1599134400000,
+        "bars": 144,
+        "window_sha256": "44e4ca0151b48fd8659ef7fe5cdd217099c2fa4b3f341993670dd44c4f0d6329",
+        "reason": "signal"
+      }
+    },
+    {
+      "kind": "V3_ENTRY",
+      "time": 1599148800000,
+      "direction": 1,
+      "decision": 10683.59,
+      "fill": 10683.59,
+      "capital": 10032.25792455111,
+      "qty": 0.38912063,
+      "distance_pre": 506.2499999999995,
+      "distance_fill": 506.2499999999995,
+      "planned_stop_loss": 200.64515713829348,
+      "risk_budget": 200.6451584910222,
+      "stop": 10177.34,
+      "target": 11604.706499999998,
+      "atr": {
+        "value": 253.12499999999974,
+        "first": 1598932800000,
+        "last": 1599134400000,
+        "bars": 15,
+        "sha256": "cc5da736377d48fe91c1051313209cd48aecaa6e0f5a939d245c1deb65b2fe77"
+      },
+      "oi": {
+        "quality": "valid",
+        "passed": false,
+        "current": {
+          "time": 1599148800000,
+          "value": 34700.293,
+          "label": 1599148200000,
+          "available_at": 1599148560000,
+          "status": "valid"
+        },
+        "reference": {
+          "time": 1599062400000,
+          "value": 36887.026,
+          "label": 1599061800000,
+          "available_at": 1599062160000,
+          "status": "valid"
+        }
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1599120000004,
+        "rate_decimal": 0.00016828,
+        "mark_price": 11408.71,
+        "mark_price_source": "markPriceKlines.1h_open_proxy",
+        "available_at": 1599120060000
+      }
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1599175800000,
+      "trade_id": "62888d26-7138-4e33-8d06-7e5ec51b1bd4",
+      "reason": "stop-loss",
+      "pnl": -200.64515713829368,
+      "balance": 9831.612767412817,
+      "gross": -196.99231893750002,
+      "risk_budget": 200.6451584910222,
+      "realized_loss": 200.64515713829368,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2020-09:all",
+      "bars": 42,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 25,
+        "allowed": 3,
+        "in_position_or_pending": 1,
+        "regime_reject": 12,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_initialization": 1,
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2020-09:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2020-09:none",
+      "bars": 38,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 25,
+        "regime_reject": 12,
+        "boundary_or_inactive": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2020-09:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_initialization": 1
+      }
+    },
+    {
+      "kind": "V3_PROVENANCE",
+      "line": "RANGE",
+      "use_oi": false,
+      "oi_lag_bars": 0,
+      "stop_multiplier": 2,
+      "trail_multiplier": 3,
+      "target_mode": "frozen_mean",
+      "reward_multiple": 3,
+      "max_hold_bars": 12,
+      "start": 1598918400000,
+      "finish": 1599523200000,
+      "active_windows": null,
+      "force_boundaries": [],
+      "final_exit_may_follow": true,
+      "self_checks": {
+        "status": "passed",
+        "assertions": 58
+      }
+    }
+  ]
+}

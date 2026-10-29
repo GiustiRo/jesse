@@ -1,0 +1,53 @@
+{
+ "guard": {
+  "np.load f0_bars_n2": "refused",
+  "read_csv f2_trades_n2n3": "refused",
+  "open n2 1h": "refused",
+  "np.load panel70": "refused",
+  "r58.load_bank n3": "refused",
+  "r58.h4_bars N2 coin": "refused",
+  "r58.c6_bank n2": "refused",
+  "inside oracle open f0_bars_n2": "opened",
+  "U50 f0_bars outside oracle": "opened"
+ },
+ "guard_ok": true,
+ "i_zero_noise": {
+  "st_true": {
+   "oracle": "PASA",
+   "direct": "PASA"
+  },
+  "st_false": {
+   "oracle": "NO PASA",
+   "direct": "NO PASA"
+  },
+  "st_rule": {
+   "oracle": "PASA",
+   "direct": "PASA"
+  }
+ },
+ "i_ok": true,
+ "ii_ok": true,
+ "iii_refusals": {
+  "repeated": "oracle: st_true already answered; the answer stands",
+  "dirty": "oracle: r59 code or protocol not committed; commit before querying",
+  "budget": "oracle: budget of 5 queries exhausted"
+ },
+ "iii_ok": true,
+ "iv_ok": true,
+ "real_log_untouched": true,
+ "fake_holdout": [
+  "AAVEUSDT",
+  "ADAUSDT",
+  "APEUSDT",
+  "APTUSDT",
+  "BNBUSDT",
+  "COMPUSDT",
+  "ETCUSDT",
+  "GTCUSDT",
+  "IOSTUSDT",
+  "MTLUSDT",
+  "NEARUSDT",
+  "SANDUSDT"
+ ],
+ "pass": true
+}

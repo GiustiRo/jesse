@@ -1,0 +1,699 @@
+{
+  "id": "BTC_DISCOVERY_EI",
+  "title": "BTC: reversión, dependencia, geometría y participación",
+  "asset": "BTC",
+  "family": "reversión / modelos / mechas / participación",
+  "execution": "cerrado",
+  "evidence": "Diez políticas de desarrollo observado; seis hipótesis de trabajo y cuatro comparadores, sin independencia estadística.",
+  "objective": "no alcanzado",
+  "hypothesis": "Nivel latente y recuperación; seguir/revertir saltos; AR frente a deriva; rechazo de mechas frente a cierres; secuencia de volumen frente a precios.",
+  "origin": "Autonomía continuada solicitada explícitamente por el usuario, con revisión de antecedentes y porción creativa I.",
+  "method": "Cinco tandas con protocolo/budget anterior a resultados, controles explícitos y medición M1. Sin vecinos ni búsqueda de parámetros posterior.",
+  "protocol": null,
+  "budget": {
+    "economic_unique": 10,
+    "technical_backtests": 0,
+    "failed_or_replacement_backtests": 0
+  },
+  "versions": "Fuentes/hashes y formularios en manifiestos E–I; observador R11 congelado y funding snapshot fijo9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571.",
+  "periods": [
+    "2020-10-15 → 2026-01-01 exclusivo; desarrollo reutilizado"
+  ],
+  "results": {
+    "E_kalman": {
+      "N": 1200,
+      "net": -5264.049098432597,
+      "return_pct": -52.64049098432597,
+      "cagr_pct": -13.34871389216371,
+      "pf": 0.8941080914451257,
+      "dd_daily_pct": -62.1668723620536,
+      "fee": 4891.084477197425,
+      "funding": 281.7423092266704,
+      "funding_applied": true,
+      "proxy_payments": 1420,
+      "errors": {
+        "gross_fee_funding_pnl": 5.4569682106375694e-12,
+        "pnl_metrics": 3.637978807091713e-12,
+        "terminal_vs_net": 1.7280399333685637e-11,
+        "funding_vs_metric": 3.410605131648481e-13
+      },
+      "gross": -654.7069304618366,
+      "finish": 4735.95090156742,
+      "raw_open_counter": 1,
+      "long_pnl": -3368.900768504312,
+      "short_pnl": -1895.1483299282852,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 25,
+        "positive_calendar": 25,
+        "median_return": -0.00601859654308079,
+        "complete_quarters": 20,
+        "positive_quarters": 8,
+        "pnl_without_best_two": -6366.874417650416,
+        "stage": "FINAL",
+        "equity": 4735.95090156742,
+        "dd_m1_events": -0.6281769463020517,
+        "minute_marks": 2741760,
+        "sequence": 2744161,
+        "signals": 1653,
+        "entries": 1200,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": false,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "E_recovery": {
+      "N": 167,
+      "net": 1604.7854494437909,
+      "return_pct": 16.04785449443791,
+      "cagr_pct": 2.8942352545563432,
+      "pf": 1.0923987124188788,
+      "dd_daily_pct": -16.148950780182027,
+      "fee": 1268.5793936570924,
+      "funding": 92.1201221359732,
+      "funding_applied": true,
+      "proxy_payments": 495,
+      "errors": {
+        "gross_fee_funding_pnl": -2.2737367544323206e-13,
+        "pnl_metrics": 1.3642420526593924e-12,
+        "terminal_vs_net": 1.6143530956469476e-11,
+        "funding_vs_metric": -2.842170943040401e-14
+      },
+      "gross": 2781.24472096491,
+      "finish": 11604.785449443807,
+      "raw_open_counter": 0,
+      "long_pnl": 416.9597556167,
+      "short_pnl": 1187.8256938270895,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 60,
+        "positive_active": 34,
+        "positive_calendar": 34,
+        "median_return": 0.005330049123178471,
+        "complete_quarters": 20,
+        "positive_quarters": 11,
+        "pnl_without_best_two": -335.7628054729066,
+        "stage": "PRETERMINAL",
+        "equity": 11604.785449443807,
+        "dd_m1_events": -0.16783879327230766,
+        "minute_marks": 2741760,
+        "sequence": 2742095,
+        "signals": 180,
+        "entries": 167,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": true,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "F_fade": {
+      "N": 382,
+      "net": -7281.666359862172,
+      "return_pct": -72.81666359862172,
+      "cagr_pct": -22.096873385581585,
+      "pf": 0.6681463204824996,
+      "dd_daily_pct": -73.46512327375602,
+      "fee": 1328.5455837653535,
+      "funding": 183.8544614329661,
+      "funding_applied": true,
+      "proxy_payments": 986,
+      "errors": {
+        "gross_fee_funding_pnl": -2.7284841053187847e-12,
+        "pnl_metrics": 2.7284841053187847e-12,
+        "terminal_vs_net": -1.9099388737231493e-11,
+        "funding_vs_metric": 2.5579538487363607e-13
+      },
+      "gross": -6136.975237529787,
+      "finish": 2718.333640137809,
+      "raw_open_counter": 1,
+      "long_pnl": -2953.804367068047,
+      "short_pnl": -4327.861992794129,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 18,
+        "positive_calendar": 18,
+        "median_return": -0.020241418329258742,
+        "complete_quarters": 20,
+        "positive_quarters": 4,
+        "pnl_without_best_two": -8193.839214710752,
+        "stage": "FINAL",
+        "equity": 2718.333640137809,
+        "dd_m1_events": -0.7420290351776941,
+        "minute_marks": 2741760,
+        "sequence": 2742525,
+        "signals": 552,
+        "entries": 382,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": false,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "F_follow": {
+      "N": 381,
+      "net": 9054.705762850206,
+      "return_pct": 90.54705762850206,
+      "cagr_pct": 13.155821348143393,
+      "pf": 1.2556459890914513,
+      "dd_daily_pct": -23.7080815975791,
+      "fee": 2927.864313682595,
+      "funding": -396.28909476187795,
+      "funding_applied": true,
+      "proxy_payments": 1065,
+      "errors": {
+        "gross_fee_funding_pnl": 3.637978807091713e-12,
+        "pnl_metrics": 0,
+        "terminal_vs_net": 1.8189894035458565e-12,
+        "funding_vs_metric": -7.389644451905042e-13
+      },
+      "gross": 12378.859171294684,
+      "finish": 19054.705762850208,
+      "raw_open_counter": 0,
+      "long_pnl": 5956.043614007694,
+      "short_pnl": 3098.6621488425144,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 32,
+        "positive_calendar": 32,
+        "median_return": 0.000996717621308485,
+        "complete_quarters": 20,
+        "positive_quarters": 13,
+        "pnl_without_best_two": 5469.244695901749,
+        "stage": "PRETERMINAL",
+        "equity": 19054.705762850208,
+        "dd_m1_events": -0.24242700098130088,
+        "minute_marks": 2741760,
+        "sequence": 2742523,
+        "signals": 552,
+        "entries": 381,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": true,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": true,
+        "concentration": true,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "G_ar": {
+      "N": 1481,
+      "net": -3320.395946889291,
+      "return_pct": -33.20395946889291,
+      "cagr_pct": -7.444033887094603,
+      "pf": 0.9687545175551695,
+      "dd_daily_pct": -61.50548127478973,
+      "fee": 9127.724066540486,
+      "funding": -2239.797078290056,
+      "funding_applied": true,
+      "proxy_payments": 2400,
+      "errors": {
+        "gross_fee_funding_pnl": -1.318767317570746e-11,
+        "pnl_metrics": 8.185452315956354e-12,
+        "terminal_vs_net": 8.913048077374697e-11,
+        "funding_vs_metric": 3.183231456205249e-12
+      },
+      "gross": 8047.125197941238,
+      "finish": 6679.604053110798,
+      "raw_open_counter": 1,
+      "long_pnl": 6281.527102970024,
+      "short_pnl": -9601.923049859317,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 27,
+        "positive_calendar": 27,
+        "median_return": -0.023917666102904522,
+        "complete_quarters": 20,
+        "positive_quarters": 8,
+        "pnl_without_best_two": -8850.377775993122,
+        "stage": "FINAL",
+        "equity": 6679.604053110798,
+        "dd_m1_events": -0.6203536444274864,
+        "minute_marks": 2741760,
+        "sequence": 2744723,
+        "signals": 8090,
+        "entries": 1481,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": false,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "G_drift": {
+      "N": 1355,
+      "net": -1751.3382014542935,
+      "return_pct": -17.513382014542934,
+      "cagr_pct": -3.623627490764514,
+      "pf": 0.9830067792470166,
+      "dd_daily_pct": -54.947365388401835,
+      "fee": 8931.715552445874,
+      "funding": -2317.652416310531,
+      "funding_applied": true,
+      "proxy_payments": 2248,
+      "errors": {
+        "gross_fee_funding_pnl": 8.185452315956354e-12,
+        "pnl_metrics": -1.3642420526593924e-12,
+        "terminal_vs_net": 4.547473508864641e-13,
+        "funding_vs_metric": 4.547473508864641e-12
+      },
+      "gross": 9498.02976730212,
+      "finish": 8248.661798545707,
+      "raw_open_counter": 1,
+      "long_pnl": 3986.5173287416224,
+      "short_pnl": -5737.85553019591,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 26,
+        "positive_calendar": 26,
+        "median_return": -0.017159492287337375,
+        "complete_quarters": 20,
+        "positive_quarters": 8,
+        "pnl_without_best_two": -7507.851768269529,
+        "stage": "FINAL",
+        "equity": 8248.661798545707,
+        "dd_m1_events": -0.5612427539628377,
+        "minute_marks": 2741760,
+        "sequence": 2744471,
+        "signals": 8008,
+        "entries": 1355,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": false,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "H_wicks": {
+      "N": 193,
+      "net": 3258.9181438644764,
+      "return_pct": 32.589181438644765,
+      "cagr_pct": 5.556506079892221,
+      "pf": 1.217002160979703,
+      "dd_daily_pct": -19.395191440941474,
+      "fee": 1324.3812566580373,
+      "funding": -147.7865619275967,
+      "funding_applied": true,
+      "proxy_payments": 513,
+      "errors": {
+        "gross_fee_funding_pnl": 3.183231456205249e-12,
+        "pnl_metrics": -1.8189894035458565e-12,
+        "terminal_vs_net": -2.091837814077735e-11,
+        "funding_vs_metric": 1.9895196601282805e-13
+      },
+      "gross": 4731.085962450114,
+      "finish": 13258.918143864455,
+      "raw_open_counter": 0,
+      "long_pnl": 4887.160730007919,
+      "short_pnl": -1628.2425861434392,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 61,
+        "positive_active": 34,
+        "positive_calendar": 34,
+        "median_return": 0.005723333543113052,
+        "complete_quarters": 20,
+        "positive_quarters": 14,
+        "pnl_without_best_two": 1374.1489942668286,
+        "stage": "PRETERMINAL",
+        "equity": 13258.918143864455,
+        "dd_m1_events": -0.20073594545822493,
+        "minute_marks": 2741760,
+        "sequence": 2742147,
+        "signals": 240,
+        "entries": 193,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": true,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": true,
+        "concentration": true,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "H_close": {
+      "N": 297,
+      "net": 3218.5726389193255,
+      "return_pct": 32.185726389193256,
+      "cagr_pct": 5.494856129208459,
+      "pf": 1.112480282400987,
+      "dd_daily_pct": -17.70900113701661,
+      "fee": 2315.465467130069,
+      "funding": -409.2282693148241,
+      "funding_applied": true,
+      "proxy_payments": 802,
+      "errors": {
+        "gross_fee_funding_pnl": 1.3642420526593924e-12,
+        "pnl_metrics": -1.8189894035458565e-12,
+        "terminal_vs_net": 2.0463630789890885e-11,
+        "funding_vs_metric": 3.979039320256561e-13
+      },
+      "gross": 5943.26637536422,
+      "finish": 13218.572638919346,
+      "raw_open_counter": 0,
+      "long_pnl": 2651.0441225227855,
+      "short_pnl": 567.5285163965449,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 38,
+        "positive_calendar": 38,
+        "median_return": 0.008059096571149893,
+        "complete_quarters": 20,
+        "positive_quarters": 10,
+        "pnl_without_best_two": 927.2513569028088,
+        "stage": "PRETERMINAL",
+        "equity": 13218.572638919346,
+        "dd_m1_events": -0.1843779943636299,
+        "minute_marks": 2741760,
+        "sequence": 2742355,
+        "signals": 411,
+        "entries": 297,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": true,
+        "concentration": true,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    },
+    "I_phase": {
+      "N": 1,
+      "net": -199.44634377846853,
+      "return_pct": -1.9944634377846853,
+      "cagr_pct": -0.3854614790582134,
+      "pf": 0,
+      "dd_daily_pct": -1.994463437784677,
+      "fee": 10.362177432181028,
+      "funding": 0.5536531919984012,
+      "funding_applied": true,
+      "proxy_payments": 1,
+      "errors": {
+        "gross_fee_funding_pnl": 0,
+        "pnl_metrics": 0,
+        "terminal_vs_net": -3.410605131648481e-13,
+        "funding_vs_metric": 0
+      },
+      "gross": -189.6378195382859,
+      "finish": 9800.553656221531,
+      "raw_open_counter": 0,
+      "long_pnl": 0,
+      "short_pnl": -199.44634377846853,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 1,
+        "positive_active": 0,
+        "positive_calendar": 0,
+        "median_return": 0,
+        "complete_quarters": 20,
+        "positive_quarters": 0,
+        "pnl_without_best_two": -199.44634377846887,
+        "stage": "PRETERMINAL",
+        "equity": 9800.553656221531,
+        "dd_m1_events": -0.02498377159614218,
+        "minute_marks": 2741760,
+        "sequence": 2741763,
+        "signals": 1,
+        "entries": 1,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": true,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": false
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "insufficient_one_trade"
+    },
+    "I_price": {
+      "N": 121,
+      "net": -1777.4917804644992,
+      "return_pct": -17.774917804644993,
+      "cagr_pct": -3.682281992068126,
+      "pf": 0.8689468700816532,
+      "dd_daily_pct": -38.568911888412025,
+      "fee": 957.6606180976223,
+      "funding": -19.116390215029263,
+      "funding_applied": true,
+      "proxy_payments": 295,
+      "errors": {
+        "gross_fee_funding_pnl": 4.547473508864641e-13,
+        "pnl_metrics": -4.547473508864641e-13,
+        "terminal_vs_net": -5.4569682106375694e-12,
+        "funding_vs_metric": 4.618527782440651e-14
+      },
+      "gross": -800.7147721518471,
+      "finish": 8222.508219535495,
+      "raw_open_counter": 1,
+      "long_pnl": -993.8482809310358,
+      "short_pnl": -783.6434995334636,
+      "measurement": {
+        "complete_months": 62,
+        "active_months": 56,
+        "positive_active": 22,
+        "positive_calendar": 22,
+        "median_return": -0.0036819567997162794,
+        "complete_quarters": 20,
+        "positive_quarters": 9,
+        "pnl_without_best_two": -3289.4606099615303,
+        "stage": "FINAL",
+        "equity": 8222.508219535495,
+        "dd_m1_events": -0.398695325353674,
+        "minute_marks": 2741760,
+        "sequence": 2742003,
+        "signals": 131,
+        "entries": 121,
+        "invalid_windows": 0
+      },
+      "gates": {
+        "cagr": false,
+        "pf": false,
+        "dd": false,
+        "months": false,
+        "quarters": false,
+        "median": false,
+        "concentration": false,
+        "N": true
+      },
+      "status": "NO_CUMPLE",
+      "evidence_sufficiency": "preliminary_N_ge100"
+    }
+  },
+  "limitations": [
+    "Muestras M1 y eventos, no todos los extremos intraminuto.",
+    "Fronteras por fase post-funding/predecisión, no agrupación estricta de eventos por fecha.",
+    "Funding con marcas proxy declaradas, slippage cero.",
+    "I PHASE: una operación; no acredita ni refuta una ventaja de la familia.",
+    "Histórico reutilizado y selección extensa: no OOS ni muestras independientes."
+  ],
+  "audit": "Cinco análisis completos reconcilian cada política a<1e−6USDT; diez bloques mensuales íntegros. Cero errores económicos/reemplazos.",
+  "decision": "Ninguna candidata. Cerrar E–I y sus vecinos. Continuar otra pregunta material sin pedir confirmación rutinaria.",
+  "references": [
+    {
+      "label": "Diez pruebas E–I: resultados y decisiones",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "Métricas, puertas y recibos estructurados",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/RESULTS.json"
+    },
+    {
+      "label": "Continuidad autónoma r12",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/HANDOFF.md"
+    },
+    {
+      "label": "E: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "E: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_MANIFEST_20261021.json"
+    },
+    {
+      "label": "E: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "E: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_FINAL_20261021.md"
+    },
+    {
+      "label": "F: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "F: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_MANIFEST_20261021.json"
+    },
+    {
+      "label": "F: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "F: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_FINAL_20261021.md"
+    },
+    {
+      "label": "G: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "G: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_MANIFEST_20261021.json"
+    },
+    {
+      "label": "G: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "G: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_FINAL_20261021.md"
+    },
+    {
+      "label": "H: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "H: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_MANIFEST_20261021.json"
+    },
+    {
+      "label": "H: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "H: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_FINAL_20261021.md"
+    },
+    {
+      "label": "I: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "I: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_MANIFEST_20261021.json"
+    },
+    {
+      "label": "I: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "I: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_FINAL_20261021.md"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "Nivel latente (Kalman)",
+      "url": "http://localhost:9200/#/backtest/9a7ce958-13d0-481e-992d-401e03b579fd"
+    },
+    {
+      "label": "Recuperación de excursiones",
+      "url": "http://localhost:9200/#/backtest/ce148b26-9a50-4ef9-9874-a784a9067c4e"
+    },
+    {
+      "label": "Saltos: reversión",
+      "url": "http://localhost:9200/#/backtest/80fa4bf7-d510-4c9a-967c-88b75cc49752"
+    },
+    {
+      "label": "Saltos: continuación",
+      "url": "http://localhost:9200/#/backtest/8b78a705-a8f3-4656-9705-e56300623ddf"
+    },
+    {
+      "label": "Autorregresión AR1",
+      "url": "http://localhost:9200/#/backtest/c72b53d8-c986-4131-814b-788cdc0f49e2"
+    },
+    {
+      "label": "Control de deriva media",
+      "url": "http://localhost:9200/#/backtest/cbfafdb4-ea81-48f7-bd40-5ade91a3bfa4"
+    },
+    {
+      "label": "Mechas de rechazo",
+      "url": "http://localhost:9200/#/backtest/77ec643b-9761-492d-aca0-01681e0cd203"
+    },
+    {
+      "label": "Control de localización del cierre",
+      "url": "http://localhost:9200/#/backtest/658d7534-0034-49f3-8f12-f3271002b2f7"
+    },
+    {
+      "label": "Participación secuencial",
+      "url": "http://localhost:9200/#/backtest/17494d8a-eaf8-437e-8b7d-fac709a8d092"
+    },
+    {
+      "label": "Control de reparación de precios",
+      "url": "http://localhost:9200/#/backtest/a091d445-a502-4214-b153-182eb3d2af8d"
+    }
+  ]
+}

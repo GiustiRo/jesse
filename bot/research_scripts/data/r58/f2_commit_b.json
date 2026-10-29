@@ -1,0 +1,35 @@
+{
+ "protocol": "PROTOCOL_R58.md \u00a73, commit B",
+ "rule": "persist_vol == 0 AND p_range40 < 0.3874 (last closed day before the signal close)",
+ "composite": "AND (retains 51.6% >= 25% in U50)",
+ "u50": {
+  "n_evaluable": 1392,
+  "D": 0.821659209694745,
+  "D_se_boot": 0.5134646151052105,
+  "retained": 0.5158045977011494
+ },
+ "evaluable_coin_days": {
+  "u50": 47319,
+  "n2": 17958,
+  "n3": 25189
+ },
+ "expected_trades": {
+  "n2": 528.2769289291828,
+  "n3": 740.993850250428
+ },
+ "expected_union": 1269.2707791796106,
+ "D_se_union_expected": 0.537716046242803,
+ "power_one_sided_10pct": {
+  "vs_full_D": 0.5973533790554894,
+  "vs_half_D": 0.30239503014367797
+ },
+ "power_n2_only_vs_half_D": 0.21515903556256238,
+ "report_before_continuing": true,
+ "pass_criteria": {
+  "a_D_union_p10_gt_0": "D on N2 \u222a N3 evaluable trades > 0 and the 10th percentile of the weekly-block bootstrap > 0",
+  "b_D_pos_each_bank": "D > 0 on N2 and on N3 separately",
+  "c_basket": "Sharpe of the gated C6 basket >= Sharpe of the unconditional basket, N2 \u222a N3 equal weight, 2021-07-02..2024-12-31; the rule gates entries only (risk_qty x 0), nothing else changes",
+  "d_cost2": "a and c again with fees and stop slippage x2"
+ },
+ "measurement_window": "2021-07-02..2024-12-31 (P5 exists on every bank from 2021-07-01)"
+}

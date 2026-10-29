@@ -127,6 +127,11 @@ class Order(Model):
             'order_exist_in_exchange': self.order_exist_in_exchange,
             'updated_at': self.updated_at,
             'session_mode': self.session_mode,
+            # Export only these simulation fields, never arbitrary order vars.
+            **({'slippage': {
+                'bps': self.vars['slippage_bps'],
+                'reference_price': self.vars['pre_slippage_price'],
+            }} if (self.vars or {}).get('slippage_bps') else {}),
         }
 
     @property

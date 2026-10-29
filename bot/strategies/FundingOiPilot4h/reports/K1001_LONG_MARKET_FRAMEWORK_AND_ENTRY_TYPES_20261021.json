@@ -1,0 +1,489 @@
+{
+  "scope": "Read-only framework source audit in mounted checkout, no imports/runtime execution. Native entry types of both completed quota sessions verified from bounded complete snapshot exports.",
+  "framework_files": [
+    {
+      "Path": "jesse/strategies/Strategy.py",
+      "Sha256": "f580062fd0390d53d7a6112c9139357cb56c71cf7ec0c0259ee2ff3337abac60"
+    },
+    {
+      "Path": "jesse/services/broker.py",
+      "Sha256": "37261e66fb61d846dcbe40bad584d12f4aff2cf47d78e2cd6c4e7ccb08eae595"
+    },
+    {
+      "Path": "jesse/services/api.py",
+      "Sha256": "04e5455ec24a7ac015ad9feb3da8c9465425cd3e741234b0f5b3863c5000e19d"
+    },
+    {
+      "Path": "jesse/exchanges/sandbox/Sandbox.py",
+      "Sha256": "0311eee4ea4dbc1f054f093616371219ad61fd56634bbb27bf683c2c4a8948f2"
+    },
+    {
+      "Path": "jesse/services/order_service.py",
+      "Sha256": "f0d9f3b9fe6b5aeb8139609d0a13a271370c32db21811397b62f47c3b30c91e8"
+    },
+    {
+      "Path": "jesse/modes/backtest_mode.py",
+      "Sha256": "047517b76255c947f483cdb85408dbf7e1ab992008c8f263571b4664ce6300fe"
+    },
+    {
+      "Path": "jesse/helpers.py",
+      "Sha256": "47893a6aba9733c4be172aa31ca5c9c90b4cf892b836bd78f1ee293d0566b0e1"
+    }
+  ],
+  "native_conversion_evidence": {
+    "LONG_ONLY": {
+      "types": {
+        "LIMIT": 27,
+        "MARKET": 4
+      },
+      "converted": [
+        {
+          "trade_id": "d6db43cd-5c21-4487-b907-b78fe5ce9edc",
+          "origin": "LONG_RUNNER",
+          "plan_kind": "LIMIT",
+          "actual_entry_order": {
+            "id": "091ba96b-fabf-4c1d-9a59-baa814737c84",
+            "trade_id": "d6db43cd-5c21-4487-b907-b78fe5ce9edc",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "buy",
+            "type": "MARKET",
+            "qty": 0.048,
+            "filled_qty": 0.048,
+            "price": 63857.87,
+            "status": "EXECUTED",
+            "created_at": 1618372800000,
+            "canceled_at": null,
+            "executed_at": 1618372800000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": false,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          },
+          "opening_log": {
+            "mode": "K1001",
+            "origin": "LONG_RUNNER",
+            "time": 1618372800000,
+            "opened_at": 1618372800000,
+            "signal_at": 1618372800000,
+            "expiry": 1618387200000,
+            "order_kind": "LIMIT",
+            "requested_entry": 63850,
+            "actual_entry": 63857.87,
+            "qty": 0.048,
+            "distance": 2148.0795091533114,
+            "stop": 61709.79049084669,
+            "target": null,
+            "risk_budget": 110.77992841078795,
+            "actual_loss": 108.88525566596122,
+            "planned_loss": 108.88453792196123,
+            "planned_stop_fees": 105.81973792196123,
+            "margin_limited": false,
+            "reserve": 0.001
+          },
+          "relative_distance": 0.00012324244451000776
+        },
+        {
+          "trade_id": "8f115c0f-dc05-415f-8a7b-72d7d909aa78",
+          "origin": "LONG_RUNNER",
+          "plan_kind": "LIMIT",
+          "actual_entry_order": {
+            "id": "4106a2f1-12ba-4d42-9cc0-e9e25a4f98c5",
+            "trade_id": "8f115c0f-dc05-415f-8a7b-72d7d909aa78",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "buy",
+            "type": "MARKET",
+            "qty": 0.08600000000000001,
+            "filled_qty": 0.08600000000000001,
+            "price": 33793.83,
+            "status": "EXECUTED",
+            "created_at": 1627113600000,
+            "canceled_at": null,
+            "executed_at": 1627113600000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": false,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          },
+          "opening_log": {
+            "mode": "K1001",
+            "origin": "LONG_RUNNER",
+            "time": 1627113600000,
+            "opened_at": 1627113600000,
+            "signal_at": 1627113600000,
+            "expiry": 1627128000000,
+            "order_kind": "LIMIT",
+            "requested_entry": 33790,
+            "actual_entry": 33793.83,
+            "qty": 0.08600000000000001,
+            "distance": 1204.126492703442,
+            "stop": 32589.70350729656,
+            "target": null,
+            "risk_budget": 109.6564226245015,
+            "actual_loss": 109.0301904992284,
+            "planned_loss": 109.0295646772284,
+            "planned_stop_fees": 106.12362467722839,
+            "margin_limited": false,
+            "reserve": 0.001
+          },
+          "relative_distance": 0.00011333429800652883
+        },
+        {
+          "trade_id": "b606673f-9c36-4e5b-adc1-bf63eff153bd",
+          "origin": "LONG_RUNNER",
+          "plan_kind": "LIMIT",
+          "actual_entry_order": {
+            "id": "626a538f-bc52-4fee-925b-9c55326455eb",
+            "trade_id": "b606673f-9c36-4e5b-adc1-bf63eff153bd",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "buy",
+            "type": "MARKET",
+            "qty": 0.069,
+            "filled_qty": 0.069,
+            "price": 99280,
+            "status": "EXECUTED",
+            "created_at": 1736150400000,
+            "canceled_at": null,
+            "executed_at": 1736150400000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": false,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          },
+          "opening_log": {
+            "mode": "K1001",
+            "origin": "LONG_RUNNER",
+            "time": 1736150400000,
+            "opened_at": 1736150400000,
+            "signal_at": 1736150400000,
+            "expiry": 1736164800000,
+            "order_kind": "LIMIT",
+            "requested_entry": 99278,
+            "actual_entry": 99280,
+            "qty": 0.069,
+            "distance": 1839.6657462148585,
+            "stop": 97440.33425378514,
+            "target": null,
+            "risk_budget": 140.4352885012862,
+            "actual_loss": 139.89542286740527,
+            "planned_loss": 139.8951606674053,
+            "planned_stop_fees": 133.04497866740527,
+            "margin_limited": false,
+            "reserve": 0.001
+          },
+          "relative_distance": 0.00002014504431913089
+        },
+        {
+          "trade_id": "dd55ba44-3920-44cc-af00-232998612455",
+          "origin": "LONG_RUNNER",
+          "plan_kind": "LIMIT",
+          "actual_entry_order": {
+            "id": "4f50fc2e-92b9-475a-8946-f2cf29092803",
+            "trade_id": "dd55ba44-3920-44cc-af00-232998612455",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "buy",
+            "type": "MARKET",
+            "qty": 0.058,
+            "filled_qty": 0.058,
+            "price": 99212,
+            "status": "EXECUTED",
+            "created_at": 1746691200000,
+            "canceled_at": null,
+            "executed_at": 1746691200000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": false,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          },
+          "opening_log": {
+            "mode": "K1001",
+            "origin": "LONG_RUNNER",
+            "time": 1746691200000,
+            "opened_at": 1746691200000,
+            "signal_at": 1746691200000,
+            "expiry": 1746705600000,
+            "order_kind": "LIMIT",
+            "requested_entry": 99199.9,
+            "actual_entry": 99212,
+            "qty": 0.058,
+            "distance": 2145.704964162434,
+            "stop": 97066.29503583757,
+            "target": null,
+            "risk_budget": 137.50332644485,
+            "actual_loss": 135.32804742185655,
+            "planned_loss": 135.32671400185654,
+            "planned_stop_fees": 129.57311980185654,
+            "margin_limited": false,
+            "reserve": 0.001
+          },
+          "relative_distance": 0.00012196105309847383
+        }
+      ]
+    },
+    "SHORT_BOOK": {
+      "types": {
+        "STOP": 171,
+        "MARKET": 1
+      },
+      "converted": [
+        {
+          "trade_id": "0edc8bd1-5962-4e3b-97ba-fa0ac85e88ba",
+          "origin": "SUPPLEMENT",
+          "plan_kind": "STOP",
+          "actual_entry_order": {
+            "id": "6aaa4380-1020-4669-b017-39eb6f750d46",
+            "trade_id": "0edc8bd1-5962-4e3b-97ba-fa0ac85e88ba",
+            "session_id": null,
+            "exchange_id": null,
+            "symbol": "BTC-USDT",
+            "side": "sell",
+            "type": "MARKET",
+            "qty": -0.05,
+            "filled_qty": -0.05,
+            "price": 41209.9,
+            "status": "EXECUTED",
+            "created_at": 1650571200000,
+            "canceled_at": null,
+            "executed_at": 1650571200000,
+            "exchange": "Binance Perpetual Futures",
+            "reduce_only": false,
+            "submitted_via": null,
+            "jesse_submitted": true,
+            "order_exist_in_exchange": true,
+            "updated_at": null,
+            "session_mode": null
+          },
+          "opening_log": {
+            "mode": "K1001",
+            "origin": "SUPPLEMENT",
+            "time": 1650571200000,
+            "opened_at": 1650571200000,
+            "signal_at": 1650571200000,
+            "expiry": 1650585600000,
+            "order_kind": "STOP",
+            "requested_entry": 41204,
+            "actual_entry": 41209.9,
+            "qty": 0.05,
+            "distance": 1928.0179881903314,
+            "stop": 43137.91798819033,
+            "target": 37353.86402361934,
+            "risk_budget": 100.73205611506339,
+            "actual_loss": 100.35922031425086,
+            "planned_loss": 100.35865981425086,
+            "planned_stop_fees": 98.29845981425086,
+            "margin_limited": false,
+            "reserve": 0.001
+          },
+          "relative_distance": 0.0001431694811198092
+        }
+      ]
+    }
+  },
+  "backtest_profile_read": {
+    "status": "success",
+    "section": "backtest",
+    "config": {
+      "warm_up_candles": 240,
+      "logging": {
+        "trading_candles": true,
+        "shorter_period_candles": false,
+        "position_reduced": true,
+        "order_execution": true,
+        "order_submission": true,
+        "position_closed": true,
+        "position_opened": true,
+        "position_increased": true,
+        "balance_update": true,
+        "order_cancellation": true
+      },
+      "exchanges": {
+        "Binance US Spot": {
+          "name": "Binance US Spot",
+          "balance": 10000,
+          "fee": 0.001,
+          "annualization": 365,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Bybit USDT Perpetual": {
+          "name": "Bybit USDT Perpetual",
+          "futures_leverage": 2,
+          "annualization": 365,
+          "futures_leverage_mode": "cross",
+          "balance": 10000,
+          "fee": 0.00055,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "Massive Currencies": {
+          "name": "Massive Currencies",
+          "balance": 10000,
+          "fee": 0,
+          "annualization": 252,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Kraken Pro Futures": {
+          "name": "Kraken Pro Futures",
+          "futures_leverage": 2,
+          "annualization": 365,
+          "futures_leverage_mode": "cross",
+          "balance": 10000,
+          "fee": 0.0005,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "KuCoin USDT Perpetual": {
+          "name": "KuCoin USDT Perpetual",
+          "futures_leverage": 2,
+          "annualization": 365,
+          "futures_leverage_mode": "cross",
+          "balance": 10000,
+          "fee": 0.0006,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "Bybit Spot": {
+          "name": "Bybit Spot",
+          "balance": 10000,
+          "fee": 0.001,
+          "annualization": 365,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Bybit USDC Perpetual": {
+          "name": "Bybit USDC Perpetual",
+          "futures_leverage": 2,
+          "annualization": 365,
+          "futures_leverage_mode": "cross",
+          "balance": 10000,
+          "fee": 0.00055,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "KuCoin Spot": {
+          "name": "KuCoin Spot",
+          "balance": 10000,
+          "fee": 0.001,
+          "annualization": 365,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Gate USDT Perpetual": {
+          "name": "Gate USDT Perpetual",
+          "futures_leverage": 2,
+          "annualization": 365,
+          "futures_leverage_mode": "cross",
+          "balance": 10000,
+          "fee": 0.0005,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "Massive Stocks": {
+          "name": "Massive Stocks",
+          "balance": 10000,
+          "fee": 0,
+          "annualization": 252,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Massive Futures": {
+          "name": "Massive Futures",
+          "balance": 10000,
+          "fee": 0,
+          "annualization": 252,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Custom Data": {
+          "name": "Custom Data",
+          "futures_leverage": 2,
+          "annualization": 252,
+          "futures_leverage_mode": "cross",
+          "balance": 10000,
+          "fee": 0.0004,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "Massive Indices": {
+          "name": "Massive Indices",
+          "balance": 10000,
+          "fee": 0,
+          "annualization": 252,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Binance Perpetual Futures": {
+          "name": "Binance Perpetual Futures",
+          "futures_leverage": 5,
+          "annualization": 365,
+          "futures_leverage_mode": "isolated",
+          "balance": 10000,
+          "fee": 0.00045,
+          "type": "futures",
+          "simulation_model": "perpetual_futures"
+        },
+        "Coinbase Spot": {
+          "name": "Coinbase Spot",
+          "balance": 10000,
+          "fee": 0.0003,
+          "annualization": 365,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Binance Spot": {
+          "name": "Binance Spot",
+          "balance": 10000,
+          "fee": 0.001,
+          "annualization": 365,
+          "type": "spot",
+          "simulation_model": "spot"
+        },
+        "Bitfinex Spot": {
+          "name": "Bitfinex Spot",
+          "balance": 10000,
+          "fee": 0.002,
+          "annualization": 365,
+          "type": "spot",
+          "simulation_model": "spot"
+        }
+      }
+    },
+    "message": "Configuration section \"backtest\" loaded successfully"
+  },
+  "semantics": {
+    "price_cached_during_execute": true,
+    "buy_equal_self_price_routes_to_broker_buy_at_market": true,
+    "is_price_near_threshold_fraction": 0.00015,
+    "threshold_percent": 0.015,
+    "sandbox_market_price": "position.current_price already set to real M1 close",
+    "market_queue_executes_after_strategy_same_step": true,
+    "slippage_bps_default_if_absent": 0,
+    "actual_new_market_orders_not_yet_observed": true
+  },
+  "limits": [
+    "Static evidence is not a new native preflight or proof of future actual order rows.",
+    "Control is a native LIMIT policy with near-price MARKET conversion, not31strictLIMITfills.",
+    "Actual MARKET rows of the one future economic execution must be checked after it finishes.",
+    "Current framework filesystem read is permitted; no bot strategies/reports were read by filesystem."
+  ]
+}

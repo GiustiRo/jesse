@@ -1,0 +1,241 @@
+{
+  "phase": "Q_pre_economic",
+  "at": "2026-10-21 20:19:41 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_Q_PROTOCOL_20261021.md",
+  "technical_check": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_Q_TECHNICAL_CHECK_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "f6afede11b744291a2c7f1aa2a837a12",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/f6afede11b744291a2c7f1aa2a837a12",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 423,
+      "exit_code": 0,
+      "started_at": "2026-10-21T20:18:26+00:00",
+      "finished_at": "2026-10-21T20:18:27+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T20:18:27+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "check.json",
+        "size_bytes": 1156,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"passed\", \"assertions\": 108, \"perfect_proportion_numeric_diagnostic\": {\"beta\": 1.0000000000000007, \"state\": 0, \"evidence\": {\"fitted_beta\": 1.0000000000000007, \"model_beta\": 1.0000000000000007, \"mean\": 1.0986122886681071, \"sigma\": 2.2391843228036144e-16, \"z\": 0.9916316520429012, \"beta_returns\": 240, \"reference_levels\": 60}}, \"source_sha256\": \"b40f428caaa728a117953fc97e4eee3372b895e622ba927c695fdef665dfefb8\", \"observer_sha256\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"helper_sha256\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"scope\": \"supplied-source AST/functions/classes and artificial engine fields, synthetic prices only; no strategy/framework imports, observed data, broker or economic backtests\", \"tests\": \"242/241/240/60causal oracle; beta excludes both current closes; onebeta reference/current; negative/tinypositivebeta; noeps flat; lowlong/highshort; refit-inducedstate; future/gap/sync/commonETHvalidPRICE; occupancy consumed/noqueue/sameexit; inherited feeaware2%/90%/floor8/ATR/2R48h/FINAL\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR17RelativeBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef relative_beta(btc, eth):\n    \"\"\"240 paired returns from241 prior closes; current closes never fit beta.\"\"\"\n    own = np.diff(np.log(btc[-242:-1, 2]))\n    external = np.diff(np.log(eth[-242:-1, 2]))\n    assert len(own) == len(external) == 240\n    xc, yc = external-np.mean(external), own-np.mean(own)\n    denominator = float(np.dot(xc, xc))\n    variance = denominator/(len(external)-1)\n    if not math.isfinite(variance) or variance <= 0:\n        return None\n    beta = float(np.dot(xc, yc)/denominator)\n    return beta if math.isfinite(beta) else None\n\n\ndef relative_level_state(btc, eth, fitted_beta, residual):\n    \"\"\"Use one current refit for all60 reference levels and the current level.\"\"\"\n    model_beta = fitted_beta if residual else 0.0\n    levels = np.log(btc[-61:, 2])-model_beta*np.log(eth[-61:, 2])\n    reference = levels[:-1]\n    assert len(reference) == 60\n    mean = float(np.mean(reference))\n    sigma = float(np.std(reference, ddof=1))\n    evidence = dict(fitted_beta=fitted_beta, model_beta=model_beta,\n                    mean=mean, sigma=sigma, z=None, beta_returns=240, reference_levels=60)\n    if not math.isfinite(mean) or not math.isfinite(sigma) or sigma <= 0:\n        # Degenerate levels are neutral, with no epsilon/winsorization rescue.\n        evidence[\"mean\"] = mean if math.isfinite(mean) else None\n        evidence[\"sigma\"] = sigma if math.isfinite(sigma) else None\n        return 0, evidence\n    z = float((levels[-1]-mean)/sigma)\n    if not math.isfinite(z):\n        return 0, evidence\n    evidence[\"z\"] = z\n    state = 1 if z <= -2 else -1 if z >= 2 else 0\n    return state, evidence\n\n\nclass BtcResearchR17RelativeBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"RESIDUAL\", \"PRICE\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        btc = closed_window(self.get_candles(self.exchange, \"BTC-USDT\", \"4h\"), now, 242)\n        eth = closed_window(self.get_candles(self.exchange, \"ETH-USDT\", \"4h\"), now, 242)\n        if btc is None or eth is None or not np.array_equal(btc[:, 0], eth[:, 0]):\n            self.vars[\"relative_state\"] = 0\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(btc[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        # ETH validity and finite positive variance are shared by the PRICE arm.\n        beta = relative_beta(btc, eth)\n        if beta is None:\n            self.vars[\"relative_state\"] = 0\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        state, evidence = relative_level_state(btc, eth, beta, self.MODE == \"RESIDUAL\")\n        previous = self.vars.get(\"relative_state\", 0)\n        self.vars[\"relative_state\"] = state\n        # Refit-induced transitions are intentionally part of this definition.\n        direction = state if state and state != previous else 0\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(btc)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None or self.price+direction*2*plan[\"distance\"] <= 0:\n            return\n        self.vars[\"plan\"] = dict(plan, relative=dict(evidence))\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        # Reuse the unchanged R11 fee-risk assertion, actual-fill SL/TP and count.\n        super().on_open_position(order)\n        side = 1 if self.is_long else -1\n        key = \"long_fills\" if side == 1 else \"short_fills\"\n        self.vars[key] = self.vars.get(key, 0)+1\n        self._log(\"R17_RELATIVE_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            direction=side, evidence=self.vars[\"plan\"][\"relative\"]))\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R17_RELATIVE_STATS\", dict(stage=stage, mode=self.MODE,\n            long_fills=self.vars.get(\"long_fills\", 0),\n            short_fills=self.vars.get(\"short_fills\", 0),\n            signals=self.vars.get(\"signals\", 0), occupied=self.vars.get(\"occupied\", 0)))\n",
+    "BtcResearchR17RelativeResidual1m": "from strategies.BtcResearchR17RelativeBase1m import BtcResearchR17RelativeBase1m\n\n\nclass BtcResearchR17RelativeResidual1m(BtcResearchR17RelativeBase1m):\n    MODE = \"RESIDUAL\"\n",
+    "BtcResearchR17RelativePrice1m": "from strategies.BtcResearchR17RelativeBase1m import BtcResearchR17RelativeBase1m\n\n\nclass BtcResearchR17RelativePrice1m(BtcResearchR17RelativeBase1m):\n    MODE = \"PRICE\"\n"
+  },
+  "independent_review": "btc_next_material+root conformes:242syncedbars,240priorreturns excludingcurrent,60prevlevels SAMEbeta,currentz,sharedETHvalidityPRICE,negativebetano clip/zeroσneutral,refittransitionspredeclared,R11/R10managementunchanged,noETHorders. Numericalperfectproportionroundoffdocumented,nofilteradjustment.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "e73bf5e8-688e-4c5f-9ef9-d54f135b3329",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery Q | residual level displacement",
+      "description": "BTC-only z-score causal de niveles relativoETHvsβ0control;β240retornosprevios4h/reference60,sync242,ETHsolodatos;2ATR2R48h,R11,R10sizing2%/6%/3x,fundingON.",
+      "description_truncated": false,
+      "created_at": 1792613952000,
+      "updated_at": 1792613952000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR17RelativeResidual1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "ETH-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 300,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/e73bf5e8-688e-4c5f-9ef9-d54f135b3329"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "dd092c9a-f668-412f-aca7-b73ecf1cb76b",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery Q | price level displacement",
+      "description": "BTC-only z-score causal de niveles relativoETHvsβ0control;β240retornosprevios4h/reference60,sync242,ETHsolodatos;2ATR2R48h,R11,R10sizing2%/6%/3x,fundingON.",
+      "description_truncated": false,
+      "created_at": 1792613952000,
+      "updated_at": 1792613953000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR17RelativePrice1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          },
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "ETH-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 300,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/dd092c9a-f668-412f-aca7-b73ecf1cb76b"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "no_2026_or_stress": true
+}

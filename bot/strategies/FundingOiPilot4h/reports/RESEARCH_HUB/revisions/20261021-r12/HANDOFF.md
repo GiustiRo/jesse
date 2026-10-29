@@ -1,0 +1,13 @@
+# Continuidad r12 — objetivo activo
+
+El usuario pidió explícitamente NO detenerse al cerrar una pregunta: continuar autónomamente hasta cumplir el objetivo, con decisiones, conceptos nuevos y porción creativa. Objetivo activo de la conversación; no marcarlo completo por cerrar una tanda. No crear automatizaciones ni tareas aparte. Mantener comunicación de hallazgos y no pedir permiso rutinario ya concedido.
+
+Acuerdos r9: BTC individual, CAGRnetobase>=30%, DDtecho25%/objetivo20%, PF>=1.2, M65activos/Q80completos,medianacalendario>0incluyendoinactivos ynetoaritméticoquitando2mejoresmeses>0. N100preliminar,noconfianzaporelconteo. Aspiraciones40–50%+/M70. Riesgo2%/6%/3x,10k,fee.00045+fundingaplicado/verificado,slippage0. Sinestresantesdecandidatayacuerdo,nuevaeconomía2026 ni live/paper/Pi/configglobal.
+
+E–I cerradas: diez políticas, ninguna candidata; ver DISCOVERY_RESULTS.md yRESULTS.json. Cumulative since r9=17 (A/B3,C/D4,E–I10). V1–V6=209 esotro bloque,no censo global ni muestrasindependientes. Cerojobs/backtestspendientes deE–I. Reportesindividuales también en cadaestrategia. I PHASE tuvo sólo1operación;control121negativas. No suavizarvolumen pararescate. F FOLLOW13.16%CAGRfallaobjetivo/M65/Q80; no promoverporcomparador. H WICK5.56/CLOSE5.49 insuficientes. ARyKalmanperdieron. No retirarshortsposthoc ni rescatarventanas.
+
+Nueva pregunta en revisión: confirmación externa ETH→BTC contra patrónBTCsolo. ETHsólodata,nooperativa ni cartera. Antecedentes OrchLateralRelativeShock1h/parOLS96h2patas ya cerrado y R20PaxgSpyDelayed1h lídercontrarianNY. No quitar una pata para llamarlo nuevo. El contraste debe tener dirección definida por BTC en ambos controles y agregar ETH como condición, con reglas/protocolo antes de motor. No figura como iniciado en esta revisión. Revisar fuentes exactas y maestro r4 antes de ejecutar.
+
+Observador R11 y helpersR10 congelados: wallet+position.pnl, fronterasUTCporfasepostfunding/predecisión, hooksM1+fills, FINAL prevalece sobre PRETERMINAL. Un contador engineopenpreterminal1 no es una posición real; snapshot completo/FINAL incluye liquidación. DDM1noextremosintraminuto. No modificar fuentes ya usadas; nuevasversiones porhipótesis. SóloMCP para estrategias/reportes y análisis temporal. Máximo2motores y1análisispropio. Guardarmanifiestos/readbacks antesde economía y reportes después; Hubinmutablearchivosprimero/índiceúltimo.
+
+Subagentes readonly reversion_history y btc_next_material revisaron mecanismos/fuentes. Pueden ser reutilizados para revisiones. Sus recomendaciones no autorizan mensajes a otros chats. No research_scripts ni paquetes nuevos. SiMCPnoresponde,nobypass; conservargoalactivo ydeclararimpedimento.

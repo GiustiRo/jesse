@@ -78,6 +78,7 @@ from jesse.controllers.project_files_controller import router as project_files_r
 from jesse.controllers.research_scripts_controller import router as research_scripts_router
 from jesse.controllers.session_results_controller import router as session_results_router
 from jesse.controllers.analysis_controller import router as analysis_router
+from jesse.controllers.funding_controller import router as funding_router, oi_router
 from jesse.services.env import is_test_env
 
 # register routers
@@ -108,6 +109,8 @@ fastapi_app.include_router(project_files_router)
 fastapi_app.include_router(research_scripts_router)
 fastapi_app.include_router(session_results_router)
 fastapi_app.include_router(analysis_router)
+fastapi_app.include_router(funding_router)
+fastapi_app.include_router(oi_router)
 
 if is_test_env():
     from jesse.controllers.e2e_controller import router as e2e_router

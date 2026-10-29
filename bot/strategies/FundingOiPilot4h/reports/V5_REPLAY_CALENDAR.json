@@ -1,0 +1,191 @@
+{
+  "cycle": "V5",
+  "recorded_at": "2026-10-21 01:36:27 UTC",
+  "start": "2024-01-01",
+  "finish": "2026-01-01",
+  "START": 1704067200000,
+  "FINISH": 1767225600000,
+  "forced_boundaries": [
+    1719792000000,
+    1735689600000,
+    1751328000000,
+    1767225600000
+  ],
+  "rule": "Individual eligibility only from TRAIN gates; adjacent semesters remain separate; selector independent of diagnostic eval PNL.",
+  "individual": [
+    {
+      "strategy": "ResearchV5FundingFPOi4h",
+      "folds": [
+        {
+          "fold": "C1",
+          "selection_file": "SELECTION_V5_C1.json",
+          "decision_at": "2026-10-21 01:11:54 UTC",
+          "train_session": "e5bd6218-1066-4181-9ee6-7d5de2fae0c4",
+          "eligible": true,
+          "start_ms": 1704067200000,
+          "finish_ms": 1719792000000
+        },
+        {
+          "fold": "C2",
+          "selection_file": "SELECTION_V5_C2.json",
+          "decision_at": "2026-10-21 01:21:57 UTC",
+          "train_session": "628fd490-2e32-46a6-bc37-78f2ec87f641",
+          "eligible": true,
+          "start_ms": 1719792000000,
+          "finish_ms": 1735689600000
+        },
+        {
+          "fold": "C3",
+          "selection_file": "SELECTION_V5_C3.json",
+          "decision_at": "2026-10-21T01:31:03.754Z",
+          "train_session": "74f1cbc5-5eee-4e87-98c8-36f1062aa2d7",
+          "eligible": true,
+          "start_ms": 1735689600000,
+          "finish_ms": 1751328000000
+        },
+        {
+          "fold": "C4",
+          "selection_file": "SELECTION_V5_C4.json",
+          "decision_at": "2026-10-21T01:35:58.938Z",
+          "train_session": "d45530ac-ffe0-4e5e-b5a4-15fdfafaba2e",
+          "eligible": true,
+          "start_ms": 1751328000000,
+          "finish_ms": 1767225600000
+        }
+      ],
+      "windows": [
+        [
+          1704067200000,
+          1719792000000
+        ],
+        [
+          1719792000000,
+          1735689600000
+        ],
+        [
+          1735689600000,
+          1751328000000
+        ],
+        [
+          1751328000000,
+          1767225600000
+        ]
+      ]
+    },
+    {
+      "strategy": "ResearchV5FundingFP4h",
+      "folds": [
+        {
+          "fold": "C1",
+          "selection_file": "SELECTION_V5_C1.json",
+          "decision_at": "2026-10-21 01:11:54 UTC",
+          "train_session": "2c40635d-6a44-4bea-9a49-6b1ce1b8742d",
+          "eligible": true,
+          "start_ms": 1704067200000,
+          "finish_ms": 1719792000000
+        },
+        {
+          "fold": "C2",
+          "selection_file": "SELECTION_V5_C2.json",
+          "decision_at": "2026-10-21 01:21:57 UTC",
+          "train_session": "ffdac79c-c8e2-4edd-a360-e68147b011ab",
+          "eligible": true,
+          "start_ms": 1719792000000,
+          "finish_ms": 1735689600000
+        },
+        {
+          "fold": "C3",
+          "selection_file": "SELECTION_V5_C3.json",
+          "decision_at": "2026-10-21T01:31:03.754Z",
+          "train_session": "554153ca-048c-4568-9916-6d450f71ab65",
+          "eligible": true,
+          "start_ms": 1735689600000,
+          "finish_ms": 1751328000000
+        },
+        {
+          "fold": "C4",
+          "selection_file": "SELECTION_V5_C4.json",
+          "decision_at": "2026-10-21T01:35:58.938Z",
+          "train_session": "0b0fea0e-c7cd-4abb-b746-56427cf792a6",
+          "eligible": true,
+          "start_ms": 1751328000000,
+          "finish_ms": 1767225600000
+        }
+      ],
+      "windows": [
+        [
+          1704067200000,
+          1719792000000
+        ],
+        [
+          1719792000000,
+          1735689600000
+        ],
+        [
+          1735689600000,
+          1751328000000
+        ],
+        [
+          1751328000000,
+          1767225600000
+        ]
+      ]
+    }
+  ],
+  "selector": [
+    {
+      "fold": "C1",
+      "selected": "ResearchV5FundingFPOi4h",
+      "recorded_at": "2026-10-21 01:11:54 UTC"
+    },
+    {
+      "fold": "C2",
+      "selected": "ResearchV5FundingFPOi4h",
+      "recorded_at": "2026-10-21 01:21:57 UTC"
+    },
+    {
+      "fold": "C3",
+      "selected": "ResearchV5FundingFPOi4h",
+      "recorded_at": "2026-10-21T01:31:03.754Z"
+    },
+    {
+      "fold": "C4",
+      "selected": "ResearchV5FundingFPOi4h",
+      "recorded_at": "2026-10-21T01:35:58.938Z"
+    }
+  ],
+  "nominal_config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  }
+}

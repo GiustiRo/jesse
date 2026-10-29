@@ -1,0 +1,829 @@
+{
+  "format_version": 1,
+  "id": "20261021-r14",
+  "updated_at_utc": "2026-10-21 19:55:35 UTC",
+  "objective": "BTC-USDT individual: CAGR neto base mínimo30%, aspiración40–50%+, DD objetivo20%/techo25%, PF1.2, M65 activos (aspiración70%) y Q80; riesgo fijo2%/6%/3x. Cartera eventual.",
+  "latest": "N: dos composiciones BTC con ganancias, sin candidata:21.77/26.90%CAGR; fallan regularidad, STATE DD25.0265%.26corridasdesde r9.",
+  "next": "Ejecutar O: orden de extremos intradiarios frente a cuerpo diario,2políticas registradas antes de resultados N. Confirmar recibo/check/fuentes/manifiestos.",
+  "blockers": "Sin candidata que alcance las puertas. I tiene muestra insuficiente; las otras nueve incumplen economía. Fundingproxy/slippage0 y desarrollo ampliamente reutilizado explícitos.",
+  "counts": {
+    "status": "COMPLETE_PASS_FINAL_AUDIT",
+    "cycles": [
+      {
+        "cycle": "V1",
+        "economic_unique": 96,
+        "nominal_slots": 96,
+        "technical_attempts": 7
+      },
+      {
+        "cycle": "V2",
+        "economic_unique": 16,
+        "nominal_slots": 32,
+        "technical_attempts": 4
+      },
+      {
+        "cycle": "V3",
+        "economic_unique": 33,
+        "nominal_slots": 36,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V4",
+        "economic_unique": 6,
+        "nominal_slots": 6,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V5",
+        "economic_unique": 37,
+        "nominal_slots": 40,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V6",
+        "economic_unique": 21,
+        "nominal_slots": 23,
+        "technical_attempts": 3
+      }
+    ],
+    "new_V5_V6": {
+      "economic_unique": 58,
+      "technical_unique": 6,
+      "total_unique_engine_sessions": 64,
+      "nominal_slots": 63,
+      "reused_slots": 5,
+      "all_sessions_finished": true,
+      "accounting_unique_full_rows": 58
+    },
+    "totals": {
+      "economic_unique": 209,
+      "nominal_slots": 233,
+      "reused_slots": 24,
+      "technical_attempts": 23
+    },
+    "no_independent_sample_count_claim": true,
+    "prior_counts_source": "RESEARCH_CONSOLIDATED_DECISION_20261020.md pre-V5/V6 snapshot",
+    "new_inventory_sources": [
+      "V5_FINAL_SESSION_INVENTORY.json",
+      "V6_FINAL_SESSION_INVENTORY.json"
+    ],
+    "economic_target_reached": false,
+    "closed_at_utc": "2026-10-21 02:14:44 UTC",
+    "discovery_since_r9": {
+      "economic_unique": 26,
+      "technical_backtests": 0,
+      "reused_control_slots": 1,
+      "new_2026_backtests": 0,
+      "not_independent_samples": true,
+      "cycles": {
+        "AB": 3,
+        "CD": 4,
+        "EI": 10,
+        "JM": 7,
+        "N": 2
+      },
+      "failed_or_replacement_backtests": 0,
+      "completed_economic": 26,
+      "running_economic": 0
+    }
+  },
+  "decisions": [
+    "Horizonte BTC–PAXG–SPY y cartera; no se cambia operativa vigente BTC-only.",
+    "2020–2025 son históricos ya examinados. 2026 cerrado para esta línea; excepción K1001 preservada sin ampliación.",
+    "Separar ejecución, suficiencia de evidencia y cumplimiento económico. No aprobar ni invalidar automáticamente por muestra pequeña.",
+    "Meta 20–30% anual no sustituye gates históricos. Informar años y períodos adversos.",
+    "Hipótesis ML/HMM/revisión visual por IA condicionadas a necesidad demostrable; sin promoción automática.",
+    "Sin nuevos backtests, estrategias, importaciones, live/paper, Pi, instalaciones ni reinicios en esta entrega.",
+    "Antes de otra prueba, comparar contra historial ejecutado: pregunta, receta, datos, reloj, riesgo, costos y ventana. Reutilizar resultados equivalentes; no reiniciar por nombre nuevo ni por handoff antiguo.",
+    "2026 también tuvo una comparación ampliada autorizada deN204/N503/P604/C504/K1005 posterior aK1001; no tratarla como no ejecutada ni ampliar esa autorización a nuevas reglas.",
+    "Etapa vigente: revisión y validación intermedia de evidencia existente. Sin nuevos backtests, optimizaciones, Monte Carlo, exploraciones de estrategia o riesgo.",
+    "Perfil fijo de investigación:2%portrade/6%agregado/3xaislado. No explorar combinaciones de riesgo/leverage/capital; no cambia sesiones históricas ni configuración operativa.",
+    "Después del informe de definiciones se decide con el usuario cómo seguir. Las preguntas pendientes no autorizan automáticamente experimentos.",
+    "R5 completada como revisión documental. K1001 B/C se conservan como referencias heredadas y N204 B/C como controles del mismo perfil 10k/2%/6%/3x; no se elige ganadora operativa.",
+    "K1001 mantiene mayor retorno que N204 en las cuatro parejas equivalentes de desarrollo, sin dominancia universal: N204 B bajo estrés tiene menor drawdown y más meses positivos.",
+    "Precisión de evidencia: cinco diferencias de registros K1001/Y902 representan tres situaciones discordantes únicas, no cinco casos independientes.",
+    "Correlaciones y co-pérdidas ya fueron medidas en perfil histórico 1%/8%/5x. Una matriz mensual equivalente de las versiones 2%/6%/3x no se acreditó en los anexos R12 revisados; no se declara ausencia global.",
+    "El CAGR de cartera no acredita 20–30% anual de cada pieza ni cada año. La evaluación 2026 ya observada y su ampliación exploratoria conservan sus veredictos.",
+    "R7 publica una propuesta a petición del usuario. Horizonte, capital virtual, ocho trayectorias y puertas son propuestas sin aprobar; no constituyen prerregistro ni autorización experimental.",
+    "R8: usuario fija foco exclusivo BTC-USDT y evaluación individual antes de combinar. PAXG/SPY/cartera quedan para fases futuras eventuales; intención de igual riesgo por trade en esa fase no fija hoy asignación.",
+    "R7 nunca fue aprobada. Su diseño de cartera, ocho libros y espera prospectiva de doce meses queda sustituido como propuesta vigente, conservando archivo.",
+    "Usar historia extensa y evidencia 2026 existente, sin presentarla como lockbox nuevo para reglas seleccionadas después de observarla. No ejecutar nuevas consultas o jobs por esta actualización documental.",
+    "M65 histórico corresponde a meses activos positivos, aspiración70%; Q80 también existía. Mediana es magnitud central, no frecuencia. Nuevos umbrales BTC propuestos requieren acuerdo.",
+    "Backtest continuo es base propuesta para reglas fijas; ventanas móviles son descriptivas. Walk-forward requiere procedimiento causal de selección/estimación prefijado, no optimización automática al final.",
+    "Usuario acepta objetivos r8: CAGR mínimo30% y aspiración40–50%+, DD objetivo20%/techo25%, PF1.2, M65 activos aspiración70%, Q80, mediana calendario positiva y exclusión diagnóstica de dos mejores meses con neto restante positivo. No aplicar retroactivamente para cambiar veredictos.",
+    "Exploración futura: un escenario base de comisiones taker con descuento y funding aplicado/verificado. Estrés de comisiones/ejecución se difiere hasta candidatas y acuerdo conjunto; no variantes de riesgo.",
+    "Neto inicial significa después de comisiones y funding modelados, sin slippage modelado. El ejemplo de2% de capital por slippage no es medición, techo ni presupuesto anual.",
+    "Roadmap r9 orienta etapas; no autoriza ejecución experimental, importación, nuevas consultas de velas, cambio de estrategias/configuración, paper/live o Pi.",
+    "El usuario autoriza ahora investigar e iterar estrategias BTC de forma autónoma, con subagentes y una porción creativa. Supera la pausa de r5/r9 para exploración BTC local bajo protocolos acotados, sin live/paper/Pi o cambios globales.",
+    "Se completó matriz BTC: V1–V6 ya contenía BTC aislado con funding; ninguna candidata acredita objetivo actual. No repetir sus rechazos ni confundir CAGR de cartera con retorno individual.",
+    "TandasA/B:3backtests nuevos,2hipótesis iniciales y1iteración de gestión, sin candidata. Protocolos antes de cada ejecución; Acontrolreutilizado, no nueva réplica.",
+    "Aclaración de medición: DD del framework usa daily_balance y curva00:01UTC. Resultados mensuales aproximados no acreditan puertas exactas; no rescatar recetas que ya fallanCAGR/DD/PF.",
+    "Conservar riesgo2%/6%/3x y costos base; estrés diferido. No nueva economía2026 enA/B. Autorizar exploración autónoma no autoriza operar.",
+    "R11: cuatro corridas C/D cerradas sin candidata; volumen supera control calendario relativamente pero falla objetivos absolutos. No rescatar vecinos ni retirar shorts tras atribución.",
+    "R11: medición wallet+PnL abierto cada minuto y ejecución; 62 meses completos y20trimestres, fronteras post-funding por fase. DD M1 no equivale a máximo intraminuto. Contabilidad completa verificada; sin cambios globales.",
+    "R12: E–I diez políticas cerradas sin candidata, seis hipótesis de trabajo/cuatro controles. No rescatar vecinos ni elegir lados/regímenes después de ver sus PnL.",
+    "R12: usuario pide continuar sin detenerse al cerrar una pregunta, hasta el objetivo. Autonomía vigente dentro de riesgo/costos/alcance; no aprobación por insistencia.",
+    "R12: I PHASE sólo1operación, insuficiente para estimar ventaja; controlPRICE121negativo. Separar insuficiencia de evidencia y fallo de puertas.",
+    "R13: J–M siete políticas cerradas sin candidata; K sólo1trade, PFnoestimable. Sin rescatar vecinos. Contabilidad y M1 completos verificados.",
+    "R13: N investiga composición dentro de BTC, una posición2%; elección retrospectiva de padres positiva explícita, no confirmación ni diversificación acreditada.",
+    "R14: composiciónA/FyB/F positiva pero ninguna candidata; no aprobar por25.0265%DDredondeado ni porproximidad a30%CAGR. Dos recetas cerradas, sin vecinos.",
+    "R14: MCP recuperado porconsulta al mismojob deauditoría, sin reruns ni reinicioDocker. Usuario autoriza reiniciar únicamenteDockerlocal siMCPvuelvefallar; comprobar instancias/sesionesantes.",
+    "R14: O protocolo fijado antes de resultadosN; orden temporal intradiario material vsH/I. Dos políticas, sin barrer filtros ni protección."
+  ],
+  "lines": [
+    "BTC-USDT: único foco actual; evaluar operativa aislada reutilizando evidencia y distinguirla de contribuciones en carteras. K1001/N204 conservan sus límites, sin promoción.",
+    "PAXG: línea preservada, trabajo diferido a una fase futura eventual.",
+    "SPY: líneas preservadas, trabajo diferido a una fase futura eventual.",
+    "Cartera: evaluación conjunta y diversificación diferidas. Conservar resultados R11–R13 y posteriores; no explorar asignación ahora."
+  ],
+  "methodology": [
+    "1. Hipótesis económica, persistencia esperada y falsación.",
+    "2. Prerregistro: reglas, referencias, datos, costos, riesgo, ventanas, selección, presupuesto, criterios numéricos y cierre.",
+    "3. Verificación técnica: causalidad, as-of, costos, ejecución y ledger.",
+    "4. Exploración acotada: registrar variantes, errores, descartes y resultados desfavorables.",
+    "5. Validación y estrés previstos; cambios posteriores generan revisión nueva.",
+    "6. Revisión crítica de explicaciones alternativas y referencias.",
+    "7. Decisión razonada: continuar, descartar, insuficiente o proponer validación prospectiva; nunca autorización para operar."
+  ],
+  "supersedes": [
+    {
+      "reference": "DOCS.md: solo BTC-USDT",
+      "scope": "Amplía horizonte de investigación a BTC–PAXG–SPY; no cambia el alcance live."
+    },
+    {
+      "reference": "bot/docs/multi-asset-pivot-handoff.md",
+      "scope": "Histórico: metas previas y afirmación de descorrelación no gobiernan el nuevo programa. Conservar cifras como reportadas, no como validación nueva."
+    },
+    {
+      "reference": "RESEARCH_WALK_FORWARD_HANDOFF_FINAL_V6_20261020.md",
+      "scope": "Conserva cierre V1–V6; el nuevo instructivo rige continuidad del Hub. No reabrir protocolos cerrados."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r1/revision.json",
+      "scope": "Amplía transcripción de métricas existentes V1–V6: años, semestres, costes, exposición y estrés. No cambia veredictos ni inicia experimentos."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r2/revision.json",
+      "scope": "Clarifica fichas V5/V6: elimina campos agregados vacíos cuya información ya figura por variante nominal. No cambia cifras, reglas, pruebas ni decisiones."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r3/revision.json",
+      "scope": "Corrige inventario inicial y prioridadBTCprematura: incluye exploraciones posteriores, comparaciones de capital/cartera y exposición2026ampliada. Preserva originales y veredictos; no cambia resultados económicos."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r4/revision.json",
+      "scope": "Fija etapa sin experimentación y perfil2%/6%/3x por acuerdo explícito del usuario. Sustituye autorización implícita de pasos experimentales condicionales; conserva historia y resultados."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r5/revision.json",
+      "scope": "Entrega los resultados de la revisión intermedia r5. Corrige amplitud de casos K1001 y existencia de mediciones históricas de diversificación. Conserva perfil fijo, reglas, evidencia cerrada y veredictos. No inicia una fase experimental."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r6/revision.json",
+      "scope": "Añade una propuesta de continuidad para debate. Conserva resultados r5, riesgo fijo, ausencia de candidata y restricciones de ejecución."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r7/revision.json",
+      "scope": "Sustituye propuesta no aprobada por foco BTC individual, cartera eventual y sin espera prospectiva obligatoria. Preserva evidencia original y riesgo fijo; nuevas cifras son propuestas."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r8/revision.json",
+      "scope": "Aceptación explícita de objetivos y refinamientos posteriores; estrés diferido a candidatas, costos base con funding verificado, roadmap extendido. Conserva evidencia y prohibición de ejecución automática."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r9/revision.json",
+      "scope": "Registra autorización posterior de ejecución autónoma BTC y cierre de primeras tandas. Mantiene objetivos/riesgo/costos base/estrés diferido y fases futuras."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r10/revision.json",
+      "scope": "Añade cuatro pruebas C/D y medición M1 suficiente para su convención explícita. Conserva resultados A/B y sus límites; no cambia riesgo/costos/objetivos ni autoriza estrés."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r11/revision.json",
+      "scope": "Añade diez pruebas E–I y continuidad autónoma explícita; conserva todas las métricas/veredictos previos y acuerdos/riesgo/costos. Ninguna promoción."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r12/revision.json",
+      "scope": "Añade siete resultados J–M y preparación N; conserva resultados/acuerdos previos, sin promoción."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r13/revision.json",
+      "scope": "Añade cierre N y continuidad O; conserva acuerdos/evidencia anteriores, sin promoción."
+    }
+  ],
+  "roadmap": [
+    {
+      "order": 1,
+      "title": "Ubicar BTC hoy",
+      "state": "completada: matriz publicada",
+      "depends": "r5 completada y acuerdos r9",
+      "gate": "Evidencia individual existente y control de repetición; matriz cumple/no cumple/falta/no comparable."
+    },
+    {
+      "order": 2,
+      "title": "Preparar protocolo BTC",
+      "state": "A–N cerradas; Opreparada",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "Pregunta material, reglas, costos base, datos, método temporal y presupuesto antes de ejecutar."
+    },
+    {
+      "order": 3,
+      "title": "Explorar BTC con foco",
+      "state": "AutonomíaBTCvigente;26corridassin candidata",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "Otra pregunta material/protocolo antes de ejecutar; no parada por cierre de tanda ni rescate de vecinos."
+    },
+    {
+      "order": 4,
+      "title": "Revisar candidatas",
+      "state": "futuro condicionado",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "Causalidad, contabilidad, regularidad, concentración y suficiencia; sin aprobación por muestra pequeña."
+    },
+    {
+      "order": 5,
+      "title": "Validar resistencia",
+      "state": "futuro condicionado a acuerdo",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "Estrés y robustez definidos juntos antes de ejecutar. Sin rescate por mayor riesgo."
+    },
+    {
+      "order": 6,
+      "title": "Comprobar operabilidad BTC",
+      "state": "futuro eventual",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "Seguimiento y plan técnico específico; paper/live requieren autorización. Sin plazo prospectivo obligatorio."
+    },
+    {
+      "order": 7,
+      "title": "Otras operativas individuales",
+      "state": "futuro eventual",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "PAXG y SPY desde antecedentes propios; no distraer foco BTC."
+    },
+    {
+      "order": 8,
+      "title": "Combinación eventual",
+      "state": "futuro eventual",
+      "depends": "etapas pertinentes previas y decisión de continuidad",
+      "gate": "Dependencia, capital y aporte marginal; igual riesgo por trade como intención, no asignación fijada."
+    }
+  ],
+  "explorations": [
+    {
+      "id": "V1",
+      "title": "Ciclo V1",
+      "asset": "BTC",
+      "family": "precio / funding / OI",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V1.json"
+    },
+    {
+      "id": "V2",
+      "title": "Ciclo V2",
+      "asset": "BTC",
+      "family": "ATR / funding / OI",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V2.json"
+    },
+    {
+      "id": "V3",
+      "title": "Ciclo V3",
+      "asset": "BTC",
+      "family": "tendencia / canal",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V3.json"
+    },
+    {
+      "id": "V4",
+      "title": "Ciclo V4",
+      "asset": "BTC",
+      "family": "oscilador / shock / funding",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V4.json"
+    },
+    {
+      "id": "V5",
+      "title": "Ciclo V5",
+      "asset": "BTC",
+      "family": "funding / cruce / VWAP",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r3/cards/V5.json"
+    },
+    {
+      "id": "V6",
+      "title": "Ciclo V6",
+      "asset": "BTC",
+      "family": "eficiencia / deleveraging / NR7",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r3/cards/V6.json"
+    },
+    {
+      "id": "CROSS_P",
+      "title": "Cruce de tendencia: screening elegible",
+      "asset": "BTC",
+      "family": "tendencia / cruce",
+      "execution": "sin confirmación",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/CROSS_P.json"
+    },
+    {
+      "id": "LEGACY",
+      "title": "Causalidad y contabilidad legacy",
+      "asset": "BTC",
+      "family": "legacy",
+      "execution": "auditado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/LEGACY.json"
+    },
+    {
+      "id": "PAXG",
+      "title": "PAXG: MARKET y calendario, líneas distintas revisadas",
+      "asset": "PAXG",
+      "family": "calendario / retest",
+      "execution": "revisión intermedia completada",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/cards/PAXG.json"
+    },
+    {
+      "id": "SPY",
+      "title": "SPY: Second/MECH01 y Market/MECH05 revisadas",
+      "asset": "SPY",
+      "family": "apertura / beta",
+      "execution": "revisión intermedia completada",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/cards/SPY.json"
+    },
+    {
+      "id": "CARTERA",
+      "title": "K1001 B/C: referencias revisadas al perfil fijo",
+      "asset": "Cartera",
+      "family": "multi-activo / K1001",
+      "execution": "revisión intermedia completada",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/cards/CARTERA.json"
+    },
+    {
+      "id": "BTC_R14",
+      "title": "BTC_R14: evidencia previa",
+      "asset": "BTC",
+      "family": "ablación / tendencia",
+      "execution": "revisión intermedia completada",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/cards/BTC_R14.json"
+    },
+    {
+      "id": "BTC_DISCOVERY_AB",
+      "title": "BTC: signos, evento funding e iteración de gestión",
+      "asset": "BTC",
+      "family": "signos / reloj de funding",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r10/cards/BTC_DISCOVERY_AB.json"
+    },
+    {
+      "id": "BTC_DISCOVERY_CD",
+      "title": "BTC: CUSUM, absorción y reloj de volumen",
+      "asset": "BTC",
+      "family": "detección / absorción / reloj de volumen",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/cards/BTC_DISCOVERY_CD.json"
+    },
+    {
+      "id": "BTC_DISCOVERY_EI",
+      "title": "BTC: reversión, dependencia, geometría y participación",
+      "asset": "BTC",
+      "family": "reversión / modelos / mechas / participación",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/cards/BTC_DISCOVERY_EI.json"
+    },
+    {
+      "id": "BTC_DISCOVERY_JM",
+      "title": "BTC: confirmación ETH, semivarianza, niveles y geometría",
+      "asset": "BTC",
+      "family": "información externa / semivarianza / niveles / geometría",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r13/cards/BTC_DISCOVERY_JM.json"
+    },
+    {
+      "id": "BTC_DISCOVERY_N",
+      "title": "BTC: composición de signos y saltos",
+      "asset": "BTC",
+      "family": "composición / capacidad compartida",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r14/cards/BTC_DISCOVERY_N.json"
+    }
+  ],
+  "documents": [
+    {
+      "label": "N: cierre de composición",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r14/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "N: métricas y gates",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r14/RESULTS.json"
+    },
+    {
+      "label": "Continuidad r14",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r14/HANDOFF.md"
+    },
+    {
+      "label": "N: PROTOCOL_20261021.md",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "N: MANIFEST_20261021.json",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_MANIFEST_20261021.json"
+    },
+    {
+      "label": "N: ACCOUNTING_20261021.json",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "N: TECHNICAL_CHECK_20261021.json",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_TECHNICAL_CHECK_20261021.json"
+    },
+    {
+      "label": "Siete pruebas J–M: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r13/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "Métricas y recibos J–M",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r13/RESULTS.json"
+    },
+    {
+      "label": "Continuidad autónoma r13",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r13/HANDOFF.md"
+    },
+    {
+      "label": "J: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_J_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "J: Fuentes/configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_J_MANIFEST_20261021.json"
+    },
+    {
+      "label": "J: Contabilidad",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_J_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "J: Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_J_FINAL_20261021.md"
+    },
+    {
+      "label": "K: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_K_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "K: Fuentes/configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_K_MANIFEST_20261021.json"
+    },
+    {
+      "label": "K: Contabilidad",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_K_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "K: Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_K_FINAL_20261021.md"
+    },
+    {
+      "label": "L: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_L_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "L: Fuentes/configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_L_MANIFEST_20261021.json"
+    },
+    {
+      "label": "L: Contabilidad",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_L_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "L: Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_L_FINAL_20261021.md"
+    },
+    {
+      "label": "M: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_M_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "M: Fuentes/configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_M_MANIFEST_20261021.json"
+    },
+    {
+      "label": "M: Contabilidad",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_M_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "M: Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_M_FINAL_20261021.md"
+    },
+    {
+      "label": "N: diagnóstico temporal standalone",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_N_TIMING_DIAGNOSTIC_20261021.md"
+    },
+    {
+      "label": "Diez pruebas E–I: resultados y decisiones",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "Métricas, puertas y recibos estructurados",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/RESULTS.json"
+    },
+    {
+      "label": "Continuidad autónoma r12",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r12/HANDOFF.md"
+    },
+    {
+      "label": "E: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "E: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_MANIFEST_20261021.json"
+    },
+    {
+      "label": "E: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "E: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_E_FINAL_20261021.md"
+    },
+    {
+      "label": "F: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "F: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_MANIFEST_20261021.json"
+    },
+    {
+      "label": "F: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "F: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_F_FINAL_20261021.md"
+    },
+    {
+      "label": "G: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "G: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_MANIFEST_20261021.json"
+    },
+    {
+      "label": "G: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "G: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_G_FINAL_20261021.md"
+    },
+    {
+      "label": "H: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "H: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_MANIFEST_20261021.json"
+    },
+    {
+      "label": "H: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "H: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_H_FINAL_20261021.md"
+    },
+    {
+      "label": "I: Protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "I: Fuentes y configuración previas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_MANIFEST_20261021.json"
+    },
+    {
+      "label": "I: Contabilidad completa",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "I: Cierre de tanda",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_I_FINAL_20261021.md"
+    },
+    {
+      "label": "Resultados C/D",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "Resultados y telemetría completos",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/RESULTS.json"
+    },
+    {
+      "label": "Medición M1 y fronteras",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/MEASUREMENT.md"
+    },
+    {
+      "label": "Continuidad r11",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r11/HANDOFF.md"
+    },
+    {
+      "label": "Protocolo C",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_C_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Corrección de actividad antes de ejecutar C",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_C_ACTIVITY_ADDENDUM_20261021.md"
+    },
+    {
+      "label": "Manifiesto C",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_C_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Protocolo D",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_D_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Manifiesto D",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_D_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Auditoría completa C/D",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_CD_ACCOUNTING_20261021.json"
+    },
+    {
+      "label": "Resultados del primer ciclo autónomo BTC",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r10/DISCOVERY_RESULTS.md"
+    },
+    {
+      "label": "Recibos, métricas y límites de medición",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r10/RESULTS.json"
+    },
+    {
+      "label": "Matriz de evidencia BTC individual existente",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_INDIVIDUAL_EVIDENCE_MATRIX_20261021.md"
+    },
+    {
+      "label": "Protocolo A: dos hipótesis nuevas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_A_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Manifiesto A antes de ejecutar",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_A_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Protocolo B: gestión después de observar A",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_B_PROTOCOL_20261021.md"
+    },
+    {
+      "label": "Manifiesto B antes de ejecutar",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_B_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Auditoría completa de las tres corridas",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_AB_RESULTS_20261021.json"
+    },
+    {
+      "label": "Continuidad autónoma r10",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r10/HANDOFF.md"
+    },
+    {
+      "label": "Acuerdos consolidados y roadmap amplio r9",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r9/ROADMAP_AND_AGREEMENTS.md"
+    },
+    {
+      "label": "Objetivos aceptados, costos y límites vigentes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r9/AGREEMENTS.json"
+    },
+    {
+      "label": "Continuidad r9 para agentes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r9/HANDOFF.md"
+    },
+    {
+      "label": "BTC primero: feedback, objetivos y método para debate",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r8/BTC_FIRST_PROPOSAL.md"
+    },
+    {
+      "label": "Alcance acordado y métricas propuestas r8",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r8/PROPOSAL.json"
+    },
+    {
+      "label": "Continuidad r8: BTC individual, cartera eventual",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r8/HANDOFF.md"
+    },
+    {
+      "label": "Propuesta de continuidad: borrador para debatir",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r7/PROSPECTIVE_VALIDATION_PROPOSAL.md"
+    },
+    {
+      "label": "Diseño propuesto y campos pendientes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r7/PROPOSAL.json"
+    },
+    {
+      "label": "Continuidad r7: ninguna ejecución autorizada",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r7/HANDOFF.md"
+    },
+    {
+      "label": "Resultados de la validación intermedia r5",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md"
+    },
+    {
+      "label": "Resultados estructurados y preguntas pendientes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/RESULTS.json"
+    },
+    {
+      "label": "Verificación de doce summaries originales",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/SESSION_RECEIPTS.json"
+    },
+    {
+      "label": "Revisión de riesgo y comparabilidad",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/REVIEW_RISK.md"
+    },
+    {
+      "label": "Revisión BTC y amplitud de evidencia",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/REVIEW_BTC.md"
+    },
+    {
+      "label": "Revisión PAXG/SPY y diversificación",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/REVIEW_COMPONENTS.md"
+    },
+    {
+      "label": "Continuidad tras completar r5",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/HANDOFF.md"
+    },
+    {
+      "label": "Acuerdo vigente: etapa intermedia y riesgo fijo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r5/INTERMEDIATE_VALIDATION.md"
+    },
+    {
+      "label": "Alcance estructurado de la etapa",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r5/STAGE.json"
+    },
+    {
+      "label": "Exploraciones posteriores: mapa para evitar repeticiones",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/EXPLORATION_HISTORY.md"
+    },
+    {
+      "label": "Historial estructurado por familias",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/EXPLORATION_HISTORY.json"
+    },
+    {
+      "label": "Continuidad actualizada: revisar antecedentes antes de probar",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r4/HANDOFF.md"
+    },
+    {
+      "label": "Verificación de la entrega y cambios r2",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/VERIFICATION.md"
+    },
+    {
+      "label": "Evaluación e integración del plan",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/EVALUATION.md"
+    },
+    {
+      "label": "Metodología y formato",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/METHODOLOGY.md"
+    },
+    {
+      "label": "Continuidad para agentes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/HANDOFF.md"
+    },
+    {
+      "label": "Inventario de evidencia multi-activo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/INVENTORY.json"
+    },
+    {
+      "label": "RESEARCH_CONSOLIDATED_DECISION_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_CONSOLIDATED_DECISION_20261020.md"
+    },
+    {
+      "label": "RESEARCH_COUNTS_V1_V6_20261020.json",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_COUNTS_V1_V6_20261020.json"
+    },
+    {
+      "label": "V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md",
+      "path": "strategies/FundingOiPilot4h/reports/V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "investigacion_autonoma_BTC_individual",
+    "execution_status": "N_closed_no_candidate_O_prepared",
+    "current_focus": "BTC-USDT",
+    "risk_profile": {
+      "per_trade_target_pct": 2,
+      "aggregate_admission_limit_pct": 6,
+      "isolated_leverage": 3
+    },
+    "permitted": [
+      "Revisar evidencia y proponer hipótesis BTC diferentes con porción creativa.",
+      "Crear estrategias BTC nuevas y ejecutar investigación local dentro de protocolo registrado previamente y presupuesto cerrado.",
+      "Iterar decisiones de exploración autónomamente, conservando fallos y trazabilidad."
+    ],
+    "excluded": [
+      "Estrés de costos antes de candidatas y acuerdo conjunto.",
+      "Variantes de riesgo/leverage/capital para rescatar curvas.",
+      "Live/paper, Pi, instalaciones, reinicios o configuración global.",
+      "Exploración PAXG/SPY/cartera en la fase actual."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Continuidad autónoma BTC, A–N cerradas; Oprotocolo/check previo. ReinicioDockerlocal autorizado sólo si vuelvefallarMCP, no se necesitó alrecuperar.",
+    "economic_status": "no_candidate_promoted",
+    "exit_gate": "Cumplir objetivos y suficiencia con medición adecuada; luego acordar estrés antes de promoción."
+  }
+}

@@ -1,0 +1,455 @@
+{
+  "at": "2026-10-21T00:26:14.040Z",
+  "status": "two_screen_drafts_ready_wait_root_GO",
+  "drafts": [
+    {
+      "stage": "SCREEN",
+      "id": "SHOCK_PV",
+      "name": "ResearchV4ShockPV1h",
+      "session_id": "02499a0c-1bc8-45ad-8f3a-bf4df11c404b",
+      "dashboard_url": "http://localhost:9200/#/backtest/02499a0c-1bc8-45ad-8f3a-bf4df11c404b",
+      "status": "draft_not_started",
+      "created_at": "2026-10-21T00:26:13.670Z",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h",
+            "strategy": "ResearchV4ShockPV1h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "raw_draft": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"02499a0c-1bc8-45ad-8f3a-bf4df11c404b\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"1h\",\n          \"strategy\": \"ResearchV4ShockPV1h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2024-01-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": true,\n          \"order_cancellation\": true,\n          \"order_execution\": true,\n          \"position_opened\": true,\n          \"position_increased\": true,\n          \"position_reduced\": true,\n          \"position_closed\": true,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": true,\n          \"balance_update\": true\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 5\n        },\n        \"funding\": {\n          \"mode\": \"disabled\"\n        },\n        \"open_interest\": {\n          \"mode\": \"disabled\"\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"1h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV4ShockPV1h\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"1h\",\n        \"strategy\": \"ResearchV4ShockPV1h\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"notes\": {\n    \"title\": \"MCP Backtest: V4 SCREEN SHOCK SHOCK_PV\",\n    \"description\": \"Frozen V4 screening SHOCK_PV [2020-09-01,2024-01-01),1h. Signal2ATRprev+2volumeMean24prev, contrarian,stop1A,target1A,hold6h. Initial10000,cap1x,risk2%stop+fees,oneUTCday,fundingON. No tuning; awaiting central GO before start.\",\n    \"strategy_code_keys\": [\n      \"Binance Perpetual Futures-BTC-USDT\"\n    ],\n    \"strategy_codes_captured\": 1\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/02499a0c-1bc8-45ad-8f3a-bf4df11c404b\",\n  \"message\": \"Backtest draft created with ID: 02499a0c-1bc8-45ad-8f3a-bf4df11c404b\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "source_hashes": {
+        "strategies/ResearchV4Base1h/__init__.py": "8f543abebd045e374f16a51b64a8b5223645ebf92a705d256c21cd87b86155e9",
+        "strategies/ResearchV4Base1h/common_checks.py": "e78f335738e8f92e3bea84805af2705bc2d6e325d7700d41e4fd9ae92d18be6e",
+        "strategies/ResearchV4Base1h/shock_features.py": "0ebf34769d0ad821e19773dfe5f6494398a0727ec5d1a93fc42c84472650a43b",
+        "strategies/ResearchV4ShockPV1h/__init__.py": "5694fb437896416ff34513c38a3c9844f0c26663263f7e30504ae7fadaa6e7b0",
+        "strategies/ResearchV4ShockPVOi1h/__init__.py": "5a3dec1ee3040ba1243018bc801c294c81115d3546a54d8e848254bed71f9e40",
+        "strategies/ResearchV4ShockSmoke1h/__init__.py": "b4109c1bc37fd67369e4d258e6dd6d2eec7140f74726325f796d5ae0c3cbea49"
+      },
+      "freeze": "V4_IMPLEMENTATION_SOURCE_FINAL_20261020.md",
+      "update_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"02499a0c-1bc8-45ad-8f3a-bf4df11c404b\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"1h\",\n          \"strategy\": \"ResearchV4ShockPV1h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2024-01-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": false,\n          \"order_cancellation\": false,\n          \"order_execution\": false,\n          \"position_opened\": false,\n          \"position_increased\": false,\n          \"position_reduced\": false,\n          \"position_closed\": false,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": false,\n          \"balance_update\": false\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 3,\n          \"slippage_bps\": 0\n        },\n        \"funding\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n        },\n        \"open_interest\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n          \"allow_missing_observations\": true,\n          \"max_age_ms\": 600000\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"1h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV4ShockPV1h\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"1h\",\n        \"strategy\": \"ResearchV4ShockPV1h\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/02499a0c-1bc8-45ad-8f3a-bf4df11c404b\",\n  \"message\": \"Backtest draft updated successfully\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "prerun": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "02499a0c-1bc8-45ad-8f3a-bf4df11c404b",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V4 SCREEN SHOCK SHOCK_PV",
+        "description": "Frozen V4 screening SHOCK_PV [2020-09-01,2024-01-01),1h. Signal2ATRprev+2volumeMean24prev, contrarian,stop1A,target1A,hold6h. Initial10000,cap1x,risk2%stop+fees,oneUTCday,fundingON. No tuning; awaiting central GO before start.",
+        "description_truncated": false,
+        "created_at": 1792542373000,
+        "updated_at": 1792542373000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV4ShockPV1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/02499a0c-1bc8-45ad-8f3a-bf4df11c404b"
+      },
+      "config_exact": true,
+      "no_start_called": true
+    },
+    {
+      "stage": "SCREEN",
+      "id": "SHOCK_PVOI",
+      "name": "ResearchV4ShockPVOi1h",
+      "session_id": "2980adc0-9379-4f04-bb2a-0a6b931c1af0",
+      "dashboard_url": "http://localhost:9200/#/backtest/2980adc0-9379-4f04-bb2a-0a6b931c1af0",
+      "status": "draft_not_started",
+      "created_at": "2026-10-21T00:26:13.905Z",
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h",
+            "strategy": "ResearchV4ShockPVOi1h"
+          }
+        ],
+        "data_routes": [],
+        "start_date": "2020-09-01",
+        "finish_date": "2024-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": false,
+        "fast_mode": true,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": false,
+            "order_cancellation": false,
+            "order_execution": false,
+            "position_opened": false,
+            "position_increased": false,
+            "position_reduced": false,
+            "position_closed": false,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": false
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3,
+            "slippage_bps": 0
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "historical",
+            "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+            "allow_missing_observations": true,
+            "max_age_ms": 600000
+          }
+        }
+      },
+      "raw_draft": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"2980adc0-9379-4f04-bb2a-0a6b931c1af0\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"1h\",\n          \"strategy\": \"ResearchV4ShockPVOi1h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2024-01-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": true,\n          \"order_cancellation\": true,\n          \"order_execution\": true,\n          \"position_opened\": true,\n          \"position_increased\": true,\n          \"position_reduced\": true,\n          \"position_closed\": true,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": true,\n          \"balance_update\": true\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 5\n        },\n        \"funding\": {\n          \"mode\": \"disabled\"\n        },\n        \"open_interest\": {\n          \"mode\": \"disabled\"\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"1h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV4ShockPVOi1h\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"1h\",\n        \"strategy\": \"ResearchV4ShockPVOi1h\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"notes\": {\n    \"title\": \"MCP Backtest: V4 SCREEN SHOCK SHOCK_PVOI\",\n    \"description\": \"Frozen V4 screening SHOCK_PVOI [2020-09-01,2024-01-01),1h. Signal2ATRprev+2volumeMean24prev, contrarian,stop1A,target1A,hold6h. Initial10000,cap1x,risk2%stop+fees,oneUTCday,fundingON. No tuning; awaiting central GO before start.\",\n    \"strategy_code_keys\": [\n      \"Binance Perpetual Futures-BTC-USDT\"\n    ],\n    \"strategy_codes_captured\": 1\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/2980adc0-9379-4f04-bb2a-0a6b931c1af0\",\n  \"message\": \"Backtest draft created with ID: 2980adc0-9379-4f04-bb2a-0a6b931c1af0\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "source_hashes": {
+        "strategies/ResearchV4Base1h/__init__.py": "8f543abebd045e374f16a51b64a8b5223645ebf92a705d256c21cd87b86155e9",
+        "strategies/ResearchV4Base1h/common_checks.py": "e78f335738e8f92e3bea84805af2705bc2d6e325d7700d41e4fd9ae92d18be6e",
+        "strategies/ResearchV4Base1h/shock_features.py": "0ebf34769d0ad821e19773dfe5f6494398a0727ec5d1a93fc42c84472650a43b",
+        "strategies/ResearchV4ShockPV1h/__init__.py": "5694fb437896416ff34513c38a3c9844f0c26663263f7e30504ae7fadaa6e7b0",
+        "strategies/ResearchV4ShockPVOi1h/__init__.py": "5a3dec1ee3040ba1243018bc801c294c81115d3546a54d8e848254bed71f9e40",
+        "strategies/ResearchV4ShockSmoke1h/__init__.py": "b4109c1bc37fd67369e4d258e6dd6d2eec7140f74726325f796d5ae0c3cbea49"
+      },
+      "freeze": "V4_IMPLEMENTATION_SOURCE_FINAL_20261020.md",
+      "update_raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"backtest_id\": \"2980adc0-9379-4f04-bb2a-0a6b931c1af0\",\n  \"draft_state\": {\n    \"form\": {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"routes\": [\n        {\n          \"exchange\": \"Binance Perpetual Futures\",\n          \"symbol\": \"BTC-USDT\",\n          \"timeframe\": \"1h\",\n          \"strategy\": \"ResearchV4ShockPVOi1h\"\n        }\n      ],\n      \"data_routes\": [],\n      \"start_date\": \"2020-09-01\",\n      \"finish_date\": \"2024-01-01\",\n      \"debug_mode\": true,\n      \"export_csv\": false,\n      \"export_json\": false,\n      \"export_chart\": false,\n      \"fast_mode\": true,\n      \"benchmark\": false,\n      \"config\": {\n        \"logging\": {\n          \"order_submission\": false,\n          \"order_cancellation\": false,\n          \"order_execution\": false,\n          \"position_opened\": false,\n          \"position_increased\": false,\n          \"position_reduced\": false,\n          \"position_closed\": false,\n          \"shorter_period_candles\": false,\n          \"trading_candles\": false,\n          \"balance_update\": false\n        },\n        \"warm_up_candles\": 240,\n        \"exchange\": {\n          \"name\": \"Binance Perpetual Futures\",\n          \"type\": \"futures\",\n          \"balance\": 10000,\n          \"fee\": 0.00045,\n          \"futures_leverage_mode\": \"isolated\",\n          \"futures_leverage\": 3,\n          \"slippage_bps\": 0\n        },\n        \"funding\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\"\n        },\n        \"open_interest\": {\n          \"mode\": \"historical\",\n          \"dataset_id\": \"6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf\",\n          \"allow_missing_observations\": true,\n          \"max_age_ms\": 600000\n        }\n      }\n    },\n    \"results\": {\n      \"showResults\": false,\n      \"executing\": false,\n      \"logsModal\": false,\n      \"progressbar\": {\n        \"current\": 0,\n        \"estimated_remaining_seconds\": 0\n      },\n      \"routes_info\": [\n        [\n          {\n            \"value\": \"BTC-USDT\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"1h\",\n            \"style\": \"\"\n          },\n          {\n            \"value\": \"ResearchV4ShockPVOi1h\",\n            \"style\": \"\"\n          }\n        ]\n      ],\n      \"metrics\": {},\n      \"hyperparameters\": [],\n      \"generalInfo\": {\n        \"title\": null,\n        \"description\": null\n      },\n      \"infoLogs\": \"\",\n      \"exception\": {\n        \"error\": \"\",\n        \"traceback\": \"\"\n      },\n      \"charts\": {\n        \"equity_curve\": []\n      },\n      \"selectedRoute\": {\n        \"symbol\": \"BTC-USDT\",\n        \"timeframe\": \"1h\",\n        \"strategy\": \"ResearchV4ShockPVOi1h\"\n      },\n      \"alert\": {\n        \"message\": \"\",\n        \"type\": \"\"\n      },\n      \"info\": [],\n      \"trades\": []\n    }\n  },\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/2980adc0-9379-4f04-bb2a-0a6b931c1af0\",\n  \"message\": \"Backtest draft updated successfully\"\n}"
+          }
+        ],
+        "isError": false
+      },
+      "prerun": {
+        "action": "get_session_results",
+        "status": "success",
+        "session_type": "backtest",
+        "session_id": "2980adc0-9379-4f04-bb2a-0a6b931c1af0",
+        "session_status": "draft",
+        "status_note": "Not started yet, so there are no results.",
+        "title": "MCP Backtest: V4 SCREEN SHOCK SHOCK_PVOI",
+        "description": "Frozen V4 screening SHOCK_PVOI [2020-09-01,2024-01-01),1h. Signal2ATRprev+2volumeMean24prev, contrarian,stop1A,target1A,hold6h. Initial10000,cap1x,risk2%stop+fees,oneUTCday,fundingON. No tuning; awaiting central GO before start.",
+        "description_truncated": false,
+        "created_at": 1792542373000,
+        "updated_at": 1792542373000,
+        "execution_duration": null,
+        "form": {
+          "exchange": "Binance Perpetual Futures",
+          "routes": [
+            {
+              "exchange": "Binance Perpetual Futures",
+              "symbol": "BTC-USDT",
+              "timeframe": "1h",
+              "strategy": "ResearchV4ShockPVOi1h"
+            }
+          ],
+          "data_routes": [],
+          "start_date": "2020-09-01",
+          "finish_date": "2024-01-01",
+          "debug_mode": true,
+          "export_csv": false,
+          "export_json": false,
+          "export_chart": false,
+          "fast_mode": true,
+          "benchmark": false,
+          "config": {
+            "logging": {
+              "order_submission": false,
+              "order_cancellation": false,
+              "order_execution": false,
+              "position_opened": false,
+              "position_increased": false,
+              "position_reduced": false,
+              "position_closed": false,
+              "shorter_period_candles": false,
+              "trading_candles": false,
+              "balance_update": false
+            },
+            "warm_up_candles": 240,
+            "exchange": {
+              "name": "Binance Perpetual Futures",
+              "type": "futures",
+              "balance": 10000,
+              "fee": 0.00045,
+              "futures_leverage_mode": "isolated",
+              "futures_leverage": 3,
+              "slippage_bps": 0
+            },
+            "funding": {
+              "mode": "historical",
+              "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+            },
+            "open_interest": {
+              "mode": "historical",
+              "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+              "allow_missing_observations": true,
+              "max_age_ms": 600000
+            }
+          }
+        },
+        "metrics": null,
+        "error": null,
+        "has_chart_data": false,
+        "has_charts_image": false,
+        "sections": {
+          "trades": {
+            "count": 0
+          },
+          "equity_curve": {
+            "series": []
+          },
+          "hyperparameters": {
+            "count": 0
+          },
+          "logs": {
+            "log_size_bytes": null
+          }
+        },
+        "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+        "dashboard_url": "http://localhost:9200/#/backtest/2980adc0-9379-4f04-bb2a-0a6b931c1af0"
+      },
+      "config_exact": true,
+      "no_start_called": true
+    }
+  ],
+  "source_readbacks": [
+    {
+      "key": "strategies/ResearchV4Base1h/shock_features.py",
+      "unchanged": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"action\": \"read_project_file\",\n  \"status\": \"success\",\n  \"path\": \"strategies/ResearchV4Base1h/shock_features.py\",\n  \"kind\": \"text\",\n  \"content\": \"\\\"\\\"\\\"Causal hourly shock reversal; thresholds are frozen before economic testing.\\\"\\\"\\\"\\n\\nimport json\\nimport math\\n\\nimport numpy as np\\n\\nfrom strategies.ResearchV4Base1h import BAR, atr_window, closed_window\\n\\n\\ndef features(candles, now, atr, shock_multiplier=2.0, volume_multiplier=2.0):\\n    # Twenty-four prior volumes plus the event; no future confirmation or latch.\\n    rows = closed_window(candles, now, 25)\\n    invalid = dict(valid=False, direction=0, reason=\\\"shock_data_invalid\\\", details={})\\n    if rows is None or rows.shape[1] < 6:\\n        return invalid\\n    volumes = rows[:, 5]\\n    if not np.all(np.isfinite(volumes)) or np.any(volumes < 0):\\n        return invalid\\n    try:\\n        if (not math.isfinite(shock_multiplier) or shock_multiplier <= 0 or\\n                not math.isfinite(volume_multiplier) or volume_multiplier <= 0):\\n            return invalid\\n        # Reject a current-bar ATR accidentally supplied by another sector.\\n        if (atr is None or atr[\\\"offset_bars\\\"] != 1 or\\n                atr[\\\"first\\\"] != now - 16 * BAR or atr[\\\"last\\\"] != now - 2 * BAR or\\n                not math.isfinite(atr[\\\"value\\\"]) or atr[\\\"value\\\"] <= 0):\\n            return dict(valid=False, direction=0, reason=\\\"shock_atr_invalid\\\", details={})\\n    except (KeyError, TypeError, ValueError):\\n        return invalid\\n    average_volume = float(np.mean(volumes[:-1]))\\n    displacement = float(rows[-1, 2] - rows[-2, 2])\\n    current_volume = float(volumes[-1])\\n    # A finite input sum can still overflow; reject rather than emit NaN/Infinity.\\n    if (not math.isfinite(average_volume) or average_volume <= 0 or\\n            not math.isfinite(displacement)):\\n        return invalid\\n    price_threshold = float(shock_multiplier * atr[\\\"value\\\"])\\n    volume_threshold = float(volume_multiplier * average_volume)\\n    if not math.isfinite(price_threshold) or not math.isfinite(volume_threshold):\\n        return invalid\\n    price_event = bool(abs(displacement) >= price_threshold)\\n    volume_event = bool(current_volume >= volume_threshold)\\n    direction = (-1 if displacement > 0 else 1) if price_event and volume_event else 0\\n    # Only Python scalars: source windows live in bounded ATR/provenance logs.\\n    details = dict(first=int(rows[0, 0]), last=int(rows[-1, 0]),\\n        displacement=displacement, atr_previous=float(atr[\\\"value\\\"]),\\n        volume=current_volume, volume_mean_previous=average_volume,\\n        shock_multiplier=float(shock_multiplier), volume_multiplier=float(volume_multiplier),\\n        price_event=price_event, volume_event=volume_event)\\n    reason = \\\"shock_setup\\\" if direction else \\\"shock_price_below\\\" if not price_event else \\\"shock_volume_below\\\"\\n    return dict(valid=True, direction=int(direction), reason=reason, details=details)\\n\\n\\ndef self_checks():\\n    \\\"\\\"\\\"Pure deterministic surfaces; these checks make no claims about broker fills.\\\"\\\"\\\"\\n    count = 0\\n\\n    def check(condition):\\n        nonlocal count\\n        assert condition\\n        count += 1\\n\\n    def fixture(sign=1):\\n        # Prior14 true ranges are exactly2; minimum shock is4 and volume20.\\n        rows = np.array([[i * BAR, 100., 100., 101., 99., 10.] for i in range(25)])\\n        rows[-1, 2] = 100. + sign * 4.\\n        rows[-1, 3] = max(101., rows[-1, 2] + 1.)\\n        rows[-1, 4] = min(99., rows[-1, 2] - 1.)\\n        rows[-1, 5] = 20.\\n        return rows\\n\\n    now = 25 * BAR\\n    up, down = fixture(), fixture(-1)\\n    atr = atr_window(up, now, 1)\\n    check(atr[\\\"value\\\"] == 2.)\\n    check(atr[\\\"first\\\"] == 9 * BAR and atr[\\\"last\\\"] == 23 * BAR)\\n    check(len(atr[\\\"bars\\\"]) == 15 and atr[\\\"offset_bars\\\"] == 1)\\n    short, long = features(up, now, atr), features(down, now, atr_window(down, now, 1))\\n    check(short[\\\"valid\\\"] and short[\\\"direction\\\"] == -1)\\n    check(long[\\\"valid\\\"] and long[\\\"direction\\\"] == 1)\\n    check(short[\\\"details\\\"][\\\"displacement\\\"] == -long[\\\"details\\\"][\\\"displacement\\\"])\\n    check(short[\\\"details\\\"][\\\"volume_mean_previous\\\"] == 10.)\\n    check(short[\\\"details\\\"][\\\"volume\\\"] == 20.)\\n    check(short[\\\"reason\\\"] == long[\\\"reason\\\"] == \\\"shock_setup\\\")\\n    check(len(json.dumps(short, allow_nan=False)) < 1000)\\n    before = up.copy()\\n    features(up, now, atr)\\n    check(np.array_equal(up, before))\\n    below = up.copy()\\n    below[-1, 2] = 103.999\\n    check(features(below, now, atr)[\\\"direction\\\"] == 0)\\n    check(features(below, now, atr)[\\\"reason\\\"] == \\\"shock_price_below\\\")\\n    below = up.copy()\\n    below[-1, 5] = 19.999\\n    check(features(below, now, atr)[\\\"direction\\\"] == 0)\\n    check(features(below, now, atr)[\\\"reason\\\"] == \\\"shock_volume_below\\\")\\n    check(features(up, now, atr, 1.8, 1.8)[\\\"direction\\\"] == -1)\\n    check(features(up, now, atr, 2.2, 2.2)[\\\"direction\\\"] == 0)\\n    wide_event = up.copy()\\n    wide_event[-1, 3], wide_event[-1, 4] = 200., 1.\\n    check(atr_window(wide_event, now, 1)[\\\"value\\\"] == 2.)\\n    check(features(wide_event, now, atr)[\\\"direction\\\"] == -1)\\n    huge_volume = up.copy()\\n    huge_volume[-1, 5] = 10000.\\n    check(features(huge_volume, now, atr)[\\\"details\\\"][\\\"volume_mean_previous\\\"] == 10.)\\n    check(not features(up, now, atr_window(up, now, 0))[\\\"valid\\\"])\\n    check(not features(up, now, None)[\\\"valid\\\"])\\n    malformed_atr = dict(atr, value=float(\\\"nan\\\"))\\n    check(not features(up, now, malformed_atr)[\\\"valid\\\"])\\n    malformed_atr = dict(atr, first=0)\\n    check(not features(up, now, malformed_atr)[\\\"valid\\\"])\\n    future = np.array([[now, 100., 100., 101., 99., float(\\\"nan\\\")]])\\n    check(features(np.vstack((up, future)), now, atr) == short)\\n    # More history cannot seed a different value: only the last25 closed rows matter.\\n    older = up.copy()\\n    older[:, 0] -= 25 * BAR\\n    check(features(np.vstack((older, up)), now, atr) == short)\\n    check(not features(up[:-1], now, atr)[\\\"valid\\\"])\\n    check(not features(up, now + 1, atr)[\\\"valid\\\"])\\n    gap = up.copy()\\n    gap[2, 0] += 1\\n    check(not features(gap, now, atr)[\\\"valid\\\"])\\n    for column, value in ((1, 0.), (2, float(\\\"nan\\\")), (3, 90.), (4, 110.),\\n                          (5, -1.), (5, float(\\\"nan\\\")), (5, float(\\\"inf\\\"))):\\n        bad = up.copy()\\n        bad[5, column] = value\\n        check(not features(bad, now, atr)[\\\"valid\\\"])\\n    zero_mean = up.copy()\\n    zero_mean[:-1, 5] = 0.\\n    check(not features(zero_mean, now, atr)[\\\"valid\\\"])\\n    zero_event = up.copy()\\n    zero_event[-1, 5] = 0.\\n    check(features(zero_event, now, atr)[\\\"valid\\\"] and features(zero_event, now, atr)[\\\"direction\\\"] == 0)\\n    check(not features(up[:, :5], now, atr)[\\\"valid\\\"])\\n    for parameter in (0., -1., float(\\\"nan\\\"), float(\\\"inf\\\")):\\n        check(not features(up, now, atr, parameter, 2.)[\\\"valid\\\"])\\n        check(not features(up, now, atr, 2., parameter)[\\\"valid\\\"])\\n    # A zero prior candle volume is allowed when its24-hour average remains positive.\\n    one_zero = up.copy()\\n    one_zero[0, 5] = 0.\\n    check(features(one_zero, now, atr)[\\\"valid\\\"])\\n    return dict(status=\\\"passed\\\", assertions=count)\\n\",\n  \"start_line\": 1,\n  \"end_line\": 143,\n  \"has_more\": false,\n  \"size_bytes\": 6809,\n  \"modified_at\": \"2026-10-21T00:19:02+00:00\",\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "key": "ResearchV4ShockPV1h",
+      "unchanged": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_read\",\n  \"strategy_name\": \"ResearchV4ShockPV1h\",\n  \"message\": \"Strategy 'ResearchV4ShockPV1h' content read successfully\",\n  \"content\": \"from strategies.ResearchV4Base1h import ResearchV4Base1h\\nfrom strategies.ResearchV4Base1h.shock_features import features as shock_features\\n\\n\\nclass ResearchV4ShockPV1h(ResearchV4Base1h):\\n    LINE = \\\"SHOCK\\\"\\n    USE_OI = False\\n    ATR_OFFSET_BARS = 1\\n    STOP_MULTIPLIER = 1.\\n    REWARD_MULTIPLE = 1.\\n    TARGET_MODE = \\\"r_multiple\\\"\\n    MAX_HOLD_BARS = 6\\n    # Signal neighbors change only these two; risk neighbors change only STOP.\\n    SHOCK_MULTIPLIER = 2.\\n    VOLUME_MULTIPLIER = 2.\\n\\n    def features(self, candles, now, atr):\\n        return shock_features(candles, now, atr, self.SHOCK_MULTIPLIER, self.VOLUME_MULTIPLIER)\\n\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "key": "ResearchV4ShockPVOi1h",
+      "unchanged": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_read\",\n  \"strategy_name\": \"ResearchV4ShockPVOi1h\",\n  \"message\": \"Strategy 'ResearchV4ShockPVOi1h' content read successfully\",\n  \"content\": \"from strategies.ResearchV4ShockPV1h import ResearchV4ShockPV1h\\n\\n\\nclass ResearchV4ShockPVOi1h(ResearchV4ShockPV1h):\\n    USE_OI = True\\n\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "key": "ResearchV4ShockSmoke1h",
+      "unchanged": true,
+      "raw": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"success\",\n  \"action\": \"strategy_read\",\n  \"strategy_name\": \"ResearchV4ShockSmoke1h\",\n  \"message\": \"Strategy 'ResearchV4ShockSmoke1h' content read successfully\",\n  \"content\": \"from strategies.ResearchV4ShockPV1h import ResearchV4ShockPV1h\\nfrom strategies.ResearchV4Base1h.shock_features import self_checks\\nfrom strategies.ResearchV4Base1h.common_checks import self_checks as common_checks\\n\\n\\nclass ResearchV4ShockSmoke1h(ResearchV4ShockPV1h):\\n    FINISH = 1599523200000\\n\\n    def before(self):\\n        if \\\"self_checks\\\" not in self.vars:\\n            # Pure source checks precede motor context; this smoke adds no signal rule.\\n            self.vars[\\\"self_checks\\\"] = self_checks()\\n            self.vars[\\\"base_checks\\\"] = common_checks()\\n            self._log_json(\\\"V4_SELF_CHECKS\\\", self.vars[\\\"self_checks\\\"])\\n            self._log_json(\\\"V4_BASE_CHECKS\\\", self.vars[\\\"base_checks\\\"])\\n        super().before()\\n\"\n}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ],
+  "nominal_config": {
+    "logging": {
+      "order_submission": false,
+      "order_cancellation": false,
+      "order_execution": false,
+      "position_opened": false,
+      "position_increased": false,
+      "position_reduced": false,
+      "position_closed": false,
+      "shorter_period_candles": false,
+      "trading_candles": false,
+      "balance_update": false
+    },
+    "warm_up_candles": 240,
+    "exchange": {
+      "name": "Binance Perpetual Futures",
+      "type": "futures",
+      "balance": 10000,
+      "fee": 0.00045,
+      "futures_leverage_mode": "isolated",
+      "futures_leverage": 3,
+      "slippage_bps": 0
+    },
+    "funding": {
+      "mode": "historical",
+      "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+    },
+    "open_interest": {
+      "mode": "historical",
+      "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+      "allow_missing_observations": true,
+      "max_age_ms": 600000
+    }
+  },
+  "no_starts": true
+}

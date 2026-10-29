@@ -299,6 +299,12 @@ def _parse_config(value: Any) -> Optional[dict]:
     unknown = sorted(set(value) - set(LIVE_CONFIG_FIELDS))
     if unknown:
         raise _Failure('invalid_request', f'Unknown config field(s): {", ".join(unknown)}. Allowed: {", ".join(LIVE_CONFIG_FIELDS)}.')
+    for feature in ('funding', 'open_interest'):
+        if feature in value:
+            option = value[feature]
+            if (not isinstance(option, dict) or set(option) != {'mode'}
+                    or option.get('mode') not in ('disabled', 'live')):
+                raise _Failure('invalid_request', f'config.{feature} must be an object with mode disabled or live.')
     for key in ('persistency', 'generate_candles_from_1m'):
         if key in value and not isinstance(value[key], bool):
             raise _Failure('invalid_request', f'config.{key} must be true or false.')

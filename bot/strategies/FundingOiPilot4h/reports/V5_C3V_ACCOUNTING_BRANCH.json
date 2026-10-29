@@ -1,0 +1,445 @@
+{
+  "stage": "C3V",
+  "status": "passed",
+  "job_id": "4b8c4b0ad6d34fd790ba3c686a129909",
+  "expected": {
+    "s_oi": {
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "strategy": "ResearchV5FT_OI_C3V",
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "timeframe": "4h"
+    },
+    "s_fp": {
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      },
+      "strategy": "ResearchV5FT_FP_C3V",
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "timeframe": "4h"
+    }
+  },
+  "inputs": [
+    {
+      "name": "s_oi",
+      "file": "inputs/s_oi.json",
+      "session_type": "backtest",
+      "session_id": "13962ea9-197d-49b2-bb9a-69c6c7e7c038",
+      "session_status": "finished",
+      "title": "MCP Backtest: V5 C3 EVAL FUNDING_FPOI",
+      "size_bytes": 102166
+    },
+    {
+      "name": "s_fp",
+      "file": "inputs/s_fp.json",
+      "session_type": "backtest",
+      "session_id": "14598ad7-2ac2-47e6-ba71-c7e9af290a55",
+      "session_status": "finished",
+      "title": "MCP Backtest: V5 C3 EVAL FUNDING_FP",
+      "size_bytes": 129451
+    }
+  ],
+  "job": {
+    "id": "4b8c4b0ad6d34fd790ba3c686a129909",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/4b8c4b0ad6d34fd790ba3c686a129909",
+    "inputs": [
+      {
+        "name": "s_oi",
+        "file": "inputs/s_oi.json",
+        "session_type": "backtest",
+        "session_id": "13962ea9-197d-49b2-bb9a-69c6c7e7c038",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 C3 EVAL FUNDING_FPOI",
+        "size_bytes": 102166
+      },
+      {
+        "name": "s_fp",
+        "file": "inputs/s_fp.json",
+        "session_type": "backtest",
+        "session_id": "14598ad7-2ac2-47e6-ba71-c7e9af290a55",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 C3 EVAL FUNDING_FP",
+        "size_bytes": 129451
+      }
+    ],
+    "status": "succeeded",
+    "pid": 10221,
+    "exit_code": 0,
+    "started_at": "2026-10-21T01:33:08+00:00",
+    "finished_at": "2026-10-21T01:33:08+00:00",
+    "timeout_minutes": 5,
+    "output_truncated": false,
+    "expires_at": "2026-10-22T01:33:08+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "code_ref": "V5_V6_ACCOUNTING_CODE.json",
+  "rows": [
+    {
+      "timeframe": "4h",
+      "sharpe": 0.29809083468071146,
+      "session_id": "14598ad7-2ac2-47e6-ba71-c7e9af290a55",
+      "strategy": "ResearchV5FT_FP_C3V",
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "n": 37,
+      "net": 137.97016632764945,
+      "net_pct": 1.3797016632764945,
+      "pf": 1.0821774851300734,
+      "pf_no_losses": false,
+      "dd": -7.748996462048419,
+      "cagr_pct": 2.8017844386514223,
+      "turnover": 37.656281439647465,
+      "gross": 278.64800968949805,
+      "fees": 169.45326647841352,
+      "funding": 28.77542311656488,
+      "funding_events": 163,
+      "proxy_funding": 0,
+      "exact_funding": 28.77542311656488,
+      "unclassified_funding": 0,
+      "funding_sources": {
+        "fundingRate.settlement_mark": {
+          "n": 163,
+          "cashflow": 28.77542311656488
+        }
+      },
+      "holding_seconds": 4757100,
+      "exposure": 0.3041935236341314,
+      "directions": {
+        "short": {
+          "n": 32,
+          "gross": 104.710083744499,
+          "fees": 141.46868083391888,
+          "funding": 28.49533652669821,
+          "net": -8.263260562721598
+        },
+        "long": {
+          "n": 5,
+          "gross": 173.93792594499897,
+          "fees": 27.98458564449465,
+          "funding": 0.2800865898666731,
+          "net": 146.23342689037102
+        }
+      },
+      "exit_order_types": {
+        "STOP": 3,
+        "MARKET": 34
+      },
+      "months": [
+        {
+          "month": "2025-01",
+          "return_pct": -2.247019937012573,
+          "end_equity": 9775.298006298743
+        },
+        {
+          "month": "2025-02",
+          "return_pct": 4.337891135796368,
+          "end_equity": 10199.339792011655
+        },
+        {
+          "month": "2025-03",
+          "return_pct": -3.5637292996035685,
+          "end_equity": 9835.86293147761
+        },
+        {
+          "month": "2025-04",
+          "return_pct": 2.662333690876273,
+          "end_equity": 10097.726424090748
+        },
+        {
+          "month": "2025-05",
+          "return_pct": -0.13153772827108057,
+          "end_equity": 10084.44410414547
+        },
+        {
+          "month": "2025-06",
+          "return_pct": 0.5307785102421025,
+          "end_equity": 10137.97016632765
+        }
+      ],
+      "years": [
+        {
+          "year": 2025,
+          "return_pct": 1.3797016632765002,
+          "end_equity": 10137.97016632765,
+          "full_year": false
+        }
+      ],
+      "semesters": [
+        {
+          "period": "2025H1",
+          "return_pct": 1.3797016632765002,
+          "end_equity": 10137.97016632765,
+          "full_semester": true
+        }
+      ],
+      "replay_nominal_gates": null,
+      "replay_nominal_eligible": null,
+      "funding_sensitivities": [
+        {
+          "kind": "proxy_only",
+          "multiplier": 0.5,
+          "net_usdt": 137.97016632764945,
+          "net_pct": 1.3797016632764945,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "proxy_only",
+          "multiplier": 1.5,
+          "net_usdt": 137.97016632764945,
+          "net_pct": 1.3797016632764945,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 0.5,
+          "net_usdt": 123.58245476936702,
+          "net_pct": 1.2358245476936702,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 1.5,
+          "net_usdt": 152.35787788593188,
+          "net_pct": 1.523578778859319,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        }
+      ],
+      "screen_year_gate": false,
+      "base_eligible": false,
+      "screen_eligible": false,
+      "positive_pnl": 1816.8992076491957,
+      "negative_pnl": -1678.929041321546,
+      "best_trade": 322.0046544445622,
+      "worst_trade": -199.58290117526863,
+      "adjusted_fills": 0,
+      "curve_terminal_delta": 5.4569682106375694e-12,
+      "sampled_dd_including_terminal_pct": -7.748996462048452,
+      "equity_points": 182,
+      "equity_evidence": "full_daily",
+      "max_accounting_error": 5.4569682106375694e-12,
+      "metric_open_indicator": 0,
+      "metric_open_pl": 0
+    },
+    {
+      "timeframe": "4h",
+      "sharpe": -0.14751808698235905,
+      "session_id": "13962ea9-197d-49b2-bb9a-69c6c7e7c038",
+      "strategy": "ResearchV5FT_OI_C3V",
+      "start": "2025-01-01",
+      "finish": "2025-07-01",
+      "n": 29,
+      "net": -98.39720585436673,
+      "net_pct": -0.9839720585436673,
+      "pf": 0.9303256121779667,
+      "pf_no_losses": false,
+      "dd": -7.817199258166497,
+      "cagr_pct": -1.9743295340623912,
+      "turnover": 28.72421092122175,
+      "gross": 10.431988840570881,
+      "fees": 129.25894914549784,
+      "funding": 20.429754450560264,
+      "funding_events": 114,
+      "proxy_funding": 0,
+      "exact_funding": 20.429754450560267,
+      "unclassified_funding": 0,
+      "funding_sources": {
+        "fundingRate.settlement_mark": {
+          "n": 114,
+          "cashflow": 20.429754450560267
+        }
+      },
+      "holding_seconds": 3426360,
+      "exposure": 0.21909914057704113,
+      "directions": {
+        "short": {
+          "n": 25,
+          "gross": 108.02213543657157,
+          "fees": 109.68949678144834,
+          "funding": 19.785093513476042,
+          "net": 18.11773216859922
+        },
+        "long": {
+          "n": 4,
+          "gross": -97.5901465960007,
+          "fees": 19.5694523640495,
+          "funding": 0.6446609370842236,
+          "net": -116.51493802296596
+        }
+      },
+      "exit_order_types": {
+        "MARKET": 28,
+        "STOP": 1
+      },
+      "months": [
+        {
+          "month": "2025-01",
+          "return_pct": -1.1175853221634835,
+          "end_equity": 9888.241467783651
+        },
+        {
+          "month": "2025-02",
+          "return_pct": 4.71926945297505,
+          "end_equity": 10354.894226809178
+        },
+        {
+          "month": "2025-03",
+          "return_pct": -3.106985730199552,
+          "end_equity": 10033.16914080496
+        },
+        {
+          "month": "2025-04",
+          "return_pct": -1.3320716299366264,
+          "end_equity": 9899.52014109674
+        },
+        {
+          "month": "2025-05",
+          "return_pct": -0.6680381019916748,
+          "end_equity": 9833.387574639873
+        },
+        {
+          "month": "2025-06",
+          "return_pct": 0.6937102701177533,
+          "end_equity": 9901.602794145634
+        }
+      ],
+      "years": [
+        {
+          "year": 2025,
+          "return_pct": -0.9839720585436584,
+          "end_equity": 9901.602794145634,
+          "full_year": false
+        }
+      ],
+      "semesters": [
+        {
+          "period": "2025H1",
+          "return_pct": -0.9839720585436584,
+          "end_equity": 9901.602794145634,
+          "full_semester": true
+        }
+      ],
+      "replay_nominal_gates": null,
+      "replay_nominal_eligible": null,
+      "funding_sensitivities": [
+        {
+          "kind": "proxy_only",
+          "multiplier": 0.5,
+          "net_usdt": -98.39720585436673,
+          "net_pct": -0.9839720585436673,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "proxy_only",
+          "multiplier": 1.5,
+          "net_usdt": -98.39720585436673,
+          "net_pct": -0.9839720585436673,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 0.5,
+          "net_usdt": -108.61208307964687,
+          "net_pct": -1.0861208307964687,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        },
+        {
+          "kind": "global_funding",
+          "multiplier": 1.5,
+          "net_usdt": -88.1823286290866,
+          "net_pct": -0.8818232862908659,
+          "sign_flip": false,
+          "fixed_quantities_not_replay": true
+        }
+      ],
+      "screen_year_gate": false,
+      "base_eligible": false,
+      "screen_eligible": false,
+      "positive_pnl": 1313.8463592516357,
+      "negative_pnl": -1412.2435651060023,
+      "best_trade": 326.91566542942104,
+      "worst_trade": -199.61242144504965,
+      "adjusted_fills": 0,
+      "curve_terminal_delta": 0,
+      "sampled_dd_including_terminal_pct": -7.817199258166429,
+      "equity_points": 182,
+      "equity_evidence": "full_daily",
+      "max_accounting_error": 4.263256414560601e-14,
+      "metric_open_indicator": 0,
+      "metric_open_pl": 0
+    }
+  ],
+  "completed_at": "2026-10-21T01:33:09.114Z"
+}

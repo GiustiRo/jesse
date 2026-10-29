@@ -1,0 +1,9 @@
+# R42 cerrada sin economía; objetivo global activo
+
+Revalidar índice/estado antes de continuar. Un observador BTC4h únicamente,0órdenes, finished76,24s.137checks sintéticos y snapshot financiero PASS primer intento.11.424callbacks,63fits (61válidos y2por semilla insuficiente),11.142forecasts/11.137labels24h,1.857daily,5censurados al fin,0gaps/model/numeric errors. Raw completo134páginas/35.953líneas,19archivos17,81Mchars exactos.
+
+Persistencia rho con mismas emisiones Gaussian2/pesos estacionarios que IID: MSE global+0,4404% relativo y Brier+0,1633%; diarios también peores. Sólo2023 mejora ambos (1/5). Logdensidad1paso mejora+0,019529nats, no habilita economía. Gate muestraPASS/globalFAIL/dailyFAIL/añosFAIL. No afirmar sólo volatilidad como causa, significancia, OOS, pérdida de una operativa nunca ejecutada o rechazo HMMuniversal. Cerrar representación/estimación sin vecinos ni rescate2023.
+
+Replay JS independiente reprodujo ajustes desde TRAIN, filtros/caminos/scores; máximos rho0/posterior1e-15/p1,33e-15.21.426retornos train superpuestos y11.142cadenas quotes/densidad conciliadas. Snapshot sólo emitió funding, no inferir métricas ausentes:0trades y funding0; summaryassertswallet10000/qty0/entryorders0. Fuentes y forma final exactas. Sin errores/restarts/reruns/installs/framework/costos/riesgo/datos nuevos.
+
+68IDs económicos desde r9 completos, sin sumar observador,0jobs activos. Objetivo ACTIVE y pendiente. Este turno PROGRESS por prueba material ejecutada y decisión fundada; continuar autónomamente con otra pregunta material. Leer BTC_R42_FINAL_20261022.md/RESULTS/DURABLE_INDEX, no repetir HMM como pendiente. La pregunta del usuario sobre PAXG se aclaró: R40 usó proxy auxiliar y sólo operó BTC; R42 eligió exclusivamente datosBTC, sin inferir nueva prohibición permanente.

@@ -1,0 +1,293 @@
+{
+  "protocol": "RESEARCH_HUB/revisions/20261026-r53/PROTOCOL_R53.md#ensayo-f2",
+  "n_declared": 124,
+  "measured_through": "2024-12-31",
+  "long_window_choice": "2018-09+ lens: C6q per coin = unfiltered spot C6 daily returns through 2020-10-15 spliced with perpetual C6q returns from the next day; the perpetual run starts flat on 2020-10-15 (no position carried); basket over coins as fb.basket. Common window: perpetual C6q directly.",
+  "reproduction_test": {
+    "R2": {
+      "identical": true,
+      "trades": 26,
+      "orders": 52
+    },
+    "R3": {
+      "identical": true,
+      "trades": 21,
+      "orders": 42
+    }
+  },
+  "qoi_coverage_2021_2024": {
+    "BTC": {
+      "bars": 8767,
+      "z_finite": 1.0,
+      "z_pos": 0.5103228014143949
+    },
+    "ETH": {
+      "bars": 8767,
+      "z_finite": 1.0,
+      "z_pos": 0.5041633397969659
+    }
+  },
+  "entries_removed_2021_2024": {
+    "BTC": {
+      "R2": {
+        "c6_entries": 26,
+        "c6q_entries": 24,
+        "c6_entries_blocked": 13,
+        "share_blocked": 0.5
+      },
+      "R3": {
+        "c6_entries": 21,
+        "c6q_entries": 16,
+        "c6_entries_blocked": 14,
+        "share_blocked": 0.6666666666666666
+      }
+    },
+    "ETH": {
+      "R2": {
+        "c6_entries": 28,
+        "c6q_entries": 21,
+        "c6_entries_blocked": 10,
+        "share_blocked": 0.35714285714285715
+      },
+      "R3": {
+        "c6_entries": 22,
+        "c6q_entries": 16,
+        "c6_entries_blocked": 11,
+        "share_blocked": 0.5
+      }
+    },
+    "total": {
+      "c6_entries": 97,
+      "c6q_entries": 77,
+      "c6_entries_blocked": 48,
+      "share_blocked": 0.4948453608247423,
+      "entry_count_drop": 0.20618556701030932
+    }
+  },
+  "standalone": {
+    "BTC": {
+      "C6": {
+        "from": "2021-01-01",
+        "to": "2024-12-31",
+        "sharpe": 1.3005041960311252,
+        "cagr": 0.09338329641156018,
+        "max_dd": -0.046476590436840604,
+        "quarters_pos": 0.5625,
+        "trades": 48,
+        "trades_per_year": 11.991786447638603
+      },
+      "C6q": {
+        "from": "2021-01-01",
+        "to": "2024-12-31",
+        "sharpe": 0.634282061164713,
+        "cagr": 0.03666495823228044,
+        "max_dd": -0.09186386963658644,
+        "quarters_pos": 0.3125,
+        "trades": 41,
+        "trades_per_year": 10.242984257357973
+      }
+    },
+    "ETH": {
+      "C6": {
+        "from": "2021-01-01",
+        "to": "2024-12-31",
+        "sharpe": 1.4331345848782322,
+        "cagr": 0.11195580325776233,
+        "max_dd": -0.040291496696342466,
+        "quarters_pos": 0.6875,
+        "trades": 51,
+        "trades_per_year": 12.741273100616016
+      },
+      "C6q": {
+        "from": "2021-01-01",
+        "to": "2024-12-31",
+        "sharpe": 1.1890402853163267,
+        "cagr": 0.07285135361223305,
+        "max_dd": -0.05058086041490217,
+        "quarters_pos": 0.5625,
+        "trades": 37,
+        "trades_per_year": 9.243668720054757
+      }
+    },
+    "basket": {
+      "C6": {
+        "from": "2021-01-01",
+        "to": "2024-12-31",
+        "sharpe": 1.7133343732352908,
+        "cagr": 0.10367972758392163,
+        "max_dd": -0.0335347827578758,
+        "quarters_pos": 0.6875,
+        "trades": 99,
+        "trades_per_year": 24.73305954825462
+      },
+      "C6q": {
+        "from": "2021-01-01",
+        "to": "2024-12-31",
+        "sharpe": 1.1558920650347186,
+        "cagr": 0.05530156226568117,
+        "max_dd": -0.040445698551435316,
+        "quarters_pos": 0.4375,
+        "trades": 78,
+        "trades_per_year": 19.48665297741273
+      }
+    }
+  },
+  "inclusion": {
+    "pass": false,
+    "d_sharpe_long": -0.12165144964240082,
+    "d_q_pos_long": -2,
+    "d_sharpe_common": -0.20632704816846248,
+    "detail": {
+      "long": {
+        "from": "2018-05-05",
+        "P1": {
+          "from": "2018-09-30",
+          "to": "2024-12-31",
+          "cagr": 0.4124300570479804,
+          "max_dd": -0.14268678307703875,
+          "sharpe": 1.6770789188230495,
+          "vol_realized": 0.21935193888968363,
+          "pf_trades": 4.530160319601358,
+          "months_pos": 0.6052631578947368,
+          "quarters_pos": 0.7307692307692307,
+          "q_pos_count": 19,
+          "n_quarters": 26,
+          "median_month": 0.005762599869213458,
+          "without_best2_months": 4.060890079262851,
+          "dsr": 0.9789244183312809,
+          "by_year": {
+            "2018": -0.0696,
+            "2019": 0.837,
+            "2020": 0.4896,
+            "2021": 0.6321,
+            "2022": -0.0267,
+            "2023": 0.3756,
+            "2024": 0.5598
+          },
+          "contrib_sum": {
+            "R1": 1.105768834128921,
+            "C6": 1.196193496237981
+          }
+        },
+        "P1q": {
+          "from": "2018-09-30",
+          "to": "2024-12-31",
+          "cagr": 0.36152116926734146,
+          "max_dd": -0.14268678307704086,
+          "sharpe": 1.5554274691806487,
+          "vol_realized": 0.21187941354098885,
+          "pf_trades": 4.439872553437541,
+          "months_pos": 0.6052631578947368,
+          "quarters_pos": 0.6538461538461539,
+          "q_pos_count": 17,
+          "n_quarters": 26,
+          "median_month": 0.0076576124926588385,
+          "without_best2_months": 3.0832771647252057,
+          "dsr": 0.9520339751624755,
+          "by_year": {
+            "2018": -0.0696,
+            "2019": 0.837,
+            "2020": 0.5547,
+            "2021": 0.5775,
+            "2022": -0.0649,
+            "2023": 0.3913,
+            "2024": 0.2646
+          },
+          "contrib_sum": {
+            "R1": 1.1085087875736246,
+            "C6q": 0.9537433466294785
+          }
+        }
+      },
+      "common": {
+        "from": "2020-10-16",
+        "P1": {
+          "from": "2021-02-28",
+          "to": "2024-12-31",
+          "cagr": 0.29174906410760304,
+          "max_dd": -0.13981786141590935,
+          "sharpe": 1.6049503395909597,
+          "vol_realized": 0.1682445013831858,
+          "pf_trades": 3.5986838320862353,
+          "months_pos": 0.5106382978723404,
+          "quarters_pos": 0.6875,
+          "q_pos_count": 11,
+          "n_quarters": 16,
+          "median_month": 0.0004914502444990365,
+          "without_best2_months": 0.7244222624558863,
+          "dsr": 0.7227957684519496,
+          "by_year": {
+            "2021": 0.3946,
+            "2022": -0.0566,
+            "2023": 0.4286,
+            "2024": 0.4223
+          },
+          "contrib_sum": {
+            "R1": 0.3814850894961147,
+            "C6": 0.6557032546688575
+          }
+        },
+        "P1q": {
+          "from": "2021-02-28",
+          "to": "2024-12-31",
+          "cagr": 0.24477499546163628,
+          "max_dd": -0.16187677926502453,
+          "sharpe": 1.3986232914224972,
+          "vol_realized": 0.16635731800744352,
+          "pf_trades": 3.0467444568198507,
+          "months_pos": 0.5106382978723404,
+          "quarters_pos": 0.5,
+          "q_pos_count": 8,
+          "n_quarters": 16,
+          "median_month": 0.0006026286533307168,
+          "without_best2_months": 0.5196079027927529,
+          "dsr": 0.557851858672757,
+          "by_year": {
+            "2021": 0.4329,
+            "2022": -0.0849,
+            "2023": 0.5042,
+            "2024": 0.1756
+          },
+          "contrib_sum": {
+            "R1": 0.3901194193637211,
+            "C6q": 0.503593046303767
+          }
+        }
+      }
+    }
+  },
+  "diag_long_spliced_unfiltered": {
+    "from": "2018-05-05",
+    "P1_spliced": {
+      "from": "2018-09-30",
+      "to": "2024-12-31",
+      "cagr": 0.41746343051779267,
+      "max_dd": -0.14268678307704086,
+      "sharpe": 1.6994266543480936,
+      "vol_realized": 0.21844872854668318,
+      "pf_trades": 4.734308376228383,
+      "months_pos": 0.6052631578947368,
+      "quarters_pos": 0.7307692307692307,
+      "q_pos_count": 19,
+      "n_quarters": 26,
+      "median_month": 0.0057396884429494754,
+      "without_best2_months": 4.304696334924981,
+      "dsr": 0.9821806360866802,
+      "by_year": {
+        "2018": -0.0696,
+        "2019": 0.837,
+        "2020": 0.5394,
+        "2021": 0.7141,
+        "2022": -0.0434,
+        "2023": 0.3665,
+        "2024": 0.5052
+      },
+      "contrib_sum": {
+        "R1": 1.1016169851227313,
+        "C6s": 1.2214149598119628
+      }
+    },
+    "note": "not part of the rule; P1q minus this isolates the QOI filter",
+    "d_sharpe_filter_only": -0.14399918516744492
+  }
+}

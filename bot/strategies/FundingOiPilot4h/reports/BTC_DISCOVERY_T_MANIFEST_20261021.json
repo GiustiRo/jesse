@@ -1,0 +1,237 @@
+{
+  "phase": "T_pre_economic",
+  "at": "2026-10-21 20:54:04 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_T_PROTOCOL_20261021.md",
+  "codes": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_T_CODES_20261021.md",
+  "technical_receipt": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_T_TECHNICAL_CHECK_RECEIPT_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "9b18b8dc8a064c56acc2ab8206020bd2",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/9b18b8dc8a064c56acc2ab8206020bd2",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 859,
+      "exit_code": 0,
+      "started_at": "2026-10-21T20:52:01+00:00",
+      "finished_at": "2026-10-21T20:52:01+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T20:52:01+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "technical_check.json",
+        "size_bytes": 771,
+        "kind": "text"
+      },
+      {
+        "path": "technical_check_code.py",
+        "size_bytes": 40361,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"PASS\", \"assertions\": 155, \"source_sha256\": {\"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"BtcResearchR12ArBase1m\": \"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343\", \"BtcResearchR20SeasonBase1m\": \"101e8cb82259af2b303275c19c0810b35a4cd9e5f9210f559df95ba51b39742c\", \"BtcResearchR20SeasonPhase1m\": \"0e060208a7346413cb65f28d668074a999b629a543b8834ff2ae9e38077441ec\", \"BtcResearchR20SeasonGlobal1m\": \"062d9ac4382fc734005d1995b4e3cbc8cceb195e9f685d62db6f3f6df097b5f6\"}, \"scope\": \"Synthetic supplied AST only; no Jesse imports, real candles, economic inputs or sessions.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR20SeasonBase1m": "import math\n\nimport numpy as np\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, DAY, closed_window, atr14, entry_plan\n\n\ndef season_model(candles, now):\n    \"\"\"Exactly90 complete UTC days; bin is interval START, not close hour.\"\"\"\n    if now % DAY:\n        return None\n    rows = closed_window(candles, now, 541)\n    if rows is None or not np.all(rows[:, 0] % BAR == 0):\n        return None\n    labels = np.diff(np.log(rows[:, 2]))\n    phases = ((rows[1:, 0].astype(np.int64) % DAY) // BAR)\n    counts = [int(np.sum(phases == k)) for k in range(6)]\n    if counts != [90] * 6 or not np.all(np.isfinite(labels)):\n        return None\n    means = [float(np.mean(labels[phases == k])) for k in range(6)]\n    global_mean = float(np.mean(labels))\n    if not all(math.isfinite(v) for v in means + [global_mean]):\n        return None\n    return dict(day=int(now), phase_means=means, global_mean=global_mean,\n                counts=counts, labels=540,\n                first_origin=int(rows[1, 0]), last_target=int(rows[-1, 0]) + BAR)\n\n\ndef season_forecast(model, now, phase_policy):\n    \"\"\"A valid midnight snapshot is immutable for its own UTC day only.\"\"\"\n    if model is None or not model[\"day\"] <= now < model[\"day\"] + DAY:\n        return None\n    if now % BAR:\n        return None\n    k = int((now % DAY) // BAR)\n    value = model[\"phase_means\"][k] if phase_policy else model[\"global_mean\"]\n    return float(value) if math.isfinite(value) else None\n\n\nclass BtcResearchR20SeasonBase1m(BtcResearchR12ArBase1m):\n    \"\"\"Phase-conditioned mean versus global mean; R11 M1 accounting intact.\"\"\"\n    MODE = \"abstract\"\n\n    def _season_invalidate(self, reason):\n        self.vars[\"season_model\"] = None\n        if self.START <= int(self.time) < self.FINISH:\n            counts = self.vars.setdefault(\"season_invalidations\", {})\n            counts[reason] = counts.get(reason, 0) + 1\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - .00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            assert self.MODE in (\"PHASE\", \"GLOBAL\")\n            self.vars[\"checked\"] = True\n            self._log(\"R20_SEASON_CONFIG\", dict(mode=self.MODE, labels=540,\n                      days=90, bins=6, per_bin=90, freeze=\"00UTC\",\n                      horizon_hours=4, stop_atr=2, target=None,\n                      risk=.02, aggregate=.06, leverage=3, fee=.00045))\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR or not self.START <= now < self.FINISH:\n            return\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, 15)\n        if rows is None or not np.all(rows[:, 0] % BAR == 0):\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self._season_invalidate(\"decision_ohlc\")\n            return\n        if not math.isclose(float(rows[-1, 2]), float(self.price),\n                            rel_tol=1e-10, abs_tol=1e-8):\n            self._season_invalidate(\"asof_price\")\n            return\n        if now % DAY == 0:\n            model = season_model(candles, now)\n            if model is None:\n                self._season_invalidate(\"midnight_window\")\n            else:\n                self.vars[\"season_model\"] = model\n                self.vars[\"season_freezes\"] = self.vars.get(\"season_freezes\", 0) + 1\n        model = self.vars.get(\"season_model\")\n        forecast = season_forecast(model, now, self.MODE == \"PHASE\")\n        atr = atr14(rows)\n        if atr is None:\n            self._season_invalidate(\"atr\")\n            return\n        if forecast is None or abs(forecast) <= .0019 or not self.START < now:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        # Occupied margin is irrelevant to model validity; discard, never queue.\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        price = float(self.price)\n        capital = max(0., float(self.balance))\n        margin, leverage, fee = (float(self.available_margin),\n                                 float(self.leverage), float(self.fee_rate))\n        # Both directions share ex-ante admissibility at the SAME flat account.\n        # No fictitious profit target or additional physical buffer is imposed.\n        plans = {side: entry_plan(price, capital, margin, leverage, fee, side, 2*atr)\n                 for side in (1, -1)}\n        if any(p is None or not math.isfinite(p[\"qty\"]) or p[\"qty\"] <= 0\n               for p in plans.values()):\n            self.vars[\"season_plan_rejections\"] = self.vars.get(\"season_plan_rejections\", 0) + 1\n            return\n        if plans[1][\"stop\"] <= 0:\n            return\n        direction = 1 if forecast > 0 else -1\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plans[direction]\n        self.vars[\"season_evidence\"] = dict(\n            freeze=model[\"day\"], phase=int((now % DAY)//BAR),\n            forecast=forecast, global_mean=model[\"global_mean\"],\n            phase_means=list(model[\"phase_means\"]), counts=list(model[\"counts\"]),\n            first_origin=model[\"first_origin\"], last_target=model[\"last_target\"])\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        self._log(\"R20_SEASON_OPEN\", dict(time=int(self.time),\n                  direction=1 if self.is_long else -1,\n                  entry=float(self.position.entry_price),\n                  evidence=self.vars[\"season_evidence\"]))\n\n    def update_position(self):\n        # Parent AR holds6BAR. T's preregistered forecast/timeout are BOTH1BAR;\n        # protective stop remains M1 and no other exit rule is changed.\n        if int(self.time) % BAR == 0 and int(self.time)-int(self.position.opened_at) >= BAR:\n            self.liquidate()\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R20_SEASON_STATS\", dict(stage=stage,\n                  freezes=self.vars.get(\"season_freezes\", 0),\n                  invalidations=self.vars.get(\"season_invalidations\", {}),\n                  occupied=self.vars.get(\"occupied\", 0),\n                  plan_rejections=self.vars.get(\"season_plan_rejections\", 0)))\n",
+    "BtcResearchR20SeasonPhase1m": "from strategies.BtcResearchR20SeasonBase1m import BtcResearchR20SeasonBase1m\n\n\nclass BtcResearchR20SeasonPhase1m(BtcResearchR20SeasonBase1m):\n    MODE = \"PHASE\"\n",
+    "BtcResearchR20SeasonGlobal1m": "from strategies.BtcResearchR20SeasonBase1m import BtcResearchR20SeasonBase1m\n\n\nclass BtcResearchR20SeasonGlobal1m(BtcResearchR20SeasonBase1m):\n    MODE = \"GLOBAL\"\n"
+  },
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "a958beca-1611-4f88-bc96-d5cb62e33da6",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery T | PHASE UTC phase versus drift",
+      "description": "Retorno4h: medias90dias por6fasesUTC vsGLOBALmismas540labels,freeze00UTC,no refitintradía,hurdle.0019,SL2ATRsimple/noTP4h,2%/6%/3x10kfee.00045fundingON. Desarrolloadaptativo,notOOS.",
+      "description_truncated": false,
+      "created_at": 1792616044000,
+      "updated_at": 1792616044000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR20SeasonPhase1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 600,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/a958beca-1611-4f88-bc96-d5cb62e33da6"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "6b0c5fca-4634-47e8-8de8-50e24288f7c6",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery T | GLOBAL UTC phase versus drift",
+      "description": "Retorno4h: medias90dias por6fasesUTC vsGLOBALmismas540labels,freeze00UTC,no refitintradía,hurdle.0019,SL2ATRsimple/noTP4h,2%/6%/3x10kfee.00045fundingON. Desarrolloadaptativo,notOOS.",
+      "description_truncated": false,
+      "created_at": 1792616044000,
+      "updated_at": 1792616044000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR20SeasonGlobal1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 600,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/6b0c5fca-4634-47e8-8de8-50e24288f7c6"
+    }
+  ],
+  "reviews": "Root +btc_next_material read protocol/sources, no material discrepancy. Synthetic PASS155 after harness false-positive research/BtcResearch; no source change. Real runtime retention/economics pending.",
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "no_2026_stress_riskvariants": true
+}

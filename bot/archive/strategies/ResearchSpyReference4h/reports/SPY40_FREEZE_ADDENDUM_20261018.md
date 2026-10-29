@@ -1,0 +1,14 @@
+# SPY40 — matriz aprobada y precisiones antes de código
+
+Root aceptó las diez recetas tras leer la matriz completa. Esta adenda prevalece en los puntos indicados; no se han observado resultados R40.
+
+1. SPY40-02:13retornos de partición CONTIGUA: log(C1/Oapertura), luego log(Ci/Ci−1),i2..13. Suman el retorno cash e incluyen uniones entre30m. RV/BV yJ>=1/3 siguen siendo heurísticos con13puntos, NO test asintótico formal. Referencia conceptual primaria revisada por root: https://shephard.scholars.harvard.edu/sites/g/files/omnuum7741/files/power.pdf .
+2. SPY40-04: ordinal entropy sobre triples; empates invalidan la sesión y se declara la ausencia. Fuente conceptual revisada por root: https://doi.org/10.1103/PhysRevLett.88.174102 . No se atribuye a ese paper un edge enSPYCFD.
+3. SPY40-01: retención fija de300B completos, mínimo100B antes de evaluar bandpass defaults20/0,3. Guardar últimos20bp observados y último normalized de cada decisión; amplitud usa20snapshots ANTERIORES. No reconstruir pasado desde valores desplazados/recalculados. NaN invalida señal de ese origen, sin sustituir una serie con datos futuros.
+4. Historia diaria retenida400D y de B300. Son límites técnicos superiores a lookbacks252/180/60 y20; los episodios mantienen anclas propias aun si envejecen. B se construye independientemente por cada grupo de cuatro30m RTH: un hueco temprano invalidaD, pero no impide usar un bloque posterior que sí tenga sus cuatrobarras completas. No se exige prefijo diario completo a unB que no lo necesita.
+5. SPY40-05/07: todos los labels terminan enD<=actual y proceden deorigen<actual. El origen actual no tiene label y no entrena. Salida al primerDcompleto posterior alfill, failsafe120h ydeuda dequotepropia. No confundir horizonte observado con24hcalendarias ni añadir restricciones tras resultados.
+6. SPY40-06: ratio usa20rangosBprevios y20retornos entre21closes previos; se necesita al menos22B contando el actual. Sus retornos entre días incluyen nocturno; el rangoB no. Guardar el ratio observado para cruces.
+7. SPY40-08: frecuencia prevista BAJA, algunas semanas/año, sin prometer mensual ni agregar filtros. Si escaseaN, inconcluso sin rescate.
+8. SPY40-10: confirmar dos tests fallidos y retirada decreciente, luego breakout en unB posterior. Consumir nivel/dirección armado incluso si vence, sinreplay. Root revisará latch en código.
+9. Root decidió mantener debug_mode=false y configloggingactual. Sin cambiosglobales, hookfinal no documentado ni logsdiarios nuevos. Se pueden mantener countersinternos baratos, pero snapshots no exportanvars yloslogsMCP pueden no existir: no afirmar cobertura ni estados ocupados/intermedios no observados. La experienciaR20 confirma esta limitación.
+10. Clase autocontenida por receta, readbackexacto ysnapshotprevio a ejecución. Root revisa motor común+10señales antes de primerosdosfulls. Ninguna compra/datos/framework/scriptsnuevos, ni2026.

@@ -1,0 +1,231 @@
+{
+  "phase": "W_pre_economic",
+  "at": "2026-10-21 21:47:30 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_W_PROTOCOL_20261021.md",
+  "technical_receipt": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_W_TECHNICAL_CHECK_RECEIPT_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "b467a1f27b984da9a413a21eaac103c9",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/b467a1f27b984da9a413a21eaac103c9",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 1395,
+      "exit_code": 0,
+      "started_at": "2026-10-21T21:44:05+00:00",
+      "finished_at": "2026-10-21T21:44:05+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T21:44:05+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "technical_check.json",
+        "size_bytes": 1004,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"PASS\", \"assertions\": 129, \"source_sha256\": {\"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"BtcResearchR12ArBase1m\": \"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343\", \"BtcResearchR23PassageBase1m\": \"d8ac03f4b02fa3c471fdac510a6d9b2f36c2aa80cd3c0a65661a0cd887fafccc\", \"BtcResearchR23PassageState1m\": \"e9081120f22dc4d2afac6fc26dbcbb2893b41131968148b7d0921792534cb157\", \"BtcResearchR23PassageType1m\": \"08b7695bfe1ca0f9d500a7c9fd7025228cf5de2c9031f5874ee2609de03294fb\"}, \"scope\": \"Supplied AST/stubs and independent mathematical first-passage/replay oracle only; no framework/real strategy imports, observed candles, session inputs or nested backtests.\", \"limits\": \"Synthetic callback tests do not establish runtime coverage, all broker conventions, predictive utility, statistical confidence or OOS.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR23PassageState1m": "from strategies.BtcResearchR23PassageBase1m import BtcResearchR23PassageBase1m\n\n\nclass BtcResearchR23PassageState1m(BtcResearchR23PassageBase1m):\n    MODE = \"STATE\"\n",
+    "BtcResearchR23PassageType1m": "from strategies.BtcResearchR23PassageBase1m import BtcResearchR23PassageBase1m\n\n\nclass BtcResearchR23PassageType1m(BtcResearchR23PassageBase1m):\n    MODE = \"TYPE_CONTROL\"\n",
+    "BtcResearchR23PassageBase1m": "import math\n\nimport numpy as np\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef passage_anchor(now, price, atr):\n    \"\"\"Guard absolute barriers physically; no buffer or outcome-based repair.\"\"\"\n    if atr is None or not all(math.isfinite(v) for v in (price, atr)):\n        return None\n    lower, upper = price - 2*atr, price + 2*atr\n    if not (price > 0 and atr > 0 and math.isfinite(lower)\n            and math.isfinite(upper) and lower > 0 and upper > 0):\n        return None\n    return dict(a=float(price), d=float(atr), t0=int(now), s=0, t1=None)\n\n\ndef passage_machine(anchor, now, price, atr):\n    \"\"\"One close, at most one passage; current ATR cannot erase old frozen d.\"\"\"\n    if anchor is None:\n        new = passage_anchor(now, price, atr)\n        return new, None, \"seed\" if new is not None else \"anchor_invalid\"\n    assert now > anchor[\"t0\"]\n    a, d = anchor[\"a\"], anchor[\"d\"]\n    if anchor[\"t1\"] is None:\n        sign = 1 if price >= a+d else -1 if price <= a-d else 0\n        if not sign:\n            return anchor, None, \"wait_first\"\n        if sign*(price-a) >= 2*d:\n            # No invented intermediate timestamp or same-close new first passage.\n            return passage_anchor(now, price, atr), None, \"degenerate\"\n        return dict(anchor, s=sign, t1=int(now)), None, \"first\"\n    assert now > anchor[\"t1\"]\n    z = anchor[\"s\"]*(price-a)\n    if 0 < z < 2*d:\n        return anchor, None, \"wait_second\"\n    kind = \"REV\" if z <= 0 else \"CONT\"\n    r = -anchor[\"s\"] if kind == \"REV\" else anchor[\"s\"]\n    u, v = anchor[\"t1\"]-anchor[\"t0\"], now-anchor[\"t1\"]\n    assert u > 0 and v > 0\n    event = dict(type=kind, fast=bool(v < u), r=int(r), t0=anchor[\"t0\"],\n                 t1=anchor[\"t1\"], t2=int(now), a=a, d=d, u=int(u), v=int(v),\n                 entry=float(price))\n    return passage_anchor(now, price, atr), event, \"event\"\n\n\ndef passage_model():\n    return dict(anchor=None, last=None, pending=[], bank=[])\n\n\ndef passage_advance(model, now, price, atr):\n    \"\"\"Mature before observing today's event. No orders/occupancy/model mode.\"\"\"\n    assert math.isfinite(price) and price > 0\n    reset = model[\"last\"] is not None and now != model[\"last\"]+BAR\n    if reset:\n        model.clear()\n        model.update(passage_model())\n    matured = 0\n    remaining = []\n    for pending in model[\"pending\"]:\n        age = now-pending[\"t2\"]\n        assert age > 0 and age % BAR == 0 and age <= 6*BAR\n        if age == 6*BAR:\n            y = pending[\"r\"]*(math.log(price)-math.log(pending[\"entry\"]))\n            assert math.isfinite(y)\n            model[\"bank\"].append(dict(type=pending[\"type\"], fast=pending[\"fast\"],\n                                      y=float(y), t2=pending[\"t2\"], matured=int(now)))\n            if len(model[\"bank\"]) > 240:\n                model[\"bank\"].pop(0)\n            matured += 1\n        else:\n            remaining.append(pending)\n    model[\"pending\"] = remaining\n    # This call is deliberately AFTER maturation and independent of atr validity.\n    model[\"anchor\"], event, action = passage_machine(model[\"anchor\"], now, price, atr)\n    if event is not None:\n        model[\"pending\"].append(dict(event))\n    model[\"last\"] = int(now)\n    return event, dict(action=action, matured=matured, gap_reset=bool(reset),\n                       reset_anchor_invalid=model[\"anchor\"] is None)\n\n\ndef passage_bootstrap(rows):\n    \"\"\"Exactly1000 closed rows, row14 seed; replay once, never submit a trade.\"\"\"\n    assert len(rows) == 1000\n    model, counts = passage_model(), {}\n    for j in range(14, 1000):\n        now = int(rows[j, 0])+BAR\n        atr = atr14(rows[j-14:j+1])\n        event, info = passage_advance(model, now, float(rows[j, 2]), atr)\n        counts[info[\"action\"]] = counts.get(info[\"action\"], 0)+1\n        counts[\"matured\"] = counts.get(\"matured\", 0)+info[\"matured\"]\n        counts[\"bars\"] = counts.get(\"bars\", 0)+1\n        if event is not None:\n            cell = event[\"type\"]+(\"_FAST\" if event[\"fast\"] else \"_SLOW\")\n            counts[cell] = counts.get(cell, 0)+1\n            counts[\"ties\"] = counts.get(\"ties\", 0)+int(event[\"u\"] == event[\"v\"])\n    return model, counts\n\n\ndef passage_forecasts(bank, event):\n    \"\"\"The SAME complete240 bank/shared20-cell domain for both conditional means.\"\"\"\n    if len(bank) != 240:\n        return None\n    cell = [item[\"y\"] for item in bank\n            if item[\"type\"] == event[\"type\"] and item[\"fast\"] == event[\"fast\"]]\n    group = [item[\"y\"] for item in bank if item[\"type\"] == event[\"type\"]]\n    if len(cell) < 20 or not all(math.isfinite(v) for v in group):\n        return None\n    state, by_type = float(np.mean(cell)), float(np.mean(group))\n    if not all(math.isfinite(v) for v in (state, by_type)):\n        return None\n    return dict(state_mean=state, type_mean=by_type, cell_n=len(cell), type_n=len(group),\n                bank_first=bank[0][\"t2\"], bank_last=bank[-1][\"t2\"])\n\n\nclass BtcResearchR23PassageBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def _passage_count(self, name, amount=1):\n        stats = self.vars.setdefault(\"passage_runtime_counts\", {})\n        stats[name] = stats.get(name, 0)+amount\n\n    def _passage_reset(self, reason):\n        # A market-data discontinuity discards all predictive history. This is\n        # NOT a second bootstrap and cannot cancel broker stops/time exits.\n        self.vars[\"passage_model\"] = passage_model()\n        self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n        self._passage_count(\"invalid:\"+reason)\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"STATE\", \"TYPE_CONTROL\")\n            self.vars[\"checked\"] = True\n            self._log(\"R23_PASSAGE_CONFIG\", dict(mode=self.MODE, bootstrap_rows=1000,\n                      seed_row=14, bank=240, cell_min=20, horizon_hours=24,\n                      stop_atr=2, target=None, risk=.02, aggregate=.06,\n                      leverage=3, fee=.00045, feature=\"observed_type_fast_not_pure_speed\"))\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR or now > self.FINISH:\n            return\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        if not self.vars.get(\"passage_bootstrapped\"):\n            rows = closed_window(candles, now, 1000)\n            if (rows is None or not np.all(rows[:, 0] % BAR == 0)\n                    or not math.isclose(float(rows[-1, 2]), float(self.price),\n                                        rel_tol=1e-10, abs_tol=1e-8)):\n                self._passage_count(\"bootstrap_wait\")\n                return\n            model, counts = passage_bootstrap(rows)\n            self.vars[\"passage_model\"] = model\n            self.vars[\"passage_bootstrap_counts\"] = counts\n            self.vars[\"passage_bootstrapped\"] = True\n            self.vars[\"passage_initialized_at\"] = now\n            self._log(\"R23_PASSAGE_BOOTSTRAP\", dict(time=now, counts=counts,\n                      bank=len(model[\"bank\"]), pending=len(model[\"pending\"])))\n            # The last replay event is mathematical, never a queued first trade.\n            return\n        rows = closed_window(candles, now, 15)\n        if rows is None or not np.all(rows[:, 0] % BAR == 0):\n            self._passage_reset(\"ohlc_or_clock\")\n            return\n        if not math.isclose(float(rows[-1, 2]), float(self.price),\n                            rel_tol=1e-10, abs_tol=1e-8):\n            self._passage_reset(\"asof_price\")\n            return\n        model = self.vars[\"passage_model\"]\n        atr = atr14(rows)\n        # ATR0/None blocks ONLY new anchor/order; old pending and frozen-d phase\n        # still advance on this valid close. Never return before this call.\n        event, info = passage_advance(model, now, float(rows[-1, 2]), atr)\n        self._passage_count(\"bars\")\n        self._passage_count(info[\"action\"])\n        self._passage_count(\"matured\", info[\"matured\"])\n        self._passage_count(\"gap_reset\", int(info[\"gap_reset\"]))\n        if event is None:\n            return\n        self._passage_count(event[\"type\"]+(\"_FAST\" if event[\"fast\"] else \"_SLOW\"))\n        self._passage_count(\"ties\", int(event[\"u\"] == event[\"v\"]))\n        forecasts = passage_forecasts(model[\"bank\"], event)\n        if forecasts is None:\n            self._passage_count(\"insufficient_bank_or_cell\")\n            return\n        mean = forecasts[\"state_mean\"] if self.MODE == \"STATE\" else forecasts[\"type_mean\"]\n        score = event[\"r\"]*mean\n        if abs(score) <= .0019 or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        if atr is None:\n            self._passage_count(\"entry_atr_invalid\")\n            return\n        direction = 1 if score > 0 else -1\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n        self.vars[\"passage_evidence\"] = dict(event=event, score=score, **forecasts)\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        entry = float(self.position.entry_price)\n        direction = 1 if self.is_long else -1\n        opened = int(self.position.opened_at)\n        evidence = self.vars[\"passage_evidence\"]\n        self._log(\"R23_PASSAGE_OPEN\", dict(mode=self.MODE, time=int(self.time),\n                  entry=entry, actual_stop=entry-direction*self.vars[\"plan\"][\"distance\"],\n                  actual_opened=opened, position_deadline=opened+6*BAR,\n                  label_deadline=evidence[\"event\"][\"t2\"]+6*BAR,\n                  evidence=evidence))\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        model = self.vars.get(\"passage_model\", passage_model())\n        cells = {kind+(\"_FAST\" if fast else \"_SLOW\"): sum(\n                    item[\"type\"] == kind and item[\"fast\"] == fast for item in model[\"bank\"])\n                 for kind in (\"REV\", \"CONT\") for fast in (False, True)}\n        anchor = model[\"anchor\"]\n        self._log(\"R23_PASSAGE_STATS\", dict(stage=stage, mode=self.MODE,\n                  initialized=self.vars.get(\"passage_initialized_at\"),\n                  bootstrap=self.vars.get(\"passage_bootstrap_counts\", {}),\n                  runtime=self.vars.get(\"passage_runtime_counts\", {}),\n                  bank=len(model[\"bank\"]), cells=cells, pending=len(model[\"pending\"]),\n                  last=model[\"last\"],\n                  terminal_censored_labels=len(model[\"pending\"]) if int(self.time) >= self.FINISH else 0,\n                  incomplete_episode=anchor is not None,\n                  first_passage_seen=bool(anchor is not None and anchor[\"t1\"] is not None)))\n"
+  },
+  "reviews": "Root and btc_next_material independently read protocol and all final sources, conform. Root read full synthetic harness and receipts;129 final checks PASS, overlap117 initial. Instrumentation only after first version. Parents unchanged.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "bfbcc16b-5acb-4659-a087-66bbf3b31371",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery W | STATE | episodios y duración relativa",
+      "description": "Dos pasajes de cierre con barreras competidoras. STATE por (tipo,fast) frente TYPE_CONTROL por tipo. Banco rolling 240 labels maduros, celda común20, bootstrap matemático1000 una vez. No velocidad pura. SL2ATRsimple actual/noTP24h.10k/2%/6%/3x,fee.00045,fundingBTC histórico. Desarrollo adaptativo.",
+      "description_truncated": false,
+      "created_at": 1792619233000,
+      "updated_at": 1792619240000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR23PassageState1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 1000,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/bfbcc16b-5acb-4659-a087-66bbf3b31371"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "c5f3e262-5e40-4127-8e3e-d60234e5f880",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery W | TYPE_CONTROL | episodios y duración relativa",
+      "description": "Dos pasajes de cierre con barreras competidoras. STATE por (tipo,fast) frente TYPE_CONTROL por tipo. Banco rolling 240 labels maduros, celda común20, bootstrap matemático1000 una vez. No velocidad pura. SL2ATRsimple actual/noTP24h.10k/2%/6%/3x,fee.00045,fundingBTC histórico. Desarrollo adaptativo.",
+      "description_truncated": false,
+      "created_at": 1792619233000,
+      "updated_at": 1792619240000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR23PassageType1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 1000,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/c5f3e262-5e40-4127-8e3e-d60234e5f880"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "limits": "No neighbors, risk/cost stress, new2026, imports/live/paper. Observed type+fast not pure speed. No runtime coverage or predictive utility established by synthetic checks."
+}

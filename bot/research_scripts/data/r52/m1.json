@@ -1,0 +1,244 @@
+{
+ "protocol": "PROTOCOL_R54.md M1",
+ "n_final": 125,
+ "features": [
+  "z_qoi",
+  "fund7",
+  "vol30",
+  "ret4w",
+  "adx14",
+  "dist_e80_atr",
+  "btc_regime",
+  "btc_ret7"
+ ],
+ "asserts": {
+  "SOLUSDT_vision": true,
+  "BTCUSDT_vision": true,
+  "BTC_long_r51": true,
+  "ETH_long_r51": true,
+  "BTC_common_r51": true,
+  "ETH_common_r51": true,
+  "alts_unsized_eq_v1_curves": true,
+  "BTC_long_c6_eq_r51": true,
+  "ETH_long_c6_eq_r51": true,
+  "BTC_common_c6_eq_r51": true,
+  "ETH_common_c6_eq_r51": true
+ },
+ "declared": [
+  "labels from pass 1 (m == 1); sizing changes equity and hence R normalization, ignored",
+  "missing features (e.g. z(QOI) before 540 bars of history) imputed with the training mean",
+  "R3 sizing uses the model/features of the bar that places the limit (signal bar)",
+  "quarter of a signal = quarter of its 4h bar close time",
+  "BTC/ETH long-window (spot) C6 is sized with features from its spot bars and perp funding/QOI files"
+ ],
+ "events": {
+  "total_closed": 2590,
+  "by_sleeve": {
+   "R2": 1017,
+   "R3": 1573
+  },
+  "btc_eth": 136
+ },
+ "train_n_per_refit": {
+  "2022-01-01": {
+   "n": 422,
+   "pos_rate": 0.2796208530805687
+  },
+  "2022-04-01": {
+   "n": 533,
+   "pos_rate": 0.25328330206378985
+  },
+  "2022-07-01": {
+   "n": 598,
+   "pos_rate": 0.2826086956521739
+  },
+  "2022-10-01": {
+   "n": 739,
+   "pos_rate": 0.2476319350473613
+  },
+  "2023-01-01": {
+   "n": 836,
+   "pos_rate": 0.2236842105263158
+  },
+  "2023-04-01": {
+   "n": 978,
+   "pos_rate": 0.2443762781186094
+  },
+  "2023-07-01": {
+   "n": 1070,
+   "pos_rate": 0.23551401869158878
+  },
+  "2023-10-01": {
+   "n": 1134,
+   "pos_rate": 0.2275132275132275
+  },
+  "2024-01-01": {
+   "n": 1404,
+   "pos_rate": 0.23504273504273504
+  },
+  "2024-04-01": {
+   "n": 1581,
+   "pos_rate": 0.24035420619860848
+  },
+  "2024-07-01": {
+   "n": 1654,
+   "pos_rate": 0.23458282950423218
+  },
+  "2024-10-01": {
+   "n": 1849,
+   "pos_rate": 0.23634396971335858
+  },
+  "2025-01-01": {
+   "n": 2022,
+   "pos_rate": 0.2542037586547972
+  },
+  "2025-04-01": {
+   "n": 2133,
+   "pos_rate": 0.2437880918893577
+  },
+  "2025-07-01": {
+   "n": 2290,
+   "pos_rate": 0.2388646288209607
+  },
+  "2025-10-01": {
+   "n": 2523,
+   "pos_rate": 0.24296472453428458
+  }
+ },
+ "oos": {
+  "n": 1600,
+  "pos_rate": 0.2475,
+  "auc": 0.42542115507231787,
+  "mean_p": 0.25850850457842695,
+  "mean_m": 0.5679939331860008
+ },
+ "mean_m_2022_2024": {
+  "n_entries": 1600,
+  "mean": 0.5679939331860008,
+  "min": 0.5,
+  "max": 1.2038166790899525,
+  "share_at_floor": 0.626875,
+  "share_at_cap": 0.0
+ },
+ "a_alts_basket": {
+  "unsized": {
+   "from": "2022-01-01",
+   "to": "2024-12-31",
+   "sharpe": 0.6473958958024848,
+   "cagr": 0.01298058312082162,
+   "max_dd": -0.024222118852910146,
+   "quarters_pos": 0.4166666666666667
+  },
+  "sized": {
+   "from": "2022-01-01",
+   "to": "2024-12-31",
+   "sharpe": 0.556582669650951,
+   "cagr": 0.0065727714199872445,
+   "max_dd": -0.01675063425758705,
+   "quarters_pos": 0.4166666666666667
+  },
+  "d_sharpe": -0.09081322615153375,
+  "pass": false
+ },
+ "b_p1": {
+  "pass": false,
+  "d_sharpe_long": -0.06521728845276487,
+  "d_q_pos_long": 0,
+  "d_sharpe_common": -0.04130770903686165,
+  "detail": {
+   "long": {
+    "base": {
+     "from": "2018-09-30",
+     "cagr": 0.4124300570479804,
+     "max_dd": -0.14268678307703875,
+     "sharpe": 1.6770789188230495,
+     "months_pos": 0.6052631578947368,
+     "quarters_pos": 0.7307692307692307,
+     "q_pos_count": 19,
+     "n_quarters": 26,
+     "dsr": 0.9787453580397766
+    },
+    "with": {
+     "from": "2018-09-30",
+     "cagr": 0.37121453881945654,
+     "max_dd": -0.14268678307703875,
+     "sharpe": 1.6118616303702846,
+     "months_pos": 0.631578947368421,
+     "quarters_pos": 0.7307692307692307,
+     "q_pos_count": 19,
+     "n_quarters": 26,
+     "dsr": 0.9666170527305125
+    },
+    "from": "2018-05-05"
+   },
+   "common": {
+    "base": {
+     "from": "2021-02-28",
+     "cagr": 0.29174906410760304,
+     "max_dd": -0.13981786141590935,
+     "sharpe": 1.6049503395909597,
+     "months_pos": 0.5106382978723404,
+     "quarters_pos": 0.6875,
+     "q_pos_count": 11,
+     "n_quarters": 16,
+     "dsr": 0.7217836777077018
+    },
+    "with": {
+     "from": "2021-02-28",
+     "cagr": 0.23758446901559882,
+     "max_dd": -0.12224938216073433,
+     "sharpe": 1.563642630554098,
+     "months_pos": 0.5531914893617021,
+     "quarters_pos": 0.6875,
+     "q_pos_count": 11,
+     "n_quarters": 16,
+     "dsr": 0.6832537180764355
+    },
+    "from": "2020-10-16"
+   }
+  }
+ },
+ "b_c6_component_2022_2024": {
+  "long": {
+   "unsized": {
+    "from": "2022-01-01",
+    "to": "2024-12-31",
+    "sharpe": 1.4700964846640794,
+    "cagr": 0.09090127461935671,
+    "max_dd": -0.03977223214708836,
+    "quarters_pos": 0.5833333333333334
+   },
+   "sized": {
+    "from": "2022-01-01",
+    "to": "2024-12-31",
+    "sharpe": 1.4367964217731308,
+    "cagr": 0.04773069414367037,
+    "max_dd": -0.021057489594646372,
+    "quarters_pos": 0.5833333333333334
+   }
+  },
+  "common": {
+   "unsized": {
+    "from": "2022-01-01",
+    "to": "2024-12-31",
+    "sharpe": 1.353019160439263,
+    "cagr": 0.07948027197123575,
+    "max_dd": -0.0335347827578758,
+    "quarters_pos": 0.5833333333333334
+   },
+   "sized": {
+    "from": "2022-01-01",
+    "to": "2024-12-31",
+    "sharpe": 1.3098206797825003,
+    "cagr": 0.0416294672095463,
+    "max_dd": -0.02505380734933349,
+    "quarters_pos": 0.5833333333333334
+   }
+  }
+ },
+ "gate": {
+  "b_pass": false,
+  "a_pass": false,
+  "pass": false
+ }
+}

@@ -1,0 +1,236 @@
+{
+  "phase": "S_pre_economic",
+  "at": "2026-10-21 20:49:08 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_S_PROTOCOL_20261021.md",
+  "technical_check": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_S_TECHNICAL_CHECK_20261021.json",
+  "technical_check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "1a13343c98ea41adbf0ee4bb6d97ab74",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/1a13343c98ea41adbf0ee4bb6d97ab74",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 715,
+      "exit_code": 0,
+      "started_at": "2026-10-21T20:47:32+00:00",
+      "finished_at": "2026-10-21T20:47:33+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T20:47:33+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "check.json",
+        "size_bytes": 1285,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"passed\", \"assertions\": 1900, \"source_sha256\": \"9a5f5dd5232dc62d32368f337c6a7dcef7e20577320bd13fdf092bb557752314\", \"ar_parent_sha256\": \"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343\", \"observer_sha256\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"helper_sha256\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"scope\": \"supplied-source AST and entirely synthetic OHLC/M1 arrays/artificial engine fields; no actual strategies/framework imports, observed prices, real broker, nested backtest or economic jobs\", \"tests\": \"380/372padding8/360origins14..373;ATRfirst0..14;1440completeM1/sharedvalid;deadlineevenearlystops;firststop/gapbothsides/lastminstopfirst;feeonlypernotional/nofundinglabels;cacheparity/359hits1new/purge/invalidmature/nofuturecache;asofsearchsortedviews;20/19/currentzero;top20ties/GLOBALall/2utilities/argmaxlongtie/hurdle;occupiednoqueue/new4h;actualfillrisk/SLnoTP24h/FINAL\", \"limits\": \"Full runtime M1 history/cadence and actual broker execution remain untested. Labels are mathematical fee-only counterfactuals, not full net outcomes; funding remains required on actual held-position ledger. Delayed fill can move actual first4h expiry beyond exact origin24hlabel.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR19UtilityBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\nMINUTE = 60000\nDAY = 6*BAR\nLABEL_FEE = .00045\n\n\ndef utility_label(origin_rows, minutes, origin_time, now):\n    \"\"\"Two mathematical fee-only outcomes, not trades/orders or full net PnL.\"\"\"\n    deadline = origin_time+DAY\n    if now < deadline:\n        return dict(mature=False, valid=False, reason=\"immature\", deadline=deadline)\n    record = dict(mature=True, valid=False, deadline=deadline)\n    if len(origin_rows) != 15:\n        return dict(record, reason=\"atr_history\")\n    entry = float(origin_rows[-1, 2])\n    atr = atr14(origin_rows)\n    distance = 2*atr if atr is not None else float(\"nan\")\n    if not (math.isfinite(entry) and math.isfinite(distance) and 0 < distance < entry):\n        return dict(record, reason=\"atr_or_stop\")\n    # Search views; never copy/filter/scan the growing full M1 buffer.\n    times = minutes[:, 0]\n    left = int(np.searchsorted(times, origin_time, side=\"left\"))\n    right = int(np.searchsorted(times, deadline, side=\"left\"))\n    path = minutes[left:right]\n    if len(path) != 1440:\n        return dict(record, reason=\"m1_count\")\n    expected = origin_time+np.arange(1440, dtype=np.int64)*MINUTE\n    if not np.array_equal(path[:, 0], expected):\n        return dict(record, reason=\"m1_clock\")\n    if int(path[-1, 0])+MINUTE > now:\n        return dict(mature=False, valid=False, reason=\"immature\", deadline=deadline)\n    if (not np.all(np.isfinite(path[:, :5])) or np.any(path[:, 1:5] <= 0)\n            or np.any(path[:, 3] < np.maximum(path[:, 1], path[:, 2]))\n            or np.any(path[:, 4] > np.minimum(path[:, 1], path[:, 2]))):\n        return dict(record, reason=\"m1_ohlc\")\n    outcomes, exits, touches = [], [], []\n    for side in (1, -1):\n        stop = entry-side*distance\n        hit = path[:, 4] <= stop if side == 1 else path[:, 3] >= stop\n        indices = np.flatnonzero(hit)\n        if len(indices):\n            index = int(indices[0])\n            opening = float(path[index, 1])\n            exit_price = min(opening, stop) if side == 1 else max(opening, stop)\n            touch = index\n        else:\n            exit_price = float(path[-1, 2])\n            touch = None\n        payoff = side*(exit_price-entry)/entry-LABEL_FEE*(entry+exit_price)/entry\n        if not math.isfinite(payoff):\n            return dict(record, reason=\"nonfinite_payoff\")\n        outcomes.append(float(payoff))\n        exits.append(float(exit_price))\n        touches.append(touch)\n    # Funding deliberately absent: real held-position ledger still pays funding.\n    return dict(record, valid=True, reason=None, entry=entry, distance=distance,\n                outcomes=outcomes, exits=exits, touches=touches)\n\n\ndef utility_sample(rows, minutes, now, cache, counters):\n    \"\"\"Fixed360 origins with8 padding bars; cache only immutable mature pairs.\"\"\"\n    assert len(rows) == 380\n    origins = np.arange(14, 374, dtype=int)\n    origin_times = [int(rows[i, 0])+BAR for i in origins]\n    expected = set(origin_times)\n    for key in tuple(cache):\n        if key not in expected:\n            del cache[key]\n            counters[\"cache_purged\"] = counters.get(\"cache_purged\", 0)+1\n    # A binary asof boundary avoids an O(total M1 history) mask/copy every4h.\n    right = int(np.searchsorted(minutes[:, 0], now-MINUTE, side=\"right\"))\n    closed_minutes = minutes[:right]\n    counters[\"m1_visible_rows\"] = right\n    counters[\"m1_oldest\"] = int(closed_minutes[0, 0]) if right else None\n    counters[\"fixed_origins\"] = 360\n    logs = np.log(rows[:, 2])\n    returns = np.diff(logs)\n    raw_vectors = returns[origins[:, None]-6+np.arange(6)]\n    norms = np.linalg.norm(raw_vectors, axis=1)\n    current = returns[-6:]\n    current_norm = float(np.linalg.norm(current))\n    eligible_origins, vectors, outcomes = [], [], []\n    feature_invalid = 0\n    for j, i in enumerate(origins):\n        origin_time = origin_times[j]\n        if origin_time in cache:\n            record = cache[origin_time]\n            counters[\"cache_hits\"] = counters.get(\"cache_hits\", 0)+1\n        else:\n            counters[\"cache_misses\"] = counters.get(\"cache_misses\", 0)+1\n            record = utility_label(rows[i-14:i+1], closed_minutes, origin_time, now)\n            if record[\"mature\"]:\n                cache[origin_time] = record\n                key = \"labels_valid\" if record[\"valid\"] else \"labels_invalid\"\n                counters[key] = counters.get(key, 0)+1\n                if not record[\"valid\"]:\n                    reasons = counters.setdefault(\"invalid_reasons\", {})\n                    reason = record[\"reason\"]\n                    reasons[reason] = reasons.get(reason, 0)+1\n            else:\n                counters[\"future_denied\"] = counters.get(\"future_denied\", 0)+1\n        feature_valid = bool(np.all(np.isfinite(raw_vectors[j]))\n                             and math.isfinite(float(norms[j])) and norms[j] > 0)\n        feature_invalid += int(not feature_valid)\n        if record[\"valid\"] and feature_valid:\n            eligible_origins.append(int(i))\n            vectors.append(raw_vectors[j]/norms[j])\n            outcomes.append(record[\"outcomes\"])\n    count = len(eligible_origins)\n    counters[\"common_valid\"] = count\n    counters[\"common_valid_min\"] = min(counters.get(\"common_valid_min\", count), count)\n    counters[\"common_valid_max\"] = max(counters.get(\"common_valid_max\", count), count)\n    counters[\"feature_invalid\"] = feature_invalid\n    counters[\"cached\"] = len(cache)\n    counters[\"decisions\"] = counters.get(\"decisions\", 0)+1\n    if (not np.all(np.isfinite(current)) or not math.isfinite(current_norm)\n            or current_norm <= 0 or count < 20):\n        return None\n    return dict(origins=np.asarray(eligible_origins, dtype=int),\n                vectors=np.asarray(vectors), outcomes=np.asarray(outcomes),\n                current=current/current_norm)\n\n\ndef utility_choice(means):\n    \"\"\"LONG wins an exact positive tie; negative utilities never imply short.\"\"\"\n    long, short = float(means[0]), float(means[1])\n    if not math.isfinite(long) or not math.isfinite(short) or max(long, short) <= .0019:\n        return 0\n    return 1 if long >= short else -1\n\n\ndef utility_forecast(rows, minutes, now, cache, counters, nearest):\n    sample = utility_sample(rows, minutes, now, cache, counters)\n    if sample is None:\n        return 0, None\n    cosine = sample[\"vectors\"] @ sample[\"current\"]\n    if not np.all(np.isfinite(cosine)):\n        return 0, None\n    order = np.argsort(-cosine, kind=\"stable\")\n    chosen = order[:20] if nearest else np.arange(len(order))\n    means = np.mean(sample[\"outcomes\"][chosen], axis=0)\n    direction = utility_choice(means)\n    evidence = dict(long_utility=float(means[0]), short_utility=float(means[1]),\n        valid_origins=len(order), selected=len(chosen),\n        chosen_origins=[int(i) for i in sample[\"origins\"][chosen]] if nearest else None,\n        label_units=\"fee_only_per_initial_notional\", label_funding=False)\n    return direction, evidence\n\n\nclass BtcResearchR19UtilityBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-LABEL_FEE) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"KNN\", \"GLOBAL\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 380)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        minutes = self.get_candles(self.exchange, self.symbol, \"1m\")\n        counters = self.vars.setdefault(\"utility_counters\", {})\n        direction, evidence = utility_forecast(rows, minutes, now,\n            self.vars.setdefault(\"utility_cache\", {}), counters, self.MODE == \"KNN\")\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = dict(plan, utility=dict(evidence))\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        # Preserve actual-fill SL, noTP and24h/first4h-after-deadline semantics.\n        # Label entry at origin-close and exact24h is a declared counterfactual.\n        super().on_open_position(order)\n        direction = 1 if self.is_long else -1\n        key = \"long_fills\" if direction == 1 else \"short_fills\"\n        self.vars[key] = self.vars.get(key, 0)+1\n        self._log(\"R19_UTILITY_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            opened_at=int(self.position.opened_at), direction=direction,\n            evidence=self.vars[\"plan\"][\"utility\"]))\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R19_UTILITY_STATS\", dict(stage=stage, mode=self.MODE,\n            long_fills=self.vars.get(\"long_fills\", 0),\n            short_fills=self.vars.get(\"short_fills\", 0),\n            coverage=self.vars.get(\"utility_counters\", {}),\n            label_funding=False, actual_funding=\"historical_ledger_required\"))\n",
+    "BtcResearchR19UtilityKnn1m": "from strategies.BtcResearchR19UtilityBase1m import BtcResearchR19UtilityBase1m\n\n\nclass BtcResearchR19UtilityKnn1m(BtcResearchR19UtilityBase1m):\n    MODE = \"KNN\"\n",
+    "BtcResearchR19UtilityGlobal1m": "from strategies.BtcResearchR19UtilityBase1m import BtcResearchR19UtilityBase1m\n\n\nclass BtcResearchR19UtilityGlobal1m(BtcResearchR19UtilityBase1m):\n    MODE = \"GLOBAL\"\n"
+  },
+  "source_sha256": {
+    "base": "9a5f5dd5232dc62d32368f337c6a7dcef7e20577320bd13fdf092bb557752314",
+    "knn": "86b7541e309b946634ad0311f88de146cc321db37d240bb83f5da1b1907b3912",
+    "global": "8eb1b8d0bd70c596ea54fad7c790fae215d938dd55edcf68d4a349ee73ef4648"
+  },
+  "independent_review": "Root and btc_next_material read all three sources: no material discrepancy. Mapping/asof/cache/maturity/stops/fees/common sample/management conform; synthetic checks do not establish runtime M1 completeness/broker parity or predictive advantage.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "97da0472-42e2-4f1a-b5be-b63f02e44318",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery S | KNN fee-only stop payoff",
+      "description": "S: mismo KNN20/coseno L2 de R y GLOBAL360orígenes, target dos payoffs fee-only con stop2ATR/noTP24h; labels1440M1maduras,cachécausal; funding realON,2%/6%/3x10k. Desarrollo adaptativo, no OOS.",
+      "description_truncated": false,
+      "created_at": 1792615718000,
+      "updated_at": 1792615724000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR19UtilityKnn1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 400,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/97da0472-42e2-4f1a-b5be-b63f02e44318"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "1709388d-cc36-411b-bac0-7102b3fceb7e",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery S | GLOBAL fee-only stop payoff",
+      "description": "S: mismo KNN20/coseno L2 de R y GLOBAL360orígenes, target dos payoffs fee-only con stop2ATR/noTP24h; labels1440M1maduras,cachécausal; funding realON,2%/6%/3x10k. Desarrollo adaptativo, no OOS.",
+      "description_truncated": false,
+      "created_at": 1792615718000,
+      "updated_at": 1792615725000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR19UtilityGlobal1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 400,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/1709388d-cc36-411b-bac0-7102b3fceb7e"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "no_2026_stress": true
+}

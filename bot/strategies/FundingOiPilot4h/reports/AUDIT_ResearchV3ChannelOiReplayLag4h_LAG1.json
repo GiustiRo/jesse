@@ -1,0 +1,2295 @@
+{
+  "status": "passed",
+  "errors": [],
+  "scenario": "LAG1",
+  "session_id": "5fe5146d-cf80-4cc1-aed1-b2300b1eb888",
+  "dashboard_url": "http://localhost:9200/#/backtest/5fe5146d-cf80-4cc1-aed1-b2300b1eb888",
+  "strategy": "ResearchV3ChannelOiReplayLag4h",
+  "complete_audit": true,
+  "log_tail_only": true,
+  "buckets": 90,
+  "months": 24,
+  "totals": {
+    "bars": 4386,
+    "entries": 73,
+    "exits": 73,
+    "opportunities": 129
+  },
+  "primary": {
+    "no_setup": 3977,
+    "oi_initialization": 3,
+    "allowed": 73,
+    "in_position_or_pending": 120,
+    "regime_reject": 156,
+    "oi_nonrising": 52,
+    "boundary_or_inactive": 4,
+    "oi_zero": 1
+  },
+  "flags": {
+    "oi_initialization": 3,
+    "oi_nonrising": 52,
+    "oi_zero": 1
+  },
+  "post_audit_forced_closes": 0,
+  "provenance": {
+    "kind": "V3_PROVENANCE",
+    "line": "CHANNEL",
+    "use_oi": true,
+    "oi_lag_bars": 1,
+    "stop_multiplier": 2,
+    "trail_multiplier": 3,
+    "target_mode": "none",
+    "reward_multiple": 3,
+    "max_hold_bars": 42,
+    "start": 1704067200000,
+    "finish": 1767225600000,
+    "active_windows": [
+      [
+        1704067200000,
+        1719792000000
+      ],
+      [
+        1719792000000,
+        1735689600000
+      ],
+      [
+        1735689600000,
+        1751328000000
+      ],
+      [
+        1751328000000,
+        1767225600000
+      ]
+    ],
+    "force_boundaries": [
+      1719792000000,
+      1735689600000,
+      1751328000000,
+      1767225600000
+    ],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "summary": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "5fe5146d-cf80-4cc1-aed1-b2300b1eb888",
+    "session_status": "finished",
+    "title": "MCP Backtest: V3 REPLAY CHANNEL_POI LAG1",
+    "description": "Pre-frozen OI replay robustness LAG1; four calendar segments, initial10000; no reselection.",
+    "description_truncated": false,
+    "created_at": 1792540719000,
+    "updated_at": 1792540770000,
+    "execution_duration": 16.75,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "strategy": "ResearchV3ChannelOiReplayLag4h",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2024-01-01",
+      "finish_date": "2026-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": true,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      }
+    },
+    "metrics": {
+      "total": 73,
+      "total_winning_trades": 26,
+      "total_losing_trades": 47,
+      "starting_balance": 10000,
+      "finishing_balance": 13061.304959499976,
+      "win_rate": 0.3561643835616438,
+      "win_rate_longs": 0.36585365853658536,
+      "win_rate_shorts": 0.34375,
+      "ratio_avg_win_loss": 2.6663818955160647,
+      "longs_count": 41,
+      "longs_percentage": 56.16438356164384,
+      "shorts_percentage": 43.83561643835616,
+      "shorts_count": 32,
+      "fee": 593.9142031911607,
+      "net_profit": 3061.3049594999966,
+      "net_profit_percentage": 30.613049594999964,
+      "average_win": 365.61112494103486,
+      "average_loss": 137.1188146588704,
+      "expectancy": 41.93568437671229,
+      "expectancy_percentage": 0.4193568437671229,
+      "expected_net_profit_every_100_trades": 41.93568437671229,
+      "average_holding_period": 214309.31506849316,
+      "average_winning_holding_period": 332100,
+      "average_losing_holding_period": 149148.51063829788,
+      "gross_profit": 9505.889248466907,
+      "gross_loss": -6444.584288966909,
+      "max_drawdown": -13.796998479426481,
+      "max_underwater_period": 286,
+      "annual_return": 14.265191188509952,
+      "annualization": 365,
+      "sharpe_ratio": 0.8717089720503917,
+      "calmar_ratio": 1.0339343886847288,
+      "sortino_ratio": 1.5778978056600788,
+      "omega_ratio": 1.2488249769428748,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0,
+      "winning_streak": 4,
+      "losing_streak": 6,
+      "largest_losing_trade": -253.91376022608006,
+      "largest_winning_trade": 1538.8959487527545,
+      "current_streak": -2,
+      "avg_trades_per_day": 0.09986310622519928,
+      "avg_trades_per_week": 0.6990417435763949,
+      "avg_trades_per_month": 3.039832953495066,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": -195.87945852598955,
+        "rate_kind": "settled",
+        "event_count": 528,
+        "settlements_processed": 2193,
+        "mark_price_proxy_count": 0,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "max_age_ms": 600000,
+        "applied": true,
+        "status": "applied",
+        "scope": [
+          "BTC-USDT"
+        ],
+        "data": {
+          "archive_assumptions_acknowledged": true,
+          "archive_catalog": {
+            "first_archive_date": "2020-09-01",
+            "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+            "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+            "point_in_time_certified": false,
+            "source": "binance-usdm-metrics-archive-v1"
+          },
+          "availability_lag_ms": 360000,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "import_source": "auto",
+          "original_publication_known": false,
+          "period_ms": 300000,
+          "rest_range": null,
+          "schema": 1,
+          "source": "binance-usdm-metrics-archive-v1",
+          "start": 1598918400000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "observation_count": 560390,
+          "expected_observation_count": 561024,
+          "missing_observation_count": 634,
+          "coverage_complete": false,
+          "status": "incomplete",
+          "leading_gap_ms": 0,
+          "trailing_gap_ms": 0,
+          "first_observation": 1598918400000,
+          "last_observation": 1767225300000,
+          "first_available_at": 1598918760000,
+          "last_available_at": 1767225660000,
+          "largest_gap_ms": 37800000,
+          "gap_count": 156,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+          "point_in_time_certified": false,
+          "missing_policy": "no interpolation; unavailable or stale values return None",
+          "cashflow": false,
+          "archive_file_count": 1948,
+          "archive_verified_file_count": 1948,
+          "archive_missing_days": [],
+          "archive_missing_day_count": 0,
+          "archive_identical_duplicate_rows": 75255
+        },
+        "allow_missing_observations": true,
+        "observation_count": 560390,
+        "cashflow": false,
+        "availability_lag_ms": 360000,
+        "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+        "current": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "observed_at": 1767225000000,
+          "available_at": 1767225360000,
+          "quantity_base": 94202.223,
+          "value_quote": 8252900595.68379
+        }
+      }
+    },
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 73
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 732
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 379894
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/5fe5146d-cf80-4cc1-aed1-b2300b1eb888"
+  },
+  "markers": [
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763352000000,
+      "high": 104024.6,
+      "low": 92922.8,
+      "atr": 1284.3214285714287,
+      "old_stop": 96953,
+      "candidate": 96775.7642857143
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763352000000,
+      "old": 96953,
+      "new": 96775.7642857143
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763366400000,
+      "high": 104024.6,
+      "low": 92922.8,
+      "atr": 1215.9642857142858,
+      "old_stop": 96775.7642857143,
+      "candidate": 96570.69285714286
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763366400000,
+      "old": 96775.7642857143,
+      "new": 96570.69285714286
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763380800000,
+      "high": 104024.6,
+      "low": 92922.8,
+      "atr": 1104.1857142857148,
+      "old_stop": 96570.69285714286,
+      "candidate": 96235.35714285714
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763380800000,
+      "old": 96570.69285714286,
+      "new": 96235.35714285714
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763409600000,
+      "high": 104024.6,
+      "low": 91550.2,
+      "atr": 1387.8571428571438,
+      "old_stop": 96235.35714285714,
+      "candidate": 95713.77142857143
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763409600000,
+      "old": 96235.35714285714,
+      "new": 95713.77142857143
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763424000000,
+      "high": 104024.6,
+      "low": 91250,
+      "atr": 1403.2428571428577,
+      "old_stop": 95713.77142857143,
+      "candidate": 95459.72857142857
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763424000000,
+      "old": 95713.77142857143,
+      "new": 95459.72857142857
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763438400000,
+      "high": 104024.6,
+      "low": 89666.1,
+      "atr": 1544.9928571428568,
+      "old_stop": 95459.72857142857,
+      "candidate": 94301.07857142857
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763438400000,
+      "old": 95459.72857142857,
+      "new": 94301.07857142857
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763452800000,
+      "high": 104024.6,
+      "low": 89012,
+      "atr": 1610.9285714285713,
+      "old_stop": 94301.07857142857,
+      "candidate": 93844.78571428571
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763452800000,
+      "old": 94301.07857142857,
+      "new": 93844.78571428571
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763467200000,
+      "high": 104024.6,
+      "low": 89012,
+      "atr": 1608.1785714285713,
+      "old_stop": 93844.78571428571,
+      "candidate": 93836.53571428571
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763467200000,
+      "old": 93844.78571428571,
+      "new": 93836.53571428571
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763553600000,
+      "high": 104024.6,
+      "low": 89012,
+      "atr": 1597.3714285714284,
+      "old_stop": 93836.53571428571,
+      "candidate": 93804.11428571428
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763553600000,
+      "old": 93836.53571428571,
+      "new": 93804.11428571428
+    },
+    {
+      "kind": "V3_EXIT_REQUEST",
+      "time": 1763582400000,
+      "reason": "maximum_hold"
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1763582400000,
+      "trade_id": "486b4c4d-3aee-4b25-b576-424825ce261a",
+      "reason": "maximum_hold",
+      "pnl": 975.5306654190515,
+      "balance": 13345.91227237131,
+      "gross": 970.1881883589998,
+      "risk_budget": 247.4076321390452,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V3_FEATURES",
+      "time": 1763668800000,
+      "line": "CHANNEL",
+      "valid": true,
+      "direction": -1,
+      "details": {
+        "first": 1761854400000,
+        "last": 1763654400000,
+        "close": 86880.3,
+        "high20": 96012.2,
+        "low20": 88564.4,
+        "sma120": 100812.40333333334,
+        "sma120_6": 101749.06333333332,
+        "breakout": -1,
+        "trend_long": false,
+        "trend_short": true
+      },
+      "reason": "no_setup"
+    },
+    {
+      "kind": "V3_ENTRY",
+      "time": 1763668800000,
+      "direction": -1,
+      "decision": 86880.3,
+      "fill": 86880.3,
+      "capital": 13345.91227237131,
+      "qty": 0.0694743,
+      "distance_pre": 3762.0857142857153,
+      "distance_fill": 3762.0857142857153,
+      "planned_stop_loss": 266.9182404858541,
+      "risk_budget": 266.9182454474262,
+      "stop": 90642.38571428572,
+      "target": null,
+      "atr": {
+        "value": 1881.0428571428577,
+        "first": 1763452800000,
+        "last": 1763654400000,
+        "bars": 15,
+        "sha256": "1867f9c408b420fb3d1e82e83ae7375c243fc19405f0dc182891ae6e27552fe1"
+      },
+      "oi": {
+        "quality": "valid",
+        "passed": true,
+        "current": {
+          "time": 1763654400000,
+          "value": 100484.846,
+          "label": 1763653800000,
+          "available_at": 1763654160000,
+          "status": "valid"
+        },
+        "reference": {
+          "time": 1763568000000,
+          "value": 99233.806,
+          "label": 1763567400000,
+          "available_at": 1763567760000,
+          "status": "valid"
+        }
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1763654400000,
+        "rate_decimal": 0.00008999,
+        "mark_price": 89845.8,
+        "mark_price_source": "fundingRate.settlement_mark",
+        "available_at": 1763654460000
+      }
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763712000000,
+      "high": 88214.1,
+      "low": 81111,
+      "atr": 2234.721428571429,
+      "old_stop": 90642.38571428572,
+      "candidate": 87815.16428571429
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763712000000,
+      "old": 90642.38571428572,
+      "new": 87815.16428571429
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763856000000,
+      "high": 88214.1,
+      "low": 80600,
+      "atr": 2329.6071428571418,
+      "old_stop": 87815.16428571429,
+      "candidate": 87588.82142857142
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763856000000,
+      "old": 87815.16428571429,
+      "new": 87588.82142857142
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763870400000,
+      "high": 88214.1,
+      "low": 80600,
+      "atr": 2176.6714285714284,
+      "old_stop": 87588.82142857142,
+      "candidate": 87130.01428571428
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763870400000,
+      "old": 87588.82142857142,
+      "new": 87130.01428571428
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763884800000,
+      "high": 88214.1,
+      "low": 80600,
+      "atr": 2144.935714285714,
+      "old_stop": 87130.01428571428,
+      "candidate": 87034.80714285714
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763884800000,
+      "old": 87130.01428571428,
+      "new": 87034.80714285714
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1763899200000,
+      "high": 88214.1,
+      "low": 80600,
+      "atr": 2040.392857142857,
+      "old_stop": 87034.80714285714,
+      "candidate": 86721.17857142857
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1763899200000,
+      "old": 87034.80714285714,
+      "new": 86721.17857142857
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1763900220000,
+      "trade_id": "7320034a-6140-4110-a552-f5e00a00aac7",
+      "reason": "stop-loss",
+      "pnl": 7.306849558339028,
+      "balance": 13353.219121929651,
+      "gross": 11.054849865000635,
+      "risk_budget": 266.9182454474262,
+      "realized_loss": 0,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V3_FEATURES",
+      "time": 1764561600000,
+      "line": "CHANNEL",
+      "valid": true,
+      "direction": -1,
+      "details": {
+        "first": 1762747200000,
+        "last": 1764547200000,
+        "close": 86319.2,
+        "high20": 93080,
+        "low20": 90092.7,
+        "sma120": 92075.025,
+        "sma120_6": 92861.10666666667,
+        "breakout": -1,
+        "trend_long": false,
+        "trend_short": true
+      },
+      "reason": "no_setup"
+    },
+    {
+      "kind": "V3_ENTRY",
+      "time": 1764561600000,
+      "direction": -1,
+      "decision": 86319.2,
+      "fill": 86319.2,
+      "capital": 13353.219121929651,
+      "qty": 0.13470791,
+      "distance_pre": 1903.999999999998,
+      "distance_fill": 1903.999999999998,
+      "planned_stop_loss": 267.06436949967247,
+      "risk_budget": 267.06438243859304,
+      "stop": 88223.2,
+      "target": null,
+      "atr": {
+        "value": 951.999999999999,
+        "first": 1764345600000,
+        "last": 1764547200000,
+        "bars": 15,
+        "sha256": "8647ac99759b90247a1fd3578e77a81c5f3b518e0e4fcdcc29678c8ee59e013f"
+      },
+      "oi": {
+        "quality": "valid",
+        "passed": true,
+        "current": {
+          "time": 1764547200000,
+          "value": 90605.046,
+          "label": 1764546600000,
+          "available_at": 1764546960000,
+          "status": "valid"
+        },
+        "reference": {
+          "time": 1764460800000,
+          "value": 88503.636,
+          "label": 1764460200000,
+          "available_at": 1764460560000,
+          "status": "valid"
+        }
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1764547200000,
+        "rate_decimal": 0.00003593,
+        "mark_price": 90327.18313043,
+        "mark_price_source": "fundingRate.settlement_mark",
+        "available_at": 1764547260000
+      }
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1764604800000,
+      "high": 86886,
+      "low": 83786,
+      "atr": 1155.3214285714287,
+      "old_stop": 88223.2,
+      "candidate": 87251.96428571429
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1764604800000,
+      "old": 88223.2,
+      "new": 87251.96428571429
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1764637620000,
+      "trade_id": "4bd99a85-45b9-4b87-b9ac-9f4f55b3e75f",
+      "reason": "stop-loss",
+      "pnl": -135.7521838810163,
+      "balance": 13217.466938048636,
+      "gross": -125.65072745121523,
+      "risk_budget": 267.06438243859304,
+      "realized_loss": 135.7521838810163,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V3_FEATURES",
+      "time": 1766476800000,
+      "line": "CHANNEL",
+      "valid": true,
+      "direction": -1,
+      "details": {
+        "first": 1764662400000,
+        "last": 1766462400000,
+        "close": 87531.3,
+        "high20": 90599,
+        "low20": 87548.5,
+        "sma120": 89599.73833333334,
+        "sma120_6": 89724.30833333333,
+        "breakout": -1,
+        "trend_long": false,
+        "trend_short": true
+      },
+      "reason": "no_setup"
+    },
+    {
+      "kind": "V3_ENTRY",
+      "time": 1766476800000,
+      "direction": -1,
+      "decision": 87531.3,
+      "fill": 87531.3,
+      "capital": 13217.466938048636,
+      "qty": 0.11980058,
+      "distance_pre": 2126.84285714285,
+      "distance_fill": 2126.84285714285,
+      "planned_stop_loss": 264.34933696544374,
+      "risk_budget": 264.3493387609727,
+      "stop": 89658.14285714286,
+      "target": null,
+      "atr": {
+        "value": 1063.421428571425,
+        "first": 1766260800000,
+        "last": 1766462400000,
+        "bars": 15,
+        "sha256": "d3ee47ee6d5521c44df8ef9c5478a99c4a870a71922bbbe1168505e46c495a03"
+      },
+      "oi": {
+        "quality": "valid",
+        "passed": true,
+        "current": {
+          "time": 1766462400000,
+          "value": 91324.416,
+          "label": 1766461800000,
+          "available_at": 1766462160000,
+          "status": "valid"
+        },
+        "reference": {
+          "time": 1766376000000,
+          "value": 89343.968,
+          "label": 1766375400000,
+          "available_at": 1766375760000,
+          "status": "valid"
+        }
+      },
+      "funding": {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "settled_at": 1766448000000,
+        "rate_decimal": 0.00002633,
+        "mark_price": 88579.9,
+        "mark_price_source": "fundingRate.settlement_mark",
+        "available_at": 1766448060000
+      }
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766620800000,
+      "high": 88349.2,
+      "low": 86355,
+      "atr": 1053.1785714285693,
+      "old_stop": 89658.14285714286,
+      "candidate": 89514.53571428571
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766620800000,
+      "old": 89658.14285714286,
+      "new": 89514.53571428571
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766635200000,
+      "high": 88349.2,
+      "low": 86355,
+      "atr": 930.6999999999981,
+      "old_stop": 89514.53571428571,
+      "candidate": 89147.09999999999
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766635200000,
+      "old": 89514.53571428571,
+      "new": 89147.09999999999
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766649600000,
+      "high": 88349.2,
+      "low": 86355,
+      "atr": 879.2428571428557,
+      "old_stop": 89147.09999999999,
+      "candidate": 88992.72857142857
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766649600000,
+      "old": 89147.09999999999,
+      "new": 88992.72857142857
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766664000000,
+      "high": 88349.2,
+      "low": 86355,
+      "atr": 841.6142857142851,
+      "old_stop": 88992.72857142857,
+      "candidate": 88879.84285714285
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766664000000,
+      "old": 88992.72857142857,
+      "new": 88879.84285714285
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766678400000,
+      "high": 88594,
+      "low": 86355,
+      "atr": 832.1785714285714,
+      "old_stop": 88879.84285714285,
+      "candidate": 88851.53571428571
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766678400000,
+      "old": 88879.84285714285,
+      "new": 88851.53571428571
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766692800000,
+      "high": 88594,
+      "low": 86355,
+      "atr": 825.6142857142861,
+      "old_stop": 88851.53571428571,
+      "candidate": 88831.84285714285
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766692800000,
+      "old": 88851.53571428571,
+      "new": 88831.84285714285
+    },
+    {
+      "kind": "V3_TRAIL_CONTEXT",
+      "time": 1766707200000,
+      "high": 88594,
+      "low": 86355,
+      "atr": 815.5499999999998,
+      "old_stop": 88831.84285714285,
+      "candidate": 88801.65
+    },
+    {
+      "kind": "V3_STOP_UPDATE",
+      "time": 1766707200000,
+      "old": 88831.84285714285,
+      "new": 88801.65
+    },
+    {
+      "kind": "V3_CLOSE",
+      "time": 1766715660000,
+      "trade_id": "21cb7671-c3be-4832-9ed1-e104fdc5a5aa",
+      "reason": "stop-loss",
+      "pnl": -156.16197854865754,
+      "balance": 13061.304959499976,
+      "gross": -152.18866680299897,
+      "risk_budget": 264.3493387609727,
+      "realized_loss": 156.16197854865754,
+      "loss_over_budget": 0
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-01:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 169,
+        "oi_initialization": 3,
+        "allowed": 2,
+        "in_position_or_pending": 3,
+        "regime_reject": 8,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_initialization": 3,
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-01:long",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_initialization": 3,
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_initialization": 3
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-01:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 169,
+        "regime_reject": 8
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-01:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 1,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-02:all",
+      "bars": 174,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 158,
+        "oi_nonrising": 4,
+        "allowed": 3,
+        "in_position_or_pending": 9
+      },
+      "flags": {
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-02:long",
+      "bars": 16,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 4,
+        "allowed": 3,
+        "in_position_or_pending": 9
+      },
+      "flags": {
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-02:none",
+      "bars": 158,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 158
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-03:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "no_setup": 173,
+        "allowed": 3,
+        "in_position_or_pending": 6,
+        "regime_reject": 4
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-03:long",
+      "bars": 9,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 6
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-03:none",
+      "bars": 177,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 173,
+        "regime_reject": 4
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-04:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "no_setup": 165,
+        "allowed": 5,
+        "in_position_or_pending": 4,
+        "regime_reject": 4,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-04:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-04:none",
+      "bars": 169,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 165,
+        "regime_reject": 4
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-04:short",
+      "bars": 9,
+      "opportunities": 6,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 3,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-05:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 3,
+      "primary": {
+        "no_setup": 174,
+        "in_position_or_pending": 2,
+        "regime_reject": 6,
+        "allowed": 2,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-05:long",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 2,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-05:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 174,
+        "regime_reject": 6
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-05:short",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "in_position_or_pending": 1,
+        "allowed": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-06:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "no_setup": 165,
+        "allowed": 5,
+        "in_position_or_pending": 7,
+        "oi_nonrising": 2,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-06:long",
+      "bars": 3,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-06:none",
+      "bars": 166,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 165,
+        "boundary_or_inactive": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-06:short",
+      "bars": 11,
+      "opportunities": 6,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 5,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-07:all",
+      "bars": 186,
+      "opportunities": 8,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "regime_reject": 10,
+        "no_setup": 163,
+        "allowed": 3,
+        "in_position_or_pending": 5,
+        "oi_zero": 1,
+        "oi_nonrising": 4
+      },
+      "flags": {
+        "oi_zero": 1,
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-07:long",
+      "bars": 9,
+      "opportunities": 7,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_zero": 1,
+        "oi_nonrising": 4,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_zero": 1,
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-07:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "regime_reject": 10,
+        "no_setup": 163
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-07:short",
+      "bars": 4,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 3
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-08:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "regime_reject": 13,
+        "no_setup": 169,
+        "allowed": 3,
+        "in_position_or_pending": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-08:long",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-08:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "regime_reject": 13,
+        "no_setup": 169
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-08:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-09:all",
+      "bars": 180,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 163,
+        "allowed": 3,
+        "in_position_or_pending": 3,
+        "regime_reject": 7,
+        "oi_nonrising": 4
+      },
+      "flags": {
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-09:long",
+      "bars": 7,
+      "opportunities": 6,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 4,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-09:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 163,
+        "regime_reject": 7
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-09:short",
+      "bars": 3,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-10:all",
+      "bars": 186,
+      "opportunities": 6,
+      "entries": 4,
+      "exits": 4,
+      "primary": {
+        "no_setup": 165,
+        "regime_reject": 8,
+        "allowed": 4,
+        "in_position_or_pending": 7,
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-10:long",
+      "bars": 10,
+      "opportunities": 5,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "oi_nonrising": 2,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-10:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 165,
+        "regime_reject": 8
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-10:short",
+      "bars": 3,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 2
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-11:all",
+      "bars": 180,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 159,
+        "regime_reject": 3,
+        "oi_nonrising": 3,
+        "allowed": 2,
+        "in_position_or_pending": 13
+      },
+      "flags": {
+        "oi_nonrising": 3
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-11:long",
+      "bars": 18,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 2,
+        "in_position_or_pending": 13
+      },
+      "flags": {
+        "oi_nonrising": 3
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-11:none",
+      "bars": 162,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 159,
+        "regime_reject": 3
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-12:all",
+      "bars": 186,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "no_setup": 176,
+        "regime_reject": 5,
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-12:long",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-12:none",
+      "bars": 182,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 176,
+        "regime_reject": 5,
+        "boundary_or_inactive": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2024-12:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-01:all",
+      "bars": 186,
+      "opportunities": 7,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 164,
+        "regime_reject": 9,
+        "oi_nonrising": 4,
+        "allowed": 3,
+        "in_position_or_pending": 6
+      },
+      "flags": {
+        "oi_nonrising": 4
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-01:long",
+      "bars": 8,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 6,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-01:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 164,
+        "regime_reject": 9
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-01:short",
+      "bars": 5,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 3
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-02:all",
+      "bars": 168,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "no_setup": 154,
+        "regime_reject": 5,
+        "allowed": 2,
+        "in_position_or_pending": 7
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-02:none",
+      "bars": 159,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 154,
+        "regime_reject": 5
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-02:short",
+      "bars": 9,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 7
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-03:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 167,
+        "regime_reject": 9,
+        "allowed": 3,
+        "in_position_or_pending": 6,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-03:long",
+      "bars": 2,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-03:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 167,
+        "regime_reject": 9
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-03:short",
+      "bars": 8,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 5,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-04:all",
+      "bars": 180,
+      "opportunities": 6,
+      "entries": 4,
+      "exits": 5,
+      "primary": {
+        "no_setup": 168,
+        "allowed": 4,
+        "in_position_or_pending": 4,
+        "oi_nonrising": 2,
+        "regime_reject": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-04:long",
+      "bars": 7,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 3,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-04:none",
+      "bars": 170,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 168,
+        "regime_reject": 2
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-04:short",
+      "bars": 3,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 1,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-05:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "no_setup": 169,
+        "allowed": 5,
+        "in_position_or_pending": 7,
+        "regime_reject": 5
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-05:long",
+      "bars": 12,
+      "opportunities": 5,
+      "entries": 5,
+      "exits": 5,
+      "primary": {
+        "allowed": 5,
+        "in_position_or_pending": 7
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-05:none",
+      "bars": 174,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 169,
+        "regime_reject": 5
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-06:all",
+      "bars": 180,
+      "opportunities": 11,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "no_setup": 159,
+        "oi_nonrising": 8,
+        "regime_reject": 7,
+        "allowed": 3,
+        "in_position_or_pending": 2,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 8
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-06:long",
+      "bars": 6,
+      "opportunities": 4,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 2,
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-06:none",
+      "bars": 167,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 159,
+        "regime_reject": 7,
+        "boundary_or_inactive": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-06:short",
+      "bars": 7,
+      "opportunities": 7,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "oi_nonrising": 6
+      },
+      "flags": {
+        "oi_nonrising": 6
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-07:all",
+      "bars": 186,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "no_setup": 171,
+        "regime_reject": 8,
+        "oi_nonrising": 1,
+        "allowed": 1,
+        "in_position_or_pending": 5
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-07:long",
+      "bars": 6,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 5
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-07:none",
+      "bars": 179,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 171,
+        "regime_reject": 8
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-07:short",
+      "bars": 1,
+      "opportunities": 1,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-08:all",
+      "bars": 186,
+      "opportunities": 10,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "no_setup": 169,
+        "oi_nonrising": 6,
+        "regime_reject": 5,
+        "allowed": 4,
+        "in_position_or_pending": 2
+      },
+      "flags": {
+        "oi_nonrising": 6
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-08:long",
+      "bars": 4,
+      "opportunities": 2,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 2
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-08:none",
+      "bars": 174,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 169,
+        "regime_reject": 5
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-08:short",
+      "bars": 8,
+      "opportunities": 8,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 6,
+        "allowed": 2
+      },
+      "flags": {
+        "oi_nonrising": 6
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-09:all",
+      "bars": 180,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "no_setup": 163,
+        "regime_reject": 13,
+        "allowed": 3,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-09:long",
+      "bars": 4,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "allowed": 3,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-09:none",
+      "bars": 176,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 163,
+        "regime_reject": 13
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-09:short",
+      "bars": 0,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 1,
+      "primary": {},
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-10:all",
+      "bars": 186,
+      "opportunities": 4,
+      "entries": 3,
+      "exits": 2,
+      "primary": {
+        "no_setup": 161,
+        "allowed": 3,
+        "in_position_or_pending": 9,
+        "regime_reject": 12,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-10:long",
+      "bars": 9,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 8
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-10:none",
+      "bars": 173,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 161,
+        "regime_reject": 12
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-10:short",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "allowed": 2,
+        "oi_nonrising": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-11:all",
+      "bars": 180,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "no_setup": 160,
+        "allowed": 3,
+        "in_position_or_pending": 10,
+        "regime_reject": 7
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-11:none",
+      "bars": 167,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 160,
+        "regime_reject": 7
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-11:short",
+      "bars": 13,
+      "opportunities": 3,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "allowed": 3,
+        "in_position_or_pending": 10
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-12:all",
+      "bars": 186,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "no_setup": 173,
+        "in_position_or_pending": 1,
+        "regime_reject": 6,
+        "oi_nonrising": 3,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-12:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 2
+      },
+      "flags": {
+        "oi_nonrising": 2
+      }
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-12:none",
+      "bars": 180,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup": 173,
+        "regime_reject": 6,
+        "boundary_or_inactive": 1
+      },
+      "flags": {}
+    },
+    {
+      "kind": "V3_AUDIT",
+      "key": "2025-12:short",
+      "bars": 4,
+      "opportunities": 3,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "allowed": 2,
+        "in_position_or_pending": 1,
+        "oi_nonrising": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      }
+    },
+    {
+      "kind": "V3_PROVENANCE",
+      "line": "CHANNEL",
+      "use_oi": true,
+      "oi_lag_bars": 1,
+      "stop_multiplier": 2,
+      "trail_multiplier": 3,
+      "target_mode": "none",
+      "reward_multiple": 3,
+      "max_hold_bars": 42,
+      "start": 1704067200000,
+      "finish": 1767225600000,
+      "active_windows": [
+        [
+          1704067200000,
+          1719792000000
+        ],
+        [
+          1719792000000,
+          1735689600000
+        ],
+        [
+          1735689600000,
+          1751328000000
+        ],
+        [
+          1751328000000,
+          1767225600000
+        ]
+      ],
+      "force_boundaries": [
+        1719792000000,
+        1735689600000,
+        1751328000000,
+        1767225600000
+      ],
+      "final_exit_may_follow": true,
+      "self_checks": null
+    }
+  ],
+  "note": "Root performs complete financial and execution reconciliation using full snapshots.",
+  "audited_at": "2026-10-20T23:59:50.984Z"
+}

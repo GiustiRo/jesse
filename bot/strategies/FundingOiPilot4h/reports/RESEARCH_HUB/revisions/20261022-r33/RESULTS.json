@@ -1,0 +1,845 @@
+{
+  "round": "R32",
+  "economic_new": 6,
+  "economic_failed_or_replacement": 0,
+  "technical_backtests": 0,
+  "completed": 6,
+  "objective_reached": false,
+  "new_candidate": false,
+  "results": [
+    {
+      "status": "FULL_ACCOUNTING_AND_NATIVE_GEOMETRY_PASS",
+      "name": "A_ACCEPTED",
+      "session_id": "339e9161-6e59-4acf-a75e-9ddcad2ad902",
+      "dashboard_url": "http://localhost:9200/#/backtest/339e9161-6e59-4acf-a75e-9ddcad2ad902",
+      "N": 435,
+      "net": -28.26844647271855,
+      "finish": 9971.731553527232,
+      "cagr_pct": -0.05425310421326435,
+      "pf": 0.9985435418457833,
+      "pf_no_losses": false,
+      "dd_m1_pct": 20.71798732245892,
+      "positive_active": 31,
+      "active_months": 62,
+      "positive_active_pct": 50,
+      "positive_quarters": 9,
+      "median_calendar_month_pct": 0.004436644155009217,
+      "pnl_without_best_two": -1088.7251175154088,
+      "sides": {
+        "long": {
+          "N": 238,
+          "net": 834.9403160204965
+        },
+        "short": {
+          "N": 197,
+          "net": -863.2087624932159
+        }
+      },
+      "annual_pct": {
+        "2021": -10.03591290318221,
+        "2022": -6.726627575936172,
+        "2023": 9.430576214494323,
+        "2024": 9.409445134673678,
+        "2025": -7.9362786146310205
+      },
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": false,
+        "DD25": true,
+        "M65": false,
+        "Q80": false,
+        "median_positive": true,
+        "without_best_two_positive": false,
+        "N100": true
+      },
+      "economic_all_gates": false,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": -198.36847865278312,
+        "rate_kind": "settled",
+        "event_count": 1761,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 1003,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "missing_fields_zero_verified": 18,
+      "own": {
+        "stage": "PRETERMINAL",
+        "label": "A_ACCEPTED",
+        "hold_hours": 48,
+        "tp_r": 2,
+        "risk_total": 0.01,
+        "capital_denominator": "total BTC wallet",
+        "redistribution": false,
+        "events": 523,
+        "plans": 435,
+        "occupied": 88,
+        "rejected_geometry": 0,
+        "opens": 435,
+        "closes": 435,
+        "long_opens": 238,
+        "short_opens": 197,
+        "net": -28.26844647271993
+      },
+      "r11": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 31,
+        "positive_calendar": 31,
+        "median_return": 0.00004436644155009217,
+        "complete_quarters": 20,
+        "positive_quarters": 9,
+        "pnl_without_best_two": -1088.7251175154088,
+        "stage": "PRETERMINAL",
+        "equity": 9971.731553527232,
+        "dd_m1_events": -0.2071798732245892,
+        "minute_marks": 2741760,
+        "sequence": 2742631,
+        "signals": 523,
+        "entries": 435,
+        "invalid_windows": 0
+      },
+      "limits": [
+        "Alternative accounts, not joint book",
+        "Observed adaptive historical development, not OOS",
+        "No intraminute DD or observed-path trace claim",
+        "N100 not statistical power"
+      ]
+    },
+    {
+      "status": "FULL_ACCOUNTING_AND_NATIVE_GEOMETRY_PASS",
+      "name": "A_CLOSE_ONLY",
+      "session_id": "56d170b7-1aa6-49c0-8ba9-116eaebaefee",
+      "dashboard_url": "http://localhost:9200/#/backtest/56d170b7-1aa6-49c0-8ba9-116eaebaefee",
+      "N": 755,
+      "net": -391.47470389084947,
+      "finish": 9608.52529610912,
+      "cagr_pct": -0.7626250955920622,
+      "pf": 0.9878926254794554,
+      "pf_no_losses": false,
+      "dd_m1_pct": 25.014801486832873,
+      "positive_active": 29,
+      "active_months": 62,
+      "positive_active_pct": 46.774193548387096,
+      "positive_quarters": 11,
+      "median_calendar_month_pct": -0.12964968104648977,
+      "pnl_without_best_two": -1663.1122426240418,
+      "sides": {
+        "long": {
+          "N": 403,
+          "net": 361.6223351502663
+        },
+        "short": {
+          "N": 352,
+          "net": -753.0970390411148
+        }
+      },
+      "annual_pct": {
+        "2021": -7.97103114665526,
+        "2022": -11.709876317776846,
+        "2023": 5.396209918271144,
+        "2024": 14.654392514702263,
+        "2025": -7.239373694822316
+      },
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": false,
+        "DD25": false,
+        "M65": false,
+        "Q80": false,
+        "median_positive": false,
+        "without_best_two_positive": false,
+        "N100": true
+      },
+      "economic_all_gates": false,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": -295.5117839349126,
+        "rate_kind": "settled",
+        "event_count": 3046,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 1763,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "missing_fields_zero_verified": 48,
+      "own": {
+        "stage": "PRETERMINAL",
+        "label": "A_CLOSE_ONLY",
+        "hold_hours": 48,
+        "tp_r": 2,
+        "risk_total": 0.01,
+        "capital_denominator": "total BTC wallet",
+        "redistribution": false,
+        "events": 1146,
+        "plans": 755,
+        "occupied": 391,
+        "rejected_geometry": 0,
+        "opens": 755,
+        "closes": 755,
+        "long_opens": 403,
+        "short_opens": 352,
+        "net": -391.47470389085015
+      },
+      "r11": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 29,
+        "positive_calendar": 29,
+        "median_return": -0.0012964968104648977,
+        "complete_quarters": 20,
+        "positive_quarters": 11,
+        "pnl_without_best_two": -1663.1122426240418,
+        "stage": "PRETERMINAL",
+        "equity": 9608.52529610912,
+        "dd_m1_events": -0.2501480148683287,
+        "minute_marks": 2741760,
+        "sequence": 2743271,
+        "signals": 1146,
+        "entries": 755,
+        "invalid_windows": 0
+      },
+      "limits": [
+        "Alternative accounts, not joint book",
+        "Observed adaptive historical development, not OOS",
+        "No intraminute DD or observed-path trace claim",
+        "N100 not statistical power"
+      ]
+    },
+    {
+      "status": "FULL_ACCOUNTING_AND_NATIVE_GEOMETRY_PASS",
+      "name": "B_ALL",
+      "session_id": "67655c18-3682-4397-b119-52fd1ea8edba",
+      "dashboard_url": "http://localhost:9200/#/backtest/67655c18-3682-4397-b119-52fd1ea8edba",
+      "N": 195,
+      "net": -768.5124171686192,
+      "finish": 9231.487582831409,
+      "cagr_pct": -1.5212506435357764,
+      "pf": 0.9073938637530705,
+      "pf_no_losses": false,
+      "dd_m1_pct": 17.525112923770614,
+      "positive_active": 25,
+      "active_months": 59,
+      "positive_active_pct": 42.3728813559322,
+      "positive_quarters": 8,
+      "median_calendar_month_pct": -0.3383899878050767,
+      "pnl_without_best_two": -1417.4162495471446,
+      "sides": {
+        "long": {
+          "N": 89,
+          "net": 539.7804982718482
+        },
+        "short": {
+          "N": 106,
+          "net": -1308.2929154404674
+        }
+      },
+      "annual_pct": {
+        "2021": 5.991711649201048,
+        "2022": 1.030622993159036,
+        "2023": -3.236662695811765,
+        "2024": -10.829781658052573,
+        "2025": 0.7644181396193162
+      },
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": false,
+        "DD25": true,
+        "M65": false,
+        "Q80": false,
+        "median_positive": false,
+        "without_best_two_positive": false,
+        "N100": true
+      },
+      "economic_all_gates": false,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 60.554447869376624,
+        "rate_kind": "settled",
+        "event_count": 824,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 456,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "missing_fields_zero_verified": 9,
+      "own": {
+        "stage": "PRETERMINAL",
+        "label": "B_FAILURE_ALL",
+        "hold_hours": 48,
+        "tp_r": 2,
+        "risk_total": 0.01,
+        "capital_denominator": "total BTC wallet",
+        "redistribution": false,
+        "events": 212,
+        "plans": 195,
+        "occupied": 17,
+        "rejected_geometry": 0,
+        "opens": 195,
+        "closes": 195,
+        "long_opens": 89,
+        "short_opens": 106,
+        "net": -768.5124171686195
+      },
+      "r11": {
+        "complete_months": 62,
+        "active_months": 59,
+        "positive_active": 25,
+        "positive_calendar": 25,
+        "median_return": -0.0033838998780507668,
+        "complete_quarters": 20,
+        "positive_quarters": 8,
+        "pnl_without_best_two": -1417.4162495471446,
+        "stage": "PRETERMINAL",
+        "equity": 9231.487582831409,
+        "dd_m1_events": -0.17525112923770614,
+        "minute_marks": 2741760,
+        "sequence": 2742151,
+        "signals": 212,
+        "entries": 195,
+        "invalid_windows": 0
+      },
+      "limits": [
+        "Alternative accounts, not joint book",
+        "Observed adaptive historical development, not OOS",
+        "No intraminute DD or observed-path trace claim",
+        "N100 not statistical power"
+      ]
+    },
+    {
+      "status": "FULL_ACCOUNTING_AND_NATIVE_GEOMETRY_PASS",
+      "name": "B_PERSIST",
+      "session_id": "9228f0b1-5c61-43ed-9edf-ef1b7556b5f5",
+      "dashboard_url": "http://localhost:9200/#/backtest/9228f0b1-5c61-43ed-9edf-ef1b7556b5f5",
+      "N": 160,
+      "net": -863.8836656384598,
+      "finish": 9136.116334361504,
+      "cagr_pct": -1.7171058331988398,
+      "pf": 0.8701287901300419,
+      "pf_no_losses": false,
+      "dd_m1_pct": 14.499100421392653,
+      "positive_active": 25,
+      "active_months": 56,
+      "positive_active_pct": 44.642857142857146,
+      "positive_quarters": 9,
+      "median_calendar_month_pct": -0.008874951543502707,
+      "pnl_without_best_two": -1419.7059336320435,
+      "sides": {
+        "long": {
+          "N": 70,
+          "net": -2.6322173236644026
+        },
+        "short": {
+          "N": 90,
+          "net": -861.2514483147957
+        }
+      },
+      "annual_pct": {
+        "2021": 1.1818974689892014,
+        "2022": 1.9639793147876006,
+        "2023": -3.223716797236631,
+        "2024": -8.27028386117281,
+        "2025": -0.373554595294745
+      },
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": false,
+        "DD25": true,
+        "M65": false,
+        "Q80": false,
+        "median_positive": false,
+        "without_best_two_positive": false,
+        "N100": true
+      },
+      "economic_all_gates": false,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 59.72925141932519,
+        "rate_kind": "settled",
+        "event_count": 685,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 370,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "missing_fields_zero_verified": 5,
+      "own": {
+        "stage": "PRETERMINAL",
+        "label": "B_FAILURE_PERSIST",
+        "hold_hours": 48,
+        "tp_r": 2,
+        "risk_total": 0.01,
+        "capital_denominator": "total BTC wallet",
+        "redistribution": false,
+        "events": 168,
+        "plans": 160,
+        "occupied": 8,
+        "rejected_geometry": 0,
+        "opens": 160,
+        "closes": 160,
+        "long_opens": 70,
+        "short_opens": 90,
+        "net": -863.8836656384601
+      },
+      "r11": {
+        "complete_months": 62,
+        "active_months": 56,
+        "positive_active": 25,
+        "positive_calendar": 25,
+        "median_return": -0.00008874951543502707,
+        "complete_quarters": 20,
+        "positive_quarters": 9,
+        "pnl_without_best_two": -1419.7059336320435,
+        "stage": "PRETERMINAL",
+        "equity": 9136.116334361504,
+        "dd_m1_events": -0.14499100421392652,
+        "minute_marks": 2741760,
+        "sequence": 2742081,
+        "signals": 168,
+        "entries": 160,
+        "invalid_windows": 0
+      },
+      "limits": [
+        "Alternative accounts, not joint book",
+        "Observed adaptive historical development, not OOS",
+        "No intraminute DD or observed-path trace claim",
+        "N100 not statistical power"
+      ]
+    },
+    {
+      "status": "FULL_ACCOUNTING_AND_NATIVE_GEOMETRY_PASS",
+      "name": "C_INSIDE",
+      "session_id": "6510739f-6c8d-45b4-904f-67395c95cca0",
+      "dashboard_url": "http://localhost:9200/#/backtest/6510739f-6c8d-45b4-904f-67395c95cca0",
+      "N": 523,
+      "net": -1939.3989432664198,
+      "finish": 8060.601056733549,
+      "cagr_pct": -4.048785004695721,
+      "pf": 0.8782159855084107,
+      "pf_no_losses": false,
+      "dd_m1_pct": 28.27699882262885,
+      "positive_active": 25,
+      "active_months": 62,
+      "positive_active_pct": 40.32258064516129,
+      "positive_quarters": 8,
+      "median_calendar_month_pct": -0.6341190494901949,
+      "pnl_without_best_two": -2835.684888843489,
+      "sides": {
+        "long": {
+          "N": 283,
+          "net": 145.36844814558782
+        },
+        "short": {
+          "N": 240,
+          "net": -2084.767391412008
+        }
+      },
+      "annual_pct": {
+        "2021": -7.295250626076832,
+        "2022": -9.541351263563735,
+        "2023": 7.082311666966734,
+        "2024": -3.7910195083626586,
+        "2025": -11.116811287566053
+      },
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": false,
+        "DD25": false,
+        "M65": false,
+        "Q80": false,
+        "median_positive": false,
+        "without_best_two_positive": false,
+        "N100": true
+      },
+      "economic_all_gates": false,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": -123.15759908955374,
+        "rate_kind": "settled",
+        "event_count": 1361,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 813,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "missing_fields_zero_verified": 26,
+      "own": {
+        "stage": "FINAL",
+        "label": "C_INSIDE",
+        "hold_hours": 24,
+        "tp_r": null,
+        "risk_total": 0.01,
+        "capital_denominator": "total BTC wallet",
+        "redistribution": false,
+        "events": 652,
+        "plans": 523,
+        "occupied": 129,
+        "rejected_geometry": 0,
+        "opens": 523,
+        "closes": 523,
+        "long_opens": 283,
+        "short_opens": 240,
+        "net": -1939.398943266421
+      },
+      "r11": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 25,
+        "positive_calendar": 25,
+        "median_return": -0.006341190494901949,
+        "complete_quarters": 20,
+        "positive_quarters": 8,
+        "pnl_without_best_two": -2835.684888843489,
+        "stage": "FINAL",
+        "equity": 8060.601056733549,
+        "dd_m1_events": -0.2827699882262885,
+        "minute_marks": 2741760,
+        "sequence": 2742807,
+        "signals": 652,
+        "entries": 523,
+        "invalid_windows": 0
+      },
+      "limits": [
+        "Alternative accounts, not joint book",
+        "Observed adaptive historical development, not OOS",
+        "No intraminute DD or observed-path trace claim",
+        "N100 not statistical power"
+      ]
+    },
+    {
+      "status": "FULL_ACCOUNTING_AND_NATIVE_GEOMETRY_PASS",
+      "name": "C_CLOSE_ONLY",
+      "session_id": "175b17fe-58e2-456d-ad0c-44f8cd799755",
+      "dashboard_url": "http://localhost:9200/#/backtest/175b17fe-58e2-456d-ad0c-44f8cd799755",
+      "N": 1265,
+      "net": -2416.7017720626577,
+      "finish": 7583.298227937283,
+      "cagr_pct": -5.165010006205839,
+      "pf": 0.9337052240778138,
+      "pf_no_losses": false,
+      "dd_m1_pct": 40.93347669793578,
+      "positive_active": 34,
+      "active_months": 62,
+      "positive_active_pct": 54.83870967741935,
+      "positive_quarters": 9,
+      "median_calendar_month_pct": 0.383284543532858,
+      "pnl_without_best_two": -3494.2265782972063,
+      "sides": {
+        "long": {
+          "N": 636,
+          "net": 1164.029181168339
+        },
+        "short": {
+          "N": 629,
+          "net": -3580.7309532309987
+        }
+      },
+      "annual_pct": {
+        "2021": -7.2844252277112105,
+        "2022": -12.930442573464607,
+        "2023": -8.056915048981129,
+        "2024": 3.1817501434585838,
+        "2025": -11.044266400042213
+      },
+      "gates": {
+        "CAGR30": false,
+        "PF1_2": false,
+        "DD25": false,
+        "M65": false,
+        "Q80": false,
+        "median_positive": true,
+        "without_best_two_positive": false,
+        "N100": true
+      },
+      "economic_all_gates": false,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": -136.56735227936355,
+        "rate_kind": "settled",
+        "event_count": 3351,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 1969,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "missing_fields_zero_verified": 55,
+      "own": {
+        "stage": "FINAL",
+        "label": "C_CLOSE_ONLY",
+        "hold_hours": 24,
+        "tp_r": null,
+        "risk_total": 0.01,
+        "capital_denominator": "total BTC wallet",
+        "redistribution": false,
+        "events": 2520,
+        "plans": 1265,
+        "occupied": 1255,
+        "rejected_geometry": 0,
+        "opens": 1265,
+        "closes": 1265,
+        "long_opens": 636,
+        "short_opens": 629,
+        "net": -2416.70177206266
+      },
+      "r11": {
+        "complete_months": 62,
+        "active_months": 62,
+        "positive_active": 34,
+        "positive_calendar": 34,
+        "median_return": 0.00383284543532858,
+        "complete_quarters": 20,
+        "positive_quarters": 9,
+        "pnl_without_best_two": -3494.2265782972063,
+        "stage": "FINAL",
+        "equity": 7583.298227937283,
+        "dd_m1_events": -0.4093347669793578,
+        "minute_marks": 2741760,
+        "sequence": 2744291,
+        "signals": 2520,
+        "entries": 1265,
+        "invalid_windows": 0
+      },
+      "limits": [
+        "Alternative accounts, not joint book",
+        "Observed adaptive historical development, not OOS",
+        "No intraminute DD or observed-path trace claim",
+        "N100 not statistical power"
+      ]
+    }
+  ],
+  "A_universe": {
+    "status": "PASS",
+    "raw_events": 1146,
+    "accepted_context_events": 523,
+    "invalid_days": 0,
+    "invalid_reasons": {},
+    "M1_ready": {
+      "A_ACCEPTED": [
+        {
+          "label": "A_ACCEPTED",
+          "time": 1602734400000,
+          "count": 240
+        }
+      ],
+      "A_CLOSE_ONLY": [
+        {
+          "label": "A_CLOSE_ONLY",
+          "time": 1602734400000,
+          "count": 240
+        }
+      ]
+    },
+    "common_raw_universe_exact": true,
+    "shared_validity": true
+  },
+  "B_universe": {
+    "status": "PASS",
+    "raw_patterns": 212,
+    "categories": {
+      "interior": 168,
+      "recovered_original": 44
+    },
+    "common_raw_universe_exact": true,
+    "selected_interior_rule_exact": true
+  },
+  "funding_payments": 11028,
+  "closed_trades": 3333,
+  "analysis_attempts": {
+    "synthetic": 4,
+    "snapshot": 4,
+    "snapshot_succeeded": 3,
+    "snapshot_failed": 1
+  },
+  "durable_indices": [
+    "strategies/FundingOiPilot4h/reports/BTC_R32_A_DURABLE_INDEX_20261022.json",
+    "strategies/FundingOiPilot4h/reports/BTC_R32_B_DURABLE_INDEX_20261022.json",
+    "strategies/FundingOiPilot4h/reports/BTC_R32_C_DURABLE_INDEX_20261022.json"
+  ]
+}

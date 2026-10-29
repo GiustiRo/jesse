@@ -1,0 +1,75 @@
+{
+  "id": "PAXG",
+  "title": "PAXG: MARKET y calendario, líneas distintas revisadas",
+  "asset": "PAXG",
+  "family": "calendario / retest",
+  "execution": "revisión intermedia completada",
+  "evidence": "desarrollo y contribución histórica; alcance limitado",
+  "objective": "sin evidencia aislada comparable al perfil fijo",
+  "hypothesis": "PAXG spot permitió explorar fin de semana y retest; shocks negativos. Existe estudio posterior de cuenta compartida, citado por el cierre.",
+  "origin": "Investigación anterior al Hub; inventarios completos enlazados",
+  "method": "Inventario y lectura de cierres existentes, sin nuevas ejecuciones.",
+  "protocol": null,
+  "budget": "No mezclar con conteos V1–V6",
+  "versions": "Fuentes y configuración en reportes originales; proxies no equivalen a perpetual nativo.",
+  "periods": [
+    "2020–2025 reutilizado"
+  ],
+  "results": {
+    "prior_calendar_shared_account": {
+      "scope": "Cuenta compartida histórica C/T (no riesgo comparable con V1–V6)",
+      "C": {
+        "net_usdt": 24807.07,
+        "cagr_pct": 27.026,
+        "dd_engine_pct": -13.523,
+        "trades": 222
+      },
+      "T": {
+        "net_usdt": 25563.78,
+        "cagr_pct": 27.551,
+        "dd_engine_pct": -12.359,
+        "trades": 247
+      },
+      "regularity": {
+        "positive_active_months": "35/61 ambos",
+        "positive_quarters": "14/21 ambos"
+      },
+      "costs": "Fee .00045 por lado, sin funding. Reserva10bps sólo sizing; estrés contable estático.",
+      "exposure": "BTC/SPY 3%, PAXG1%, riesgo agregado8%, 5x aislado; no comparador equivalente al nuevo programa",
+      "correlation": null,
+      "simultaneous_losses": null
+    },
+    "market_line": "Componente congelado de B/C con evidencia local en atribución/R60/cartera. No es el calendario0.75.",
+    "existing_2026_C_nominal": {
+      "net_usdt": 1616.64,
+      "trades": 8
+    },
+    "diversification": "Existen mediciones históricas1%/8%/5x; no trasladar al perfil fijo sin evidencia equivalente."
+  },
+  "limitations": [
+    "Sin evaluación de la nueva línea.",
+    "Correlaciones, pérdidas simultáneas y comparación con/sin pieza bajo riesgo comparable: sin evaluar en esta revisión.",
+    "Leer los addenda y registros; no sumar curvas aisladas como cuenta compartida."
+  ],
+  "audit": "Revisión documental r5 por tres revisores con contraste de root; no nueva validación económica. Doce summaries y dos lecturas puntuales de cierre corroborados, sin reauditar todos los fills.",
+  "decision": "Conservar PAXG MARKET como componente/referencia congelada; calendario0.75 como comparador histórico distinto, sin rescate. No aprobar objetivo individual ni nueva búsqueda.",
+  "references": [
+    {
+      "label": "Resultados de la validación r5",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md"
+    },
+    {
+      "label": "PAXG_RESEARCH_FINAL_20261018.md",
+      "path": "strategies/ResearchPaxgWeekendReturn1h/reports/PAXG_RESEARCH_FINAL_20261018.md"
+    },
+    {
+      "label": "Cuenta compartida: cierre posterior",
+      "path": "strategies/ResearchPortfolioPaxgWeekend075/reports/PAXG_SHARED_ACCOUNT_RESULTS_20261018.md"
+    },
+    {
+      "label": "Atribución y candidatos de cartera",
+      "path": "strategies/MultiAssetRetestBtcShort4h/reports/PORT_CANDIDATES_RESULTS_20261019.md"
+    }
+  ],
+  "sessions": []
+}

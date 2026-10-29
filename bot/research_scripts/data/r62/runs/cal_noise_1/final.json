@@ -1,0 +1,287 @@
+{
+ "run": "cal_noise_1",
+ "kind": "noise",
+ "n_programs": 1615,
+ "n_cells": 8,
+ "finalists": [
+  {
+   "hash": "ebb46ad44965c32fc3da7f336d5eddc959e5bfce",
+   "cell": "rho0|hold2|neutral",
+   "score": 0.28756529817610493,
+   "sharpe": 1.377743834465292,
+   "marginal": 0.1861414559083745,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 9,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "zrev",
+      "params": {
+       "k": 24,
+       "z": 2.0
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 120
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "maker",
+     "params": {
+      "life": 6,
+      "off": 0.25
+     }
+    }
+   },
+   "spa_cash_p": 0.265,
+   "t_cash": 3.381714374782007,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6115,
+   "t_marginal": 2.8734012271024487,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "6e86330e738b5c077cc47c2dde6f659a4fb2d33a",
+   "cell": "rho0|hold1|neutral",
+   "score": 0.2754987830730892,
+   "sharpe": 0.9692774711620181,
+   "marginal": 0.12523820767427019,
+   "rot_p": 0.009950248756218905,
+   "origin": "ga",
+   "gen": 9,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "zrev",
+      "params": {
+       "k": 72,
+       "z": 1.5
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "btcstate",
+      "params": {
+       "state": "flat"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 24
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.265,
+   "t_cash": 2.2401126657642494,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6115,
+   "t_marginal": 1.8294060766754654,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "85774950e7301bf6580d3159ae68b6e286a83121",
+   "cell": "rho0|hold0|neutral",
+   "score": 0.13316949896780866,
+   "sharpe": 0.877481829170675,
+   "marginal": 0.11526513798896465,
+   "rot_p": 0.009950248756218905,
+   "origin": "ga",
+   "gen": 9,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "zrev",
+      "params": {
+       "k": 72,
+       "z": 2.0
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "btcstate",
+      "params": {
+       "state": "flat"
+      }
+     },
+     {
+      "kind": "trendveto",
+      "params": {
+       "k": 20
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 6
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.265,
+   "t_cash": 2.000730669311276,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6115,
+   "t_marginal": 1.6593292253490748,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "a63a81ed35dc53eb6ab166e1655450e5511fa834",
+   "cell": "rho0|hold2|long",
+   "score": 0.02159160007478106,
+   "sharpe": 0.7039542206063009,
+   "marginal": 0.08990076222115317,
+   "rot_p": 0.07960199004975124,
+   "origin": "ga",
+   "gen": 9,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "zrev",
+      "params": {
+       "k": 24,
+       "z": 2.5
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 120
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "maker",
+     "params": {
+      "life": 3,
+      "off": 0.25
+     }
+    }
+   },
+   "spa_cash_p": 0.265,
+   "t_cash": 1.7045655996154196,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6115,
+   "t_marginal": 1.3779362925592764,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "1b80c099e93e5fb3426a22e79aa6033a0b1dad36",
+   "cell": "rho0|hold0|short",
+   "score": 0.0018091435532459066,
+   "sharpe": 0.9261264446278132,
+   "marginal": 0.11706227112848944,
+   "rot_p": 0.01990049751243781,
+   "origin": "ga",
+   "gen": 1,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "fade",
+       "ratio": 1.5
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "session",
+      "params": {
+       "s": "asia"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "atr",
+     "params": {
+      "stop": 3,
+      "tgt": 1
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "short"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.265,
+   "t_cash": 2.1016360015070226,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6115,
+   "t_marginal": 1.7237666976053754,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  }
+ ],
+ "spa_cash": {
+  "p": 0.265,
+  "argmax": "ebb46ad44965c32fc3da7f336d5eddc959e5bfce",
+  "crit_t": 4.058936939269333
+ },
+ "spa_marginal": {
+  "p": 0.6115,
+  "argmax": "ebb46ad44965c32fc3da7f336d5eddc959e5bfce",
+  "crit_t": 4.06191301262242
+ }
+}

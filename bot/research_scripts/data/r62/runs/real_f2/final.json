@@ -1,0 +1,282 @@
+{
+ "run": "real_f2",
+ "kind": "real",
+ "n_programs": 1614,
+ "n_cells": 9,
+ "finalists": [
+  {
+   "hash": "1521f048f29e0403cdc1e6be0b6c9ac91455721b",
+   "cell": "rho1|hold1|long",
+   "score": 0.6370324855983303,
+   "sharpe": 1.5348043953483959,
+   "marginal": 0.155452159930084,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 5,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "follow",
+       "ratio": 1.5
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "session",
+      "params": {
+       "s": "us"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 24
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.3005,
+   "t_cash": 2.9221795869881424,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6345,
+   "t_marginal": 2.0326118848632033,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "fb06f3cd2f583394444ed7d435e624ba2e33bd30",
+   "cell": "rho0|hold0|long",
+   "score": 0.6148027840628462,
+   "sharpe": 1.424242666807537,
+   "marginal": 0.21214183081531157,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 5,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "shock",
+      "params": {
+       "mode": "fade",
+       "z": 3
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "session",
+      "params": {
+       "s": "europe"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "mean",
+     "params": {}
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "maker",
+     "params": {
+      "life": 6,
+      "off": 1.0
+     }
+    }
+   },
+   "spa_cash_p": 0.3005,
+   "t_cash": 2.855330633488579,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6345,
+   "t_marginal": 2.715580492145264,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": "P1"
+  },
+  {
+   "hash": "3031b2cc08f8bae86ec96a8bd9e86f8be9686060",
+   "cell": "rho0|hold0|neutral",
+   "score": 0.45444816396941956,
+   "sharpe": 1.3447801982699352,
+   "marginal": 0.1689769984532501,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 6,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "follow",
+       "ratio": 1.5
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "session",
+      "params": {
+       "s": "us"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "atr",
+     "params": {
+      "stop": 3,
+      "tgt": 2
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.3005,
+   "t_cash": 3.252368417930659,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6345,
+   "t_marginal": 2.6294365879473305,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "4b295feef5ea500426b89f9fb3d2d95d816dc167",
+   "cell": "rho0|hold1|neutral",
+   "score": 0.33001914067370414,
+   "sharpe": 1.1236452856211714,
+   "marginal": 0.11853478250947713,
+   "rot_p": 0.004975124378109453,
+   "origin": "ga",
+   "gen": 5,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "follow",
+       "ratio": 1.5
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 72
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "maker",
+     "params": {
+      "life": 6,
+      "off": 0.25
+     }
+    }
+   },
+   "spa_cash_p": 0.3005,
+   "t_cash": 2.6072354003360747,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6345,
+   "t_marginal": 1.831346268470919,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "d6be388b5357eb14cdc42c02192c0fe79c4e084e",
+   "cell": "rho0|hold2|neutral",
+   "score": 0.24154843011903954,
+   "sharpe": 0.9435325962963419,
+   "marginal": 0.09654061078276954,
+   "rot_p": 0.01990049751243781,
+   "origin": "ga",
+   "gen": 5,
+   "program": {
+    "universe": "crypto_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "follow",
+       "ratio": 1.5
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 120
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "both"
+     }
+    },
+    "exec": {
+     "kind": "maker",
+     "params": {
+      "life": 6,
+      "off": 0.25
+     }
+    }
+   },
+   "spa_cash_p": 0.3005,
+   "t_cash": 2.30019264460226,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.6345,
+   "t_marginal": 1.5785451889566513,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  }
+ ],
+ "spa_cash": {
+  "p": 0.3005,
+  "argmax": "71933a8da6f1682cafa913c7eb994e90a2e9f5f3",
+  "crit_t": 4.010883353840058
+ },
+ "spa_marginal": {
+  "p": 0.6345,
+  "argmax": "71933a8da6f1682cafa913c7eb994e90a2e9f5f3",
+  "crit_t": 4.007558874197822
+ }
+}

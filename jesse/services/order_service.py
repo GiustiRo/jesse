@@ -3,7 +3,8 @@ import jesse.helpers as jh
 import jesse.services.logger as logger
 from jesse.config import config
 from jesse.services.notifier import notify
-from jesse.enums import order_statuses
+from jesse.enums import order_statuses, sides
+from jesse.services.backtest_slippage import validate_slippage_bps
 from jesse.models.Order import Order
 from jesse.store import store
 from jesse.repositories import order_repository
@@ -59,6 +60,23 @@ def create_order(attributes: dict, should_silent: bool = False, should_store: bo
 def execute_order(order: Order, silent: bool = False) -> None:
     if order.is_canceled or order.is_executed:
         return
+
+    if jh.is_backtesting() and order.type in (order_types.MARKET, order_types.STOP):
+        profile = config['env']['exchanges'][order.exchange]
+        bps = validate_slippage_bps(profile.get('slippage_bps', 0))
+        if bps:
+            if profile['type'] != 'futures':
+                raise ValueError('slippage_bps is supported only in futures backtests')
+            # Apply after the trigger/gap decision, before fees, wallet updates and
+            # lifecycle hooks. Limits retain their price constraint. This stress
+            # model does not simulate spread, queueing, volume or latency.
+            original_price = order.price
+            provenance = dict(order.vars or {})
+            provenance.setdefault('submitted_price', original_price)
+            provenance.update(pre_slippage_price=original_price, slippage_bps=bps)
+            order.vars = provenance
+            direction = 1 if order.side == sides.BUY else -1
+            order.price = original_price * (1 + direction * bps / 10_000)
     
     order.executed_at = jh.now_to_timestamp()
     order.status = order_statuses.EXECUTED

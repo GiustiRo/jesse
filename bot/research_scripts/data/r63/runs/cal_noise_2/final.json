@@ -1,0 +1,395 @@
+{
+ "run": "cal_noise_2",
+ "kind": "noise",
+ "seed": 632,
+ "kappa": 0.0,
+ "n_programs": 1620,
+ "n_cells": 7,
+ "gens": {
+  "seed": {
+   "n": 20,
+   "eval_s": 62.6,
+   "total_s": 119.9,
+   "n_fab_run": 20,
+   "cells": 1
+  },
+  "0": {
+   "n": 160,
+   "eval_s": 44.3,
+   "total_s": 193.2,
+   "n_fab_run": 180,
+   "cells": 5
+  },
+  "1": {
+   "n": 160,
+   "eval_s": 11.9,
+   "total_s": 60.1,
+   "n_fab_run": 340,
+   "cells": 5
+  },
+  "2": {
+   "n": 160,
+   "eval_s": 18.9,
+   "total_s": 54.1,
+   "n_fab_run": 500,
+   "cells": 6
+  },
+  "3": {
+   "n": 160,
+   "eval_s": 23.2,
+   "total_s": 30.6,
+   "n_fab_run": 660,
+   "cells": 6
+  },
+  "4": {
+   "n": 160,
+   "eval_s": 24.0,
+   "total_s": 30.1,
+   "n_fab_run": 820,
+   "cells": 7
+  },
+  "5": {
+   "n": 160,
+   "eval_s": 27.6,
+   "total_s": 28.0,
+   "n_fab_run": 980,
+   "cells": 7
+  },
+  "6": {
+   "n": 160,
+   "eval_s": 19.4,
+   "total_s": 22.9,
+   "n_fab_run": 1140,
+   "cells": 7
+  },
+  "7": {
+   "n": 160,
+   "eval_s": 24.0,
+   "total_s": 27.3,
+   "n_fab_run": 1300,
+   "cells": 7
+  },
+  "8": {
+   "n": 160,
+   "eval_s": 25.5,
+   "total_s": 33.4,
+   "n_fab_run": 1460,
+   "cells": 7
+  },
+  "9": {
+   "n": 160,
+   "eval_s": 30.3,
+   "total_s": 30.8,
+   "n_fab_run": 1620,
+   "cells": 7
+  }
+ },
+ "finalists": [
+  {
+   "hash": "8a0054be0f36f6026da7c51a797bcaaccb8fe2bc",
+   "cell": "rho0|hold1|long",
+   "score": 0.8032239898527698,
+   "sharpe": 1.202380802253849,
+   "sharpe_cost2": 1.0816505377947692,
+   "marginal": 0.14424168501972012,
+   "rot_p": 0.014925373134328358,
+   "rot_n": 200,
+   "origin": "ga",
+   "gen": 2,
+   "trades": 230,
+   "top5_share": 0.4305140541405266,
+   "program": {
+    "universe": "alts_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "follow",
+       "ratio": 2.0
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "trendveto",
+      "params": {
+       "k": 60
+      }
+     },
+     {
+      "kind": "volreg",
+      "params": {
+       "band": "high"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 24
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.397,
+   "t_cash": 2.1581047306437244,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.658,
+   "t_marginal": 1.8054854476581328,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "287af6247c4666940009e3bfdf54e74234b23048",
+   "cell": "rho0|hold2|long",
+   "score": 0.28916192316003325,
+   "sharpe": 1.5879357404466998,
+   "sharpe_cost2": 1.5681233080928407,
+   "marginal": 0.19263733349111134,
+   "rot_p": 0.004975124378109453,
+   "rot_n": 200,
+   "origin": "ga",
+   "gen": 4,
+   "trades": 111,
+   "top5_share": 0.5180705537761413,
+   "program": {
+    "universe": "alts_1d",
+    "signal": [
+     {
+      "kind": "shock",
+      "params": {
+       "mode": "fade",
+       "z": 4
+      }
+     }
+    ],
+    "filters": [],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 120
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "maker",
+     "params": {
+      "life": 1,
+      "off": 0.5
+     }
+    }
+   },
+   "spa_cash_p": 0.397,
+   "t_cash": 2.990420186220161,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.658,
+   "t_marginal": 2.550393592846121,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "7766ca0f43b7ac3aa44bd80b04eadcc49176d21b",
+   "cell": "rho0|hold0|long",
+   "score": 0.2401415909067262,
+   "sharpe": 1.1240507098860775,
+   "sharpe_cost2": 0.8993515370230571,
+   "marginal": 0.13942104970920877,
+   "rot_p": 0.004975124378109453,
+   "rot_n": 200,
+   "origin": "ga",
+   "gen": 1,
+   "trades": 280,
+   "top5_share": 0.47417724001592243,
+   "program": {
+    "universe": "alts_1h",
+    "signal": [
+     {
+      "kind": "voljump",
+      "params": {
+       "mode": "follow",
+       "ratio": 2.0
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "volreg",
+      "params": {
+       "band": "high"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "time",
+     "params": {
+      "h": 6
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "long"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.397,
+   "t_cash": 2.5005082636059,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.658,
+   "t_marginal": 2.1363031802106356,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "7d17dff51298f900158f3ee8a7dcf5765d0b39f6",
+   "cell": "rho0|hold2|short",
+   "score": -0.46452108643622675,
+   "sharpe": 0.3082117828400232,
+   "sharpe_cost2": 0.1540502770480172,
+   "marginal": 0.01766547100819582,
+   "rot_p": 0.06467661691542288,
+   "rot_n": 200,
+   "origin": "ga",
+   "gen": 7,
+   "trades": 114,
+   "top5_share": 0.6221647199169511,
+   "program": {
+    "universe": "alts_1d",
+    "signal": [
+     {
+      "kind": "shock",
+      "params": {
+       "mode": "follow",
+       "z": 4
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "btcstate",
+      "params": {
+       "state": "flat"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "atr",
+     "params": {
+      "stop": 1,
+      "tgt": 1
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "short"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.397,
+   "t_cash": 0.6182882230386846,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.658,
+   "t_marginal": 0.24391350815133644,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  },
+  {
+   "hash": "5f52ba556b672969a311b9fd71600ee8422c51b0",
+   "cell": "rho0|hold1|short",
+   "score": -0.5137544961361664,
+   "sharpe": 0.5500206333384049,
+   "sharpe_cost2": 0.5016752735150602,
+   "marginal": 0.05978484068077328,
+   "rot_p": 0.03482587064676617,
+   "rot_n": 200,
+   "origin": "ga",
+   "gen": 3,
+   "trades": 117,
+   "top5_share": 0.5417654417527509,
+   "program": {
+    "universe": "alts_1d",
+    "signal": [
+     {
+      "kind": "zrev",
+      "params": {
+       "k": 24,
+       "z": 2.0
+      }
+     }
+    ],
+    "filters": [
+     {
+      "kind": "btcstate",
+      "params": {
+       "state": "flat"
+      }
+     }
+    ],
+    "exit": {
+     "kind": "atr",
+     "params": {
+      "stop": 1,
+      "tgt": 2
+     }
+    },
+    "size": {
+     "kind": "voltgt",
+     "params": {
+      "side": "short"
+     }
+    },
+    "exec": {
+     "kind": "taker",
+     "params": {}
+    }
+   },
+   "spa_cash_p": 0.397,
+   "t_cash": 1.027016257422139,
+   "spa_cash_pass": false,
+   "spa_marginal_p": 0.658,
+   "t_marginal": 0.7704858051552089,
+   "spa_marginal_pass": false,
+   "spa_pass": false,
+   "planted_piece": null
+  }
+ ],
+ "spa_cash": {
+  "p": 0.397,
+  "argmax": "5e70b6403326c1bd1523d9b10058658937717b01",
+  "crit_t": 4.208159635128675
+ },
+ "spa_marginal": {
+  "p": 0.658,
+  "argmax": "7cc7761e0cf98155dfff757eadf8c005f8a36ff8",
+  "crit_t": 4.2364498393736
+ },
+ "max_dev_sharpe": 1.6383145173218134,
+ "best_score": 0.8032239898527698
+}

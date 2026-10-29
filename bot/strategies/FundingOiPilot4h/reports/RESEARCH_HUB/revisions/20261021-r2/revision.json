@@ -1,0 +1,290 @@
+{
+  "format_version": 1,
+  "id": "20261021-r2",
+  "updated_at_utc": "2026-10-21T13:59:46Z",
+  "objective": "Evaluar 20–30% anual por operativa y cartera; una pieza inferior puede ser candidata si mejora el conjunto dentro del riesgo. CAGR no promete el resultado cada año.",
+  "latest": "Integración documental V1–V6: 209 económicas únicas / 233 slots / 24 reusos; ninguna candidata aprobada. Inventario multi-activo inicial, sin nuevas corridas.",
+  "next": "Leer continuaciones multi-activo y fijar referencias comparables; después prerregistrar BTC tendencia/exposición.",
+  "blockers": "Referencias comparables y protocolos nuevos aún no definidos. Proxies PAXG/SPY y fricción requieren alcance explícito. Correlaciones/pérdidas simultáneas aún sin evaluar en el nuevo programa.",
+  "counts": {
+    "status": "COMPLETE_PASS_FINAL_AUDIT",
+    "cycles": [
+      {
+        "cycle": "V1",
+        "economic_unique": 96,
+        "nominal_slots": 96,
+        "technical_attempts": 7
+      },
+      {
+        "cycle": "V2",
+        "economic_unique": 16,
+        "nominal_slots": 32,
+        "technical_attempts": 4
+      },
+      {
+        "cycle": "V3",
+        "economic_unique": 33,
+        "nominal_slots": 36,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V4",
+        "economic_unique": 6,
+        "nominal_slots": 6,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V5",
+        "economic_unique": 37,
+        "nominal_slots": 40,
+        "technical_attempts": 3
+      },
+      {
+        "cycle": "V6",
+        "economic_unique": 21,
+        "nominal_slots": 23,
+        "technical_attempts": 3
+      }
+    ],
+    "new_V5_V6": {
+      "economic_unique": 58,
+      "technical_unique": 6,
+      "total_unique_engine_sessions": 64,
+      "nominal_slots": 63,
+      "reused_slots": 5,
+      "all_sessions_finished": true,
+      "accounting_unique_full_rows": 58
+    },
+    "totals": {
+      "economic_unique": 209,
+      "nominal_slots": 233,
+      "reused_slots": 24,
+      "technical_attempts": 23
+    },
+    "no_independent_sample_count_claim": true,
+    "prior_counts_source": "RESEARCH_CONSOLIDATED_DECISION_20261020.md pre-V5/V6 snapshot",
+    "new_inventory_sources": [
+      "V5_FINAL_SESSION_INVENTORY.json",
+      "V6_FINAL_SESSION_INVENTORY.json"
+    ],
+    "economic_target_reached": false,
+    "closed_at_utc": "2026-10-21 02:14:44 UTC"
+  },
+  "decisions": [
+    "Horizonte BTC–PAXG–SPY y cartera; no se cambia operativa vigente BTC-only.",
+    "2020–2025 son históricos ya examinados. 2026 cerrado para esta línea; excepción K1001 preservada sin ampliación.",
+    "Separar ejecución, suficiencia de evidencia y cumplimiento económico. No aprobar ni invalidar automáticamente por muestra pequeña.",
+    "Meta 20–30% anual no sustituye gates históricos. Informar años y períodos adversos.",
+    "Hipótesis ML/HMM/revisión visual por IA condicionadas a necesidad demostrable; sin promoción automática.",
+    "Sin nuevos backtests, estrategias, importaciones, live/paper, Pi, instalaciones ni reinicios en esta entrega."
+  ],
+  "lines": [
+    "BTC: V1–V6 y R14 históricos, sin nueva candidata.",
+    "PAXG: calendario/retest/shocks y estudio compartido existentes; proxy spot, no transferencia acreditada a perpetual.",
+    "SPY: múltiples familias históricas; proxy SPX CFD BID/10, sin certificación nativa.",
+    "Cartera: K1001 B/C y otras referencias inventariadas; excepción 2026 no habilita ajuste nuevo."
+  ],
+  "methodology": [
+    "1. Hipótesis económica, persistencia esperada y falsación.",
+    "2. Prerregistro: reglas, referencias, datos, costos, riesgo, ventanas, selección, presupuesto, criterios numéricos y cierre.",
+    "3. Verificación técnica: causalidad, as-of, costos, ejecución y ledger.",
+    "4. Exploración acotada: registrar variantes, errores, descartes y resultados desfavorables.",
+    "5. Validación y estrés previstos; cambios posteriores generan revisión nueva.",
+    "6. Revisión crítica de explicaciones alternativas y referencias.",
+    "7. Decisión razonada: continuar, descartar, insuficiente o proponer validación prospectiva; nunca autorización para operar."
+  ],
+  "supersedes": [
+    {
+      "reference": "DOCS.md: solo BTC-USDT",
+      "scope": "Amplía horizonte de investigación a BTC–PAXG–SPY; no cambia el alcance live."
+    },
+    {
+      "reference": "bot/docs/multi-asset-pivot-handoff.md",
+      "scope": "Histórico: metas previas y afirmación de descorrelación no gobiernan el nuevo programa. Conservar cifras como reportadas, no como validación nueva."
+    },
+    {
+      "reference": "RESEARCH_WALK_FORWARD_HANDOFF_FINAL_V6_20261020.md",
+      "scope": "Conserva cierre V1–V6; el nuevo instructivo rige continuidad del Hub. No reabrir protocolos cerrados."
+    },
+    {
+      "reference": "RESEARCH_HUB/revisions/20261021-r1/revision.json",
+      "scope": "Amplía transcripción de métricas existentes V1–V6: años, semestres, costes, exposición y estrés. No cambia veredictos ni inicia experimentos."
+    }
+  ],
+  "roadmap": [
+    {
+      "order": 1,
+      "title": "Reconciliar evidencia y decisiones",
+      "state": "carga inicial completada; continuaciones por revisar",
+      "depends": "ninguna",
+      "gate": "Carga V1–V6 conciliada; inventario multi-activo inicial disponible. Completar revisión de continuaciones antes de elegir referencias."
+    },
+    {
+      "order": 2,
+      "title": "Definir referencias comparables",
+      "state": "pendiente",
+      "depends": "etapa 1",
+      "gate": "Capital, riesgo, exposición, fuente, costos, horarios y benchmark comparables, incluidos efectivo y períodos sin operaciones."
+    },
+    {
+      "order": 3,
+      "title": "Prerregistrar BTC tendencia / exposición",
+      "state": "pendiente",
+      "depends": "etapa 2",
+      "gate": "Mecanismo, falsación, reglas, presupuesto, criterios numéricos, versiones y ventanas congelados antes del primer run."
+    },
+    {
+      "order": 4,
+      "title": "Validar cada pieza",
+      "state": "pendiente",
+      "depends": "etapa 3",
+      "gate": "Gates propios de muestra, retorno, DD, estabilidad y estrés; detener según protocolo sin rellenar slots con tuning."
+    },
+    {
+      "order": 5,
+      "title": "Evaluar cartera conjunta",
+      "state": "pendiente",
+      "depends": "etapa 4",
+      "gate": "Correlación de rendimientos alineados, frecuencia/concentración de pérdidas simultáneas, comparación con/sin componente a igual presupuesto. No deducir diversificación por sector."
+    },
+    {
+      "order": 6,
+      "title": "Considerar validación prospectiva",
+      "state": "pendiente",
+      "depends": "etapa 5",
+      "gate": "Evidencia suficiente, versión inmutable y autorización específica para el período futuro. Esta entrega no autoriza live/paper."
+    }
+  ],
+  "explorations": [
+    {
+      "id": "V1",
+      "title": "Ciclo V1",
+      "asset": "BTC",
+      "family": "precio / funding / OI",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V1.json"
+    },
+    {
+      "id": "V2",
+      "title": "Ciclo V2",
+      "asset": "BTC",
+      "family": "ATR / funding / OI",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V2.json"
+    },
+    {
+      "id": "V3",
+      "title": "Ciclo V3",
+      "asset": "BTC",
+      "family": "tendencia / canal",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V3.json"
+    },
+    {
+      "id": "V4",
+      "title": "Ciclo V4",
+      "asset": "BTC",
+      "family": "oscilador / shock / funding",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V4.json"
+    },
+    {
+      "id": "V5",
+      "title": "Ciclo V5",
+      "asset": "BTC",
+      "family": "funding / cruce / VWAP",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V5.json"
+    },
+    {
+      "id": "V6",
+      "title": "Ciclo V6",
+      "asset": "BTC",
+      "family": "eficiencia / deleveraging / NR7",
+      "execution": "cerrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/V6.json"
+    },
+    {
+      "id": "CROSS_P",
+      "title": "Cruce de tendencia: screening elegible",
+      "asset": "BTC",
+      "family": "tendencia / cruce",
+      "execution": "sin confirmación",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/CROSS_P.json"
+    },
+    {
+      "id": "LEGACY",
+      "title": "Causalidad y contabilidad legacy",
+      "asset": "BTC",
+      "family": "legacy",
+      "execution": "auditado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/LEGACY.json"
+    },
+    {
+      "id": "PAXG",
+      "title": "PAXG: evidencia previa",
+      "asset": "PAXG",
+      "family": "calendario / retest",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/PAXG.json"
+    },
+    {
+      "id": "SPY",
+      "title": "SPY: evidencia previa",
+      "asset": "SPY",
+      "family": "apertura / beta",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/SPY.json"
+    },
+    {
+      "id": "CARTERA",
+      "title": "K1001 y cartera histórica",
+      "asset": "Cartera",
+      "family": "multi-activo / K1001",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/CARTERA.json"
+    },
+    {
+      "id": "BTC_R14",
+      "title": "BTC_R14: evidencia previa",
+      "asset": "BTC",
+      "family": "ablación / tendencia",
+      "execution": "inventariado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/cards/BTC_R14.json"
+    }
+  ],
+  "documents": [
+    {
+      "label": "Verificación de la entrega y cambios r2",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r2/VERIFICATION.md"
+    },
+    {
+      "label": "Evaluación e integración del plan",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/EVALUATION.md"
+    },
+    {
+      "label": "Metodología y formato",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/METHODOLOGY.md"
+    },
+    {
+      "label": "Continuidad para agentes",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/HANDOFF.md"
+    },
+    {
+      "label": "Inventario de evidencia multi-activo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r1/INVENTORY.json"
+    },
+    {
+      "label": "RESEARCH_CONSOLIDATED_DECISION_20261020.md",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_CONSOLIDATED_DECISION_20261020.md"
+    },
+    {
+      "label": "RESEARCH_COUNTS_V1_V6_20261020.json",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_COUNTS_V1_V6_20261020.json"
+    },
+    {
+      "label": "V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md",
+      "path": "strategies/FundingOiPilot4h/reports/V5_V6_FINAL_ECONOMIC_INDEPENDENT_AUDIT.md"
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "format_version": 1,
+  "id": "20261025-r51",
+  "updated_at_utc": "2026-10-25 23:59:00 UTC",
+  "objective": "Cortos como prioridad, reglas propias para bono y WTI y pronósticos continuos transversales, sobre la base P1 (R1 + C6) confirmada en Jesse. Metas r9 de cartera; M65/Q80 en seguimiento.",
+  "latest": "r51 cerrada: P1 sin cambios y confirmada en Jesse (2018-09+ 36,9% / Sharpe 1,60 / DSR 0,99; 2021–25 24,3% / 1,42). Ninguna de las 10 mangas nuevas pasa; A3 (spread Brent–WTI, Sharpe 1,21) vetado por DD 2013. N=108, Jesse 10/10.",
+  "next": "r52 a decidir con el usuario: valor relativo como familia (A3 con preregistro nuevo), validación SOL/XRP/BNB y 2026, decisión sobre el bono.",
+  "blockers": "Ninguno.",
+  "counts": {
+    "r51": {
+      "n_declared_start": 98,
+      "n_cap": 115,
+      "jesse_runs_budget": 10,
+      "jesse_runs_used": 10,
+      "phase1_report": "strategies/FundingOiPilot4h/reports/R51_PHASE1_RESULTS_20261025.md",
+      "phase2_report": "strategies/FundingOiPilot4h/reports/R51_PHASE2_RESULTS_20261025.md",
+      "n_final": 108,
+      "phase3_report": "strategies/FundingOiPilot4h/reports/R51_PHASE3_RESULTS_20261025.md",
+      "phase4_report": "strategies/FundingOiPilot4h/reports/R51_PHASE4_RESULTS_20261025.md",
+      "phase5_report": "strategies/FundingOiPilot4h/reports/R51_PHASE5_RESULTS_20261025.md",
+      "close_report": "strategies/FundingOiPilot4h/reports/R51_CLOSE_20261025.md"
+    }
+  },
+  "decisions": [
+    "2026-10-25 r51 cerrada: P1 sigue sin cambios; ninguna manga nueva pasa; A3 (Brent–WTI) es el hallazgo a preregistrar en r52.",
+    "2026-10-25 r51 enmienda 73a1c6da: ninguna regla r51 mantiene posición a través de huecos de datos > 6 días (WTI 2020).",
+    "2026-10-25 r51 F1: P1 confirmada en Jesse; R1/bono fuera de tolerancia por feed CFD disperso, se usa la curva Jesse (42cdf4a0).",
+    "2026-10-25 r51 aprobado por el usuario: cortos como prioridad central, reglas específicas para bono y WTI, SOL/XRP/BNB diferidos, paper fuera de alcance, enfoque transversal recomendado = pronósticos continuos estilo Carver; ML diferido.",
+    "2026-10-25 r51: TLT diario 2002–2025 como lente larga del bono, solo veta (usuario). La decisión sigue en 2018-03 → 2025.",
+    "2026-10-25 r51 F1: una manga por sesión Jesse (las rutas comparten billetera); R1 BTC y WTI se comparan con sesiones existentes."
+  ],
+  "supersedes": "20261024-r50",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 preparación",
+      "state": "completada",
+      "depends": "plan aprobado",
+      "gate": "protocolo commiteado y datos descargados"
+    },
+    {
+      "order": 1,
+      "title": "F1 confirmación de P1 en Jesse",
+      "state": "completada",
+      "depends": "F0",
+      "gate": "PROTOCOL_R51.md F1"
+    },
+    {
+      "order": 2,
+      "title": "F2 diagnóstico de P1",
+      "state": "completada",
+      "depends": "F1",
+      "gate": "descriptivo"
+    },
+    {
+      "order": 3,
+      "title": "F3 bloque A: bono, WTI, gas",
+      "state": "completada: ninguna pasa; A3 vetado por la lente larga",
+      "depends": "F2",
+      "gate": "PROTOCOL_R51.md F6 compuertas"
+    },
+    {
+      "order": 4,
+      "title": "F4 bloque B: cortos y valor relativo",
+      "state": "completada: ninguna pasa",
+      "depends": "F2",
+      "gate": "PROTOCOL_R51.md F6 compuertas"
+    },
+    {
+      "order": 5,
+      "title": "F5 pronósticos continuos",
+      "state": "completada: no reemplazan a R1",
+      "depends": "F2",
+      "gate": "PROTOCOL_R51.md F6"
+    },
+    {
+      "order": 6,
+      "title": "F6 cartera y validación",
+      "state": "completada: P2 = P1",
+      "depends": "F3–F5",
+      "gate": "inclusión greedy y validación congelada"
+    },
+    {
+      "order": 7,
+      "title": "F7 cierre",
+      "state": "completada",
+      "depends": "F6",
+      "gate": "congelamiento"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r51: plan aprobado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PLAN.md"
+    },
+    {
+      "label": "r51: protocolo preregistrado",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261025-r51/PROTOCOL_R51.md"
+    },
+    {
+      "label": "r50: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R50_CLOSE_20261025.md"
+    },
+    {
+      "label": "Registro de ensayos",
+      "path": "strategies/FundingOiPilot4h/reports/TRIAL_REGISTRY.json"
+    },
+    {
+      "label": "r51 F1: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R51_PHASE1_RESULTS_20261025.md"
+    },
+    {
+      "label": "r51 F2: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R51_PHASE2_RESULTS_20261025.md"
+    },
+    {
+      "label": "r51 F3: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R51_PHASE3_RESULTS_20261025.md"
+    },
+    {
+      "label": "r51 F4: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R51_PHASE4_RESULTS_20261025.md"
+    },
+    {
+      "label": "r51 F5: resultados",
+      "path": "strategies/FundingOiPilot4h/reports/R51_PHASE5_RESULTS_20261025.md"
+    },
+    {
+      "label": "r51: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R51_CLOSE_20261025.md"
+    }
+  ],
+  "current_stage": {
+    "stage": "r51_cortos",
+    "execution_status": "r51_closed",
+    "current_focus": "Cierre de r51",
+    "permitted": [
+      "Scripts en research_scripts.",
+      "Descargas de TLT, Brent y dólar (solo señal).",
+      "Push de la rama exploration/gpt-6.1-sol.",
+      "≤10 corridas Jesse en F1, máximo 2 simultáneas."
+    ],
+    "excluded": [
+      "Live/paper y la Pi.",
+      "Datos posteriores al 2025-12-31.",
+      "SOL/XRP/BNB.",
+      "ML.",
+      "Usar activos de validación para diseñar."
+    ],
+    "new_experiments_authorized": true,
+    "authorization_scope": "Plan r51 aprobado por el usuario el 2026-10-25; reporte breve al cierre de cada fase.",
+    "economic_status": "no_candidate_promoted",
+    "goal_status": "closed"
+  }
+}

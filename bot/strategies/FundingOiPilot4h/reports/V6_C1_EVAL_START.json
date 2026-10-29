@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-10-21 01:26:25 UTC",
+  "decision": "SELECTION_V6_C1.json",
+  "form": {
+    "exchange": "Binance Perpetual Futures",
+    "routes": [
+      {
+        "exchange": "Binance Perpetual Futures",
+        "symbol": "BTC-USDT",
+        "timeframe": "4h",
+        "strategy": "ResearchV6EF_P_C1V"
+      }
+    ],
+    "data_routes": [],
+    "start_date": "2024-01-01",
+    "finish_date": "2024-07-01",
+    "debug_mode": true,
+    "export_csv": false,
+    "export_json": false,
+    "export_chart": false,
+    "fast_mode": true,
+    "benchmark": false,
+    "config": {
+      "logging": {
+        "order_submission": false,
+        "order_cancellation": false,
+        "order_execution": false,
+        "position_opened": false,
+        "position_increased": false,
+        "position_reduced": false,
+        "position_closed": false,
+        "shorter_period_candles": false,
+        "trading_candles": false,
+        "balance_update": false
+      },
+      "warm_up_candles": 240,
+      "exchange": {
+        "name": "Binance Perpetual Futures",
+        "type": "futures",
+        "balance": 10000,
+        "fee": 0.00045,
+        "futures_leverage_mode": "isolated",
+        "futures_leverage": 3,
+        "slippage_bps": 0
+      },
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "allow_missing_observations": true,
+        "max_age_ms": 600000
+      }
+    }
+  },
+  "session_id": "33180680-9dd0-44f1-a7a5-6fcf4ba0c363",
+  "owner": "root until Efficiency owner resumes; V5 owns other motor",
+  "start_requested": true,
+  "raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"status\": \"started\",\n  \"backtest_id\": \"33180680-9dd0-44f1-a7a5-6fcf4ba0c363\",\n  \"routes\": [\n    {\n      \"exchange\": \"Binance Perpetual Futures\",\n      \"symbol\": \"BTC-USDT\",\n      \"timeframe\": \"4h\",\n      \"strategy\": \"ResearchV6EF_P_C1V\"\n    }\n  ],\n  \"dashboard_url\": \"http://localhost:9200/#/backtest/33180680-9dd0-44f1-a7a5-6fcf4ba0c363\",\n  \"message\": \"Backtest started. Poll get_backtest_session(session_id) to check progress and retrieve results when status is \\\"finished\\\".\"\n}"
+      }
+    ],
+    "isError": false
+  }
+}

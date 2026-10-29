@@ -42,7 +42,7 @@ from jesse.services.project_files import ProjectFileError
 
 SESSION_TYPES = ('backtest', 'optimization', 'monte_carlo', 'significance_test', 'live')
 SECTIONS: Dict[str, Tuple[str, ...]] = {
-    'backtest': ('summary', 'trades', 'equity_curve', 'hyperparameters', 'logs'),
+    'backtest': ('summary', 'trades', 'equity_curve', 'hyperparameters', 'logs', 'funding', 'open_interest'),
     'optimization': ('summary', 'best_trials', 'objective_curve', 'logs'),
     'monte_carlo': ('summary', 'confidence_analysis', 'scenario_metrics', 'equity_curves', 'logs'),
     'significance_test': ('summary',),
@@ -626,6 +626,9 @@ def _backtest_parts(row) -> dict:
 def _backtest_summary(row, session_id: str, parts: dict) -> dict:
     form = parts['state'].get('form') if isinstance(parts['state'], dict) else None
     charts_image = os.path.exists(os.path.join('storage', 'backtest-charts', f'{session_id}_equity_curve.png'))
+    metrics = dict(parts['metrics']) if isinstance(parts['metrics'], dict) else parts['metrics']
+    if isinstance(metrics, dict) and isinstance(metrics.get('funding'), dict):
+        metrics['funding'] = {key: value for key, value in metrics['funding'].items() if key != 'ledger'}
     return {
         **_base('backtest', session_id, row.status),
         **_notes(row.title, row.description),
@@ -633,7 +636,7 @@ def _backtest_summary(row, session_id: str, parts: dict) -> dict:
         'updated_at': row.updated_at,
         'execution_duration': row.execution_duration,
         'form': form,
-        'metrics': parts['metrics'],
+        'metrics': metrics,
         'error': _error_block(row.exception, row.traceback),
         'has_chart_data': bool(row.chart_data),
         'has_charts_image': charts_image,
@@ -660,6 +663,17 @@ def _backtest(session_id: str, section: str, offset: int, limit: int) -> dict:
     if section == 'summary':
         return _backtest_summary(row, session_id, parts)
     head = {**_base('backtest', session_id, row.status), 'section': section}
+    if section == 'funding':
+        funding = (parts['metrics'] or {}).get('funding')
+        if not funding:
+            form = parts['state'].get('form', {})
+            requested = form.get('config', {}).get('funding') or {'mode': 'disabled'}
+            mode = requested.get('mode', 'disabled')
+            funding = {'mode': mode, 'applied': False, 'status': 'disabled' if mode == 'disabled' else 'not_applied'}
+        return {**head, **{key: value for key, value in funding.items() if key != 'ledger'},
+                **_page(funding.get('ledger') or [], offset, limit)}
+    if section == 'open_interest':
+        return {**head, 'open_interest': (parts['metrics'] or {}).get('open_interest') or {'mode': 'disabled'}}
     if section == 'trades':
         return {**head, 'order': 'as stored (chronological)', **_page(parts['trades'], offset, limit)}
     if section == 'equity_curve':

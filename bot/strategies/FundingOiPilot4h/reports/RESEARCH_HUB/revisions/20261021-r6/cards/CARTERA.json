@@ -1,0 +1,193 @@
+{
+  "id": "CARTERA",
+  "title": "K1001 B/C: referencias revisadas al perfil fijo",
+  "asset": "Cartera",
+  "family": "multi-activo / K1001",
+  "execution": "revisión intermedia completada",
+  "evidence": "histórica revisada; sin aprobación prospectiva",
+  "objective": "CAGR histórico favorable de cartera; objetivo futuro no acreditado",
+  "hypothesis": "Conservar la pareja heredada K1001 B/C frente a N204 al mismo riesgo y costes para interpretar la evidencia, sin nueva selección retrospectiva.",
+  "origin": "Investigación anterior al Hub; inventarios completos enlazados",
+  "method": "Lectura de R12, evaluaciones2026 corregidas y cierres posteriores; contraste de doce summaries originales. No nuevos motores o análisis jobs.",
+  "protocol": null,
+  "budget": "Revisión r5: cero backtests, cero replays, cero optimizaciones, cero Monte Carlo y cero análisis jobs.",
+  "versions": "Fuentes y configuración en reportes originales; proxies no equivalen a perpetual nativo.",
+  "periods": [
+    "Desarrollo:2020-10-15 inclusiva →2025-12-31 exclusiva, ya reutilizado",
+    "Evaluación existente:2026-01-01 →2026-10-19 exclusiva; ampliación posterior exploratoria"
+  ],
+  "results": {
+    "scope": "10k compartidos,2%/6%/3xaislado. Retornos de cartera; no objetivos aislados de cada componente.",
+    "development_rows": [
+      {
+        "case": "DEV_B_N",
+        "cagr_pct": 33.85137915295113,
+        "net_pct": 357.2707072805941,
+        "net_usdt": 35727.07072805941,
+        "drawdown_engine_pct": -13.344208838110882,
+        "trades": 242,
+        "fee_per_side": 0.00045
+      },
+      {
+        "case": "DEV_C_N",
+        "cagr_pct": 34.659478110543105,
+        "net_pct": 371.8482939539716,
+        "net_usdt": 37184.82939539716,
+        "drawdown_engine_pct": -13.818055144302422,
+        "trades": 249,
+        "fee_per_side": 0.00045
+      },
+      {
+        "case": "DEV_B_F",
+        "cagr_pct": 26.5017173759847,
+        "net_pct": 240.64339531872713,
+        "net_usdt": 24064.339531872713,
+        "drawdown_engine_pct": -14.585142774601845,
+        "trades": 242,
+        "fee_per_side": 0.00095
+      },
+      {
+        "case": "DEV_C_F",
+        "cagr_pct": 26.917410033490796,
+        "net_pct": 246.52003040557608,
+        "net_usdt": 24652.003040557607,
+        "drawdown_engine_pct": -14.544128162832859,
+        "trades": 249,
+        "fee_per_side": 0.00095
+      },
+      {
+        "case": "N204_DEV_B_N",
+        "cagr_pct": 32.66114541285119,
+        "net_pct": 336.4644571451735,
+        "net_usdt": 33646.44571451735,
+        "drawdown_engine_pct": -13.375492042825854,
+        "trades": 273,
+        "fee_per_side": 0.00045
+      },
+      {
+        "case": "N204_DEV_B_F",
+        "cagr_pct": 25.019604651986562,
+        "net_pct": 220.34260114574806,
+        "net_usdt": 22034.260114574805,
+        "drawdown_engine_pct": -14.030530672409935,
+        "trades": 273,
+        "fee_per_side": 0.00095
+      },
+      {
+        "case": "N204_DEV_C_N",
+        "cagr_pct": 33.455125809981176,
+        "net_pct": 350.2567874468518,
+        "net_usdt": 35025.678744685174,
+        "drawdown_engine_pct": -14.996090444461485,
+        "trades": 280,
+        "fee_per_side": 0.00045
+      },
+      {
+        "case": "N204_DEV_C_F",
+        "cagr_pct": 25.3618920431953,
+        "net_pct": 224.94176256066908,
+        "net_usdt": 22494.176256066905,
+        "drawdown_engine_pct": -15.664935932848522,
+        "trades": 280,
+        "fee_per_side": 0.00095
+      }
+    ],
+    "existing_2026": [
+      {
+        "case": "2026_B_N",
+        "net_pct": -1.2685925098621762,
+        "drawdown_engine_pct": -25.883011163935965,
+        "trades": 46
+      },
+      {
+        "case": "2026_C_N",
+        "net_pct": 10.351210344464565,
+        "drawdown_engine_pct": -19.255823725787845,
+        "trades": 47
+      },
+      {
+        "case": "2026_B_F",
+        "net_pct": -5.280538219355211,
+        "drawdown_engine_pct": -27.816571716671625,
+        "trades": 46
+      },
+      {
+        "case": "2026_C_F",
+        "net_pct": 4.963663767786686,
+        "drawdown_engine_pct": -21.07491447059133,
+        "trades": 47
+      }
+    ],
+    "costs": "Fee.00045nominal/.00095estrés por lado;sin funding/slippageefectivo/liquidez. Reserva.001 sólo sizing.",
+    "historical_correlations": "Ya medidas en1%/8%/5x. Matriz equivalente2%/6%/3x no acreditada en anexos revisados; ver RESULTS.json.",
+    "prospective_approval": false
+  },
+  "limitations": [
+    "K1001 tiene más retorno pero no domina todas las métricas; N204 B estrés tiene menor DD y más meses positivos.",
+    "2026B falla; C pasa mínimos con una sola operaciónSPY que supera su beneficio neto. Protocolo conjunto no superado.",
+    "Proxies PAXGspot/SPXCFD;sin costes completos de ejecución nativa. Desarrollo reutilizado;ampliación2026exploratoria.",
+    "CAGR de cartera no acredita objetivo20–30%de cada pieza o cada año."
+  ],
+  "audit": "Revisión documental r5 por tres revisores con contraste de root; no nueva validación económica. Doce summaries y dos lecturas puntuales de cierre corroborados, sin reauditar todos los fills.",
+  "decision": "Conservar K1001 B/C como referencias congeladas y N204 B/C como controles equivalentes. No promover, escoger C retrospectivamente ni lanzar más pruebas sin decisión del usuario.",
+  "references": [
+    {
+      "label": "Resultados de la validación r5",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r6/VALIDATION_R5_RESULTS.md"
+    },
+    {
+      "label": "K1001_OOS_2026_10K_RESULTS_20261019.md",
+      "path": "strategies/MultiAssetRetestBtcShort4h/reports/K1001_OOS_2026_10K_RESULTS_20261019.md"
+    }
+  ],
+  "sessions": [
+    {
+      "label": "DEV_B_N",
+      "url": "http://localhost:9200/#/backtest/b9f0cccc-8de0-4076-a7fa-eb9ae8e1be38"
+    },
+    {
+      "label": "DEV_C_N",
+      "url": "http://localhost:9200/#/backtest/3ec33cac-3ea6-43c7-9cfe-4d315930fee2"
+    },
+    {
+      "label": "DEV_B_F",
+      "url": "http://localhost:9200/#/backtest/bb6e80f2-36f1-4c8f-8c8c-cac840794b8c"
+    },
+    {
+      "label": "DEV_C_F",
+      "url": "http://localhost:9200/#/backtest/ac57b4d3-cfeb-4add-88cb-19358d701db1"
+    },
+    {
+      "label": "2026_B_N",
+      "url": "http://localhost:9200/#/backtest/d6ed3b7d-19c5-4240-8ad9-9cb2f7706667"
+    },
+    {
+      "label": "2026_C_N",
+      "url": "http://localhost:9200/#/backtest/3c175497-66bf-4cf0-a9f8-c888834961da"
+    },
+    {
+      "label": "2026_B_F",
+      "url": "http://localhost:9200/#/backtest/40239c00-168a-4ab4-b423-069c91e6e6b7"
+    },
+    {
+      "label": "2026_C_F",
+      "url": "http://localhost:9200/#/backtest/df30484a-1331-4faa-9097-6c2e7d7011bc"
+    },
+    {
+      "label": "N204_DEV_B_N",
+      "url": "http://localhost:9200/#/backtest/c7c06f37-6fc6-41b5-8b64-9314e34461ab"
+    },
+    {
+      "label": "N204_DEV_B_F",
+      "url": "http://localhost:9200/#/backtest/114d7db9-f127-4a64-863c-f4d7fd0f3e3b"
+    },
+    {
+      "label": "N204_DEV_C_N",
+      "url": "http://localhost:9200/#/backtest/436b001f-2868-44cc-890e-77d62e7a6397"
+    },
+    {
+      "label": "N204_DEV_C_F",
+      "url": "http://localhost:9200/#/backtest/3dbe6a72-a7e8-40d6-b773-e3c2434567f0"
+    }
+  ]
+}

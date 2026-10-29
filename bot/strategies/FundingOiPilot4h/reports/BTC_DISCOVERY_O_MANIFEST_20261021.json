@@ -1,0 +1,231 @@
+{
+  "phase": "O_pre_economic",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_O_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 19:56:28 UTC",
+  "sources": {
+    "BtcResearchR15PathBase1m": "import math\nimport numpy as np\n\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\nDAY = 86400000\n\n\ndef day_path(rows):\n    \"\"\"Pure daily path label; reject extrema whose order is unidentified.\"\"\"\n    if rows.ndim != 2 or rows.shape[1] < 5 or len(rows) < 6:\n        return None\n    block = rows[-6:]\n    # Volume is deliberately unused in both policies. A forming or displaced\n    # day is never relabelled by shifting the six-bar window.\n    if not np.all(np.isfinite(block[:, :5])):\n        return None\n    times = block[:, 0]\n    start = float(times[0])\n    if start % DAY != 0 or not np.array_equal(times, start + np.arange(6) * BAR):\n        return None\n    if np.any(block[:, 1:5] <= 0):\n        return None\n    if (np.any(block[:, 3] < np.maximum(block[:, 1], block[:, 2]))\n            or np.any(block[:, 4] > np.minimum(block[:, 1], block[:, 2]))):\n        return None\n    opening, close = float(block[0, 1]), float(block[-1, 2])\n    if close == opening:\n        return None\n    highs = np.flatnonzero(block[:, 3] == np.max(block[:, 3]))\n    lows = np.flatnonzero(block[:, 4] == np.min(block[:, 4]))\n    # Do not resolve ties by a favorable first/last occurrence, or infer the\n    # high/low order inside the same four-hour bar.\n    if len(highs) != 1 or len(lows) != 1 or highs[0] == lows[0]:\n        return None\n    high_index, low_index = int(highs[0]), int(lows[0])\n    direction = 1 if close > opening else -1\n    repair = ((direction == 1 and high_index < low_index)\n              or (direction == -1 and low_index < high_index))\n    return dict(direction=direction, repair=bool(repair),\n                label=\"repair\" if repair else \"body_only\",\n                high_index=high_index, low_index=low_index)\n\n\nclass BtcResearchR15PathBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # A UTC data-aggregation clock on continuous BTC, not market hours.\n        if now % DAY:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 15)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"REPAIR\", \"BODY\")\n        event = day_path(rows)\n        if event is None:\n            return\n        if not self.START < now < self.FINISH:\n            return\n        counts = self.vars.setdefault(\"day_path_counts\", {\"repair\": 0, \"body_only\": 0})\n        counts[event[\"label\"]] += 1\n        if self.MODE == \"REPAIR\" and not event[\"repair\"]:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        # Daily entries retain the common four-hour ATR protection. The current\n        # day's closed bars are known; this is not a daily-ATR substitution.\n        atr = atr14(rows)\n        if atr is None:\n            return\n        direction = event[\"direction\"]\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None or self.price+direction*2*plan[\"distance\"] <= 0:\n            return\n        self.vars[\"plan\"] = dict(plan, path_label=event[\"label\"],\n                                 high_index=event[\"high_index\"], low_index=event[\"low_index\"])\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        plan = self.vars[\"plan\"]\n        # Persist the observed label only after an actual simulated opening fill.\n        self._log(\"R15_PATH_OPEN\", dict(\n            time=int(self.time), path_label=plan[\"path_label\"],\n            high_index=plan[\"high_index\"], low_index=plan[\"low_index\"]))\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R15_PATH_STATS\", dict(\n            stage=stage, counts=self.vars.get(\"day_path_counts\", {}),\n            signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n            occupied=self.vars.get(\"occupied\", 0)))\n",
+    "BtcResearchR15Repair1m": "from strategies.BtcResearchR15PathBase1m import BtcResearchR15PathBase1m\n\n\nclass BtcResearchR15Repair1m(BtcResearchR15PathBase1m):\n    MODE = \"REPAIR\"\n",
+    "BtcResearchR15Body1m": "from strategies.BtcResearchR15PathBase1m import BtcResearchR15PathBase1m\n\n\nclass BtcResearchR15Body1m(BtcResearchR15PathBase1m):\n    MODE = \"BODY\"\n"
+  },
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "8781957763c5452a8b93a62cd612f8b9",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/8781957763c5452a8b93a62cd612f8b9",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 15148,
+      "exit_code": 0,
+      "started_at": "2026-10-21T19:35:25+00:00",
+      "finished_at": "2026-10-21T19:35:25+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T19:35:25+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "O_CHECK_RECEIPT.json",
+        "size_bytes": 4628,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"passed\", \"assertions\": 118, \"source_sha256\": {\"BtcResearchR15PathBase1m\": \"eb153100615248a22cfcbbe1c2f67ae6ea5875debfeb8cee925f94905527da27\", \"BtcResearchR15Repair1m\": \"1d021803ee75c7c297b976121a4858b728c978b3ecdd6e0299e12e9e8cf7d3b4\", \"BtcResearchR15Body1m\": \"61c7a74d650d64f4a613d8d17d777e2657e2f8e57bc8af79ea413d89bd7fe7dd\", \"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\"}}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "check_receipt": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_O_TECHNICAL_CHECK_RECEIPT_20261021.json",
+  "independent_review": "btc_next_material and root: causalclosedday, sharedadmissibility, materialchangeH/I, managementR11unchanged; instrumentationrequestedbeforefinalcheck,118PASSandfinalreadbackshashesconfirmed.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "964af419-18ca-40e4-acad-cb8bb3ba8630",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery O | repair daily path",
+      "description": "Orden de extremos en6bloques4h deldíaUTC, REPAIRvsBODYadmisibilidadcomún; protocoloOprevio,SL2ATR4h/TP2R/48h,2%/6%/3x,fundingON.",
+      "description_truncated": false,
+      "created_at": 1792612587000,
+      "updated_at": 1792612588000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR15Repair1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/964af419-18ca-40e4-acad-cb8bb3ba8630"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "fae557b4-7b60-411f-a92b-8d213b009152",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery O | body daily path",
+      "description": "Orden de extremos en6bloques4h deldíaUTC, REPAIRvsBODYadmisibilidadcomún; protocoloOprevio,SL2ATR4h/TP2R/48h,2%/6%/3x,fundingON.",
+      "description_truncated": false,
+      "created_at": 1792612588000,
+      "updated_at": 1792612588000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR15Body1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 240,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/fae557b4-7b60-411f-a92b-8d213b009152"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "replacements_technical_max": 2
+  },
+  "connectivity_resume": "Verifiedmissingreceiptandrecoveredfromexistingcheckjob, no technical rerun; Nfinishedauditedpublishedr14beforeeconomyO."
+}

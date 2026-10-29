@@ -1,0 +1,46 @@
+{
+  "id": "BTC_R36_WEEKLY_FADE",
+  "title": "Reversión semanal de48h: lunes frente jueves",
+  "asset": "BTC",
+  "status": "cerrado",
+  "execution": "2 motores terminados; auditoría íntegra PASS",
+  "family": "R36 calendario y dirección del desplazamiento",
+  "verdict": "NO_CUMPLE en ambas; política de fin de semana también falla preferencia relativa",
+  "sessions": [
+    {
+      "name": "MONDAY",
+      "session_id": "cd719c96-0852-4280-9d2c-ae3199041e93",
+      "dashboard_url": "http://localhost:9200/#/backtest/cd719c96-0852-4280-9d2c-ae3199041e93",
+      "cagr": -8.150078308236086,
+      "pf": 0.6570349915499807,
+      "dd_m1_pct": 38.4610450830516,
+      "N": 272,
+      "positive_active": 23,
+      "active_months": 62,
+      "positive_quarters": 5
+    },
+    {
+      "name": "THURSDAY",
+      "session_id": "87e47587-dc20-4e9e-8bb9-9f3ce7bed59b",
+      "dashboard_url": "http://localhost:9200/#/backtest/87e47587-dc20-4e9e-8bb9-9f3ce7bed59b",
+      "cagr": -0.4632133371540448,
+      "pf": 0.9694885794354522,
+      "dd_m1_pct": 14.795813743161245,
+      "N": 271,
+      "positive_active": 34,
+      "active_months": 62,
+      "positive_quarters": 10
+    }
+  ],
+  "sources": [
+    {
+      "label": "Cierre",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R36_FINAL_20261022.md"
+    },
+    {
+      "label": "Resultados auditados",
+      "path": "strategies/FundingOiPilot4h/reports/BTC_R36_RESULTS_20261022.json"
+    }
+  ],
+  "not_independent_samples": true
+}

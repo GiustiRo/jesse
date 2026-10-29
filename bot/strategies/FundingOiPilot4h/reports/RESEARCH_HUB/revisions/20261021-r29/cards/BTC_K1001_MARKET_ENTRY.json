@@ -1,0 +1,56 @@
+{
+  "id": "BTC_K1001_MARKET_ENTRY",
+  "title": "K1001 long: valor de esperar el retesteo frente a MARKET",
+  "asset": "BTC",
+  "status": "preparado",
+  "execution": "fuente/checks/manifiesto verificados; motor pendiente",
+  "family": "Ablación de política de entrada",
+  "question": "¿Comprar al cierre confirmado mejora la cuenta long respecto de la política nominal LIMIT, manteniendo toda la señal y gestión K?",
+  "verdict": "Sin resultado nuevo aún. Presupuesto1económico,control reutilizado y ninguna candidata.",
+  "sessions": [
+    {
+      "name": "MARKET preparado",
+      "session_id": "1e016570-d981-47d1-b6d8-38fcde982084",
+      "dashboard_url": "http://localhost:9200/#/backtest/1e016570-d981-47d1-b6d8-38fcde982084"
+    },
+    {
+      "name": "Control política LIMIT reutilizado",
+      "session_id": "5c29961d-419a-4207-ae3c-58ad6ccb318c",
+      "dashboard_url": "http://localhost:9200/#/backtest/5c29961d-419a-4207-ae3c-58ad6ccb318c",
+      "cagr": 6.7078977328173695,
+      "pf": 3.5519634173087797,
+      "dd_m1_pct": 8.473004460787381
+    }
+  ],
+  "sources": [
+    {
+      "label": "Protocolo MARKET con precisión near",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261021-r29/PROTOCOL.md"
+    },
+    {
+      "label": "Deduplicación amplia y valor de información",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_DEDUP_AND_VOI_20261021.md"
+    },
+    {
+      "label": "Fuentes implementadas MARKET",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_IMPLEMENTED_SOURCE_20261021.md"
+    },
+    {
+      "label": "Manifiesto antes del único motor",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_PRE_ENGINE_MANIFEST_20261021.json"
+    },
+    {
+      "label": "Broker y tipos reales del control",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_FRAMEWORK_AND_ENTRY_TYPES_20261021.md"
+    },
+    {
+      "label": "Recibo técnico completo",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_TECHNICAL_CHECK_RECEIPT_20261021.json"
+    },
+    {
+      "label": "Revisión independiente de fuente",
+      "path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_INDEPENDENT_SOURCE_REVIEW_20261021.md"
+    }
+  ],
+  "not_independent_samples": true
+}

@@ -197,13 +197,15 @@ def _run_price_gap_backtest(
         strategy: type[Strategy],
         candles: np.ndarray,
         fast_mode: bool,
+        leverage: int = 2,
+        leverage_mode: str = 'cross',
 ) -> dict:
     config = {
         'starting_balance': 10_000,
         'fee': 0.001,
         'type': 'futures',
-        'futures_leverage': 2,
-        'futures_leverage_mode': 'cross',
+        'futures_leverage': leverage,
+        'futures_leverage_mode': leverage_mode,
         'exchange': EXCHANGE,
         'warm_up_candles': 0,
     }
@@ -221,6 +223,82 @@ def _run_price_gap_backtest(
         },
     }
     return research.backtest(config, routes, [], candle_data, fast_mode=fast_mode)
+
+
+class _GapEntryMarginStrategy(Strategy):
+    """A repriced entry releases its original reservation, but accounts at its fill."""
+
+    direction = 1
+    entry_type = order_types.STOP
+
+    def should_long(self) -> bool:
+        return self.index == 0 and self.direction == 1
+
+    def should_short(self) -> bool:
+        return self.index == 0 and self.direction == -1
+
+    def _submitted_price(self) -> float:
+        offset = 5 if self.entry_type == order_types.STOP else -5
+        return 100 + self.direction * offset
+
+    def go_long(self) -> None:
+        self.buy = 2, self._submitted_price()
+
+    def go_short(self) -> None:
+        self.sell = 2, self._submitted_price()
+
+    def should_cancel_entry(self) -> bool:
+        return False
+
+    def on_open_position(self, order) -> None:
+        exchange = self.position.exchange
+        assert order.type == self.entry_type
+        assert order.vars['submitted_price'] == self._submitted_price()
+        assert order.price != order.vars['submitted_price']
+        assert self.position.entry_price == order.price
+        assert order.fee == pytest.approx(2 * order.price * self.fee_rate)
+        # Only the real open position consumes margin, with no phantom entry left.
+        assert len(exchange.buy_orders['BTC']) == 0
+        assert len(exchange.sell_orders['BTC']) == 0
+        assert self.available_margin == pytest.approx(
+            self.balance - 2 * order.price / self.leverage)
+        self.take_profit = 2, order.price + self.direction * 5
+
+    def on_close_position(self, order, closed_trade) -> None:
+        assert closed_trade.pnl == pytest.approx(self.balance - 10_000)
+        assert closed_trade.pnl == pytest.approx(10 - closed_trade.fee)
+        assert self.available_margin == pytest.approx(self.balance)
+
+    def before_terminate(self) -> None:
+        assert len(store.closed_trades.trades) == 1
+        assert self.is_close
+        assert self.available_margin == pytest.approx(self.balance)
+
+
+@pytest.mark.parametrize('fast_mode', [False, True], ids=['step', 'fast'])
+@pytest.mark.parametrize('direction', [1, -1], ids=['long', 'short'])
+@pytest.mark.parametrize('entry_type', [order_types.STOP, order_types.LIMIT])
+@pytest.mark.parametrize('leverage_mode', ['cross', 'isolated'])
+def test_gap_entries_release_submitted_margin(
+        fast_mode: bool, direction: int, entry_type: str, leverage_mode: str,
+) -> None:
+    strategy = type('GapEntryMarginStrategy', (_GapEntryMarginStrategy,), {
+        'direction': direction, 'entry_type': entry_type,
+    })
+    gap_direction = direction if entry_type == order_types.STOP else -direction
+    fill = 100 + gap_direction * 10
+    exit_price = fill + direction * 5
+    # Gap inside the second 5m batch exercises fast-mode splitting too. Earlier
+    # candles cannot touch the submitted trigger/limit; final candles hit the TP.
+    prices = [100] * 7 + [fill] * 3 + [exit_price] * 5
+    candles = np.array([
+        [START_TIMESTAMP + i * 60_000, price, price, price + .1, price - .1, 10]
+        for i, price in enumerate(prices)
+    ], dtype=np.float64)
+    try:
+        _run_price_gap_backtest(strategy, candles, fast_mode, 5, leverage_mode)
+    finally:
+        store.reset()
 
 
 @pytest.mark.parametrize('fast_mode', [False, True], ids=['step', 'fast'])

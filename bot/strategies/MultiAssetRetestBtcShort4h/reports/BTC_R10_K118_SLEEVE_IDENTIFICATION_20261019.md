@@ -1,0 +1,1041 @@
+# BTC R10 — K118 identificación de suplementos
+
+Se paginaron logs MCP completos de sesionesfinalizadas, sinestimarlos. Conciliaciónbijectiva deBTC_EXPLORE_FILLconpathsdelanálisisfinancieroporclock/entry/qty1e-7ygeometría TP declarada. Etiquetasmetadata, no recalcularPNL ni inferirSTOPoriginalpormerotipo. Error/faltantesbloqueaelegibilidad; no imputaunknown. Losimportesdefills/fees/wallet/MTMson del auditorrun_analysis.
+
+## [K118B](http://localhost:9200/#/backtest/e989cc4d-480c-4851-a7ab-3a289877d3b7)
+
+```json
+{
+  "ok": true,
+  "pages": 17,
+  "lines_read": 8181,
+  "log_fill_count": 45,
+  "terminal_fills": 45,
+  "terminal_closes": 45,
+  "boundary_supplement_closes": 0,
+  "boundary_counter_adjustment": 0,
+  "matched": 45,
+  "errors": [],
+  "observed_supplement_entry_types": {
+    "STOP": 44,
+    "MARKET": 1
+  },
+  "matches": [
+    {
+      "open": 1757094240000,
+      "entry": 110240,
+      "qty": 0.07200000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 110240,
+      "signal_anchor": 111498.73283248382,
+      "distance": 3005.142651228176,
+      "target_distance": 5409.256772210717
+    },
+    {
+      "open": 1759824240000,
+      "entry": 123503.9,
+      "qty": 0.11900000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 123503.9,
+      "signal_anchor": 124153.10154173485,
+      "distance": 1716.7595124165819,
+      "target_distance": 3090.1671223498474
+    },
+    {
+      "open": 1750437780000,
+      "entry": 103805.9,
+      "qty": 0.079,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 103805.9,
+      "signal_anchor": 104722.08718596728,
+      "distance": 2600.868799913471,
+      "target_distance": 4681.563839844248
+    },
+    {
+      "open": 1752865200000,
+      "entry": 117230.7,
+      "qty": 0.096,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 117230.7,
+      "signal_anchor": 118991.67210200318,
+      "distance": 2088.011658330128,
+      "target_distance": 3758.4209849942304
+    },
+    {
+      "open": 1756445160000,
+      "entry": 111238.5,
+      "qty": 0.113,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 111238.5,
+      "signal_anchor": 111894.34159757743,
+      "distance": 1245.5476652546931,
+      "target_distance": 2241.985797458448
+    },
+    {
+      "open": 1740371400000,
+      "entry": 95263,
+      "qty": 0.138,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 95263,
+      "signal_anchor": 96154.89222406712,
+      "distance": 1291.3224196489027,
+      "target_distance": 2324.380355368025
+    },
+    {
+      "open": 1743077040000,
+      "entry": 86741.5,
+      "qty": 0.179,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 86741.5,
+      "signal_anchor": 87309.40333515036,
+      "distance": 995.1308332701155,
+      "target_distance": 1791.2354998862081
+    },
+    {
+      "open": 1744300920000,
+      "entry": 78559,
+      "qty": 0.048,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 78559,
+      "signal_anchor": 79164.1518679805,
+      "distance": 4286.265336970246,
+      "target_distance": 7715.277606546442
+    },
+    {
+      "open": 1744747500000,
+      "entry": 83888,
+      "qty": 0.07100000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 83888,
+      "signal_anchor": 84596.07290655571,
+      "distance": 2818.7761181130045,
+      "target_distance": 5073.797012603408
+    },
+    {
+      "open": 1734494520000,
+      "entry": 104527.6,
+      "qty": 0.07,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 104527.6,
+      "signal_anchor": 105764.31186350991,
+      "distance": 2546.7827152593527,
+      "target_distance": 4584.208887466835
+    },
+    {
+      "open": 1738958460000,
+      "entry": 96817,
+      "qty": 0.053,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 96817,
+      "signal_anchor": 97471.26787273712,
+      "distance": 3714.9015889706643,
+      "target_distance": 6686.822860147196
+    },
+    {
+      "open": 1724025840000,
+      "entry": 58352,
+      "qty": 0.092,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 58352,
+      "signal_anchor": 59494.02281600844,
+      "distance": 1759.2694724298926,
+      "target_distance": 3166.685050373807
+    },
+    {
+      "open": 1724664600000,
+      "entry": 63541.9,
+      "qty": 0.147,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 63541.9,
+      "signal_anchor": 64081.42696464517,
+      "distance": 1044.0514636783191,
+      "target_distance": 1879.2926346209745
+    },
+    {
+      "open": 1730390640000,
+      "entry": 70453.1,
+      "qty": 0.07200000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 70453.1,
+      "signal_anchor": 72146.84801488691,
+      "distance": 2301.666645084173,
+      "target_distance": 4142.999961151511
+    },
+    {
+      "open": 1716870540000,
+      "entry": 67760,
+      "qty": 0.079,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 67760,
+      "signal_anchor": 69373.28338672558,
+      "distance": 2122.6363382865966,
+      "target_distance": 3820.745408915874
+    },
+    {
+      "open": 1719433680000,
+      "entry": 60700,
+      "qty": 0.136,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 60700,
+      "signal_anchor": 61043.62351614439,
+      "distance": 1186.2866402199288,
+      "target_distance": 2135.315952395872
+    },
+    {
+      "open": 1719592920000,
+      "entry": 60721.2,
+      "qty": 0.153,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 60721.2,
+      "signal_anchor": 61375.3150389704,
+      "distance": 1024.7390650291854,
+      "target_distance": 1844.5303170525337
+    },
+    {
+      "open": 1723404000000,
+      "entry": 59911,
+      "qty": 0.075,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 59911,
+      "signal_anchor": 60629.73674607494,
+      "distance": 2184.67085674141,
+      "target_distance": 3932.407542134538
+    },
+    {
+      "open": 1711700100000,
+      "entry": 69801.9,
+      "qty": 0.108,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 69801.9,
+      "signal_anchor": 70463.20054180668,
+      "distance": 1410.7068291835894,
+      "target_distance": 2539.272292530461
+    },
+    {
+      "open": 1713975720000,
+      "entry": 64489.7,
+      "qty": 0.07,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 64489.7,
+      "signal_anchor": 66489.38245878826,
+      "distance": 2375.4728322030132,
+      "target_distance": 4275.851097965424
+    },
+    {
+      "open": 1715022960000,
+      "entry": 62900,
+      "qty": 0.077,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 62900,
+      "signal_anchor": 63963.743141175335,
+      "distance": 2173.887394008343,
+      "target_distance": 3912.9973092150176
+    },
+    {
+      "open": 1698331140000,
+      "entry": 33963,
+      "qty": 0.17500000000000002,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 33963,
+      "signal_anchor": 34405.751010552805,
+      "distance": 903.0912658630114,
+      "target_distance": 1625.5642785534205
+    },
+    {
+      "open": 1698942120000,
+      "entry": 34533.1,
+      "qty": 0.162,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 34533.1,
+      "signal_anchor": 34852.47685646894,
+      "distance": 971.6593597118699,
+      "target_distance": 1748.9868474813659
+    },
+    {
+      "open": 1686773100000,
+      "entry": 25750,
+      "qty": 0.431,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 25750,
+      "signal_anchor": 25965.7118895138,
+      "distance": 307.57776267134614,
+      "target_distance": 553.6399728084231
+    },
+    {
+      "open": 1692679140000,
+      "entry": 26010.3,
+      "qty": 0.47600000000000003,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 26010.3,
+      "signal_anchor": 26057.268674412655,
+      "distance": 304.21933032186644,
+      "target_distance": 547.5947945793596
+    },
+    {
+      "open": 1693296240000,
+      "entry": 25974.1,
+      "qty": 0.5680000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 25974.1,
+      "signal_anchor": 26052.08661663727,
+      "distance": 251.42695522041686,
+      "target_distance": 452.56851939675033
+    },
+    {
+      "open": 1677700860000,
+      "entry": 23316.3,
+      "qty": 0.24,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 23316.3,
+      "signal_anchor": 23452.714090421498,
+      "distance": 623.0035101542708,
+      "target_distance": 1121.4063182776874
+    },
+    {
+      "open": 1659721920000,
+      "entry": 22867.8,
+      "qty": 0.20700000000000002,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 22867.8,
+      "signal_anchor": 23062.813032002872,
+      "distance": 581.1424093009555,
+      "target_distance": 1046.0563367417199
+    },
+    {
+      "open": 1660551420000,
+      "entry": 23916.7,
+      "qty": 0.095,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 23916.7,
+      "signal_anchor": 24604.30716637209,
+      "distance": 1305.216711300447,
+      "target_distance": 2349.3900803408046
+    },
+    {
+      "open": 1662483960000,
+      "entry": 19650.4,
+      "qty": 0.41100000000000003,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 19650.4,
+      "signal_anchor": 19830.33496542347,
+      "distance": 279.713115926319,
+      "target_distance": 503.4836086673742
+    },
+    {
+      "open": 1669597920000,
+      "entry": 16396,
+      "qty": 0.5650000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 16396,
+      "signal_anchor": 16544.086806689662,
+      "distance": 204.2168576016993,
+      "target_distance": 367.59034368305873
+    },
+    {
+      "open": 1671465660000,
+      "entry": 16656.4,
+      "qty": 0.743,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 16656.4,
+      "signal_anchor": 16714.04969318053,
+      "distance": 153.0368322225113,
+      "target_distance": 275.46629800052034
+    },
+    {
+      "open": 1646287800000,
+      "entry": 43165.1,
+      "qty": 0.09,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 43165.1,
+      "signal_anchor": 43817.17489180897,
+      "distance": 1314.0732075813212,
+      "target_distance": 2365.331773646378
+    },
+    {
+      "open": 1649952060000,
+      "entry": 39908,
+      "qty": 0.078,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 39908,
+      "signal_anchor": 40437.12121972659,
+      "distance": 1553.7304563188954,
+      "target_distance": 2796.714821374012
+    },
+    {
+      "open": 1650571200000,
+      "entry": 41209.9,
+      "qty": 0.064,
+      "entry_type": "MARKET",
+      "recipe": "K1T18",
+      "requested_entry": 41204,
+      "signal_anchor": 41709.877739281976,
+      "distance": 1928.0179881903314,
+      "target_distance": 3470.4323787425965
+    },
+    {
+      "open": 1656282420000,
+      "entry": 21116.5,
+      "qty": 0.166,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 21116.5,
+      "signal_anchor": 21313.47164073113,
+      "distance": 739.0132699219175,
+      "target_distance": 1330.2238858594517
+    },
+    {
+      "open": 1657801860000,
+      "entry": 19617.4,
+      "qty": 0.186,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 19617.4,
+      "signal_anchor": 19798.33196027834,
+      "distance": 664.8565182079728,
+      "target_distance": 1196.7417327743512
+    },
+    {
+      "open": 1636577460000,
+      "entry": 65850,
+      "qty": 0.04,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 65850,
+      "signal_anchor": 67532.61405315765,
+      "distance": 2783.7481237306056,
+      "target_distance": 5010.74662271509
+    },
+    {
+      "open": 1638390300000,
+      "entry": 57033.29,
+      "qty": 0.058,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 57033.29,
+      "signal_anchor": 57570.00685110087,
+      "distance": 1951.0930569625416,
+      "target_distance": 3511.967502532575
+    },
+    {
+      "open": 1639692480000,
+      "entry": 47667.52,
+      "qty": 0.069,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 47667.52,
+      "signal_anchor": 48004.572392819806,
+      "distance": 1688.355026844627,
+      "target_distance": 3039.0390483203287
+    },
+    {
+      "open": 1641226140000,
+      "entry": 46560,
+      "qty": 0.106,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 46560,
+      "signal_anchor": 47208.13164222454,
+      "distance": 1083.997508653265,
+      "target_distance": 1951.195515575877
+    },
+    {
+      "open": 1625702460000,
+      "entry": 33756.48,
+      "qty": 0.093,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 33756.48,
+      "signal_anchor": 34353.36409401484,
+      "distance": 1105.2034732509055,
+      "target_distance": 1989.36625185163
+    },
+    {
+      "open": 1629749040000,
+      "entry": 49120.83,
+      "qty": 0.074,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 49120.83,
+      "signal_anchor": 49510.83646207452,
+      "distance": 1418.2327449864533,
+      "target_distance": 2552.818940975616
+    },
+    {
+      "open": 1624622460000,
+      "entry": 33248.62,
+      "qty": 0.05,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 33248.62,
+      "signal_anchor": 33947.05185822835,
+      "distance": 2096.9446877319206,
+      "target_distance": 3774.500437917457
+    },
+    {
+      "open": 1604937960000,
+      "entry": 14939,
+      "qty": 0.096,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 14939,
+      "signal_anchor": 15140.025807920449,
+      "distance": 964.9697152066692,
+      "target_distance": 1736.9454873720047
+    }
+  ],
+  "note": "Metadata reconciliation of complete MCP logs against run_analysis financial paths; not a second financial calculation. STOP type alone never identifies original sleeve."
+}
+```
+
+## [K118C](http://localhost:9200/#/backtest/f8e610f4-d2f3-413a-ae75-3aadbdceff6a)
+
+```json
+{
+  "ok": true,
+  "pages": 17,
+  "lines_read": 8385,
+  "log_fill_count": 45,
+  "terminal_fills": 45,
+  "terminal_closes": 45,
+  "boundary_supplement_closes": 0,
+  "boundary_counter_adjustment": 0,
+  "matched": 45,
+  "errors": [],
+  "observed_supplement_entry_types": {
+    "STOP": 44,
+    "MARKET": 1
+  },
+  "matches": [
+    {
+      "open": 1759824240000,
+      "entry": 123503.9,
+      "qty": 0.12,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 123503.9,
+      "signal_anchor": 124153.10154173485,
+      "distance": 1716.7595124165819,
+      "target_distance": 3090.1671223498474
+    },
+    {
+      "open": 1750437780000,
+      "entry": 103805.9,
+      "qty": 0.08,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 103805.9,
+      "signal_anchor": 104722.08718596728,
+      "distance": 2600.868799913471,
+      "target_distance": 4681.563839844248
+    },
+    {
+      "open": 1752865200000,
+      "entry": 117230.7,
+      "qty": 0.098,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 117230.7,
+      "signal_anchor": 118991.67210200318,
+      "distance": 2088.011658330128,
+      "target_distance": 3758.4209849942304
+    },
+    {
+      "open": 1756445160000,
+      "entry": 111238.5,
+      "qty": 0.115,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 111238.5,
+      "signal_anchor": 111894.34159757743,
+      "distance": 1245.5476652546931,
+      "target_distance": 2241.985797458448
+    },
+    {
+      "open": 1757094240000,
+      "entry": 110240,
+      "qty": 0.073,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 110240,
+      "signal_anchor": 111498.73283248382,
+      "distance": 3005.142651228176,
+      "target_distance": 5409.256772210717
+    },
+    {
+      "open": 1743077040000,
+      "entry": 86741.5,
+      "qty": 0.181,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 86741.5,
+      "signal_anchor": 87309.40333515036,
+      "distance": 995.1308332701155,
+      "target_distance": 1791.2354998862081
+    },
+    {
+      "open": 1744300920000,
+      "entry": 78559,
+      "qty": 0.048,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 78559,
+      "signal_anchor": 79164.1518679805,
+      "distance": 4286.265336970246,
+      "target_distance": 7715.277606546442
+    },
+    {
+      "open": 1744747500000,
+      "entry": 83888,
+      "qty": 0.07200000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 83888,
+      "signal_anchor": 84596.07290655571,
+      "distance": 2818.7761181130045,
+      "target_distance": 5073.797012603408
+    },
+    {
+      "open": 1734494520000,
+      "entry": 104527.6,
+      "qty": 0.07100000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 104527.6,
+      "signal_anchor": 105764.31186350991,
+      "distance": 2546.7827152593527,
+      "target_distance": 4584.208887466835
+    },
+    {
+      "open": 1738958460000,
+      "entry": 96817,
+      "qty": 0.054,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 96817,
+      "signal_anchor": 97471.26787273712,
+      "distance": 3714.9015889706643,
+      "target_distance": 6686.822860147196
+    },
+    {
+      "open": 1740371400000,
+      "entry": 95263,
+      "qty": 0.14,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 95263,
+      "signal_anchor": 96154.89222406712,
+      "distance": 1291.3224196489027,
+      "target_distance": 2324.380355368025
+    },
+    {
+      "open": 1724664600000,
+      "entry": 63541.9,
+      "qty": 0.15,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 63541.9,
+      "signal_anchor": 64081.42696464517,
+      "distance": 1044.0514636783191,
+      "target_distance": 1879.2926346209745
+    },
+    {
+      "open": 1730390640000,
+      "entry": 70453.1,
+      "qty": 0.073,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 70453.1,
+      "signal_anchor": 72146.84801488691,
+      "distance": 2301.666645084173,
+      "target_distance": 4142.999961151511
+    },
+    {
+      "open": 1716870540000,
+      "entry": 67760,
+      "qty": 0.081,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 67760,
+      "signal_anchor": 69373.28338672558,
+      "distance": 2122.6363382865966,
+      "target_distance": 3820.745408915874
+    },
+    {
+      "open": 1719433680000,
+      "entry": 60700,
+      "qty": 0.138,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 60700,
+      "signal_anchor": 61043.62351614439,
+      "distance": 1186.2866402199288,
+      "target_distance": 2135.315952395872
+    },
+    {
+      "open": 1719592920000,
+      "entry": 60721.2,
+      "qty": 0.157,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 60721.2,
+      "signal_anchor": 61375.3150389704,
+      "distance": 1024.7390650291854,
+      "target_distance": 1844.5303170525337
+    },
+    {
+      "open": 1723404000000,
+      "entry": 59911,
+      "qty": 0.077,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 59911,
+      "signal_anchor": 60629.73674607494,
+      "distance": 2184.67085674141,
+      "target_distance": 3932.407542134538
+    },
+    {
+      "open": 1724025840000,
+      "entry": 58352,
+      "qty": 0.094,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 58352,
+      "signal_anchor": 59494.02281600844,
+      "distance": 1759.2694724298926,
+      "target_distance": 3166.685050373807
+    },
+    {
+      "open": 1711700100000,
+      "entry": 69801.9,
+      "qty": 0.11,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 69801.9,
+      "signal_anchor": 70463.20054180668,
+      "distance": 1410.7068291835894,
+      "target_distance": 2539.272292530461
+    },
+    {
+      "open": 1713975720000,
+      "entry": 64489.7,
+      "qty": 0.07200000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 64489.7,
+      "signal_anchor": 66489.38245878826,
+      "distance": 2375.4728322030132,
+      "target_distance": 4275.851097965424
+    },
+    {
+      "open": 1715022960000,
+      "entry": 62900,
+      "qty": 0.078,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 62900,
+      "signal_anchor": 63963.743141175335,
+      "distance": 2173.887394008343,
+      "target_distance": 3912.9973092150176
+    },
+    {
+      "open": 1692679140000,
+      "entry": 26010.3,
+      "qty": 0.464,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 26010.3,
+      "signal_anchor": 26057.268674412655,
+      "distance": 304.21933032186644,
+      "target_distance": 547.5947945793596
+    },
+    {
+      "open": 1693296240000,
+      "entry": 25974.1,
+      "qty": 0.554,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 25974.1,
+      "signal_anchor": 26052.08661663727,
+      "distance": 251.42695522041686,
+      "target_distance": 452.56851939675033
+    },
+    {
+      "open": 1698331140000,
+      "entry": 33963,
+      "qty": 0.17,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 33963,
+      "signal_anchor": 34405.751010552805,
+      "distance": 903.0912658630114,
+      "target_distance": 1625.5642785534205
+    },
+    {
+      "open": 1698942120000,
+      "entry": 34533.1,
+      "qty": 0.158,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 34533.1,
+      "signal_anchor": 34852.47685646894,
+      "distance": 971.6593597118699,
+      "target_distance": 1748.9868474813659
+    },
+    {
+      "open": 1677700860000,
+      "entry": 23316.3,
+      "qty": 0.23600000000000002,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 23316.3,
+      "signal_anchor": 23452.714090421498,
+      "distance": 623.0035101542708,
+      "target_distance": 1121.4063182776874
+    },
+    {
+      "open": 1686773100000,
+      "entry": 25750,
+      "qty": 0.42,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 25750,
+      "signal_anchor": 25965.7118895138,
+      "distance": 307.57776267134614,
+      "target_distance": 553.6399728084231
+    },
+    {
+      "open": 1662483960000,
+      "entry": 19650.4,
+      "qty": 0.404,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 19650.4,
+      "signal_anchor": 19830.33496542347,
+      "distance": 279.713115926319,
+      "target_distance": 503.4836086673742
+    },
+    {
+      "open": 1669597920000,
+      "entry": 16396,
+      "qty": 0.556,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 16396,
+      "signal_anchor": 16544.086806689662,
+      "distance": 204.2168576016993,
+      "target_distance": 367.59034368305873
+    },
+    {
+      "open": 1671465660000,
+      "entry": 16656.4,
+      "qty": 0.731,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 16656.4,
+      "signal_anchor": 16714.04969318053,
+      "distance": 153.0368322225113,
+      "target_distance": 275.46629800052034
+    },
+    {
+      "open": 1649952060000,
+      "entry": 39908,
+      "qty": 0.077,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 39908,
+      "signal_anchor": 40437.12121972659,
+      "distance": 1553.7304563188954,
+      "target_distance": 2796.714821374012
+    },
+    {
+      "open": 1650571200000,
+      "entry": 41209.9,
+      "qty": 0.063,
+      "entry_type": "MARKET",
+      "recipe": "K1T18",
+      "requested_entry": 41204,
+      "signal_anchor": 41709.877739281976,
+      "distance": 1928.0179881903314,
+      "target_distance": 3470.4323787425965
+    },
+    {
+      "open": 1656282420000,
+      "entry": 21116.5,
+      "qty": 0.163,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 21116.5,
+      "signal_anchor": 21313.47164073113,
+      "distance": 739.0132699219175,
+      "target_distance": 1330.2238858594517
+    },
+    {
+      "open": 1657801860000,
+      "entry": 19617.4,
+      "qty": 0.183,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 19617.4,
+      "signal_anchor": 19798.33196027834,
+      "distance": 664.8565182079728,
+      "target_distance": 1196.7417327743512
+    },
+    {
+      "open": 1659721920000,
+      "entry": 22867.8,
+      "qty": 0.20400000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 22867.8,
+      "signal_anchor": 23062.813032002872,
+      "distance": 581.1424093009555,
+      "target_distance": 1046.0563367417199
+    },
+    {
+      "open": 1660551420000,
+      "entry": 23916.7,
+      "qty": 0.094,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 23916.7,
+      "signal_anchor": 24604.30716637209,
+      "distance": 1305.216711300447,
+      "target_distance": 2349.3900803408046
+    },
+    {
+      "open": 1638390300000,
+      "entry": 57033.29,
+      "qty": 0.057,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 57033.29,
+      "signal_anchor": 57570.00685110087,
+      "distance": 1951.0930569625416,
+      "target_distance": 3511.967502532575
+    },
+    {
+      "open": 1639692480000,
+      "entry": 47667.52,
+      "qty": 0.067,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 47667.52,
+      "signal_anchor": 48004.572392819806,
+      "distance": 1688.355026844627,
+      "target_distance": 3039.0390483203287
+    },
+    {
+      "open": 1641226140000,
+      "entry": 46560,
+      "qty": 0.10400000000000001,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 46560,
+      "signal_anchor": 47208.13164222454,
+      "distance": 1083.997508653265,
+      "target_distance": 1951.195515575877
+    },
+    {
+      "open": 1646287800000,
+      "entry": 43165.1,
+      "qty": 0.088,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 43165.1,
+      "signal_anchor": 43817.17489180897,
+      "distance": 1314.0732075813212,
+      "target_distance": 2365.331773646378
+    },
+    {
+      "open": 1629749040000,
+      "entry": 49120.83,
+      "qty": 0.073,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 49120.83,
+      "signal_anchor": 49510.83646207452,
+      "distance": 1418.2327449864533,
+      "target_distance": 2552.818940975616
+    },
+    {
+      "open": 1636577460000,
+      "entry": 65850,
+      "qty": 0.039,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 65850,
+      "signal_anchor": 67532.61405315765,
+      "distance": 2783.7481237306056,
+      "target_distance": 5010.74662271509
+    },
+    {
+      "open": 1624622460000,
+      "entry": 33248.62,
+      "qty": 0.049,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 33248.62,
+      "signal_anchor": 33947.05185822835,
+      "distance": 2096.9446877319206,
+      "target_distance": 3774.500437917457
+    },
+    {
+      "open": 1625702460000,
+      "entry": 33756.48,
+      "qty": 0.091,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 33756.48,
+      "signal_anchor": 34353.36409401484,
+      "distance": 1105.2034732509055,
+      "target_distance": 1989.36625185163
+    },
+    {
+      "open": 1604937960000,
+      "entry": 14939,
+      "qty": 0.096,
+      "entry_type": "STOP",
+      "recipe": "K1T18",
+      "requested_entry": 14939,
+      "signal_anchor": 15140.025807920449,
+      "distance": 964.9697152066692,
+      "target_distance": 1736.9454873720047
+    }
+  ],
+  "note": "Metadata reconciliation of complete MCP logs against run_analysis financial paths; not a second financial calculation. STOP type alone never identifies original sleeve."
+}
+```

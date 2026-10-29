@@ -1,0 +1,115 @@
+{
+  "native_snapshot_job": {
+    "id": "e72d6eb8c3674f0a8e61896645fda3c3",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/e72d6eb8c3674f0a8e61896645fda3c3",
+    "inputs": [
+      {
+        "name": "UTC00",
+        "file": "inputs/UTC00.json",
+        "session_type": "backtest",
+        "session_id": "026a408a-24e4-4174-adc7-416a7b577c9a",
+        "session_status": "finished",
+        "title": "MCP Backtest: R44 A | UTC00 | BTC cuota1%",
+        "size_bytes": 3589571
+      },
+      {
+        "name": "UTC12",
+        "file": "inputs/UTC12.json",
+        "session_type": "backtest",
+        "session_id": "8056c4d9-dec4-4b84-b587-269dc6143c8e",
+        "session_status": "finished",
+        "title": "MCP Backtest: R44 A | UTC12 | BTC cuota1%",
+        "size_bytes": 3029175
+      }
+    ],
+    "status": "succeeded",
+    "pid": 3428,
+    "exit_code": 0,
+    "started_at": "2026-10-22T15:07:23+00:00",
+    "finished_at": "2026-10-22T15:07:25+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-23T15:07:25+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "first_additional_check_failure": {
+    "reason": "Per-trade snapshot orders omit canceled protective orders, despite preserving all orders offered by snapshot. Initial assertion assumed otherwise.",
+    "first_trade_id": "6e5b5bb5-95b4-49a1-8496-2614d6d9445a",
+    "no_engine_rerun": true,
+    "financial_join_pass": true
+  },
+  "corrected_validation": "Per-trade snapshot omission is explicit; source unchanged and no backtest/analysis rerun. All 3330 actual stop submissions and 2503 cancellations reconciled from complete native logs; exact STOP fill prices verified separately.",
+  "sizing_exit_js": "function auditR44SizingAndExits(result){\n let wallet=10000,maxBudgetError=0,maxQtyError=0; const exits={stop:0,deadline:0,terminal:0,stop_worse_fill:0};let maxHold=0,minRemaining=Infinity,protective_omitted=0;\n for(const t of [...result.records].sort((a,b)=>a.opened_at-b.opened_at)){\n  const o=t.opening_log,p=t.plan_log,dir=t.side===\"long\"?1:-1;\n  const budget=.01*wallet,unit=o.distance+.00045*(t.entry+o.stop)+.001*t.entry;\n  const q=Math.floor(Math.min(budget/unit,4.4*.5*wallet/t.entry,.90*.5*wallet*3/(t.entry*(1+.00045*3)))/.001)*.001;\n  const be=Math.abs(o.risk_budget-budget),qe=Math.abs(t.qty-q);maxBudgetError=Math.max(be,maxBudgetError);maxQtyError=Math.max(qe,maxQtyError);\n  if(be>1e-6||qe>1e-8)throw Error(\"wallet sizing\");\n  if(!(Number.isFinite(o.anchor)&&Number.isFinite(o.deadline)&&o.deadline-o.anchor===86400000&&t.opened_at>o.anchor+28800000&&t.opened_at<o.deadline))throw Error(\"entry range clock\");\n  if(t.closed_at>o.deadline)throw Error(\"position beyond deadline\");\n  const protective=t.orders.filter(z=>z.reduce_only&&z.type===\"STOP\"&&z.created_at===t.opened_at);if(protective.length>1||(protective.length===1&&(Math.abs(protective[0].price-o.stop)>1e-6||Math.abs(Math.abs(protective[0].qty)-t.qty)>1e-8)))throw Error(\"initial native protective stop\");if(protective.length===0)protective_omitted++;\n  const x=t.orders.filter(x=>x.reduce_only&&x.status===\"EXECUTED\")[0],hold=t.closed_at-t.opened_at;\n  if(x.type===\"STOP\"){if(!Number.isFinite(x.price)||dir*(x.price-o.stop)>1e-6||x.submitted_via!==\"stop-loss\")throw Error(\"native STOP semantics\");if(Math.abs(x.price-o.stop)>1e-6)exits.stop_worse_fill++;exits.stop++;}\n  else if(t.closed_at===1767225600000&&x.type===\"MARKET\"){exits.terminal++;}\n  else if(x.type===\"MARKET\"&&t.closed_at===o.deadline){exits.deadline++;}\n  else throw Error(\"unclassified exit \"+JSON.stringify(x));\n  maxHold=Math.max(maxHold,hold/3600000);minRemaining=Math.min(minRemaining,(o.deadline-t.opened_at)/60000);wallet+=t.net;\n }\n if(Math.abs(wallet-result.finish)>1e-6||maxHold>=16)throw Error(\"wallet final or max hold\");\n return {status:\"PASS\",trades:result.N,maxBudgetError,maxQtyError,maxHold,minRemaining,protective_omitted,exits};\n}",
+  "native_stop_log_js": "function auditR44NativeStopLogs(result,pages){\n const lines=[...pages].reverse().flatMap(p=>p.items),parse=kind=>lines.filter(l=>l.includes(\"Order \"+kind+\" |\")&&l.includes(\" STOP |\")).map(l=>{\n  const m=l.match(/\\[INFO \\| ([^\\]]+)\\].*\\| (BUY|SELL) STOP \\| Qty: ([0-9.eE+-]+) \\| Price: ([0-9.eE+-]+)/);if(!m)throw Error(\"stop log format\");\n  return {time:Date.parse(m[1]+\"Z\"),side:m[2],qty:Number(m[3]),price:Number(m[4])};\n });\n const submitted=parse(\"submitted\"),canceled=parse(\"canceled\");\n if(submitted.length!==result.N)throw Error(\"stop submission count\");\n let cancellationCount=0,maxDisplayPriceError=0;const used=new Set;\n for(const t of result.records){const o=t.opening_log,side=t.side===\"long\"?\"SELL\":\"BUY\",s=submitted.filter(z=>z.time===t.opened_at);if(s.length!==1||s[0].side!==side||Math.abs(s[0].qty-t.qty)>1e-8)throw Error(\"initial stop native log\");const err=Math.abs(s[0].price-o.stop);maxDisplayPriceError=Math.max(maxDisplayPriceError,err);\n  // The native prose logger renders prices at 2 decimals; exact executed order\n  // prices and planned structural levels are reconciled separately.\n  if(err>.01000001)throw Error(\"displayed stop price\");\n  const exit=t.orders.find(z=>z.reduce_only&&z.status===\"EXECUTED\");if(exit.type===\"MARKET\"){\n   const cs=canceled.map((x,i)=>({x,i})).filter(({x})=>x.time===t.closed_at&&x.side===side&&Math.abs(x.qty-t.qty)<1e-8&&Math.abs(x.price-o.stop)<=.01000001);\n   if(cs.length!==1||used.has(cs[0].i))throw Error(\"native stop cancellation at market close\");used.add(cs[0].i);cancellationCount++;\n  }\n }\n if(used.size!==canceled.length)throw Error(\"extra native stop cancellation\");\n return {status:\"PASS_NATIVE_STOP_SUBMISSION_AND_CANCELLATION_LOGS\",submitted:submitted.length,canceled:cancellationCount,maxDisplayPriceError,limit:\"Canceled protective orders omitted from per-trade snapshot; prose logs provide submission/cancellation timestamps and rounded prices, not an exchange order ledger.\"};\n}",
+  "variants": {
+    "UTC00": {
+      "sizing_exit": {
+        "status": "PASS",
+        "trades": 1809,
+        "maxBudgetError": 4.121147867408581e-13,
+        "maxQtyError": 0,
+        "maxHold": 15.983333333333333,
+        "minRemaining": 13,
+        "protective_omitted": 1258,
+        "exits": {
+          "stop": 551,
+          "deadline": 1258,
+          "terminal": 0,
+          "stop_worse_fill": 0
+        }
+      },
+      "event_range": {
+        "status": "PASS_RUNTIME_RANGE_EVENT_INVARIANTS",
+        "cycles": 1904,
+        "ranges": 1904,
+        "events": 1809,
+        "noevent": 95,
+        "invalid": 0,
+        "exit_requests": 1258,
+        "limitation": "prior extrema/count telemetry and supplied-source checks; no independent replay of every actual M1 quote"
+      },
+      "native_stop_logs": {
+        "status": "PASS_NATIVE_STOP_SUBMISSION_AND_CANCELLATION_LOGS",
+        "submitted": 1809,
+        "canceled": 1258,
+        "maxDisplayPriceError": 0.010000000002037268,
+        "limit": "Canceled protective orders omitted from per-trade snapshot; prose logs provide submission/cancellation timestamps and rounded prices, not an exchange order ledger."
+      }
+    },
+    "UTC12": {
+      "sizing_exit": {
+        "status": "PASS",
+        "trades": 1521,
+        "maxBudgetError": 3.552713678800501e-13,
+        "maxQtyError": 0,
+        "maxHold": 15.983333333333333,
+        "minRemaining": 1,
+        "protective_omitted": 1245,
+        "exits": {
+          "stop": 276,
+          "deadline": 1244,
+          "terminal": 1,
+          "stop_worse_fill": 0
+        }
+      },
+      "event_range": {
+        "status": "PASS_RUNTIME_RANGE_EVENT_INVARIANTS",
+        "cycles": 1905,
+        "ranges": 1904,
+        "events": 1521,
+        "noevent": 383,
+        "invalid": 0,
+        "exit_requests": 1244,
+        "limitation": "prior extrema/count telemetry and supplied-source checks; no independent replay of every actual M1 quote"
+      },
+      "native_stop_logs": {
+        "status": "PASS_NATIVE_STOP_SUBMISSION_AND_CANCELLATION_LOGS",
+        "submitted": 1521,
+        "canceled": 1245,
+        "maxDisplayPriceError": 0.010000000002037268,
+        "limit": "Canceled protective orders omitted from per-trade snapshot; prose logs provide submission/cancellation timestamps and rounded prices, not an exchange order ledger."
+      }
+    }
+  }
+}

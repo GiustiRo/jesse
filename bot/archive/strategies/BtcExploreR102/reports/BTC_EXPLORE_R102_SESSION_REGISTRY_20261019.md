@@ -1,0 +1,3 @@
+# X02 final registry
+
+[B](http://localhost:9200/#/backtest/56c48468-10dd-489e-b921-fa948dbd34ae) and [C](http://localhost:9200/#/backtest/dd5b6e8d-6207-4e01-9bce-8a18c5d416e4) bothfinishednoerror.144events/96fills/closes each; full evidence BTC_EXPLORE_R102_RESULTS_20261019.md. Forms/snapshots/HPverified. No reruns/sourcechanges. Central sixsessionregistry in BtcExploreR101/reports/BTC_EXPLORE_SESSION_REGISTRY_20261019.md.

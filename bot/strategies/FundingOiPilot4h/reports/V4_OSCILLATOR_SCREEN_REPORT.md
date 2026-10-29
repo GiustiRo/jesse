@@ -1,0 +1,9 @@
+# V4 OSCILLATOR — screening cerrado
+
+[P terminado](http://localhost:9200/#/backtest/29dd9e7e-c785-4763-abd3-2aff1e649661):774trades,−8,6073217%neto,DDmotor−26,8569911%,115,14s. [POI terminado](http://localhost:9200/#/backtest/a1070e6a-ef44-4f9e-8c9f-34be95ca8f11):464trades,−27,2900691%,DDmotor−33,6682608%,120,51s. Valores de summary completos, no reconstruidos con páginas parciales. Ambos incumplen net>0 yDD<=25; selección/PF/años y contabilidad completa corresponden al job central de root. No se avanzó2024–2025.
+
+Ejecución secuencial con un motor propio; P tuvo timeoutHTTP de arranque y el mismoID terminó, sin retry. POI devolvió started. Configuración nominal exacta2020-09-01→2024-01-01,1h,debug/fast solicitadostrue,fullminute efectivo porfunding; sin exports/benchmark ni parámetros modificados.
+
+Auditoría de ejecución completa:40meses y29208barras por variante;774/464 entradas y cierres iguales al total almacenado. P662RSInormalized+112stop; POI{"rsi_normalized":388,"stop-loss":76}. No cierre final posterior alAUDIT en ninguna.1238planes completos revisados:floor8,sizing2%stop+fees,capnotional1x,stop2ATRdesde fill,targetnone,ventanaATR15/offset0,cuotaUTCuna/día,fundingpublicadoantesT. Además464entradasPOI tienen referencia exactaT−24h,ambas observaciones positivas/válidas/frescas yOIcreciente. Sin fallos. Particionesallvsdirecciones,primary yfeature_reasons cuadran. Máxima línea estructuradaP1077,POI1077chars<1900.
+
+P9782logs yPOI6408logs completos fueron paginados porMCP y guardados en cuatro/tres shards AUDIT_ResearchV4Oscillator{P,Oi}1h_SCREEN_LOGS_nn.json, ordencronológico sin omisiones. Audit JSON respectivos y V4_OSCILLATOR_PROGRESS.json conservan referencias,planproofs,summary yraws. No análisis propio, nuevas sesiones, optimización o consultas2024+. Rechazo económico de esta línea no se rescata con vecinos,otras semillas o menorN.

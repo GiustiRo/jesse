@@ -1,0 +1,9 @@
+# Continuidad r20
+
+TcerradaNO_CUMPLEambas.PHASE1411/CAGR−17.629452/PF.786506/DDM171.283806/M11de48/Q1de20;GLOBAL118/CAGR+.144022/PF1.027724/DDM16.346677/M2de3/Q1de20/median0/sinbest2negativo. No rescatebins/horas/lookback/horizonte/hurdle/lados/freeze.1903freezesválidos/0invalidations/2741760M1marks/62mesescompletos.Auditoría7d5c776f8eb94ca0a92a29291eeb2322 succeeded.SintéticosPASS155trasfalsoharnessresearch/BtcResearch,nofuentescambiadas.Sintécnicosbacktestsnireemplazosecon.
+
+38económicasdesde r9,209legacyV1–V6 aparte,nocensoglobalniindependencia.Todosmotores/analysisrootterminales. No candidata,todavíaseguirautónomamente.CarryfundingUrechazadopordedupV4/V5/pilotos/A_EVENT,NOcorridaU/noprotocoloU.
+
+Agentesreadonlyahora:geometry_implementation revisaduraciónprimerpasajevsAngle/eventclock/DC/R40Spy;reversion_history revisavolumenexternoETHvsJ/Q/X/Y.Sinfuentesnuevas/jobs/drafts/datosobservados.Undesignnuevorequierefuentes/cierres/preguntamaterial/protocoloprevio.Noestrés/riesgo/2026/imports/live/paper/Pi/restarts. MCPfunciona,sinDockerrestart;usuariocondicionarestartlocalsivuelvefallar,revisarcontenedorysesionesantes.
+
+Goaltoolquedóblockedoutageprevio,noAPIresume;usuarioexplicitoreanudó,trabajomanual.Nomarcarcompleteobjetivonoalcanzado.

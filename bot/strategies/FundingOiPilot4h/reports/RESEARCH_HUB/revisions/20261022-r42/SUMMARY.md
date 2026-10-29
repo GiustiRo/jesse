@@ -1,0 +1,1 @@
+R42 prerregistrada: valor predictivo de persistencia latente frente a mezcla IID común, sólo datos BTC. Un observador sin órdenes; cero motores económicos autorizados en esta etapa. Fuentes/checks en preparación.

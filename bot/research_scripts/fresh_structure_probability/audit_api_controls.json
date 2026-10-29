@@ -1,0 +1,28 @@
+{
+  "controls": {
+    "self_tests_passed": [
+      "two_right_bars_no_early_pivot",
+      "ties_are_not_pivots",
+      "outside_pivot_pair_not_ordered",
+      "three_known_states_and_explicit_unknown",
+      "ambiguous_touch_and_known_opening_order",
+      "deadline_maturity_only",
+      "unknown_equals_baseline",
+      "calendar_window_expiry",
+      "complete_none_and_terminal_censor",
+      "missing_minute_invalidates",
+      "aggregation_requires_contiguity",
+      "prefix_causal_features",
+      "paired_scoring_identity"
+    ],
+    "database_read": false,
+    "network": false,
+    "trading": false,
+    "provisional_adapter": true
+  },
+  "public_api": {
+    "signature": "(exchange: str, symbol: str, timeframe: str, start_date_timestamp: int, finish_date_timestamp: int, warmup_candles_num: int = 0, caching: bool = False, is_for_jesse: bool = False) -> Tuple[numpy.ndarray, numpy.ndarray]",
+    "doc": null,
+    "query_performed": false
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "phase": "AA_pre_economic",
+  "at": "2026-10-21 22:33:00 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_AA_PROTOCOL_20261021.md",
+  "technical_receipt": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_AA_TECHNICAL_CHECK_RECEIPT_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "ceec1738eb4748e5aa2f2eeae039d5a0",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/ceec1738eb4748e5aa2f2eeae039d5a0",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 1738,
+      "exit_code": 0,
+      "started_at": "2026-10-21T22:29:06+00:00",
+      "finished_at": "2026-10-21T22:29:07+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T22:29:07+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "technical_check.json",
+        "size_bytes": 6359,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"PASS\", \"assertions\": 129, \"source_sha256\": {\"BtcResearchR10Base4h\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"BtcResearchR11Base1m\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"BtcResearchR12ArBase1m\": \"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343\", \"BtcResearchR27VolumeInteractionBase1m\": \"aae9138ae04a4b14bec1970f6c598e03cfee62ae9d0e392816cc48e2e8e94cfa\", \"BtcResearchR27VolumeInteraction1m\": \"0d36dd073a021dab6c1932d6c8f90c3c30c5d95c098d08bb3f9e85415e3264f4\", \"BtcResearchR27MainEffects1m\": \"cff9b19badf7750d8e9e8ecf2b05f8bcad84fbf2ed32f7487288873c0d1a656e\"}, \"scope\": \"Supplied-source AST/stubs, independent scalar feature and known-coefficient OLS oracle. No framework/real strategy imports, session inputs, observed candles or nested backtests.\", \"limits\": \"Synthetic checks do not prove broker/runtime coverage, predictive economics, statistical independence, significance or OOS.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "initial_failed_harness_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "1d4b814efa56487299eec6c3ba1b4a98",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/1d4b814efa56487299eec6c3ba1b4a98",
+      "inputs": [],
+      "status": "failed",
+      "pid": 1714,
+      "exit_code": 1,
+      "started_at": "2026-10-21T22:28:35+00:00",
+      "finished_at": "2026-10-21T22:28:38+00:00",
+      "timeout_minutes": 5,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T22:28:38+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [],
+    "artifacts_truncated": false,
+    "output": "Traceback (most recent call last):\n  File \"/src/bot/storage/mcp/analysis/1d4b814efa56487299eec6c3ba1b4a98/analysis.py\", line 52, in <module>\n    check(\"research\" not in \"\".join(n.module or \"\" for n in tree.body if isinstance(n,ast.ImportFrom)).lower(),\"no research module\")\n  File \"/src/bot/storage/mcp/analysis/1d4b814efa56487299eec6c3ba1b4a98/analysis.py\", line 13, in check\n    assert bool(value),label\n           ^^^^^^^^^^^\nAssertionError: no research module\n",
+    "output_lines_returned": 7,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "runtime_version": {
+    "baseline": "1.26.4",
+    "source_job": "7a53cb54457e4d478247cfae6dd4155b",
+    "artifact_path": "y_technical_check.json",
+    "artifact_readback": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"action\": \"get_analysis_artifact\",\n  \"status\": \"success\",\n  \"job_id\": \"7a53cb54457e4d478247cfae6dd4155b\",\n  \"path\": \"y_technical_check.json\",\n  \"size_bytes\": 2043,\n  \"modified_at\": \"2026-10-21T22:07:17+00:00\",\n  \"kind\": \"text\",\n  \"content\": \"{\\n  \\\"status\\\": \\\"passed\\\",\\n  \\\"numpy_version\\\": \\\"1.26.4\\\",\\n  \\\"groups\\\": [\\n    \\\"vectorized per-origin25 vs independent scalar oracle, current26/392 parity\\\",\\n    \\\"392 row0 unused,360 exact slots and known targets, no future centering\\\",\\n    \\\"joint temporal reversal F/R, S invariant/D flips, scale offsets cancel\\\",\\n    \\\"exact constant-volume2/3/1e9 and constant-magnitude degeneracy, zeros/nonfinite\\\",\\n    \\\"shared nonzero-D training mask, STATE20 and symmetric40, no olderfill\\\",\\n    \\\"asof closed windows, future/prefix irrelevance, gap and OHLC integrity\\\",\\n    \\\"unique runtime origin/deadline, T<=last no-op and six observed-bar label\\\",\\n    \\\"gap/OHLC censoring and idempotent terminal without invented final maturity\\\",\\n    \\\"diagnostic before TRAIN392 and volume/feature gates; OHLC-only maturity\\\",\\n    \\\"asof parity precheck censors pending even when TRAIN392 is unavailable\\\",\\n    \\\"mode raw forecasts, shared lifecycle, no queue, exact hurdle, ATR-independent capture\\\",\\n    \\\"real-fill SL2ATR/noTP/24h fee budget, bounded support/deadline telemetry, PRE/FINAL idempotence\\\",\\n    \\\"AST frozen inheritance, no extra models/TP or broad error swallowing\\\"\\n  ],\\n  \\\"group_count\\\": 13,\\n  \\\"full_check_attempt\\\": 1,\\n  \\\"prior_probe_job\\\": \\\"bdc2d3c5c0294a7cbc97ca925e8c4894\\\",\\n  \\\"observed_prices\\\": false,\\n  \\\"framework_imports\\\": false,\\n  \\\"strategy_imports\\\": false,\\n  \\\"inputs_kind\\\": \\\"embedded supplied source AST/stubs plus synthetic fixtures\\\",\\n  \\\"sources\\\": {\\n    \\\"BtcResearchR10Base4h\\\": \\\"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\\\",\\n    \\\"BtcResearchR11Base1m\\\": \\\"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\\\",\\n    \\\"BtcResearchR12ArBase1m\\\": \\\"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343\\\",\\n    \\\"BtcResearchR25VolumeLagBase1m\\\": \\\"437833f8ab078a24843b0ce326a4cd556bae8cdcb755be420febe648165251b7\\\",\\n    \\\"BtcResearchR25VolumeLagState1m\\\": \\\"01c7aba73af2f10b5af06f46be016e0e90b34e9cb15aad494f97f64cb103b041\\\",\\n    \\\"BtcResearchR25VolumeLagSymmetric1m\\\": \\\"2913fee1da3cd5e219fcee4c6691d802716bdace2bccf07011c41537394261d1\\\"\\n  }\\n}\",\n  \"truncated\": false,\n  \"location\": \"On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.\"\n}"
+        }
+      ],
+      "isError": false
+    },
+    "status": "INFERRED_CONTINUITY_FROM_CORROBORATED_RUNTIME_BASELINE",
+    "continuity_evidence": "Root confirms same container, no restart/install/environment changes since baseline22:07UTC",
+    "limitation": "AA check did not independently emit numpy version; rcond=None and effective ranks verified by AA check"
+  },
+  "sources": {
+    "BtcResearchR27VolumeInteractionBase1m": "\"\"\"AA: conditional price response to participation, not identified order flow.\"\"\"\nimport math\nimport numpy as np\n\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef interaction_inputs(rows):\n    \"\"\"Origins42..401/current407; every surprise owns42 strictly prior volumes.\"\"\"\n    if rows.ndim != 2 or rows.shape[0] != 408 or rows.shape[1] < 6:\n        return None\n    if (not np.all(np.isfinite(rows[:, :6])) or np.any(rows[:, 1:6] <= 0)\n            or not np.all(np.diff(rows[:, 0]) == BAR)\n            or np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2]))\n            or np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2]))):\n        return None\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        close = np.log(rows[:, 2])\n        volume = np.log(rows[:, 5])\n        # Last sliding window includes V407 and has no following current volume:\n        # discard it. Remaining366 windows end one bar BEFORE each origin42..407.\n        prior = np.lib.stride_tricks.sliding_window_view(volume, 42)[:-1]\n        r = np.diff(close)[41:]\n        v = volume[42:]-np.mean(prior, axis=1)\n        # RAW product is prescribed for interpretable coefficient conversion.\n        # Products after affine centering can span the same model with main effects.\n        raw = np.column_stack((r, v, r*v))\n        labels = close[48:408]-close[42:402]\n    if not np.all(np.isfinite(raw)) or not np.all(np.isfinite(labels)):\n        return None\n    return raw[:360], labels, raw[-1]\n\n\ndef interaction_fit(raw, labels, current):\n    \"\"\"Two nested OLS models share all360 rows, scalers and numerical admission.\"\"\"\n    if raw.shape != (360, 3) or labels.shape != (360,) or current.shape != (3,):\n        return None, dict(reason=\"shape_invalid\")\n    if not all(np.all(np.isfinite(x)) for x in (raw, labels, current)):\n        return None, dict(reason=\"arithmetic_invalid\")\n    # Exact constants can yield a tiny positive std after a rounded mean. Detect\n    # equality first; no near-zero threshold or dropping a column for MAIN.\n    if np.any(np.all(raw == raw[:1], axis=0)):\n        return None, dict(reason=\"constant_column\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        center = raw.mean(axis=0)\n        scale = raw.std(axis=0, ddof=0)\n        scaled = (raw-center)/scale\n        point = (current-center)/scale\n    if (not np.all(np.isfinite(center)) or not np.all(np.isfinite(scale))\n            or np.any(scale <= 0) or not np.all(np.isfinite(scaled))\n            or not np.all(np.isfinite(point))):\n        return None, dict(reason=\"scale_invalid\")\n    full = np.column_stack((np.ones(360), scaled))\n    main = full[:, :3]\n    try:\n        # None is NumPy's dtype/shape-dependent default numerical-rank cutoff,\n        # frozen ex ante. Deficient rank rejects BOTH; no ridge or fallback.\n        bf, _, rankf, sf = np.linalg.lstsq(full, labels, rcond=None)\n        bm, _, rankm, sm = np.linalg.lstsq(main, labels, rcond=None)\n    except np.linalg.LinAlgError:\n        return None, dict(reason=\"solver_error\")\n    if rankf != 4 or rankm != 3:\n        return None, dict(reason=\"rank_invalid\", ranks=[int(rankf), int(rankm)])\n    if not all(np.all(np.isfinite(x)) for x in (bf, bm, sf, sm)):\n        return None, dict(reason=\"coefficient_invalid\")\n    with np.errstate(over=\"ignore\", invalid=\"ignore\", divide=\"ignore\"):\n        x = np.r_[1., point]\n        ff = float(x @ bf)\n        fm = float(x[:3] @ bm)\n        g = float(bf[3]/scale[2])\n    if not all(math.isfinite(x) for x in (ff, fm, g)):\n        return None, dict(reason=\"forecast_or_g_invalid\")\n    evidence = dict(reason=\"valid\", n=360, origins=[42, 401], current_index=407,\n        target_indices=[48, 407], current_raw=current.tolist(),\n        center=center.tolist(), scale=scale.tolist(),\n        coefficients_full=bf.tolist(), coefficients_main=bm.tolist(),\n        ranks=[int(rankf), int(rankm)], singular_full=sf.tolist(),\n        singular_main=sm.tolist(), g_raw=g,\n        forecast_full=ff, forecast_main=fm)\n    return (ff, fm), evidence\n\n\ndef interaction_forecasts(rows):\n    values = interaction_inputs(rows)\n    if values is None:\n        return None, dict(reason=\"data_invalid\")\n    return interaction_fit(*values)\n\n\ndef empty_interaction_diagnostic():\n    return dict(last=None, n=0, g_negative=0, g_zero=0, g_positive=0,\n        means={key: dict(available=True, value=None)\n               for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")},\n        aggregation_errors=0, latest=None)\n\n\ndef interaction_diagnostic(state, now, evidence):\n    \"\"\"O(1), once per valid fit, independent of mode, hurdle, ATR and occupation.\"\"\"\n    if state[\"last\"] is not None and now <= state[\"last\"]:\n        return state\n    result = dict(state)\n    result[\"last\"], result[\"n\"] = int(now), state[\"n\"]+1\n    g = evidence[\"g_raw\"]\n    key = \"g_negative\" if g < 0 else \"g_positive\" if g > 0 else \"g_zero\"\n    result[key] += 1\n    result[\"latest\"] = {key: evidence[key]\n                        for key in (\"g_raw\", \"forecast_full\", \"forecast_main\")}\n    result[\"means\"] = {}\n    for key, old in state[\"means\"].items():\n        item = dict(old)\n        if old[\"available\"]:\n            value = evidence[key]\n            mean = value if state[\"n\"] == 0 else old[\"value\"]+(value-old[\"value\"])/result[\"n\"]\n            if math.isfinite(mean):\n                item[\"value\"] = mean\n            else:\n                # An unavailable descriptive aggregate cannot affect any forecast\n                # or the accepted fit. Do not serialize Infinity or invent a mean.\n                item.update(available=False, value=None)\n                result[\"aggregation_errors\"] += 1\n        result[\"means\"][key] = item\n    return result\n\n\nclass BtcResearchR27VolumeInteractionBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"INTERACTION\", \"MAIN_EFFECTS\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        last = self.vars.get(\"interaction_last\")\n        if last is not None and now <= last:\n            return\n        self.vars[\"interaction_last\"] = now\n        if not self.START < now < self.FINISH:\n            return\n        counts = self.vars.setdefault(\"interaction_counts\", {})\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 408)\n        if rows is None:\n            counts[\"window_invalid\"] = counts.get(\"window_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        if not math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8):\n            # As-of route mismatch is shared invalid data, before either model or\n            # diagnostic. It is cash, not a framework invariant that halts a run.\n            counts[\"price_alignment_invalid\"] = counts.get(\"price_alignment_invalid\", 0)+1\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        forecasts, evidence = interaction_forecasts(rows)\n        reason = evidence[\"reason\"]\n        counts[reason] = counts.get(reason, 0)+1\n        self.vars[\"interaction_latest_fit\"] = evidence\n        if forecasts is None:\n            return\n        evidence.update(origin=now, window_first=int(rows[0, 0]), window_last=int(rows[-1, 0]))\n        # Record BOTH forecasts and raw gamma before all trading gates. MODE and\n        # wallet/order state never enter any mathematical/diagnostic helper.\n        diagnostic = self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())\n        self.vars[\"interaction_diagnostic\"] = interaction_diagnostic(diagnostic, now, evidence)\n        forecast = forecasts[0 if self.MODE == \"INTERACTION\" else 1]\n        if abs(forecast) <= .0019:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            counts[\"atr_invalid\"] = counts.get(\"atr_invalid\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            counts[\"plan_invalid\"] = counts.get(\"plan_invalid\", 0)+1\n            return\n        self.vars[\"plan\"] = dict(plan, interaction_evidence=evidence,\n                                forecast=forecast, forecast_origin=now)\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        super().on_open_position(order)\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        self._log(\"R27_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            forecast=plan[\"forecast\"], forecast_origin=plan[\"forecast_origin\"],\n            forecast_deadline=plan[\"forecast_origin\"]+6*BAR,\n            opened_at=int(self.position.opened_at),\n            hold_deadline=int(self.position.opened_at)+6*BAR,\n            entry=float(self.position.entry_price), qty=abs(float(self.position.qty)),\n            stop=float(self.position.entry_price)-direction*plan[\"distance\"],\n            distance=plan[\"distance\"], risk_budget=plan[\"risk_budget\"]))\n        self._log(\"R27_OPEN_FIT\", plan[\"interaction_evidence\"])\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R27_COUNTS\", dict(stage=stage, mode=self.MODE,\n            counts=self.vars.get(\"interaction_counts\", {}),\n            signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n            occupied=self.vars.get(\"occupied\", 0)))\n        self._log(\"R27_DIAGNOSTIC\", dict(stage=stage,\n            **self.vars.get(\"interaction_diagnostic\", empty_interaction_diagnostic())))\n        self._log(\"R27_LAST_FIT\", dict(stage=stage,\n            **self.vars.get(\"interaction_latest_fit\", {})))\n",
+    "BtcResearchR27VolumeInteraction1m": "from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27VolumeInteraction1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"INTERACTION\"\n",
+    "BtcResearchR27MainEffects1m": "from strategies.BtcResearchR27VolumeInteractionBase1m import BtcResearchR27VolumeInteractionBase1m\n\n\nclass BtcResearchR27MainEffects1m(BtcResearchR27VolumeInteractionBase1m):\n    MODE = \"MAIN_EFFECTS\"\n"
+  },
+  "reviews": "Root and independent btc_next_material read final sources and normative protocol conform. Root read full corrected harness and receipts.129checksPASS after one harness-only false-positive on name Research; productive source unchanged between analysis attempts. As-of mismatch handled explicit commoncash before any fit/diagnostic. Parents unchanged.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "7ec2626e-9767-4139-90bc-4bd4d596e755",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery AA | INTERACTION | interacción retorno y volumen",
+      "description": "OLS directo24h INTERACTION[1,r,v,r*v] frente MAIN_EFFECTS[1,r,v], r4h/vlogV−media42logVprevios por origen.408OHLCV,360slots maduros,sharedscales/rank4/3/rcondNone/admisión. Diagnóstico gamma independiente, sin filtro. SL2ATRsimple/noTP24h,10k/2%/6%/3x,fee.00045+fundingBTC. Desarrollo adaptativo,no réplica de evidencia diaria de acciones.",
+      "description_truncated": false,
+      "created_at": 1792621941000,
+      "updated_at": 1792621980000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR27VolumeInteraction1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 420,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/7ec2626e-9767-4139-90bc-4bd4d596e755"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "8b003c2c-4ca3-4cca-9c76-497e2cfa4fb4",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery AA | MAIN_EFFECTS | interacción retorno y volumen",
+      "description": "OLS directo24h INTERACTION[1,r,v,r*v] frente MAIN_EFFECTS[1,r,v], r4h/vlogV−media42logVprevios por origen.408OHLCV,360slots maduros,sharedscales/rank4/3/rcondNone/admisión. Diagnóstico gamma independiente, sin filtro. SL2ATRsimple/noTP24h,10k/2%/6%/3x,fee.00045+fundingBTC. Desarrollo adaptativo,no réplica de evidencia diaria de acciones.",
+      "description_truncated": false,
+      "created_at": 1792621941000,
+      "updated_at": 1792621980000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR27MainEffects1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 420,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/8b003c2c-4ca3-4cca-9c76-497e2cfa4fb4"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "limits": "Development only,not statistical independence or causal liquidity identification. BTC4h/24h design own adaptation,not replication of daily equities evidence. Common rank4/3/scales/finite/currentpoint/rawgamma. No risk/cost stress/new2026/imports/live/paper."
+}

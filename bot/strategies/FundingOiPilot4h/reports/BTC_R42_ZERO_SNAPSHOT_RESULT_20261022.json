@@ -1,0 +1,56 @@
+{
+  "job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "598b4851b71643c8a3b646ef04779f72",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/598b4851b71643c8a3b646ef04779f72",
+      "inputs": [
+        {
+          "name": "OBS",
+          "file": "inputs/OBS.json",
+          "session_type": "backtest",
+          "session_id": "1cbce950-5de8-40b3-bea1-652602a829a6",
+          "session_status": "finished",
+          "title": "MCP Backtest: R42 | Persistencia latente frente a IID | BTC sin órdenes",
+          "size_bytes": 4382
+        }
+      ],
+      "status": "succeeded",
+      "pid": 3305,
+      "exit_code": 0,
+      "started_at": "2026-10-22T14:33:56+00:00",
+      "finished_at": "2026-10-22T14:33:57+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-23T14:33:57+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "zero_snapshot.json",
+        "size_bytes": 518,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"ZERO_TRADE_SNAPSHOT_PASS\", \"N\": 0, \"metrics_keys\": [\"funding\"], \"observed_metrics\": {}, \"funding_metadata\": {\"mode\": \"historical\", \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\", \"status\": \"applied\", \"applied\": true, \"cashflow\": 0, \"event_count\": 0}, \"scope\": \"Snapshot financial fields only; missing metrics are not inferred. Final runtime wallet/position/order assertions and full funding pages are audited separately.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "artifact": {
+    "action": "get_analysis_artifact",
+    "status": "success",
+    "job_id": "598b4851b71643c8a3b646ef04779f72",
+    "path": "zero_snapshot.json",
+    "size_bytes": 518,
+    "modified_at": "2026-10-22T14:33:57+00:00",
+    "kind": "text",
+    "content": "{\n  \"status\": \"ZERO_TRADE_SNAPSHOT_PASS\",\n  \"N\": 0,\n  \"metrics_keys\": [\n    \"funding\"\n  ],\n  \"observed_metrics\": {},\n  \"funding_metadata\": {\n    \"mode\": \"historical\",\n    \"dataset_id\": \"9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571\",\n    \"status\": \"applied\",\n    \"applied\": true,\n    \"cashflow\": 0,\n    \"event_count\": 0\n  },\n  \"scope\": \"Snapshot financial fields only; missing metrics are not inferred. Final runtime wallet/position/order assertions and full funding pages are audited separately.\"\n}",
+    "truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  }
+}

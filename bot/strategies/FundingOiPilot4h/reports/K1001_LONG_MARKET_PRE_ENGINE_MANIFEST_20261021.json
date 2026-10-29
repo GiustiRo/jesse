@@ -1,0 +1,951 @@
+{
+  "status": "FROZEN_BEFORE_ONE_ECONOMIC_ENGINE",
+  "created_at_utc": "2026-10-22 02:07:38 UTC",
+  "session": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "1e016570-d981-47d1-b6d8-38fcde982084",
+    "session_status": "draft",
+    "status_note": "Not started yet, so there are no results.",
+    "title": "MCP Backtest: K1001 LONG | MARKET at decision close | quota1%",
+    "description": "Única ablación de política de entrada K: legacy_long completo(concota<=1ATR) primero, sólo precio de orden cambia a self.priceMARKET y qtyreplan .5wallet/.5margin. Misma gestiónoriginal,10k total/cuota1%/3x/fee.00045/fundinghistórico. ControlLONG_ONLY5c29961d reutilizado,sinrerun: políticaLIMITconconversiónnear(27LIMIT+4MARKET nativos). Ventanaobservada2020–2025, noOOS. ProtocoloK1001_LONG_MARKET_PROTOCOL_20261021.md;1económicanueva ysinvecinos.",
+    "description_truncated": false,
+    "created_at": 1792634823000,
+    "updated_at": 1792634823000,
+    "execution_duration": null,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "1m",
+          "strategy": "BtcResearchR16K1001LongMarket1m"
+        }
+      ],
+      "data_routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h"
+        }
+      ],
+      "start_date": "2020-10-15",
+      "finish_date": "2026-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": true,
+      "fast_mode": false,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": true,
+          "order_cancellation": true,
+          "order_execution": true,
+          "position_opened": true,
+          "position_increased": true,
+          "position_reduced": true,
+          "position_closed": true,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": true
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "metrics": null,
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": false,
+    "sections": {
+      "trades": {
+        "count": 0
+      },
+      "equity_curve": {
+        "series": []
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": null
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/1e016570-d981-47d1-b6d8-38fcde982084"
+  },
+  "control_reused": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "5c29961d-419a-4207-ae3c-58ad6ccb318c",
+    "session_status": "finished",
+    "title": "MCP Backtest: K1001 quota | LONG_ONLY | 1% total BTC account",
+    "description": "Escenario alternativo individual de10.000USDT, LONG_RUNNER original solamente, cuota1% del wallet total propio mediante helper.5balance/.5margin. Otra cuota inactiva; no sumar curvas con SHORT_BOOK. Desarrollo observado2020–2025. Diagnóstico completo antes de esta prueba. Fee.00045/fundinghistórico/3x; protocoloK1001_QUOTA_SCENARIOS_PROTOCOL_20261021.md.",
+    "description_truncated": false,
+    "created_at": 1792632687000,
+    "updated_at": 1792632884000,
+    "execution_duration": 97.03,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "1m",
+          "strategy": "BtcResearchR16K1001LongOnly1m"
+        }
+      ],
+      "data_routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h"
+        }
+      ],
+      "start_date": "2020-10-15",
+      "finish_date": "2026-01-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": true,
+      "fast_mode": false,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": true,
+          "order_cancellation": true,
+          "order_execution": true,
+          "position_opened": true,
+          "position_increased": true,
+          "position_reduced": true,
+          "position_closed": true,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": true
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "metrics": {
+      "total": 31,
+      "total_winning_trades": 13,
+      "total_losing_trades": 18,
+      "starting_balance": 10000,
+      "finishing_balance": 14030.903490447641,
+      "win_rate": 0.41935483870967744,
+      "win_rate_longs": 0.41935483870967744,
+      "win_rate_shorts": 0,
+      "ratio_avg_win_loss": 4.918103193196772,
+      "longs_count": 31,
+      "longs_percentage": 100,
+      "shorts_percentage": 0,
+      "shorts_count": 0,
+      "fee": 117.60193902317191,
+      "net_profit": 4030.903490447631,
+      "net_profit_percentage": 40.30903490447631,
+      "average_win": 431.5718284765639,
+      "average_loss": 87.75168220820552,
+      "expectancy": 130.0291448531494,
+      "expectancy_percentage": 1.300291448531494,
+      "expected_net_profit_every_100_trades": 130.0291448531494,
+      "average_holding_period": 614049.6774193548,
+      "average_winning_holding_period": 975521.5384615385,
+      "average_losing_holding_period": 352986.6666666667,
+      "gross_profit": 5610.433770195331,
+      "gross_loss": -1579.5302797476993,
+      "max_drawdown": -6.934424893354841,
+      "max_underwater_period": 674,
+      "annual_return": 6.707897732817347,
+      "annualization": 365,
+      "sharpe_ratio": 1.0104966108379034,
+      "calmar_ratio": 0.9673329563703876,
+      "sortino_ratio": 1.9649216330448573,
+      "omega_ratio": 1.5710641349222205,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0,
+      "winning_streak": 4,
+      "losing_streak": 3,
+      "largest_losing_trade": -136.43754248460652,
+      "largest_winning_trade": 1740.6004732998742,
+      "current_streak": -2,
+      "avg_trades_per_day": 0.01628150666670071,
+      "avg_trades_per_week": 0.11397054666690497,
+      "avg_trades_per_month": 0.4956090629343696,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": -421.32906424455905,
+        "rate_kind": "settled",
+        "event_count": 658,
+        "settlements_processed": 5712,
+        "mark_price_proxy_count": 409,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      }
+    },
+    "error": null,
+    "has_chart_data": true,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 31
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 1905
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 372366
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/5c29961d-419a-4207-ae3c-58ad6ccb318c"
+  },
+  "control_actual_entry_types": {
+    "types": {
+      "LIMIT": 27,
+      "MARKET": 4
+    },
+    "unusual": [
+      {
+        "trade_id": "d6db43cd-5c21-4487-b907-b78fe5ce9edc",
+        "origin": "LONG_RUNNER",
+        "plan_kind": "LIMIT",
+        "actual_type": "MARKET",
+        "entry": 63857.87,
+        "signal_at": 1618372800000,
+        "opened_at": 1618372800000
+      },
+      {
+        "trade_id": "8f115c0f-dc05-415f-8a7b-72d7d909aa78",
+        "origin": "LONG_RUNNER",
+        "plan_kind": "LIMIT",
+        "actual_type": "MARKET",
+        "entry": 33793.83,
+        "signal_at": 1627113600000,
+        "opened_at": 1627113600000
+      },
+      {
+        "trade_id": "b606673f-9c36-4e5b-adc1-bf63eff153bd",
+        "origin": "LONG_RUNNER",
+        "plan_kind": "LIMIT",
+        "actual_type": "MARKET",
+        "entry": 99280,
+        "signal_at": 1736150400000,
+        "opened_at": 1736150400000
+      },
+      {
+        "trade_id": "dd55ba44-3920-44cc-af00-232998612455",
+        "origin": "LONG_RUNNER",
+        "plan_kind": "LIMIT",
+        "actual_type": "MARKET",
+        "entry": 99212,
+        "signal_at": 1746691200000,
+        "opened_at": 1746691200000
+      }
+    ]
+  },
+  "sources": {
+    "BtcResearchR10Base4h": "import json\nimport math\n\nimport numpy as np\nfrom jesse.strategies import Strategy\n\nBAR = 14400000\nDAY = 86400000\n\n\ndef closed_window(candles, now, count):\n    \"\"\"Use only consecutive, closed 4h bars; no synthetic gap repair.\"\"\"\n    rows = candles[candles[:, 0] + BAR <= now][-count:]\n    if len(rows) != count or rows[-1, 0] != now - BAR:\n        return None\n    if not np.all(np.diff(rows[:, 0]) == BAR):\n        return None\n    if not np.all(np.isfinite(rows[:, :5])) or np.any(rows[:, 1:5] <= 0):\n        return None\n    if np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2])):\n        return None\n    if np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2])):\n        return None\n    return rows\n\n\ndef atr14(rows):\n    previous = rows[-15:-1, 2]\n    current = rows[-14:]\n    tr = np.maximum(current[:, 3] - current[:, 4],\n                    np.maximum(abs(current[:, 3] - previous), abs(current[:, 4] - previous)))\n    value = float(np.mean(tr))\n    return value if math.isfinite(value) and value > 0 else None\n\n\ndef breadth_state(closes):\n    changes = np.diff(closes)\n    positive = changes > 0\n    negative = changes < 0\n    if int(positive[-6:].sum()) >= 4 and int(positive[-24:].sum()) >= 16:\n        return 1\n    if int(negative[-6:].sum()) >= 4 and int(negative[-24:].sum()) >= 16:\n        return -1\n    return 0\n\n\ndef breadth_signal(rows):\n    \"\"\"Count sign persistence, not return magnitudes; consume only new states.\"\"\"\n    now_state = breadth_state(rows[-25:, 2])\n    old_state = breadth_state(rows[-26:-1, 2])\n    return now_state if now_state != old_state else 0\n\n\ndef funding_failure_signal(rows, now, events):\n    \"\"\"Observe a full post-payment bar; never know or collect the next payment.\"\"\"\n    event_start = now - BAR\n    matching = []\n    for event in events:\n        raw = int(event[\"settled_at\"])\n        effective = raw // 60000 * 60000\n        if effective == event_start and 0 <= raw - effective <= 1000:\n            if int(event[\"available_at\"]) <= now and int(event[\"available_at\"]) > raw:\n                matching.append(event)\n    if len(matching) != 1:\n        return 0, None\n    event = matching[0]\n    rate = float(event[\"rate_decimal\"])\n    if not math.isfinite(rate):\n        return 0, None\n    pre, post = rows[-2], rows[-1]\n    if rate > 0 and pre[2] > pre[1] and post[2] < pre[1]:\n        return -1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    if rate < 0 and pre[2] < pre[1] and post[2] > pre[1]:\n        return 1, dict(settled_at=int(event[\"settled_at\"]), available_at=int(event[\"available_at\"]), rate=rate)\n    return 0, None\n\n\ndef entry_plan(price, capital, margin, leverage, fee, direction, distance):\n    stop = price - direction * distance\n    values = (price, capital, margin, leverage, distance, stop)\n    if direction not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in values):\n        return None\n    if not math.isfinite(fee) or fee < 0:\n        return None\n    unit_loss = distance + fee * (price + stop)\n    # 2% includes both execution fees. The 90% margin ceiling retains the\n    # historical reserve and does not increase the stop's monetary risk.\n    risk_qty = 0.02 * capital / unit_loss\n    margin_qty = 0.90 * margin * leverage / (price * (1 + fee * leverage))\n    qty = math.floor(min(risk_qty, margin_qty) * 1e8) / 1e8\n    if qty <= 0:\n        return None\n    assert qty * unit_loss <= 0.02 * capital + 1e-6\n    return dict(qty=qty, price=price, capital=capital, distance=distance,\n                stop=stop, risk_budget=0.02 * capital,\n                planned_loss=qty * unit_loss, margin_capped=margin_qty < risk_qty)\n\n\nclass BtcResearchR10Base4h(Strategy):\n    \"\"\"R10 discovery harness: one BTC position, fixed risk and base costs only.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, value):\n        self.log(label + \" \" + json.dumps(value, separators=(\",\", \":\"), allow_nan=False))\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\"\n            assert self.leverage == 3\n            assert abs(self.fee_rate - 0.00045) < 1e-12\n            self.vars[\"checked\"] = True\n            self._log(\"R10_CONFIG\", dict(mode=self.MODE, risk=0.02, aggregate=0.06,\n                                        leverage=self.leverage, fee=self.fee_rate,\n                                        margin_buffer=0.90, stop_atr=2, target_r=2, hold_hours=48))\n        self.vars[\"direction\"] = 0\n        rows = closed_window(self.candles, now, 26)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            return\n        if self.MODE == \"BREADTH\":\n            direction = breadth_signal(rows)\n            evidence = None\n        else:\n            assert self.MODE == \"POST_FUNDING\"\n            events = self.get_funding_history(count=6)\n            assert all(int(e[\"available_at\"]) <= now for e in events)\n            direction, evidence = funding_failure_signal(rows, now, events)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        # Signals are evaluated and consumed while occupied as well. No deferred\n        # order or re-entry from a previously blocked funding/breadth event.\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        capital = max(0.0, min(float(self.balance), float(self.portfolio_value)))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or float(self.price) + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n        self.vars[\"evidence\"] = evidence\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        plan = self.vars[\"plan\"]\n        self.buy = plan[\"qty\"], self.price\n\n    def go_short(self):\n        plan = self.vars[\"plan\"]\n        self.sell = plan[\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        distance = plan[\"distance\"]\n        stop = entry - direction * distance\n        target = entry + direction * 2 * distance\n        assert qty * (distance + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._log(\"R10_ENTRY\", dict(time=int(self.time), direction=direction, entry=entry,\n                                   qty=qty, stop=stop, target=target, plan=plan,\n                                   evidence=self.vars.get(\"evidence\")))\n\n    def update_position(self):\n        # No ratchet, discretionary exit or same-close reversal. Funding applies\n        # continuously to actual held quantity, independently of signal inputs.\n        if int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        self.vars[\"last_exit_at\"] = int(self.time)\n\n    def before_terminate(self):\n        self._log(\"R10_COUNTERS\", dict(signals=self.vars.get(\"signals\", 0),\n                                     occupied=self.vars.get(\"occupied\", 0),\n                                     entries=self.vars.get(\"entries\", 0),\n                                     invalid_windows=self.vars.get(\"invalid_windows\", 0)))\n",
+    "BtcResearchR11Base1m": "import json\nimport math\nfrom datetime import datetime, timezone\n\nimport numpy as np\nfrom jesse.strategies import Strategy\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef cusum_step(rows, accumulators):\n    \"\"\"Transfer the R40 design:60 past log returns, drift0.25, boundary4.\"\"\"\n    returns = np.diff(np.log(rows[-62:, 2]))\n    sigma = float(np.std(returns[:-1], ddof=1))\n    if not math.isfinite(sigma) or sigma <= 0:\n        return 0, (0.0, 0.0)\n    z = float((returns[-1] - np.mean(returns[:-1])) / sigma)\n    if not math.isfinite(z):\n        return 0, (0.0, 0.0)\n    up = max(0.0, accumulators[0] + z - 0.25)\n    down = max(0.0, accumulators[1] - z - 0.25)\n    if up >= 4 or down >= 4:\n        direction = 0 if up >= 4 and down >= 4 else 1 if up >= 4 else -1\n        return direction, (0.0, 0.0)\n    return 0, (up, down)\n\n\ndef absorption_signal(rows):\n    \"\"\"Large volume but small body, followed by escape of that closed bar.\"\"\"\n    window, setup, confirmation = rows[-26:-2], rows[-2], rows[-1]\n    if not np.all(np.isfinite(rows[-26:, 5])) or np.any(rows[-26:, 5] < 0):\n        return 0\n    average_volume = float(np.mean(window[:, 5]))\n    prior_atr = atr14(window)\n    if not math.isfinite(average_volume) or average_volume <= 0 or prior_atr is None:\n        return 0\n    if setup[5] < 2 * average_volume or abs(setup[2] - setup[1]) > 0.25 * prior_atr:\n        return 0\n    if confirmation[2] > setup[3]:\n        return 1\n    if confirmation[2] < setup[4]:\n        return -1\n    return 0\n\n\ndef month_name(timestamp):\n    return datetime.fromtimestamp(timestamp / 1000, timezone.utc).strftime(\"%Y-%m\")\n\n\ndef monthly_summary(boundaries, active_months):\n    \"\"\"Declared post-settlement/pre-decision UTC cuts; no00:01 approximation.\"\"\"\n    points = sorted(boundaries.items())\n    months = []\n    for (start, before), (finish, after) in zip(points, points[1:]):\n        stamp = datetime.fromtimestamp(start / 1000, timezone.utc)\n        month = stamp.strftime(\"%Y-%m\")\n        complete = stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0\n        if before <= 0:\n            continue\n        months.append(dict(month=month, start=start, finish=finish,\n                           complete=complete, active=month in active_months,\n                           pnl=after-before, return_fraction=after/before-1))\n    complete = [m for m in months if m[\"complete\"]]\n    active = [m for m in complete if m[\"active\"]]\n    quarter_groups = {}\n    for m in months:\n        quarter = m[\"month\"][:4] + \"Q\" + str((int(m[\"month\"][5:])-1)//3+1)\n        quarter_groups.setdefault(quarter, []).append(m)\n    quarters = [q for q in quarter_groups.values()\n                if len(q) == 3 and all(m[\"complete\"] for m in q)]\n    returns = [m[\"return_fraction\"] for m in complete]\n    contributions = sorted([m[\"pnl\"] for m in months], reverse=True)\n    return dict(months=months, complete_months=len(complete), active_months=len(active),\n                positive_active=sum(m[\"pnl\"] > 0 for m in active),\n                positive_calendar=sum(m[\"pnl\"] > 0 for m in complete),\n                median_return=float(np.median(returns)) if returns else None,\n                complete_quarters=len(quarters),\n                positive_quarters=sum(sum(m[\"pnl\"] for m in q) > 0 for q in quarters),\n                pnl_without_best_two=sum(m[\"pnl\"] for m in months)-sum(contributions[:2]))\n\n\nclass BtcResearchR11Base1m(Strategy):\n    \"\"\"M1 accounting observer; signal and management decisions remain4h.\"\"\"\n    MODE = \"abstract\"\n    START = 1602720000000\n    FINISH = 1767225600000\n\n    def _log(self, label, payload):\n        # Event logs stay small; monthly history is emitted as separate rows.\n        self.log(label + \" \" + json.dumps(payload, separators=(\",\", \":\"), allow_nan=False))\n\n    def _observe(self, stage):\n        now = int(self.time)\n        # BTC-only futures equity. portfolio_value multiplies open PnL by\n        # leverage in this checkout, so it is deliberately not used here.\n        equity = float(self.balance) + (float(self.position.pnl) if self.is_open else 0.0)\n        assert math.isfinite(equity)\n        self.vars[\"peak\"] = max(self.vars.get(\"peak\", 10000.0), equity)\n        drawdown = equity / self.vars[\"peak\"] - 1\n        self.vars[\"dd\"] = min(self.vars.get(\"dd\", 0.0), drawdown)\n        self.vars[\"sequence\"] = self.vars.get(\"sequence\", 0) + 1\n        self.vars[\"last_equity\"] = equity\n        active = self.vars.setdefault(\"active_months\", set())\n        if self.is_open:\n            # Pre marks describe exposure during the minute that just closed;\n            # an opening fill at T instead belongs to the new interval.\n            active.add(month_name(now if stage == \"open\" else now-1))\n        boundaries = self.vars.setdefault(\"boundaries\", {self.START: 10000.0})\n        if stage == \"pre\":\n            self.vars[\"minute_marks\"] = self.vars.get(\"minute_marks\", 0) + 1\n            stamp = datetime.fromtimestamp(now / 1000, timezone.utc)\n            if stamp.day == 1 and stamp.hour == 0 and stamp.minute == 0:\n                boundaries[now] = equity\n        if now >= self.FINISH:\n            # A later terminal close callback replaces the mark with post-fee equity.\n            boundaries[self.FINISH] = equity\n        return equity\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate - 0.00045) < 1e-12\n            assert abs(self.balance - 10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        # This is signal alignment, not a market-session/calendar filter.\n        if now % BAR != 0:\n            return\n        count = 62 if self.MODE == \"CUSUM\" else 26\n        candles = self.get_candles(self.exchange, self.symbol, \"4h\")\n        rows = closed_window(candles, now, count)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0) + 1\n            self.vars[\"cusum\"] = (0.0, 0.0)\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        if self.MODE == \"CUSUM\":\n            direction, state = cusum_step(rows, self.vars.get(\"cusum\", (0.0, 0.0)))\n            self.vars[\"cusum\"] = state\n        else:\n            assert self.MODE == \"ABSORPTION\"\n            direction = absorption_signal(rows)\n        if not direction or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0) + 1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0) + 1\n            return\n        atr = atr14(rows)\n        if atr is None:\n            return\n        # Flat BTC account: wallet equals equity. Reuse the frozen2% fee-aware\n        # plan, eight-decimal research precision and90% margin ceiling.\n        capital = max(0.0, float(self.balance))\n        plan = entry_plan(float(self.price), capital, float(self.available_margin),\n                          float(self.leverage), float(self.fee_rate), direction, 2 * atr)\n        if plan is None or self.price + direction * 2 * plan[\"distance\"] <= 0:\n            return\n        self.vars[\"direction\"] = direction\n        self.vars[\"plan\"] = plan\n\n    def should_long(self):\n        return self.vars.get(\"direction\") == 1\n\n    def should_short(self):\n        return self.vars.get(\"direction\") == -1\n\n    def go_long(self):\n        self.buy = self.vars[\"plan\"][\"qty\"], self.price\n\n    def go_short(self):\n        self.sell = self.vars[\"plan\"][\"qty\"], self.price\n\n    def should_cancel_entry(self):\n        return True\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry = float(self.position.entry_price)\n        qty = abs(float(self.position.qty))\n        stop = entry - direction * plan[\"distance\"]\n        target = entry + direction * 2 * plan[\"distance\"]\n        assert qty * (plan[\"distance\"] + self.fee_rate * (entry + stop)) <= plan[\"risk_budget\"] + 1e-6\n        self.stop_loss = qty, stop\n        self.take_profit = qty, target\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0) + 1\n        self._observe(\"open\")\n\n    def update_position(self):\n        # Preserve the four-hour management clock despite the M1 observer.\n        if int(self.time) % BAR == 0 and int(self.time) - int(self.position.opened_at) >= 12 * BAR:\n            self.liquidate()\n\n    def on_close_position(self, order, closed_trade):\n        now = int(self.time)\n        active = self.vars.setdefault(\"active_months\", set())\n        active.add(month_name(now-1))\n        # At a month boundary, retain both the held interval and any fee-only\n        # execution month. Terminal liquidation belongs to the final interval.\n        if now < self.FINISH:\n            active.add(month_name(now))\n        self.vars[\"last_exit_at\"] = now\n        self._observe(\"close\")\n        if now >= self.FINISH and self.vars.get(\"emitted\"):\n            self._emit(\"FINAL\")\n\n    def _emit(self, stage):\n        summary = monthly_summary(self.vars[\"boundaries\"], self.vars.get(\"active_months\", set()))\n        # Emit rows at the end, so one bounded log page can retrieve all months.\n        for item in summary.pop(\"months\"):\n            self._log(\"R11_MONTH\", dict(stage=stage, **item))\n        summary.update(stage=stage, equity=self.vars[\"last_equity\"],\n                       dd_m1_events=self.vars.get(\"dd\", 0),\n                       minute_marks=self.vars.get(\"minute_marks\", 0),\n                       sequence=self.vars.get(\"sequence\", 0),\n                       signals=self.vars.get(\"signals\", 0), entries=self.vars.get(\"entries\", 0),\n                       invalid_windows=self.vars.get(\"invalid_windows\", 0))\n        self._log(\"R11_SUMMARY\", summary)\n\n    def before_terminate(self):\n        self._observe(\"terminal\")\n        self.vars[\"emitted\"] = True\n        self._emit(\"PRETERMINAL\")\n",
+    "BtcResearchR16LegacyBase1m": "import math\nimport numpy as np\nimport jesse.indicators as ta\n\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR\n\n# Frozen legacy recipe values, not optimizer ranges. The 10bp reserve sizes\n# conservatively; it is never charged as cash or simulated execution friction.\nHP = dict(donchian_len=26, ema_fast=20, ema_slow=80, adx_min=26,\n          stop_atr=2.0, trail_atr=4.2, be_r=2.25)\nRESERVE = .001\nLOT = .001\n\n\ndef legacy_history(candles, now):\n    \"\"\"Keep exposed closed history; cross-route seed parity needs framework audit.\"\"\"\n    rows = candles[candles[:, 0]+BAR <= now]\n    if len(rows) < 14 or rows[-1, 0] != now-BAR:\n        return None\n    if (not np.all(np.diff(rows[:, 0]) == BAR)\n            or not np.all(np.isfinite(rows[:, :5]))\n            or not np.all(rows[:, 1:5] > 0)\n            or np.any(rows[:, 3] < np.maximum(rows[:, 1], rows[:, 2]))\n            or np.any(rows[:, 4] > np.minimum(rows[:, 1], rows[:, 2]))):\n        return None\n    return rows\n\n\ndef legacy_long(c):\n    if len(c) < 100:\n        return None\n    price = float(c[-1, 2])\n    fast = float(ta.ema(c, period=20))\n    slow = ta.ema(c, period=80, sequential=True)\n    atr, adx, rsi = float(ta.atr(c)), float(ta.adx(c)), float(ta.rsi(c))\n    entry = float(np.max(c[-27:-1, 3]))\n    if not all(math.isfinite(v) for v in (fast, slow[-1], slow[-5], atr, adx, rsi, entry)):\n        return None\n    if not (atr > 0 and entry < price <= entry+atr and price > slow[-1]\n            and fast > slow[-1] > slow[-5] and adx >= 26\n            and 52 <= rsi <= 76 and c[-1, 3]-c[-1, 4] <= 3*atr):\n        return None\n    distance = 2*atr\n    if not 0 < distance < entry:\n        return None\n    return dict(origin=\"LONG_RUNNER\", direction=1, entry=entry,\n                distance=distance, target_distance=None, hold_hours=None,\n                order_kind=\"LIMIT\")\n\n\ndef legacy_short(c):\n    if len(c) < 140:\n        return None\n    price = float(c[-1, 2])\n    macro = ta.ema(c, period=120, sequential=True)\n    fast, atr, rsi = float(ta.ema(c, period=20)), float(ta.atr(c)), float(ta.rsi(c, period=3))\n    if not all(math.isfinite(v) for v in (macro[-1], macro[-10], fast, atr, rsi)):\n        return None\n    if not (atr > 0 and macro[-1] > macro[-10] and price > macro[-1]-atr and rsi <= 20):\n        return None\n    entry = min(float(c[-1, 4]), price-.25*atr)\n    distance = fast-entry\n    if not (atr <= distance <= 3*atr and distance >= 6*.00045*entry):\n        return None\n    return dict(origin=\"CORE_SHORT\", direction=-1, entry=entry,\n                distance=distance, target_distance=1.5*atr, hold_hours=72,\n                order_kind=\"STOP\")\n\n\ndef legacy_supplement(c, mode, previous):\n    \"\"\"Consume setup before ATR/geometry/account tests, as in each frozen parent.\"\"\"\n    assert mode in (\"K1001\", \"N204\")\n    w = c[-14:]\n    if (len(w) < 14 or not np.all(np.isfinite(w))\n            or not np.all(w[:, 1:] > 0) or not np.all(w[:, 3] >= w[:, 4])):\n        return None, False\n    s, t, window = c[-2], c[-1], c[-13:-1]\n    spans = window[:, 3]-window[:, 4]\n    q = np.divide(window[:, 5]*(2*window[:, 2]-window[:, 3]-window[:, 4]),\n                  spans, out=np.zeros(12), where=spans > 0)\n    cohort = window[q > 0]\n    vwap = (float(np.sum(cohort[:, 5]*np.mean(cohort[:, [3, 4, 2]], axis=1))\n                  / np.sum(cohort[:, 5])) if len(cohort) else float(\"nan\"))\n    setup = bool(s[2] > c[-14, 2] and np.sum(q) < 0\n                 and s[2] >= vwap and t[2] < t[1] and t[2] < vwap)\n    if mode == \"K1001\" and setup:\n        changes = c[-13:-1, 2]-c[-14:-2, 2]\n        path = float(np.sum(np.abs(changes)))\n        efficiency = float(s[2]-c[-14, 2])/path if path > 0 else float(\"nan\")\n        setup = bool(path > 0 and 0 < efficiency <= 1/3)\n    if not setup or previous:\n        return None, setup\n    atr = float(ta.atr(c))\n    if not math.isfinite(atr) or atr <= 0:\n        return None, setup\n    distance = float(max(s[3], t[3])+.25*atr-t[2])\n    if not atr <= distance <= 3*atr:\n        return None, setup\n    entry = float(min(s[4], t[4])) if mode == \"K1001\" else float(t[2])\n    if mode == \"K1001\" and not (math.isfinite(entry) and entry > 2*distance and entry < t[2]):\n        return None, setup\n    if not (math.isfinite(entry) and math.isfinite(distance) and 0 < distance < entry):\n        return None, setup\n    return dict(origin=\"SUPPLEMENT\", direction=-1, entry=entry,\n                distance=distance, target_distance=2*distance, hold_hours=48,\n                order_kind=\"STOP\" if mode == \"K1001\" else \"MARKET\",\n                anchor=vwap), setup\n\n\ndef legacy_plan(event, capital, margin, leverage, fee):\n    \"\"\"BTC100%; preserve reserve/lot, with the common 90%-margin fee buffer.\"\"\"\n    entry, distance, direction = event[\"entry\"], event[\"distance\"], event[\"direction\"]\n    stop = entry-direction*distance\n    if (direction not in (-1, 1)\n            or not all(math.isfinite(v) and v > 0 for v in\n                       (entry, distance, stop, capital, margin, leverage))\n            or not math.isfinite(fee) or fee < 0):\n        return None\n    unit = distance+fee*(entry+stop)+RESERVE*entry\n    budget = .02*capital\n    risk_qty = budget/unit\n    gross_qty = 4.4*capital/entry  # Legacy ceiling; 3x margin prevents 4.4x exposure.\n    margin_qty = .90*margin*leverage/(entry*(1+fee*leverage))\n    qty = math.floor(min(risk_qty, gross_qty, margin_qty)/LOT)*LOT\n    if qty <= 0:\n        return None\n    assert qty*unit <= budget+1e-6\n    return dict(event, qty=qty, risk_budget=budget, planned_loss=qty*unit,\n                planned_stop_fees=qty*(distance+fee*(entry+stop)),\n                margin_limited=margin_qty < risk_qty,\n                gross_limited=gross_qty < risk_qty,\n                reserve=RESERVE)\n\n\nclass BtcResearchR16LegacyBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def _ledger(self):\n        return self.vars.setdefault(\"legacy_ledger\", {\n            name: dict(fills=0, closes=0, net=0.0)\n            for name in (\"LONG_RUNNER\", \"CORE_SHORT\", \"SUPPLEMENT\")})\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"K1001\", \"N204\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        # Advance the price machine once, independently of occupancy. Actual\n        # framework cancellation may re-enter should_* in this same4h cycle.\n        self.vars[\"decision_at\"] = now\n        rows = legacy_history(self.get_candles(self.exchange, self.symbol, \"4h\"), now)\n        self.vars[\"legacy_rows\"] = rows\n        if rows is None:\n            self.vars[\"previous_setup\"] = False\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        self.vars[\"history_min\"] = min(self.vars.get(\"history_min\", len(rows)), len(rows))\n        self.vars[\"history_max\"] = max(self.vars.get(\"history_max\", len(rows)), len(rows))\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        event, setup = legacy_supplement(rows, self.MODE, self.vars.get(\"previous_setup\", False))\n        self.vars[\"previous_setup\"] = setup\n        self.vars[\"supplement_event\"] = event\n        self.vars[\"supplement_events\"] = self.vars.get(\"supplement_events\", 0)+int(event is not None)\n        if self.is_open or self.entry_orders:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n\n    def _prepare_entry(self):\n        \"\"\"Memoize after broker cancellation releases margin; preserve one plan.\"\"\"\n        now = int(self.time)\n        if (now % BAR or self.vars.get(\"decision_at\") != now\n                or self.is_open or self.entry_orders\n                or self.vars.get(\"last_exit_at\") == now\n                or not self.START < now < self.FINISH):\n            return 0\n        if self.vars.get(\"prepared_at\") == now:\n            return self.vars.get(\"direction\", 0)\n        self.vars[\"prepared_at\"] = now\n        rows = self.vars.get(\"legacy_rows\")\n        if rows is None:\n            return 0\n        # Priority includes account eligibility: if a higher recipe cannot size,\n        # the next original recipe is considered, exactly as the frozen parents.\n        for candidate in (legacy_long(rows), legacy_short(rows),\n                          self.vars.get(\"supplement_event\")):\n            if candidate is None:\n                continue\n            plan = legacy_plan(candidate, max(0.0, float(self.balance)),\n                               float(self.available_margin), float(self.leverage),\n                               float(self.fee_rate))\n            if plan is not None:\n                self.vars[\"plan\"] = dict(plan, signal_at=now, expiry=now+BAR)\n                self.vars[\"direction\"] = plan[\"direction\"]\n                self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n                return plan[\"direction\"]\n        return 0\n\n    def should_long(self):\n        return self._prepare_entry() == 1\n\n    def should_short(self):\n        return self._prepare_entry() == -1\n\n    def _submit(self, direction):\n        plan = self.vars[\"plan\"]\n        assert self.vars.get(\"submitted_at\") != int(self.time), \"P_DUPLICATE_SUBMISSION\"\n        assert self.vars.get(\"direction\") == direction\n        assert int(self.time) == plan[\"signal_at\"] and not self.is_open and not self.entry_orders\n        self.vars[\"submitted_at\"] = int(self.time)\n        self.vars[\"pending_plan\"] = dict(plan)\n        if direction == 1:\n            self.buy = plan[\"qty\"], plan[\"entry\"]\n        else:\n            self.sell = plan[\"qty\"], plan[\"entry\"]\n\n    def go_long(self):\n        self._submit(1)\n\n    def go_short(self):\n        self._submit(-1)\n\n    def should_cancel_entry(self):\n        plan = self.vars.get(\"pending_plan\")\n        assert plan is not None, \"P_PENDING_WITHOUT_PLAN\"\n        due = int(self.time) % BAR == 0 and int(self.time) >= plan[\"expiry\"]\n        if due:\n            self.vars[\"pending_plan\"] = None\n            self.vars[\"cancellations\"] = self.vars.get(\"cancellations\", 0)+1\n        return due\n\n    def on_open_position(self, order):\n        plan = self.vars[\"pending_plan\"]\n        assert plan is not None and self.vars.get(\"position_plan\") is None\n        now = int(self.time)\n        assert plan[\"signal_at\"] <= now <= plan[\"expiry\"], \"P_FILL_OUTSIDE_ORDER_LIFE\"\n        assert plan[\"signal_at\"] <= int(self.position.opened_at) <= plan[\"expiry\"]\n        direction = 1 if self.is_long else -1\n        assert direction == plan[\"direction\"]\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        target = (entry+direction*plan[\"target_distance\"]\n                  if plan[\"target_distance\"] is not None else None)\n        loss = qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)+RESERVE*entry)\n        assert math.isfinite(loss) and stop > 0 and (target is None or target > 0)\n        assert loss <= plan[\"risk_budget\"]+1e-6, \"P_ACTUAL_FILL_RISK\"\n        assert abs(qty-plan[\"qty\"]) < 1e-8, \"P_UNEXPECTED_FILL_QUANTITY\"\n        # Frozen geometry is placed relative to actual fill, never order price.\n        self.stop_loss = qty, stop\n        if target is not None:\n            self.take_profit = qty, target\n        self.vars[\"position_plan\"] = dict(plan, actual_entry=entry, actual_loss=loss,\n                                          filled_at=int(self.position.opened_at))\n        self.vars[\"pending_plan\"] = None\n        self.vars[\"best_close\"] = entry\n        self._ledger()[plan[\"origin\"]][\"fills\"] += 1\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n        self._log(\"R16_LEGACY_OPEN\", dict(mode=self.MODE, origin=plan[\"origin\"], time=now,\n            opened_at=int(self.position.opened_at), signal_at=plan[\"signal_at\"],\n            expiry=plan[\"expiry\"], order_kind=plan[\"order_kind\"],\n            requested_entry=plan[\"entry\"], actual_entry=entry, qty=qty,\n            distance=plan[\"distance\"], stop=stop, target=target,\n            risk_budget=plan[\"risk_budget\"], actual_loss=loss,\n            planned_loss=plan[\"planned_loss\"], planned_stop_fees=plan[\"planned_stop_fees\"],\n            margin_limited=plan[\"margin_limited\"], reserve=RESERVE))\n\n    def update_position(self):\n        now = int(self.time)\n        if now % BAR:\n            return\n        plan = self.vars[\"position_plan\"]\n        opened = plan[\"filled_at\"]\n        if plan[\"hold_hours\"] is not None:\n            if now-opened >= plan[\"hold_hours\"]*3600000:\n                self.liquidate()\n            return\n        # A close completed before the fill cannot improve its trailing stop.\n        if now <= opened:\n            return\n        rows = self.vars.get(\"legacy_rows\")\n        if rows is None or self.vars.get(\"decision_at\") != now:\n            return\n        atr = float(ta.atr(rows))\n        if not math.isfinite(atr) or atr <= 0:\n            return\n        entry = plan[\"actual_entry\"]\n        self.vars[\"best_close\"] = max(self.vars[\"best_close\"], float(rows[-1, 2]))\n        best_r = (self.vars[\"best_close\"]-entry)/plan[\"distance\"]\n        mult = 4.2\n        if best_r >= 8:\n            mult *= .62\n        elif best_r >= 5:\n            mult *= .78\n        stop = self.vars[\"best_close\"]-mult*atr\n        if best_r >= 2.25:\n            stop = max(stop, entry*(1+2.5*self.fee_rate))\n        if self.average_stop_loss < stop < self.price:\n            self.stop_loss = abs(float(self.position.qty)), stop\n\n    def on_close_position(self, order, closed_trade):\n        plan = self.vars[\"position_plan\"]\n        row = self._ledger()[plan[\"origin\"]]\n        pnl = float(closed_trade.pnl)\n        assert math.isfinite(pnl)\n        row[\"closes\"] += 1\n        row[\"net\"] += pnl\n        self.vars[\"position_plan\"] = None\n        self.vars[\"pending_plan\"] = None\n        self._log(\"R16_LEGACY_CLOSE\", dict(time=int(self.time), origin=plan[\"origin\"], net=pnl))\n        # R11 can emit FINAL here; source totals must already include this close.\n        super().on_close_position(order, closed_trade)\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        rows = self._ledger()\n        self._log(\"R16_LEGACY_STATS\", dict(stage=stage, mode=self.MODE, sources=rows,\n            fills=sum(r[\"fills\"] for r in rows.values()),\n            closes=sum(r[\"closes\"] for r in rows.values()),\n            net=sum(r[\"net\"] for r in rows.values()),\n            supplement_events=self.vars.get(\"supplement_events\", 0),\n            cancellations=self.vars.get(\"cancellations\", 0),\n            history_min=self.vars.get(\"history_min\"), history_max=self.vars.get(\"history_max\")))\n",
+    "BtcResearchR16LegacyK1001m": "from strategies.BtcResearchR16LegacyBase1m import BtcResearchR16LegacyBase1m\n\n\nclass BtcResearchR16LegacyK1001m(BtcResearchR16LegacyBase1m):\n    MODE = \"K1001\"\n",
+    "BtcResearchR16K1001QuotaBase1m": "import math\nfrom datetime import datetime, timezone\n\nfrom strategies.BtcResearchR16LegacyK1001m import BtcResearchR16LegacyK1001m\nfrom strategies.BtcResearchR16LegacyBase1m import legacy_long, legacy_short, legacy_plan\nfrom strategies.BtcResearchR10Base4h import BAR\n\n# The account still starts at10000. Both halves are fixed allocations of its\n# current wallet/free margin, not a second account or a redistribution rule.\nQUOTA = .5\n\n\ndef quota_counts():\n    return dict(fills=0, closes=0, net=0.0, trace_completed=0, trace_missing=0)\n\n\ndef quota_year(timestamp):\n    return str(datetime.fromtimestamp(timestamp / 1000, timezone.utc).year)\n\n\nclass BtcResearchR16K1001QuotaBase1m(BtcResearchR16LegacyK1001m):\n    \"\"\"Original K1001 groups with1% total-account risk; observational trace only.\n\n    before, supplement latch, indicators, order lifetime and management remain\n    inherited. Only the permitted group and the .5/.5 sizing arguments change.\n    Observed R uses open0, later closed M1 marks and the actual exit fill; it is\n    neither intraminute MFE/MAE nor a counterfactual path after the real exit.\n    \"\"\"\n    GROUP = \"abstract\"\n\n    def _quota_state(self):\n        state = self.vars.get(\"k1001_quota\")\n        if state is None:\n            assert self.GROUP in (\"LONG_ONLY\", \"SHORT_BOOK\")\n            state = dict(active=None, trade_sequence=0, last_fill_identity=None, errors={},\n                         sources={name: quota_counts() for name in\n                                  (\"LONG_RUNNER\", \"CORE_SHORT\", \"SUPPLEMENT\")},\n                         open_years={}, close_years={})\n            self.vars[\"k1001_quota\"] = state\n            self._log(\"K1001_QUOTA_CONFIG\", dict(\n                group=self.GROUP, mode=self.MODE, account_start=10000,\n                capital_fraction=QUOTA, margin_fraction=QUOTA,\n                target_risk_total=.01, aggregate_limit=.06, leverage=3,\n                reserve=.001, lot=.001, redistribution=False,\n                price_trace=\"open0_pre_strictly_after_open_exit_fill\"))\n        return state\n\n    def _quota_error(self, reason):\n        state = self._quota_state()\n        count = state[\"errors\"].get(reason, 0) + 1\n        state[\"errors\"][reason] = count\n        # Record the first example; counters expose repeated failures without\n        # producing one error line per M1 callback.\n        if count == 1:\n            self._log(\"K1001_QUOTA_TRACE_ERROR\", dict(\n                reason=reason, time=int(self.time), group=self.GROUP))\n\n    def _prepare_entry(self):\n        now = int(self.time)\n        if (now % BAR or self.vars.get(\"decision_at\") != now\n                or self.is_open or self.entry_orders\n                or self.vars.get(\"last_exit_at\") == now\n                or not self.START < now < self.FINISH):\n            return 0\n        if self.vars.get(\"prepared_at\") == now:\n            return self.vars.get(\"direction\", 0)\n        self.vars[\"prepared_at\"] = now\n        rows = self.vars.get(\"legacy_rows\")\n        if rows is None:\n            return 0\n        # Use only the event generated by inherited before. In particular, no\n        # second supplement evaluation or previous_setup write is permitted.\n        if self.GROUP == \"LONG_ONLY\":\n            candidates = (legacy_long(rows),)\n        else:\n            assert self.GROUP == \"SHORT_BOOK\"\n            candidates = (legacy_short(rows), self.vars.get(\"supplement_event\"))\n        capital = max(0.0, float(self.balance))\n        margin = float(self.available_margin)\n        for candidate in candidates:\n            if candidate is None:\n                continue\n            # Keep the frozen .02 helper: .02*.5 ==.01 of this account's wallet.\n            # Its .90 buffer on half free margin leaves the other half unused.\n            plan = legacy_plan(candidate, QUOTA*capital, QUOTA*margin,\n                               float(self.leverage), float(self.fee_rate))\n            if plan is not None:\n                self.vars[\"plan\"] = dict(plan, signal_at=now, expiry=now+BAR)\n                self.vars[\"direction\"] = plan[\"direction\"]\n                self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n                self._log(\"K1001_QUOTA_PLAN\", dict(\n                    time=now, group=self.GROUP, origin=plan[\"origin\"],\n                    qty=plan[\"qty\"], risk_budget=plan[\"risk_budget\"],\n                    capital_total=capital, capital_scaled=QUOTA*capital,\n                    margin_total=margin, margin_scaled=QUOTA*margin,\n                    planned_loss=plan[\"planned_loss\"],\n                    planned_stop_fees=plan[\"planned_stop_fees\"],\n                    reserve=plan[\"reserve\"], gross_limited=plan[\"gross_limited\"],\n                    margin_limited=plan[\"margin_limited\"], expiry=now+BAR))\n                return plan[\"direction\"]\n        return 0\n\n    @staticmethod\n    def _quota_identity(plan):\n        return (plan[\"origin\"], int(plan[\"signal_at\"]), int(plan[\"filled_at\"]),\n                float(plan[\"actual_entry\"]), float(plan[\"qty\"]),\n                float(plan[\"distance\"]), int(plan[\"direction\"]))\n\n    def _quota_start_trace(self):\n        state = self._quota_state()\n        plan = self.vars.get(\"position_plan\")\n        if plan is None:\n            self._quota_error(\"open_without_position_plan\")\n            return\n        identity = self._quota_identity(plan)\n        if state[\"last_fill_identity\"] == identity:\n            return  # Same open hook, not a second executed fill.\n        state[\"last_fill_identity\"] = identity\n        state[\"trade_sequence\"] += 1\n        state[\"sources\"][plan[\"origin\"]][\"fills\"] += 1\n        year = quota_year(identity[2])\n        rows = state[\"open_years\"].setdefault(year, {})\n        rows.setdefault(plan[\"origin\"], quota_counts())[\"fills\"] += 1\n        # Execution counts are independent of whether its observational trace\n        # can be completed. A trace failure must not erase a real native fill.\n        active = state[\"active\"]\n        if active is not None:\n            active[\"broken\"] = True\n            self._quota_error(\"overlapping_trace_identity\")\n            return\n        entry, distance = identity[3], identity[5]\n        if not (math.isfinite(entry) and entry > 0\n                and math.isfinite(distance) and distance > 0):\n            self._quota_error(\"invalid_open_price_or_distance\")\n            return\n        opened = identity[2]\n        state[\"active\"] = dict(\n            identity=identity, trace_id=state[\"trade_sequence\"],\n            origin=plan[\"origin\"], signal_at=int(plan[\"signal_at\"]),\n            opened_at=opened, entry=entry, qty=float(plan[\"qty\"]),\n            distance=distance, direction=int(plan[\"direction\"]),\n            min_r=0.0, max_r=0.0, min_at=opened, max_at=opened,\n            min_stage=\"open\", max_stage=\"open\", first_at=opened,\n            last_at=opened, last_stage=\"open\", last_pre_at=None,\n            marks=1, m1_marks=0, broken=False)\n\n    def _quota_mark(self, trace, price, timestamp, stage):\n        if stage == \"pre\":\n            if timestamp <= trace[\"opened_at\"]:\n                return False  # A close at the fill timestamp is not post-fill.\n            previous = trace[\"last_pre_at\"]\n            if previous is not None and timestamp <= previous:\n                if timestamp < previous:\n                    trace[\"broken\"] = True\n                    self._quota_error(\"backward_pre_timestamp\")\n                return False\n        if not math.isfinite(price) or price <= 0:\n            trace[\"broken\"] = True\n            self._quota_error(\"nonfinite_or_nonpositive_mark\")\n            return False\n        if timestamp < trace[\"last_at\"]:\n            trace[\"broken\"] = True\n            self._quota_error(\"backward_mark_timestamp\")\n            return False\n        value = trace[\"direction\"]*(price-trace[\"entry\"])/trace[\"distance\"]\n        if not math.isfinite(value):\n            trace[\"broken\"] = True\n            self._quota_error(\"nonfinite_price_r\")\n            return False\n        # Strict changes retain the first phase/time on ties. Open and exit\n        # remain distinct even when a real trade has zero holding time.\n        if value < trace[\"min_r\"]:\n            trace.update(min_r=value, min_at=timestamp, min_stage=stage)\n        if value > trace[\"max_r\"]:\n            trace.update(max_r=value, max_at=timestamp, max_stage=stage)\n        trace.update(last_at=timestamp, last_stage=stage, marks=trace[\"marks\"]+1)\n        if stage == \"pre\":\n            trace[\"last_pre_at\"] = timestamp\n            trace[\"m1_marks\"] += 1\n        return True\n\n    def _observe(self, stage):\n        value = super()._observe(stage)\n        # Never call the parent observer twice or alter its returned equity.\n        state = self._quota_state()\n        if stage == \"open\":\n            self._quota_start_trace()\n        elif stage == \"pre\" and self.is_open:\n            trace = state[\"active\"]\n            plan = self.vars.get(\"position_plan\")\n            if trace is None or plan is None:\n                self._quota_error(\"pre_without_trace_or_plan\")\n            elif trace[\"identity\"] != self._quota_identity(plan):\n                trace[\"broken\"] = True\n                self._quota_error(\"pre_identity_mismatch\")\n            else:\n                # self.price here is the same already-closed M1 close supplied\n                # to R11's pre observer. Do not use high/low or later prices.\n                self._quota_mark(trace, float(self.price), int(self.time), \"pre\")\n        return value\n\n    def on_close_position(self, order, closed_trade):\n        # Complete our observer before R16 clears its plan and R11 can emit FINAL.\n        state = self._quota_state()\n        plan = self.vars[\"position_plan\"]\n        origin = plan[\"origin\"]\n        trace = state[\"active\"]\n        complete = False\n        if trace is not None and trace[\"identity\"] == self._quota_identity(plan):\n            marked = self._quota_mark(\n                trace, float(closed_trade.exit_price),\n                int(closed_trade.closed_at), \"exit\")\n            complete = marked and not trace[\"broken\"]\n        else:\n            self._quota_error(\"close_identity_missing_or_mismatch\")\n        net = float(closed_trade.pnl)\n        opened_year = quota_year(int(plan[\"filled_at\"]))\n        closed_year = quota_year(int(closed_trade.closed_at))\n        open_rows = state[\"open_years\"].setdefault(opened_year, {})\n        close_rows = state[\"close_years\"].setdefault(closed_year, {})\n        # All three ledgers refer to executed trades, never signal cohorts.\n        for row in (state[\"sources\"][origin],\n                    open_rows.setdefault(origin, quota_counts()),\n                    close_rows.setdefault(origin, dict(\n                        closes=0, net=0.0, trace_completed=0, trace_missing=0))):\n            row[\"closes\"] += 1\n            row[\"net\"] += net\n            row[\"trace_completed\" if complete else \"trace_missing\"] += 1\n        payload = dict(\n            group=self.GROUP, origin=origin, trade_id=str(closed_trade.id),\n            signal_at=int(plan[\"signal_at\"]), opened_at=int(plan[\"filled_at\"]),\n            closed_at=int(closed_trade.closed_at), entry=float(plan[\"actual_entry\"]),\n            exit=float(closed_trade.exit_price), qty=float(plan[\"qty\"]),\n            distance=float(plan[\"distance\"]), net=net, trace_complete=complete,\n            exit_order_id=str(order.id), exit_order_type=order.type,\n            exit_submitted_via=order.submitted_via)\n        if trace is not None and trace[\"identity\"] == self._quota_identity(plan):\n            payload.update({key: trace[key] for key in (\n                \"trace_id\", \"min_r\", \"max_r\", \"min_at\", \"max_at\", \"min_stage\",\n                \"max_stage\", \"first_at\", \"last_at\", \"last_stage\", \"marks\", \"m1_marks\")})\n        self._log(\"K1001_QUOTA_PRICE_TRACE\", payload)\n        state[\"active\"] = None\n        super().on_close_position(order, closed_trade)\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        state = self._quota_state()\n        self._log(\"K1001_QUOTA_STATS\", dict(\n            stage=stage, group=self.GROUP, sources=state[\"sources\"],\n            open_years=state[\"open_years\"], close_years=state[\"close_years\"],\n            trace_errors=state[\"errors\"],\n            open_trace=state[\"active\"] is not None))\n",
+    "BtcResearchR16K1001LongOnly1m": "from strategies.BtcResearchR16K1001QuotaBase1m import BtcResearchR16K1001QuotaBase1m\n\n\nclass BtcResearchR16K1001LongOnly1m(BtcResearchR16K1001QuotaBase1m):\n    GROUP = \"LONG_ONLY\"\n",
+    "BtcResearchR16K1001LongMarket1m": "from strategies.BtcResearchR16K1001LongOnly1m import BtcResearchR16K1001LongOnly1m\nfrom strategies.BtcResearchR16LegacyBase1m import legacy_long, legacy_plan\nfrom strategies.BtcResearchR16K1001QuotaBase1m import QUOTA\nfrom strategies.BtcResearchR10Base4h import BAR\n\n\nclass BtcResearchR16K1001LongMarket1m(BtcResearchR16K1001LongOnly1m):\n    \"\"\"K long entry-policy ablation; original signal, quota and runner unchanged.\n\n    Validate the complete frozen LIMIT recipe first. Only its requested entry\n    changes to the exact decision price; native inherited submission handles\n    MARKET execution. Compact terminal rows expose the existing real ledger,\n    never hypothetical fills or a new economic decision.\n    \"\"\"\n    ENTRY_POLICY = \"MARKET_AT_DECISION_CLOSE\"\n\n    def _prepare_entry(self):\n        now = int(self.time)\n        if (now % BAR or self.vars.get(\"decision_at\") != now\n                or self.is_open or self.entry_orders\n                or self.vars.get(\"last_exit_at\") == now\n                or not self.START < now < self.FINISH):\n            return 0\n        if self.vars.get(\"prepared_at\") == now:\n            return self.vars.get(\"direction\", 0)\n        self.vars[\"prepared_at\"] = now\n        rows = self.vars.get(\"legacy_rows\")\n        if rows is None:\n            return 0\n        # Includes H < close <= H+ATR and distance < H: MARKET must not relax\n        # any original signal geometry, even when the new price is higher.\n        original = legacy_long(rows)\n        if original is None:\n            return 0\n        decision_price = float(self.price)\n        candidate = dict(original, entry=decision_price, order_kind=\"MARKET\")\n        capital = max(0.0, float(self.balance))\n        margin = float(self.available_margin)\n        # Reprice sizing, fees and reserve at MARKET, with the same inactive\n        # half-account allocation as LIMIT. Never recycle its quantity.\n        plan = legacy_plan(candidate, QUOTA*capital, QUOTA*margin,\n                           float(self.leverage), float(self.fee_rate))\n        if plan is None:\n            return 0\n        self.vars[\"plan\"] = dict(plan, signal_at=now, expiry=now+BAR)\n        self.vars[\"direction\"] = plan[\"direction\"]\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        self._log(\"K1001_QUOTA_PLAN\", dict(\n            time=now, group=self.GROUP, origin=plan[\"origin\"],\n            qty=plan[\"qty\"], risk_budget=plan[\"risk_budget\"],\n            capital_total=capital, capital_scaled=QUOTA*capital,\n            margin_total=margin, margin_scaled=QUOTA*margin,\n            planned_loss=plan[\"planned_loss\"],\n            planned_stop_fees=plan[\"planned_stop_fees\"],\n            reserve=plan[\"reserve\"], gross_limited=plan[\"gross_limited\"],\n            margin_limited=plan[\"margin_limited\"], expiry=now+BAR))\n        # One record per admitted plan; memo calls produce no extra record.\n        self._log(\"K1001_MARKET_PLAN\", dict(\n            time=now, entry_policy=self.ENTRY_POLICY, origin=plan[\"origin\"],\n            original_trigger_level=float(original[\"entry\"]),\n            decision_price=decision_price,\n            original_distance=float(original[\"distance\"]),\n            requested_entry=plan[\"entry\"], qty=plan[\"qty\"],\n            risk_budget=plan[\"risk_budget\"], expiry=now+BAR))\n        return plan[\"direction\"]\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        state = self._quota_state()\n        # Split the fixed schemas by origin and year so each complete record\n        # stays below 1900 characters, beneath the MCP reader's 2000 cut.\n        # Stages are snapshots, not additional ledger observations.\n        self._log(\"K1001_MARKET_SUMMARY\", dict(\n            stage=stage, policy=self.ENTRY_POLICY,\n            trace_errors=state[\"errors\"], open_trace=state[\"active\"] is not None))\n        for origin, row in state[\"sources\"].items():\n            self._log(\"K1001_MARKET_SOURCE\", dict(stage=stage, origin=origin, **row))\n        for axis in (\"open_years\", \"close_years\"):\n            for year, origins in state[axis].items():\n                for origin, row in origins.items():\n                    self._log(\"K1001_MARKET_COHORT\", dict(\n                        stage=stage, axis=axis, year=year, origin=origin, **row))\n"
+  },
+  "source_hashes": {
+    "BtcResearchR10Base4h": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+    "BtcResearchR11Base1m": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+    "BtcResearchR16LegacyBase1m": "56f5d56aa004f24db450797cee8b11febd84a5804a2a5d70bcd2cd4ed73e6542",
+    "BtcResearchR16LegacyK1001m": "bf88cb663d8561e107446bfce32024ed87531d096362671f7aafce72a09f25ad",
+    "BtcResearchR16K1001QuotaBase1m": "5f41d87af1eeb629a381d6bcc63de8595897646357864f9e28a913b3e631c884",
+    "BtcResearchR16K1001LongOnly1m": "703a63b968d532e57527fd485c83493685ed77c39a486c9dff97674f6e6a3289",
+    "BtcResearchR16K1001LongMarket1m": "f3aeb9be8082cfb7f5cbd4a310da1b741a7bec9d675e25d657131754f5e8b32b"
+  },
+  "runtime": {
+    "python": "3.11.17 (main, Oct  6 2026, 02:01:58) [GCC 12.2.0]",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3"
+  },
+  "technical_job": {
+    "id": "6fc6b88722c44feab9bca3f54b266bb8",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/6fc6b88722c44feab9bca3f54b266bb8",
+    "inputs": [],
+    "status": "succeeded",
+    "pid": 2024,
+    "exit_code": 0,
+    "started_at": "2026-10-22T02:05:31+00:00",
+    "finished_at": "2026-10-22T02:05:31+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-23T02:05:31+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "technical_result": {
+    "status": "passed",
+    "outcomes": [
+      "seven_supplied_source_hashes_frozen_exact",
+      "only_two_authorized_overrides",
+      "lineage_and_group_unchanged",
+      "before_runner_open_submit_trace_close_inherited_literal",
+      "emit_ast_super_exactly_once",
+      "original_reject_before_clone_close_equal_trigger",
+      "original_reject_before_clone_extension_above_one_ATR",
+      "original_reject_before_clone_short_history",
+      "original_reject_before_clone_ATR_zero",
+      "original_reject_before_clone_ATR_nan",
+      "original_reject_before_clone_EMA_fast_equal_slow",
+      "original_reject_before_clone_EMA_fast_nan",
+      "original_reject_before_clone_price_below_slow",
+      "original_reject_before_clone_EMA_slope_flat",
+      "original_reject_before_clone_ADX_below26",
+      "original_reject_before_clone_RSI_below52",
+      "original_reject_before_clone_RSI_above76",
+      "original_reject_before_clone_range_above3ATR",
+      "original_distance_equal_trigger_not_rescued_by_market",
+      "original_inclusive_boundary_extension_exact_one_ATR",
+      "original_inclusive_boundary_RSI_lower52",
+      "original_inclusive_boundary_RSI_upper76",
+      "original_inclusive_boundary_range_exact3ATR",
+      "valid_original_selects_market",
+      "real_original_event_dict_not_mutated",
+      "clone_changes_only_entry_and_documented_order_kind",
+      "helper_half_wallet_half_free_margin",
+      "qty_repriced_not_limit_qty_reused",
+      "selected_plan_lifecycle_metadata",
+      "memo_no_extra_helper_calls_or_plan_logs",
+      "one_policy_log_preserves_original_trigger",
+      "inherited_submit_requests_current_price_not_stub_fill",
+      "margin_bound_plan_allowed",
+      "market_replan_keeps_half_margin_lot_buffer",
+      "replan_rejection_cash_no_limit_fallback",
+      "cash_guard_non4h",
+      "cash_guard_wrong_decision_at",
+      "cash_guard_occupied",
+      "cash_guard_pending",
+      "cash_guard_same_exit",
+      "cash_guard_start_boundary",
+      "cash_guard_finish_boundary",
+      "cash_guard_history_none",
+      "long_absent_never_falls_through_short_or_supplement",
+      "emit_parent_once_1",
+      "emit_no_ledger_recount_or_R11_counter_change_1",
+      "parent_evidence_once_1",
+      "bounded_complete_compact_rows_1",
+      "compact_field_coverage_unique_1",
+      "emit_parent_once_2",
+      "emit_no_ledger_recount_or_R11_counter_change_2",
+      "parent_evidence_once_2",
+      "bounded_complete_compact_rows_2",
+      "compact_field_coverage_unique_2",
+      "emit_parent_once_3",
+      "emit_no_ledger_recount_or_R11_counter_change_3",
+      "parent_evidence_once_3",
+      "bounded_complete_compact_rows_3",
+      "compact_field_coverage_unique_3",
+      "active_trace_flag_no_close_mutation"
+    ],
+    "outcome_count": 60,
+    "source_hashes": {
+      "BtcResearchR10Base4h": "2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9",
+      "BtcResearchR11Base1m": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+      "BtcResearchR16LegacyBase1m": "56f5d56aa004f24db450797cee8b11febd84a5804a2a5d70bcd2cd4ed73e6542",
+      "BtcResearchR16LegacyK1001m": "bf88cb663d8561e107446bfce32024ed87531d096362671f7aafce72a09f25ad",
+      "BtcResearchR16K1001QuotaBase1m": "5f41d87af1eeb629a381d6bcc63de8595897646357864f9e28a913b3e631c884",
+      "BtcResearchR16K1001LongOnly1m": "703a63b968d532e57527fd485c83493685ed77c39a486c9dff97674f6e6a3289",
+      "BtcResearchR16K1001LongMarket1m": "f3aeb9be8082cfb7f5cbd4a310da1b741a7bec9d675e25d657131754f5e8b32b"
+    },
+    "runtime": {
+      "python": "3.11.17 (main, Oct  6 2026, 02:01:58) [GCC 12.2.0]",
+      "numpy": "1.26.4",
+      "pandas": "2.2.3"
+    },
+    "limitations": [
+      "Supplied-source AST and explicit synthetic indicators/attributes only; no real strategy/framework import.",
+      "Frozen parents checked by exact hashes/literal method identity, not a repeat of the prior68-outcome suite.",
+      "No observed OHLCV, engine, backtest, optimization, broker fill, indicator kernel or nested job.",
+      "Current-price submission is not proof of native MARKET; inspect real order type/fill AFTER the one economic run.",
+      "Control is nominal LIMIT policy with native near-price MARKET conversion, not31strictLIMIT orders.",
+      "Repeated _emit snapshots may produce repeated rows; stages must not be summed or ledger-recounted.",
+      "Outcome count is not independent evidence or economic validation."
+    ]
+  },
+  "protocol": "# K1001 LONG_ONLY: contraste nativo MARKET frente a LIMIT\n\nFecha documental: 2026-10-21. Estado: protocolo y anexo CODES para revisión de root e independiente, antes de nuevas fuentes. No implementación, drafts, jobs ni motores desde esta tarea.\n\n## Pregunta y alcance\n\n¿La política de comprar inmediatamente al cierre de decisión, conservando TODA la señal long original K1001 y su gestión, mejora de forma defendible la trayectoria de LONG_ONLY frente a esperar el retesteo mediante LIMIT?\n\nEs una ablación de política de entrada de K, no una nueva familia. Existe autorización de continuidad material tras el diagnóstico y los dos escenarios cerrados. Se conoce ese histórico: selección adaptativa declarada, sin OOS nuevo. No se presenta la ausencia de un contraste exactamente equivalente como invención del breakout a mercado.\n\nControl reutilizado, sin nuevo motor: [LONG_ONLY LIMIT congelado](http://localhost:9200/#/backtest/5c29961d-419a-4207-ae3c-58ad6ccb318c), BtcResearchR16K1001LongOnly1m. Tratamiento propuesto: BtcResearchR16K1001LongMarket1m, heredado de ese LongOnly. Presupuesto futuro exactamente UN nuevo ID económico, sin nueva réplica de control ni segundo escenario MARKET.\n\n## Motivación y explicación rival\n\nLa señal actual exige que el close haya superado el máximo previo y permanezca como máximo a un ATR de él, pero compra sólo si el precio regresa al nivel. Comprar ahora puede acceder a continuaciones que no retestean, a cambio de un precio mayor y exposición inmediata. Puede también incorporar más falsos breakouts y empeorar capitalización, costos y ocupación; el retesteo puede ser una selección beneficiosa.\n\nEl control tuvo 45 planes admitidos, 31 fills y 14 cancelaciones. No son todas las señales raw. Las 14 cancelaciones forman 13 grupos cronológicos bajo una agrupación descriptiva; no son muestras independientes ni retornos desconocidos que puedan contarse como ganancia potencial. Tampoco 45 es techo de trades MARKET: cambiar ocupación cambia la secuencia posterior.\n\nEl control mantuvo las mismas 31 trayectorias long del K original; el deterioro reciente se acompañó de menor recorrido favorable observado. No demuestra que una entrada MARKET lo resuelva. No ajustar trailing desde máximos posteriores ni suponer que recuperar no-fills compensa pagar más por los fills comunes.\n\n## Transformación exacta: validar primero, reemplazar después\n\nLa nueva clase conserva GROUP=LONG_ONLY y MODE=K1001 heredados. Su _prepare_entry mantiene las guardas, memo, registro de plan y secuencia del LongOnly actual. No llama super._prepare_entry para preparar primero una LIMIT ni monkeypatchea legacy_long.\n\n1. Sólo en T4h con decision_at=T, plano, sin entry_orders, sin last_exit_at=T y START<T<FINISH. prepared_at memo como el control; rows=None retorna cash y no usa eventos antiguos.\n2. Invocar legacy_long(rows) congelado, completo y sin cambiar su código. Si retorna None, no hay entrada ni fallback.\n3. El helper original debe haber validado len>=100; EMA20/80 y pendiente; ADX>=26; RSI14 entre52 y76; ATR14 real positivo; rango actual<=3ATR; máximo previo H=max(high de26 barras anteriores); H<close<=H+ATR; distance=2ATR y 0<distance<H. Se conservan incluso las guardas de distancia respecto al trigger original, aunque al nuevo precio pudieran ser menos restrictivas. No retirar el límite superior de extensión, sustituir H o adelantar la señal.\n4. Sólo después de un evento original válido, crear una copia local del dict: entry=float(self.price), order_kind=MARKET. Conservar origin LONG_RUNNER, direction=1, distance original, target_distance=None y hold_hours=None. No mutar el dict de un padre o helper. Registrar el trigger H del evento original por separado, como evidencia, no como nuevo stop.\n5. Recalcular legacy_plan sobre el evento MARKET con .5*max(0,balance) y .5*available_margin, leverage3 y fee real. No reciclar qty o riesgo del plan LIMIT; cambian entry y sus costos de sizing. Si helper rechaza, cash, sin convertir a LIMIT ni reducir distancia para forzar admisión.\n6. Guardar plan real con signal_at=T, expiry=T+BAR, direction y signals exactamente como el control. Expiry se conserva por contrato/lifecycle aunque MARKET se ejecute inmediatamente; no existe espera artificial hasta expiry. Log de política y trigger original una vez por plan seleccionado, sin contar llamadas memo como oportunidades nuevas.\n\nbefore R16 ya filtra exclusivamente barras4h cerradas y contrasta close4h con self.price. Para la orden usar exactamente float(self.price), no otro close aproximado: _submit heredado establece buy=(qty,entry) y el runtime nativo reconoce el precio actual como MARKET. El campo order_kind sólo documenta el plan y no sustituye al broker. No cambiar _submit, go_long, broker, timestamps ni precio de fill manualmente. Auditar que la orden realmente ejecutada sea MARKET al precio de decisión de este runtime, sin next-open futuro ni fill retrospectivo dentro de la vela que acaba de cerrar. Si el runtime no satisface esta semántica, bloqueo técnico; no cambiar silenciosamente a otra ejecución.\n\n## Riesgo, capital y costos idénticos al control\n\nCada política tiene una trayectoria alternativa de UNA cuenta BTC total inicial10.000 USDT y sólo cuota1% activa. No subcuenta de5.000 ni dos cuentas financiadas simultáneamente; no sumar o compoundear resultados.\n\nSe conserva legacy_plan(.5*wallet,.5*available_margin,3,fee): presupuesto .02*.5*wallet=.01*wallet total cuando flat, equivalente entonces a equity total. Margen efectivo<=45% del available_margin por el buffer90% heredado. Lote .001 con floor, reserva .001 sólo sizing, techo nocional y todas las guardas originales. No redistribuir la cuota inactiva, quitar reserva, subir riesgo o escalar resultados a2%. El contrato global6% permanece; una sola posición objetivo1% no acredita un libro conjunto2% ni garantiza pérdida máxima ante gaps/funding.\n\nContrato clonado del formulario genuino del control: BTC-USDT, Binance Perpetual Futures, ruta1m y data4h, UTC[2020-10-15,2026-01-01),warmup240,10.000,3x aislado, taker .00045 por lado, funding histórico ON dataset9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571 y proxies declarados, slippage modelado0, fast_mode=false, debug/logging/export del control. Sólo cambia strategy y metadatos de identificación del nuevo escenario. No velas nuevas, precheck de cobertura, importaciones, 2026 nuevo, estrés, otros activos, USDC, ML, instalaciones o cambios globales/live/paper/Pi.\n\n## Gestión y observación congeladas\n\nToda la cadena LongOnly→QuotaBase→R16K→R16Base→R11 permanece intacta. Máquina suplemento sigue avanzando aunque no opere; ninguna nueva señal short. Stops desde fill real: E−distance, distance2ATR de señal original; sin TP ni plazo. Runner y BE/trailing se aplican literalmente en cierres4h estrictamente posteriores al fill, jamás en el mismo T usando el close que generó la entrada. Mantener best_close inicial=E y los ajustes heredados de5R/8R, sin modificar umbrales.\n\nUna posición, sin pirámide, cola, scaleout o reentrada en el timestamp de cierre. Los hooks de apertura/cierre/terminal y contabilidad R11 son heredados. No reemplazar ATR Wilder por simple ni recortar historia EMA; todas las llamadas y retención P/control se conservan.\n\nRprecio hereda exactamente el observador ya auditado: open0; pre sólo now>opened_at; exitfill real y fases distintas aun holding0; empates conservan primera ocurrencia. No es MFE/MAE intraminuto ni máximo ejecutable. Ledger real por origen/año y trace se mantienen; no episodios o órdenes virtuales.\n\nInstrumentación nueva mínima: entry_policy=MARKET_AT_DECISION_CLOSE, original_trigger_level=H, decision_price, original_distance, T, requested_entry y qty/risk_budget del nuevo plan. Los logs parent siguen intactos. Para resolver el recorte real del lector, la nueva clase añade un override _emit sólo observacional: llama super()._emit(stage) EXACTAMENTE UNA vez y después emite filas completas de longitud <1900 caracteres: K1001_MARKET_SUMMARY(stage,policy,trace_errors,open_trace); K1001_MARKET_SOURCE(stage,origin,**row) por cada origen; K1001_MARKET_COHORT(stage,axis=open_years/close_years,year,origin,**row) por cada cohorte existente. Usa estado propio heredado ya actualizado, sin recomputar trades ni modificar contadores. PRETERMINAL/FINAL son snapshots con stage, no sumandos. Comprobar formato/longitud desde synthetics y readbacks. La fila vieja K1001_QUOTA_STATS seguirá heredada y podría recortarse; no tocar el padre, inferir su sufijo ni rerun por ello. Las nuevas filas completas son evidencia redundante paginable, conciliada con trades/pagos, no lógica económica. No logs M1.\n\n## Controles, deduplicación y restricciones de cierre\n\nEl anexo CODES conserva las fuentes completas y el informe K1001_LONG_MARKET_DEDUP_AND_VOI_20261021.md, leído íntegro y con readback SHA256 efa037ec85c24ac292cc9203194e23aefe7a75e1abe10a76385f1b80055bb0c8. Antecedentes muy próximos:\n- BtcMomentumCore4h/Baseline3 ya compran Donchian a mercado, pero difieren en extensión máxima, stop/floor, BE/gestión y contrato. No son el mismo experimento K1%.\n- TrendBreakout5m ya estudió MARKET frente a retesteo con otro reloj, señal y gestión. No se redescubre su pregunta genérica. Las cifras de neto citadas en comentarios ancestrales son afirmaciones del código, no resultados pareados reauditados ni evidencia económica actual.\n- Preposicionar Donchian STOP, reclaim M1, R14 filtroslong y otras recetas modifican disparador o gestión; no se trasladan sus resultados como control exacto.\n- P/U/cuotas conservaron la política long original. Sus negativos y cierres siguen vigentes. La excepción actual permite sólo esta ablación de ejecución solicitada/aprobada, no vecinos de riesgo, filtro, TTL o trailing.\n\nNo afirmar búsqueda exhaustiva global ni equivalencia numérica con Core/Baseline. No vuelve a ejecutarse una política equivalente por nombre nuevo. Si revisión encuentra un experimento exactamente equivalente con fuentes/contrato acreditados, reutilizarlo y no gastar el ID.\n\n## Evaluación prefijada y decisión\n\nAuditar ambas trayectorias completas, control archivado y MARKET nativo nuevo, incluyendo nueva selección, precio, exposición, tamaños y capitalización. El contraste define una diferencia de política a nivel de cuenta, pero los trades comunes no son pares aleatorios ni permite asignar PnL MARKET a las14 órdenes canceladas de LIMIT. No condicionar el análisis a los fills que coincidan ni asumir que ocupación permanece igual.\n\nReportar N, bruto, fees, funding, neto/final, CAGR sobre10.000, PFneto USDT y porR separados, DD M1+fills, calendario completo/activo, trimestres, mediana y concentración. Reconciliar gross−fees+funding=sumPNL=final−10.000 con tolerancia<1e−6 en sumas. Funding ausente en snapshot sólo puede ser0 si ledger completo acredita ausencia de pagos. Verificar terminal flat y resumenFINALpostfee si procede, trazas completas unidas a fills y ledger de origen. Recuperar todo por páginas/exports acotados y hashes, nunca datos truncados.\n\nGates r9 sin relajar: CAGR neto>=30%, PF>=1.2, DD M1+fills<=25%(objetivo20%), meses completos activos positivos>=65%, trimestres completos positivos>=80%, mediana mensual calendario>0 incluyendo inactivos, neto aritmético sin dos mejores meses>0; N>=100 mínimo operativo preliminar, no potencia/confianza. Años2021–25 y51 ventanas12m son descriptivos solapados, no OOS ni filtros posteriores. Mantener aspiraciones40–50%+/M70 aparte.\n\nControl LIMIT conocido:31trades,CAGR6.7078977%,PF3.5519634,DD8.4730045%,M13/28,Q8/20,mediana0; NO_CUMPLE. Reportar diferencias continuas de retorno, riesgo y regularidad sin inventar un cutoff ex post. Mejorar una métrica relativa no sustituye objetivo absoluto ni demuestra edge. No se define un puntaje o umbral nuevo de «mejora material» después del resultado: si falla una puerta económica, conserva NO_CUMPLE; si hay intercambio de métricas, se informa completo y no se declara dominancia. Reportar suficiencia separada: N<100 es muestra operativa insuficiente y no prueba una pérdida económica; si además falla CAGR u otra puerta, registrar ambos hechos. Un resultado favorable sin medición completa es INCONCLUSO, no aprobado. Candidatura exige gates r9 y suficiencia, sin autorización de operar.\n\nAl cerrar este único contraste, no rescatar mediante offsets, caducidades, extensión distinta, reclaim, filtros, lados, cuota, stops, TP, BE/trailing o plazo. La exposición adaptativa del histórico y los antecedentes negativos permanecen declarados. Cualquier pregunta posterior requiere materialidad propia; no repetir esta búsqueda por decepción.\n\n## Secuencia y presupuesto técnico\n\nAhora sólo docs. Después de revisión root e independiente, autorización separada de implementación de una fuente nueva propuesta. Readback completo/hash, sin editar padre. Checks sintéticos supplied-source/AST/stubs coordinados en máximo1analysisglobal: predicados originales falsos/bordes siguen falsos antes del clone; límite extensión preservado; dict original inmutable; MARKET entry=self.price exacto; distance igual; qty rehecha por helper.5/.5; guardas/memo/rowsNone/sameexit; gestión/observer heredados y no monkeypatch; _emit nuevo llama super una vez, produce summary/source/cohort <1900 caracteres sin cambiar estado económico y sin duplicar stages. No imports de estrategias reales, datos observados o backtest anidado. Los stubs no certifican por sí solos semántica del broker real; ésta debe contrastarse con framework ya auditado y órdenes del motor.\n\nTras fuente/check/reviews conformes, root crea un draft genuino y manifiesto con formulario, funding, fuentes/runtime/control reutilizado antes de ejecutar. Presupuesto económico exactamente1IDnuevo; ningún reemplazo automático por error o mal resultado. Fallos técnicos documentados vuelven a root. No hay segundo motor observacional de cancelaciones ni recálculo nuevo del control.\n\n## Precisión normativa posterior antes del único motor: política nominal y tipos nativos\n\nLa auditoría estática root del framework y las órdenes completas de las cuotas verifican que Strategy clasifica primero mediante helpers.is_price_near: tolerancia fraccional.00015=0.015%. Por ello, el control LONG_ONLY es una POLÍTICA LIMIT con conversión nativa por cercanía:27entradasLIMIT y4MARKET reales, no31LIMIT estrictas. SHORT_BOOK tiene171STOP+1MARKET. Se conservan fuentes, resultados, comisiones taker y geometría; no es fallo financiero ni motivo de repetir motores. Esta precisión gobierna cualquier frase anterior que pudiera entenderse como espera de retesteo estricta en todos los fills.\n\nNueva MARKET: precio exacto self.price, por lo que el runtime debe crear todas las entradas como MARKET. La revisión estática/read-only precede al único motor; verificar sus órdenes reales DESPUÉS de ese motor, nunca mediante un preflight económico adicional. order_kind documenta intención y no demuestra ejecución. Preservar este control nativo como contrafactual completo; no forzar ahora27/4 a31LIMIT ni modificar el helper, broker o fuentes frozen.\n\nEvidencia primaria con órdenes, OPENlogs, proporciones trigger/entry y hashes de siete archivos framework: strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_FRAMEWORK_AND_ENTRY_TYPES_20261021.json y Markdown homónimo. Mercado Sandbox usa current_price del cierreM1 y cola procesada después de estrategia en el mismo paso; self.price cacheado, slippage default0 confirmado en perfil. Prueba estática no es certificación de los futuros fills ni de ejecución real de exchange.\n",
+  "dedup_path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_DEDUP_AND_VOI_20261021.md",
+  "framework_static_audit": {
+    "scope": "Read-only framework source audit in mounted checkout, no imports/runtime execution. Native entry types of both completed quota sessions verified from bounded complete snapshot exports.",
+    "framework_files": [
+      {
+        "Path": "jesse/strategies/Strategy.py",
+        "Sha256": "f580062fd0390d53d7a6112c9139357cb56c71cf7ec0c0259ee2ff3337abac60"
+      },
+      {
+        "Path": "jesse/services/broker.py",
+        "Sha256": "37261e66fb61d846dcbe40bad584d12f4aff2cf47d78e2cd6c4e7ccb08eae595"
+      },
+      {
+        "Path": "jesse/services/api.py",
+        "Sha256": "04e5455ec24a7ac015ad9feb3da8c9465425cd3e741234b0f5b3863c5000e19d"
+      },
+      {
+        "Path": "jesse/exchanges/sandbox/Sandbox.py",
+        "Sha256": "0311eee4ea4dbc1f054f093616371219ad61fd56634bbb27bf683c2c4a8948f2"
+      },
+      {
+        "Path": "jesse/services/order_service.py",
+        "Sha256": "f0d9f3b9fe6b5aeb8139609d0a13a271370c32db21811397b62f47c3b30c91e8"
+      },
+      {
+        "Path": "jesse/modes/backtest_mode.py",
+        "Sha256": "047517b76255c947f483cdb85408dbf7e1ab992008c8f263571b4664ce6300fe"
+      },
+      {
+        "Path": "jesse/helpers.py",
+        "Sha256": "47893a6aba9733c4be172aa31ca5c9c90b4cf892b836bd78f1ee293d0566b0e1"
+      }
+    ],
+    "native_conversion_evidence": {
+      "LONG_ONLY": {
+        "types": {
+          "LIMIT": 27,
+          "MARKET": 4
+        },
+        "converted": [
+          {
+            "trade_id": "d6db43cd-5c21-4487-b907-b78fe5ce9edc",
+            "origin": "LONG_RUNNER",
+            "plan_kind": "LIMIT",
+            "actual_entry_order": {
+              "id": "091ba96b-fabf-4c1d-9a59-baa814737c84",
+              "trade_id": "d6db43cd-5c21-4487-b907-b78fe5ce9edc",
+              "session_id": null,
+              "exchange_id": null,
+              "symbol": "BTC-USDT",
+              "side": "buy",
+              "type": "MARKET",
+              "qty": 0.048,
+              "filled_qty": 0.048,
+              "price": 63857.87,
+              "status": "EXECUTED",
+              "created_at": 1618372800000,
+              "canceled_at": null,
+              "executed_at": 1618372800000,
+              "exchange": "Binance Perpetual Futures",
+              "reduce_only": false,
+              "submitted_via": null,
+              "jesse_submitted": true,
+              "order_exist_in_exchange": true,
+              "updated_at": null,
+              "session_mode": null
+            },
+            "opening_log": {
+              "mode": "K1001",
+              "origin": "LONG_RUNNER",
+              "time": 1618372800000,
+              "opened_at": 1618372800000,
+              "signal_at": 1618372800000,
+              "expiry": 1618387200000,
+              "order_kind": "LIMIT",
+              "requested_entry": 63850,
+              "actual_entry": 63857.87,
+              "qty": 0.048,
+              "distance": 2148.0795091533114,
+              "stop": 61709.79049084669,
+              "target": null,
+              "risk_budget": 110.77992841078795,
+              "actual_loss": 108.88525566596122,
+              "planned_loss": 108.88453792196123,
+              "planned_stop_fees": 105.81973792196123,
+              "margin_limited": false,
+              "reserve": 0.001
+            },
+            "relative_distance": 0.00012324244451000776
+          },
+          {
+            "trade_id": "8f115c0f-dc05-415f-8a7b-72d7d909aa78",
+            "origin": "LONG_RUNNER",
+            "plan_kind": "LIMIT",
+            "actual_entry_order": {
+              "id": "4106a2f1-12ba-4d42-9cc0-e9e25a4f98c5",
+              "trade_id": "8f115c0f-dc05-415f-8a7b-72d7d909aa78",
+              "session_id": null,
+              "exchange_id": null,
+              "symbol": "BTC-USDT",
+              "side": "buy",
+              "type": "MARKET",
+              "qty": 0.08600000000000001,
+              "filled_qty": 0.08600000000000001,
+              "price": 33793.83,
+              "status": "EXECUTED",
+              "created_at": 1627113600000,
+              "canceled_at": null,
+              "executed_at": 1627113600000,
+              "exchange": "Binance Perpetual Futures",
+              "reduce_only": false,
+              "submitted_via": null,
+              "jesse_submitted": true,
+              "order_exist_in_exchange": true,
+              "updated_at": null,
+              "session_mode": null
+            },
+            "opening_log": {
+              "mode": "K1001",
+              "origin": "LONG_RUNNER",
+              "time": 1627113600000,
+              "opened_at": 1627113600000,
+              "signal_at": 1627113600000,
+              "expiry": 1627128000000,
+              "order_kind": "LIMIT",
+              "requested_entry": 33790,
+              "actual_entry": 33793.83,
+              "qty": 0.08600000000000001,
+              "distance": 1204.126492703442,
+              "stop": 32589.70350729656,
+              "target": null,
+              "risk_budget": 109.6564226245015,
+              "actual_loss": 109.0301904992284,
+              "planned_loss": 109.0295646772284,
+              "planned_stop_fees": 106.12362467722839,
+              "margin_limited": false,
+              "reserve": 0.001
+            },
+            "relative_distance": 0.00011333429800652883
+          },
+          {
+            "trade_id": "b606673f-9c36-4e5b-adc1-bf63eff153bd",
+            "origin": "LONG_RUNNER",
+            "plan_kind": "LIMIT",
+            "actual_entry_order": {
+              "id": "626a538f-bc52-4fee-925b-9c55326455eb",
+              "trade_id": "b606673f-9c36-4e5b-adc1-bf63eff153bd",
+              "session_id": null,
+              "exchange_id": null,
+              "symbol": "BTC-USDT",
+              "side": "buy",
+              "type": "MARKET",
+              "qty": 0.069,
+              "filled_qty": 0.069,
+              "price": 99280,
+              "status": "EXECUTED",
+              "created_at": 1736150400000,
+              "canceled_at": null,
+              "executed_at": 1736150400000,
+              "exchange": "Binance Perpetual Futures",
+              "reduce_only": false,
+              "submitted_via": null,
+              "jesse_submitted": true,
+              "order_exist_in_exchange": true,
+              "updated_at": null,
+              "session_mode": null
+            },
+            "opening_log": {
+              "mode": "K1001",
+              "origin": "LONG_RUNNER",
+              "time": 1736150400000,
+              "opened_at": 1736150400000,
+              "signal_at": 1736150400000,
+              "expiry": 1736164800000,
+              "order_kind": "LIMIT",
+              "requested_entry": 99278,
+              "actual_entry": 99280,
+              "qty": 0.069,
+              "distance": 1839.6657462148585,
+              "stop": 97440.33425378514,
+              "target": null,
+              "risk_budget": 140.4352885012862,
+              "actual_loss": 139.89542286740527,
+              "planned_loss": 139.8951606674053,
+              "planned_stop_fees": 133.04497866740527,
+              "margin_limited": false,
+              "reserve": 0.001
+            },
+            "relative_distance": 0.00002014504431913089
+          },
+          {
+            "trade_id": "dd55ba44-3920-44cc-af00-232998612455",
+            "origin": "LONG_RUNNER",
+            "plan_kind": "LIMIT",
+            "actual_entry_order": {
+              "id": "4f50fc2e-92b9-475a-8946-f2cf29092803",
+              "trade_id": "dd55ba44-3920-44cc-af00-232998612455",
+              "session_id": null,
+              "exchange_id": null,
+              "symbol": "BTC-USDT",
+              "side": "buy",
+              "type": "MARKET",
+              "qty": 0.058,
+              "filled_qty": 0.058,
+              "price": 99212,
+              "status": "EXECUTED",
+              "created_at": 1746691200000,
+              "canceled_at": null,
+              "executed_at": 1746691200000,
+              "exchange": "Binance Perpetual Futures",
+              "reduce_only": false,
+              "submitted_via": null,
+              "jesse_submitted": true,
+              "order_exist_in_exchange": true,
+              "updated_at": null,
+              "session_mode": null
+            },
+            "opening_log": {
+              "mode": "K1001",
+              "origin": "LONG_RUNNER",
+              "time": 1746691200000,
+              "opened_at": 1746691200000,
+              "signal_at": 1746691200000,
+              "expiry": 1746705600000,
+              "order_kind": "LIMIT",
+              "requested_entry": 99199.9,
+              "actual_entry": 99212,
+              "qty": 0.058,
+              "distance": 2145.704964162434,
+              "stop": 97066.29503583757,
+              "target": null,
+              "risk_budget": 137.50332644485,
+              "actual_loss": 135.32804742185655,
+              "planned_loss": 135.32671400185654,
+              "planned_stop_fees": 129.57311980185654,
+              "margin_limited": false,
+              "reserve": 0.001
+            },
+            "relative_distance": 0.00012196105309847383
+          }
+        ]
+      },
+      "SHORT_BOOK": {
+        "types": {
+          "STOP": 171,
+          "MARKET": 1
+        },
+        "converted": [
+          {
+            "trade_id": "0edc8bd1-5962-4e3b-97ba-fa0ac85e88ba",
+            "origin": "SUPPLEMENT",
+            "plan_kind": "STOP",
+            "actual_entry_order": {
+              "id": "6aaa4380-1020-4669-b017-39eb6f750d46",
+              "trade_id": "0edc8bd1-5962-4e3b-97ba-fa0ac85e88ba",
+              "session_id": null,
+              "exchange_id": null,
+              "symbol": "BTC-USDT",
+              "side": "sell",
+              "type": "MARKET",
+              "qty": -0.05,
+              "filled_qty": -0.05,
+              "price": 41209.9,
+              "status": "EXECUTED",
+              "created_at": 1650571200000,
+              "canceled_at": null,
+              "executed_at": 1650571200000,
+              "exchange": "Binance Perpetual Futures",
+              "reduce_only": false,
+              "submitted_via": null,
+              "jesse_submitted": true,
+              "order_exist_in_exchange": true,
+              "updated_at": null,
+              "session_mode": null
+            },
+            "opening_log": {
+              "mode": "K1001",
+              "origin": "SUPPLEMENT",
+              "time": 1650571200000,
+              "opened_at": 1650571200000,
+              "signal_at": 1650571200000,
+              "expiry": 1650585600000,
+              "order_kind": "STOP",
+              "requested_entry": 41204,
+              "actual_entry": 41209.9,
+              "qty": 0.05,
+              "distance": 1928.0179881903314,
+              "stop": 43137.91798819033,
+              "target": 37353.86402361934,
+              "risk_budget": 100.73205611506339,
+              "actual_loss": 100.35922031425086,
+              "planned_loss": 100.35865981425086,
+              "planned_stop_fees": 98.29845981425086,
+              "margin_limited": false,
+              "reserve": 0.001
+            },
+            "relative_distance": 0.0001431694811198092
+          }
+        ]
+      }
+    },
+    "backtest_profile_read": {
+      "status": "success",
+      "section": "backtest",
+      "config": {
+        "warm_up_candles": 240,
+        "logging": {
+          "trading_candles": true,
+          "shorter_period_candles": false,
+          "position_reduced": true,
+          "order_execution": true,
+          "order_submission": true,
+          "position_closed": true,
+          "position_opened": true,
+          "position_increased": true,
+          "balance_update": true,
+          "order_cancellation": true
+        },
+        "exchanges": {
+          "Binance US Spot": {
+            "name": "Binance US Spot",
+            "balance": 10000,
+            "fee": 0.001,
+            "annualization": 365,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Bybit USDT Perpetual": {
+            "name": "Bybit USDT Perpetual",
+            "futures_leverage": 2,
+            "annualization": 365,
+            "futures_leverage_mode": "cross",
+            "balance": 10000,
+            "fee": 0.00055,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "Massive Currencies": {
+            "name": "Massive Currencies",
+            "balance": 10000,
+            "fee": 0,
+            "annualization": 252,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Kraken Pro Futures": {
+            "name": "Kraken Pro Futures",
+            "futures_leverage": 2,
+            "annualization": 365,
+            "futures_leverage_mode": "cross",
+            "balance": 10000,
+            "fee": 0.0005,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "KuCoin USDT Perpetual": {
+            "name": "KuCoin USDT Perpetual",
+            "futures_leverage": 2,
+            "annualization": 365,
+            "futures_leverage_mode": "cross",
+            "balance": 10000,
+            "fee": 0.0006,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "Bybit Spot": {
+            "name": "Bybit Spot",
+            "balance": 10000,
+            "fee": 0.001,
+            "annualization": 365,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Bybit USDC Perpetual": {
+            "name": "Bybit USDC Perpetual",
+            "futures_leverage": 2,
+            "annualization": 365,
+            "futures_leverage_mode": "cross",
+            "balance": 10000,
+            "fee": 0.00055,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "KuCoin Spot": {
+            "name": "KuCoin Spot",
+            "balance": 10000,
+            "fee": 0.001,
+            "annualization": 365,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Gate USDT Perpetual": {
+            "name": "Gate USDT Perpetual",
+            "futures_leverage": 2,
+            "annualization": 365,
+            "futures_leverage_mode": "cross",
+            "balance": 10000,
+            "fee": 0.0005,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "Massive Stocks": {
+            "name": "Massive Stocks",
+            "balance": 10000,
+            "fee": 0,
+            "annualization": 252,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Massive Futures": {
+            "name": "Massive Futures",
+            "balance": 10000,
+            "fee": 0,
+            "annualization": 252,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Custom Data": {
+            "name": "Custom Data",
+            "futures_leverage": 2,
+            "annualization": 252,
+            "futures_leverage_mode": "cross",
+            "balance": 10000,
+            "fee": 0.0004,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "Massive Indices": {
+            "name": "Massive Indices",
+            "balance": 10000,
+            "fee": 0,
+            "annualization": 252,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Binance Perpetual Futures": {
+            "name": "Binance Perpetual Futures",
+            "futures_leverage": 5,
+            "annualization": 365,
+            "futures_leverage_mode": "isolated",
+            "balance": 10000,
+            "fee": 0.00045,
+            "type": "futures",
+            "simulation_model": "perpetual_futures"
+          },
+          "Coinbase Spot": {
+            "name": "Coinbase Spot",
+            "balance": 10000,
+            "fee": 0.0003,
+            "annualization": 365,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Binance Spot": {
+            "name": "Binance Spot",
+            "balance": 10000,
+            "fee": 0.001,
+            "annualization": 365,
+            "type": "spot",
+            "simulation_model": "spot"
+          },
+          "Bitfinex Spot": {
+            "name": "Bitfinex Spot",
+            "balance": 10000,
+            "fee": 0.002,
+            "annualization": 365,
+            "type": "spot",
+            "simulation_model": "spot"
+          }
+        }
+      },
+      "message": "Configuration section \"backtest\" loaded successfully"
+    },
+    "semantics": {
+      "price_cached_during_execute": true,
+      "buy_equal_self_price_routes_to_broker_buy_at_market": true,
+      "is_price_near_threshold_fraction": 0.00015,
+      "threshold_percent": 0.015,
+      "sandbox_market_price": "position.current_price already set to real M1 close",
+      "market_queue_executes_after_strategy_same_step": true,
+      "slippage_bps_default_if_absent": 0,
+      "actual_new_market_orders_not_yet_observed": true
+    },
+    "limits": [
+      "Static evidence is not a new native preflight or proof of future actual order rows.",
+      "Control is a native LIMIT policy with near-price MARKET conversion, not31strictLIMITfills.",
+      "Actual MARKET rows of the one future economic execution must be checked after it finishes.",
+      "Current framework filesystem read is permitted; no bot strategies/reports were read by filesystem."
+    ]
+  },
+  "budget": {
+    "new_economic_native_ids": 1,
+    "technical_backtests": 0,
+    "control_engine_rerun": false,
+    "no_automatic_replacement": true,
+    "max_economic_concurrency": 2,
+    "max_analysis_concurrency": 1
+  },
+  "admission": "Full frozen legacy_long first including<=1ATR, then local clone entry=self.price/order_kindMARKET and replan. Original D retained, absoluteSL anchoredtoactualfill.",
+  "capital": "One alternative10k total account,1%risk/.5wallet/.5availablemargin; inactivequotaunallocated. No subaccount5k/no2%active/nojointsum.",
+  "audit_code_path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_AUDIT_CODE_20261021.md",
+  "join_code_path": "strategies/FundingOiPilot4h/reports/K1001_LONG_MARKET_JOIN_AUDIT_CODE_20261021.md",
+  "native_market_proof_required_after_only_engine": true,
+  "economic_gate": "r9unchanged; tradeoffsandNinsufficiencyseparate; nooffset/TTL/reclaim/BE/trail/filter/riskneighborsafterresult."
+}

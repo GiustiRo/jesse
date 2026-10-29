@@ -1,0 +1,200 @@
+{
+  "phase": "pre_economic_execution",
+  "protocol": "BTC_DISCOVERY_G_PROTOCOL_20261021.md",
+  "created_at": "2026-10-21 18:33:49 UTC",
+  "sources": {
+    "BtcResearchR12ArBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR11Base1m import BtcResearchR11Base1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef return_forecast(rows, autoregressive):\n    \"\"\"240 observed (x,y) pairs, then six genuinely future recursive forecasts.\"\"\"\n    returns = np.diff(np.log(rows[-242:, 2]))\n    x, y = returns[:-1], returns[1:]\n    variance = float(np.mean((x-x.mean())**2))\n    if not math.isfinite(variance) or variance <= 0:\n        return None\n    beta = float(np.mean((x-x.mean())*(y-y.mean()))/variance) if autoregressive else 0.\n    intercept = float(y.mean()-beta*x.mean())\n    value, forecast = float(returns[-1]), 0.\n    for _ in range(6):\n        value = intercept+beta*value\n        forecast += value\n    return forecast if math.isfinite(forecast) else None\n\n\nclass BtcResearchR12ArBase1m(BtcResearchR11Base1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 242)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        assert self.MODE in (\"AR1\", \"DRIFT\")\n        forecast = return_forecast(rows, self.MODE == \"AR1\")\n        # Fixed signal hurdle inherited from R20, not simulated execution friction.\n        if forecast is None or abs(forecast) <= .0019 or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        atr = atr14(rows)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = plan\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        plan = self.vars[\"plan\"]\n        direction = 1 if self.is_long else -1\n        entry, qty = float(self.position.entry_price), abs(float(self.position.qty))\n        stop = entry-direction*plan[\"distance\"]\n        assert qty*(plan[\"distance\"]+self.fee_rate*(entry+stop)) <= plan[\"risk_budget\"]+1e-6\n        self.stop_loss = qty, stop\n        # Forecast horizon is24h; no fixed target clips the model's payoff.\n        self.vars[\"entries\"] = self.vars.get(\"entries\", 0)+1\n        self._observe(\"open\")\n\n    def update_position(self):\n        if int(self.time) % BAR == 0 and int(self.time)-int(self.position.opened_at) >= 6*BAR:\n            self.liquidate()\n",
+    "BtcResearchR12Ar1m": "from strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\n\n\nclass BtcResearchR12Ar1m(BtcResearchR12ArBase1m):\n    MODE = \"AR1\"\n",
+    "BtcResearchR12Drift1m": "from strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\n\n\nclass BtcResearchR12Drift1m(BtcResearchR12ArBase1m):\n    MODE = \"DRIFT\"\n"
+  },
+  "check": {
+    "status": "passed",
+    "source_sha256": "1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343",
+    "checks": "AST, 240 OLS pairs, alternating AR, six-step hand oracle, drift control mean, flat invalid, old-history exclusion"
+  },
+  "check_job": "9fdcbf0a81e94c4db9b50a909f34b509",
+  "parent_hash": "be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87",
+  "independent_review": "No material errors in causal240pairs/sixforecasts/controlmean/noTP24h/warmup.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "c72b53d8-c986-4131-814b-788cdc0f49e2",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery G | BtcResearchR12Ar1m",
+      "description": "AR1 de retornos vs control deriva media; protocoloGprevio. Forecast6bars,stop2ATR/noTP/24h. 2%/6%/3x,fee.00045+funding,slippage0;sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792607576000,
+      "updated_at": 1792607576000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR12Ar1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 300,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/c72b53d8-c986-4131-814b-788cdc0f49e2"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "cbfafdb4-ea81-48f7-bd40-5ade91a3bfa4",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery G | BtcResearchR12Drift1m",
+      "description": "AR1 de retornos vs control deriva media; protocoloGprevio. Forecast6bars,stop2ATR/noTP/24h. 2%/6%/3x,fee.00045+funding,slippage0;sinestres/2026.",
+      "description_truncated": false,
+      "created_at": 1792607576000,
+      "updated_at": 1792607577000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR12Drift1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 300,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/cbfafdb4-ea81-48f7-bd40-5ade91a3bfa4"
+    }
+  ]
+}

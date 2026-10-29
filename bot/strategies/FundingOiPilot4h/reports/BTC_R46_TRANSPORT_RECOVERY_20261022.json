@@ -1,0 +1,32 @@
+{
+  "status": "COMPLETE_LOG_RECOVERED_WITHOUT_RERUN",
+  "native_log_bytes": 42874348,
+  "raw_download": {
+    "bytes": 42874348,
+    "sha256": "64283a7d3501e28068e6453e8e52bbb678f83991d57006aa51b2d2f8c52e3fe3",
+    "lines": 90989,
+    "path": "C:/Users/tecni/.codex/artifacts/btc-r46-20261022/24a7a576-b1af-4b96-ade4-1623d5d95a7d.log",
+    "source": "Authenticated normal dashboard download endpoint; MCP log paging capped at last16MiB"
+  },
+  "native_mcp_tail_exact_match_lines": 500,
+  "mcp_paging_limit_bytes": 16777216,
+  "public_download_route": "/backtest/download-log/<session_id>",
+  "credentials_in_reports": false,
+  "raw_preserved_locally": true,
+  "raw_native_log_unchanged": true,
+  "technical_events": [
+    {
+      "kind": "MCP_paging_incomplete",
+      "detail": "Logs larger than last16MiB cause nonadvancing next_offset; initial generic drain failed pagination, no completed full-page set claimed."
+    },
+    {
+      "kind": "browser_fallback_unavailable",
+      "detail": "CUA initialization failed to write kernel assets; no installation/restart attempted."
+    },
+    {
+      "kind": "authenticated_dashboard_download",
+      "detail": "Used verified local research container on9200 and normal dashboard authentication/download endpoint; credentials stayed only in process memory and were not emitted."
+    }
+  ],
+  "no_engine_or_analysis_replacement": true
+}

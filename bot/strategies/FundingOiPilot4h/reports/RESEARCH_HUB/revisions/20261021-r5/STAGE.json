@@ -1,0 +1,27 @@
+{
+  "stage": "validacion_intermedia_de_evidencia_existente",
+  "decided_at_utc": "2026-10-21T14:36:53Z",
+  "risk_profile": {
+    "per_trade_target_pct": 2,
+    "aggregate_admission_limit_pct": 6,
+    "isolated_leverage": 3,
+    "scope": "Referencia fija de investigación; no modifica configuraciones globales, fuentes o sesiones históricas ni live/paper.",
+    "capital": "Conservar el saldo inicial de cada estudio; no se elige ni cambia capital en este acuerdo."
+  },
+  "permitted": [
+    "Leer protocolos, matrices, configuraciones y resultados ya guardados.",
+    "Reconciliar comparadores, costes, riesgo y ventanas de los estudios existentes.",
+    "Documentar candidatas/referencias, fortalezas, debilidades, incertidumbres y diferencias de comparabilidad.",
+    "Actualizar el registro y preparar conclusiones para decidir con el usuario."
+  ],
+  "excluded": [
+    "Nuevos backtests o replays.",
+    "Optimizaciones, Monte Carlo y nuevas exploraciones de señales o estrategias.",
+    "Nuevas pruebas de riesgo, leverage, asignación o capital.",
+    "Modificar estrategias, fuentes de datos o configuración de sesiones.",
+    "Nuevas consultas de datos 2026 o ejecuciones con ese año.",
+    "Live/paper o acceso a la Pi."
+  ],
+  "comparison_rule": "Usar comparaciones existentes del mismo perfil. Cuando falten, registrar la limitación; no rerun ni escalar curvas para fabricar comparabilidad.",
+  "exit_gate": "Entregar definiciones y conclusiones de la evidencia existente. Revisarlas con el usuario y acordar cómo seguir; ninguna ejecución experimental posterior queda autorizada automáticamente."
+}

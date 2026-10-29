@@ -1,0 +1,231 @@
+{
+  "phase": "R_pre_economic",
+  "at": "2026-10-21 20:29:31 UTC",
+  "protocol": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_R_PROTOCOL_20261021.md",
+  "technical_check": "strategies/FundingOiPilot4h/reports/BTC_DISCOVERY_R_TECHNICAL_CHECK_20261021.json",
+  "check_job": {
+    "action": "get_analysis_job",
+    "status": "success",
+    "job": {
+      "id": "98cb30b8d9ac40a292e01402524fef09",
+      "kind": "analysis",
+      "workspace": "storage/mcp/analysis/98cb30b8d9ac40a292e01402524fef09",
+      "inputs": [],
+      "status": "succeeded",
+      "pid": 570,
+      "exit_code": 0,
+      "started_at": "2026-10-21T20:27:36+00:00",
+      "finished_at": "2026-10-21T20:27:36+00:00",
+      "timeout_minutes": 3,
+      "output_truncated": false,
+      "expires_at": "2026-10-22T20:27:36+00:00",
+      "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+    },
+    "artifacts": [
+      {
+        "path": "check.json",
+        "size_bytes": 1173,
+        "kind": "text"
+      }
+    ],
+    "artifacts_truncated": false,
+    "output": "{\"status\": \"passed\", \"assertions\": 1169, \"source_sha256\": \"e8fc9ba9710cef644a41e32608b3132d38d6aca55f5027f259b1c147404e9e2e\", \"ar_parent_sha256\": \"1b4d448f0d054e48cbb18a3f3ac4a2bd2d12df40469fa6ad2047968cf3110343\", \"observer_sha256\": \"be1a1d6379b03d81eb6585a334dccae76c900c794193f55bd1922bbd5d3d6d87\", \"helper_sha256\": \"2279d3b9706163620405d73ca6d5588745924a19b4014f713e493affb2698ba9\", \"scope\": \"supplied-source AST/functions/classes, synthetic prices/artificial engine fields only; no strategy/framework imports, observed market data, broker simulation or economic backtests\", \"tests\": \"372bars/360origins6..365/targets12..371; noactualorigin/futurelabels; independent looporacle; maturecurrenttarget; fixedwindow/oldhistoryirrelevant; L2/cosine/orderedshape; stabletiesolder/noextraseparation; currentzero/sharedvalid20/19/controlalllabels; hurdle; occupiednoM1queue/new4hevent/sameexit; inherited feeaware2%/90%/floor8/SLnoTP24h/FINAL\", \"limits\": \"Overlapping labels and20nearest observations are not independent regimes or confidence evidence. Synthetic price oracle verifies indexing/arithmetic, not economic advantage or future predictive power.\"}\n",
+    "output_lines_returned": 1,
+    "earlier_output_omitted": false,
+    "output_truncated": false,
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+  },
+  "sources": {
+    "BtcResearchR18AnalogueBase1m": "import math\nimport numpy as np\nfrom strategies.BtcResearchR12ArBase1m import BtcResearchR12ArBase1m\nfrom strategies.BtcResearchR10Base4h import BAR, closed_window, atr14, entry_plan\n\n\ndef analogue_sample(rows):\n    \"\"\"360 mature origins in a fixed372-bar window; no future labels or padding.\"\"\"\n    logs = np.log(rows[-372:, 2])\n    assert len(logs) == 372\n    returns = np.diff(logs)\n    origins = np.arange(6, 366, dtype=int)\n    # Return index j links close j to close j+1. Origin i therefore uses i-6:i.\n    vectors = returns[origins[:, None]-6+np.arange(6)]\n    labels = logs[origins+6]-logs[origins]\n    norms = np.linalg.norm(vectors, axis=1)\n    current = returns[-6:]\n    current_norm = float(np.linalg.norm(current))\n    if not np.all(np.isfinite(current)) or not math.isfinite(current_norm) or current_norm <= 0:\n        return None\n    valid = (np.all(np.isfinite(vectors), axis=1) & np.isfinite(norms)\n             & (norms > 0) & np.isfinite(labels))\n    origins, vectors, norms, labels = origins[valid], vectors[valid], norms[valid], labels[valid]\n    if len(origins) < 20:\n        return None\n    return dict(origins=origins, vectors=vectors/norms[:, None],\n                labels=labels, current=current/current_norm)\n\n\ndef analogue_forecast(rows, nearest):\n    \"\"\"Fixed top20 cosine mean versus all valid labels; exact ties prefer older.\"\"\"\n    sample = analogue_sample(rows)\n    if sample is None:\n        return None, None\n    origins, labels = sample[\"origins\"], sample[\"labels\"]\n    cosine = sample[\"vectors\"] @ sample[\"current\"]\n    if not np.all(np.isfinite(cosine)):\n        return None, None\n    # Origins arrive oldest first; stable sorting preserves that order on ties.\n    order = np.argsort(-cosine, kind=\"stable\")\n    chosen = order[:20] if nearest else np.arange(len(origins))\n    forecast = float(np.mean(labels[chosen]))\n    if not math.isfinite(forecast):\n        return None, None\n    evidence = dict(valid_origins=len(origins), selected=len(chosen),\n                    first_origin=int(origins[0]), last_origin=int(origins[-1]),\n                    chosen_origins=[int(x) for x in origins[chosen]] if nearest else None,\n                    best_cosine=float(cosine[order[0]]),\n                    twentieth_cosine=float(cosine[order[19]]),\n                    forecast=forecast)\n    return forecast, evidence\n\n\nclass BtcResearchR18AnalogueBase1m(BtcResearchR12ArBase1m):\n    MODE = \"abstract\"\n\n    def before(self):\n        now = int(self.time)\n        if not self.vars.get(\"checked\"):\n            assert self.symbol == \"BTC-USDT\" and self.timeframe == \"1m\"\n            assert self.leverage == 3 and abs(self.fee_rate-.00045) < 1e-12\n            assert abs(self.balance-10000) < 1e-6\n            assert self.MODE in (\"KNN\", \"GLOBAL\")\n            self.vars[\"checked\"] = True\n        self._observe(\"pre\")\n        self.vars[\"direction\"] = 0\n        if now % BAR:\n            return\n        rows = closed_window(self.get_candles(self.exchange, self.symbol, \"4h\"), now, 372)\n        if rows is None:\n            self.vars[\"invalid_windows\"] = self.vars.get(\"invalid_windows\", 0)+1\n            return\n        assert math.isclose(float(rows[-1, 2]), float(self.price), rel_tol=1e-10, abs_tol=1e-8)\n        forecast, evidence = analogue_forecast(rows, self.MODE == \"KNN\")\n        # The inherited .0019 hurdle is a signal rule, never an extra PnL debit.\n        if forecast is None or abs(forecast) <= .0019 or not self.START < now < self.FINISH:\n            return\n        self.vars[\"signals\"] = self.vars.get(\"signals\", 0)+1\n        if self.is_open or self.entry_orders or self.vars.get(\"last_exit_at\") == now:\n            self.vars[\"occupied\"] = self.vars.get(\"occupied\", 0)+1\n            return\n        direction = 1 if forecast > 0 else -1\n        atr = atr14(rows)\n        if atr is None:\n            return\n        plan = entry_plan(float(self.price), max(0., float(self.balance)),\n                          float(self.available_margin), float(self.leverage),\n                          float(self.fee_rate), direction, 2*atr)\n        if plan is None:\n            return\n        self.vars[\"plan\"] = dict(plan, analogue=dict(evidence))\n        self.vars[\"direction\"] = direction\n\n    def on_open_position(self, order):\n        # Parent supplies actual-fill stop, no TP, risk check and24h clock.\n        super().on_open_position(order)\n        direction = 1 if self.is_long else -1\n        key = \"long_fills\" if direction == 1 else \"short_fills\"\n        self.vars[key] = self.vars.get(key, 0)+1\n        self._log(\"R18_ANALOGUE_OPEN\", dict(time=int(self.time), mode=self.MODE,\n            direction=direction, evidence=self.vars[\"plan\"][\"analogue\"]))\n\n    def _emit(self, stage):\n        super()._emit(stage)\n        self._log(\"R18_ANALOGUE_STATS\", dict(stage=stage, mode=self.MODE,\n            long_fills=self.vars.get(\"long_fills\", 0),\n            short_fills=self.vars.get(\"short_fills\", 0),\n            signals=self.vars.get(\"signals\", 0), occupied=self.vars.get(\"occupied\", 0)))\n",
+    "BtcResearchR18AnalogueKnn1m": "from strategies.BtcResearchR18AnalogueBase1m import BtcResearchR18AnalogueBase1m\n\n\nclass BtcResearchR18AnalogueKnn1m(BtcResearchR18AnalogueBase1m):\n    MODE = \"KNN\"\n",
+    "BtcResearchR18AnalogueGlobal1m": "from strategies.BtcResearchR18AnalogueBase1m import BtcResearchR18AnalogueBase1m\n\n\nclass BtcResearchR18AnalogueGlobal1m(BtcResearchR18AnalogueBase1m):\n    MODE = \"GLOBAL\"\n"
+  },
+  "independent_review": "btc_next_material+root:372/360indices,targets12..371matured,currentoriginexcluded,sharedvalidL2zero/20,cosinetiesolderstable/controlALL,strictthreshold,noTP24h/R10sizing/R11FINALconforme; overlapsdeclared notindependent.",
+  "preflight": [
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "e9f4b1d0-277a-4ef7-b10d-c72365d1809e",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery R | KNN causal daily shape",
+      "description": "Vector6returns4hL2/cosine20maturedanalogues vsGLOBAL360valids,sameadmissibility;372bars,24hlabels,stop2ATR/noTP24h,2%/6%/3x10kfee.00045fundingON. ProtocoloRprevio.",
+      "description_truncated": false,
+      "created_at": 1792614571000,
+      "updated_at": 1792614571000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR18AnalogueKnn1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 400,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/e9f4b1d0-277a-4ef7-b10d-c72365d1809e"
+    },
+    {
+      "action": "get_session_results",
+      "status": "success",
+      "session_type": "backtest",
+      "session_id": "ca8c8f66-8fe0-460a-a3ac-142c565b4961",
+      "session_status": "draft",
+      "status_note": "Not started yet, so there are no results.",
+      "title": "MCP Backtest: BTC discovery R | GLOBAL causal daily shape",
+      "description": "Vector6returns4hL2/cosine20maturedanalogues vsGLOBAL360valids,sameadmissibility;372bars,24hlabels,stop2ATR/noTP24h,2%/6%/3x10kfee.00045fundingON. ProtocoloRprevio.",
+      "description_truncated": false,
+      "created_at": 1792614571000,
+      "updated_at": 1792614571000,
+      "execution_duration": null,
+      "form": {
+        "exchange": "Binance Perpetual Futures",
+        "routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "1m",
+            "strategy": "BtcResearchR18AnalogueGlobal1m"
+          }
+        ],
+        "data_routes": [
+          {
+            "exchange": "Binance Perpetual Futures",
+            "symbol": "BTC-USDT",
+            "timeframe": "4h"
+          }
+        ],
+        "start_date": "2020-10-15",
+        "finish_date": "2026-01-01",
+        "debug_mode": true,
+        "export_csv": false,
+        "export_json": false,
+        "export_chart": true,
+        "fast_mode": false,
+        "benchmark": false,
+        "config": {
+          "logging": {
+            "order_submission": true,
+            "order_cancellation": true,
+            "order_execution": true,
+            "position_opened": true,
+            "position_increased": true,
+            "position_reduced": true,
+            "position_closed": true,
+            "shorter_period_candles": false,
+            "trading_candles": false,
+            "balance_update": true
+          },
+          "warm_up_candles": 400,
+          "exchange": {
+            "name": "Binance Perpetual Futures",
+            "type": "futures",
+            "balance": 10000,
+            "fee": 0.00045,
+            "futures_leverage_mode": "isolated",
+            "futures_leverage": 3
+          },
+          "funding": {
+            "mode": "historical",
+            "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+          },
+          "open_interest": {
+            "mode": "disabled"
+          }
+        }
+      },
+      "metrics": null,
+      "error": null,
+      "has_chart_data": false,
+      "has_charts_image": false,
+      "sections": {
+        "trades": {
+          "count": 0
+        },
+        "equity_curve": {
+          "series": []
+        },
+        "hyperparameters": {
+          "count": 0
+        },
+        "logs": {
+          "log_size_bytes": null
+        }
+      },
+      "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+      "dashboard_url": "http://localhost:9200/#/backtest/ca8c8f66-8fe0-460a-a3ac-142c565b4961"
+    }
+  ],
+  "budget": {
+    "economic": 2,
+    "technical_replacements_max": 2
+  },
+  "no_new2026_or_stress": true
+}

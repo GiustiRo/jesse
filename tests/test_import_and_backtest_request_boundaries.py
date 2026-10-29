@@ -550,3 +550,61 @@ def test_backtest_runtime_failure_is_persisted_once_with_its_type(monkeypatch):
     assert events[0][0:2] == ('error', 'RuntimeError: strategy failed')
     assert events[0][1] in events[0][2]
     assert events[1] == ('status', 'stopped')
+
+
+@pytest.mark.parametrize('export_chart', [False, True])
+def test_dashboard_backtest_persists_numerical_equity_without_chart_dependency(monkeypatch, export_chart):
+    backtest_model = __import__('jesse.models.BacktestSession', fromlist=['store_backtest_session'])
+    from jesse.services.db import database
+
+    # A completed simulator result: the numerical series is independent of the
+    # optional candle/order chart payload and must reach persistence unchanged.
+    curve = [{'name': 'Portfolio', 'data': [
+        {'time': 1704067200, 'value': 10000},
+        {'time': 1704153600, 'value': 10050},
+    ]}]
+    result = {'metrics': {'net_profit': 50}, 'trades': [], 'hyperparameters': [],
+              'equity_curve': curve, 'execution_duration': 0.1}
+    saved = []
+
+    def simulate(*args, **kwargs):
+        assert kwargs['generate_equity_curve'] is True
+        return result
+
+    monkeypatch.setattr(backtest_mode.jh, 'is_unit_testing', lambda: True)
+    monkeypatch.setattr(backtest_mode.jh, 'should_execute_silently', lambda: False)
+    monkeypatch.setattr(backtest_mode.router, 'initiate', lambda *args: None)
+    monkeypatch.setattr(backtest_mode.router, 'routes', [])
+    monkeypatch.setattr(backtest_mode.store, 'reset', lambda: None)
+    monkeypatch.setattr(backtest_mode.store.app, 'set_session_id', lambda value: None)
+    monkeypatch.setattr(backtest_mode.store.candles, 'init_storage', lambda size: None)
+    monkeypatch.setattr(backtest_mode, 'validate_routes', lambda value: None)
+    monkeypatch.setattr(backtest_mode.exchange_service, 'initialize_exchanges_state', lambda: None)
+    monkeypatch.setattr(backtest_mode.order_service, 'initialize_orders_state', lambda: None)
+    monkeypatch.setattr(backtest_mode.position_service, 'initialize_positions_state', lambda: None)
+    monkeypatch.setattr(backtest_mode.stats, 'candles_info', lambda candles: {})
+    monkeypatch.setattr(backtest_mode.stats, 'routes', lambda routes: [])
+    monkeypatch.setattr(backtest_mode, 'sync_publish', lambda *args, **kwargs: None)
+    monkeypatch.setattr(backtest_mode, 'publish_status', lambda *args, **kwargs: None)
+    monkeypatch.setattr(backtest_mode, 'simulator', simulate)
+    monkeypatch.setattr(backtest_mode.charts, '_plot_backtest_charts', lambda **kwargs: None)
+    for name in ('_get_formatted_candles_for_frontend', '_get_formatted_orders_for_frontend',
+                 '_get_add_line_to_candle_chart', '_get_add_extra_line_chart',
+                 '_get_add_horizontal_line_to_candle_chart', '_get_add_horizontal_line_to_extra_chart'):
+        monkeypatch.setattr(backtest_mode, name, lambda: [])
+    monkeypatch.setattr(backtest_model, 'store_backtest_session', lambda **kwargs: None)
+    monkeypatch.setattr(backtest_model, 'update_backtest_session_results', lambda **kwargs: saved.append(kwargs))
+    monkeypatch.setattr(backtest_model, 'update_backtest_session_status', lambda *args: None)
+    monkeypatch.setattr(database, 'close_connection', lambda: None)
+    monkeypatch.setitem(backtest_mode.config['app'], 'considering_candles', [('Sandbox', 'BTC-USDT')])
+
+    backtest_mode._execute_backtest(
+        'backtest-id', False, {}, 'Sandbox', [], [], '2024-01-01', '2024-01-02',
+        candles={'Sandbox-BTC-USDT': {'candles': []}}, chart=export_chart,
+    )
+
+    assert len(saved) == 1
+    assert saved[0]['equity_curve'] is curve
+    assert saved[0]['metrics'] is result['metrics']
+    assert saved[0]['trades'] is result['trades']
+    assert (saved[0]['chart_data'] is not None) is export_chart

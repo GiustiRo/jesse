@@ -21,10 +21,14 @@ def _succeeded(result: dict) -> bool:
 
 def get_session_results_service(session_type: str, session_id: str, section: str = 'summary',
                                 offset: int = 0, limit: int = 50) -> dict:
+    status_options = ({'domain_status_field': 'funding_status',
+                       'accepted_domain_statuses': ('applied', 'disabled', 'not_applied')}
+                      if session_type == 'backtest' and section == 'funding' else {})
     result = _call(
         'get_session_results', '/session-results/get',
         {'session_type': session_type, 'session_id': session_id, 'section': section, 'offset': offset, 'limit': limit},
         RESULTS_TIMEOUT_SECONDS,
+        **status_options,
     )
     if _succeeded(result):
         # From the type and ID the API echoes back (validated and normalized), so every summary and

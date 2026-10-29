@@ -1,0 +1,241 @@
+{
+  "reviewed_at": "2026-10-21 20:07:17 UTC",
+  "scope": "static framework source inspection, no execution/data/strategyfilesystemaccess",
+  "runtime_mount": {
+    "container": "jesse-research-jesse-1",
+    "source": "C:\\dev\\trading\\regime-trade\\jesse",
+    "destination": "/src"
+  },
+  "excerpts": [
+    {
+      "path": "jesse/strategies/Strategy.py",
+      "sha256": "F580062FD0390D53D7A6112C9139357CB56C71CF7EC0C0259EE2FF3337ABAC60",
+      "start_line": 844,
+      "end_line": 881,
+      "source": "    def _execute_cancel(self) -> None:\n        \"\"\"\n        cancels everything so that the strategy can keep looking for new trades.\n        \"\"\"\n        # validation\n        if self.position.is_open:\n            raise Exception('cannot cancel orders when position is still open. there must be a bug somewhere.')\n\n        logger.info(f'cancel all remaining orders of {self.symbol} to prepare for a fresh start...')\n\n        self.broker.cancel_all_orders()\n\n        self._reset()\n\n        self._broadcast('route-canceled')\n\n        self.on_cancel()\n\n        if not jh.is_unit_testing() and not jh.is_live():\n            store.orders.storage[f'{self.exchange}-{self.symbol}'].clear()\n\n    def _has_entries_awaiting_fill(self) -> bool:\n        \"\"\"Keep confirmed executions matchable until their fill details arrive.\"\"\"\n        return any(order.is_cancellable and cast(dict, order.vars or {}).get('awaiting_fill')\n                   for order in self.entry_orders)\n\n    def _reset(self) -> None:\n        self.buy = None\n        self._buy = None\n        self.sell = None\n        self._sell = None\n        self.stop_loss = None\n        self._stop_loss = None\n        self.take_profit = None\n        self._take_profit = None\n\n        store.orders.reset_trade_orders(self.exchange, self.symbol)\n"
+    },
+    {
+      "path": "jesse/strategies/Strategy.py",
+      "sha256": "F580062FD0390D53D7A6112C9139357CB56C71CF7EC0C0259EE2FF3337ABAC60",
+      "start_line": 1093,
+      "end_line": 1180,
+      "source": "    def _check(self) -> None:\n        \"\"\"\n        Based on the newly updated info, check if we should take action or not\n        \"\"\"\n        if not self._is_initiated:\n            self._is_initiated = True\n\n        self._wait_until_executing_orders_are_fully_handled()\n\n        if jh.is_live() and jh.is_debuggable('strategy_execution'):\n            logger.info(f'Executing  {self.name}-{self.exchange}-{self.symbol}-{self.timeframe}')\n\n        # should cancel entry?\n        if (len(self.entry_orders) and self.is_close and not self._has_entries_awaiting_fill()\n                and self.should_cancel_entry()):\n            self._execute_cancel()\n\n            # make sure order cancellation response is received via WS\n            if jh.is_live():\n                # sleep a little until cancel is received via WS\n                sleep(0.1)\n                # just in case, sleep some more if necessary\n                for _ in range(20):\n                    if store.orders.count_active_orders(self.exchange, self.symbol) == 0:\n                        break\n\n                    logger.info('sleeping 0.2 more seconds until cancellation is over...')\n                    sleep(0.2)\n\n                # If it's still not cancelled, something is wrong. Handle cancellation failure\n                if store.orders.count_active_orders(self.exchange, self.symbol) != 0:\n                    raise exceptions.ExchangeNotResponding(\n                        'The exchange did not respond as expected for order cancellation'\n                    )\n\n        # update position\n        if self.position.is_open:\n            self._update_position()\n\n            # sleep for 1 second if a MARKET order has been submitted but not executed yet (live trading only)\n            if jh.is_livetrading():\n                waiting_counter = 0\n                waiting_seconds = 1\n                while self._have_any_pending_market_exit_orders():\n                    if jh.is_debugging():\n                        logger.info(f'Waiting {waiting_seconds} second for pending market exit orders to be handled...')\n                    waiting_counter += 1\n                    if waiting_counter > 22:\n                        raise exceptions.ExchangeNotResponding(\n                            'The exchange did not respond as expected for order execution'\n                        )\n                    else:\n                        sleep(1)\n\n        self._simulate_market_order_execution()\n\n        # should_long and should_short\n        if self.position.is_close and self.entry_orders == []:\n            self._reset()\n\n            should_short = self.should_short()\n            # validate that should_short is not True if the exchange_type is spot\n            if self.exchange_type == 'spot' and should_short:\n                raise exceptions.InvalidStrategy(\n                    'should_short cannot be True if the exchange type is \"spot\".'\n                )\n\n            should_long = self.should_long()\n\n            # should_short and should_long cannot be True at the same time\n            if should_short and should_long:\n                raise exceptions.ConflictingRules(\n                    'should_short and should_long should not be true at the same time.'\n                )\n\n            if should_long:\n                self._execute_long()\n            elif should_short:\n                self._execute_short()\n\n    def _have_any_pending_market_exit_orders(self) -> bool:\n        return any(o.is_active and o.type == order_types.MARKET for o in self.exit_orders)\n\n    @staticmethod\n    def _simulate_market_order_execution() -> None:\n        \"\"\"\n        Simulate market order execution in backtest mode\n        \"\"\""
+    },
+    {
+      "path": "jesse/modes/backtest_mode.py",
+      "sha256": "047517B76255C947F483CDB85408DBF7E1AB992008C8F263571B4664CE6300FE",
+      "start_line": 470,
+      "end_line": 517,
+      "source": "    warmup_num = jh.get_config('env.data.warmup_candles_num', 210)\n    max_timeframe = jh.max_timeframe(config['app']['considering_timeframes'])\n\n    # load and add required warm-up candles for backtest, and then Prepare trading candles\n    trading_candles = {}\n    warmup_candles = {}\n    for c in config['app']['considering_candles']:\n        exchange, symbol = c[0], c[1]\n        if jh.app_mode() == 'backtest' and not jh.should_execute_silently():\n            publish_status(f'Loading historical candles for {symbol} on {exchange}…')\n        warmup_candles_arr, trading_candle_arr = candle_service.get_candles_from_db(\n            exchange, symbol, max_timeframe, start_date, finish_date, warmup_num, caching=True, is_for_jesse=True\n        )\n\n        # Ensure that trading_candle_arr is not None or empty\n        if trading_candle_arr is None or (isinstance(trading_candle_arr, np.ndarray) and trading_candle_arr.size == 0):\n            _handle_missing_candles(\n                exchange, \n                symbol, \n                start_date, \n                f\"Missing trading candles for {symbol} on {exchange}\"\n            )\n\n        try:\n            candle_service.validate_observed_one_minute_candles(trading_candle_arr, exchange, symbol)\n        except ValueError as exc:\n            _handle_missing_candles(exchange, symbol, start_date, str(exc))\n        if not _supports_observed_timestamp_replay_scope() and (\n            trading_candle_arr[0, 0] > start_date\n            or trading_candle_arr[-1, 0] < finish_date - 60_000\n        ):\n            _handle_missing_candles(exchange, symbol, start_date)\n\n        # add trading candles\n        trading_candles[jh.key(exchange, symbol)] = {\n            'exchange': exchange,\n            'symbol': symbol,\n            'candles': trading_candle_arr\n        }\n\n        warmup_candles[jh.key(exchange, symbol)] = {\n            'exchange': exchange,\n            'symbol': symbol,\n            'candles': warmup_candles_arr\n        }\n\n    return warmup_candles, trading_candles\n"
+    },
+    {
+      "path": "jesse/modes/backtest_mode.py",
+      "sha256": "047517B76255C947F483CDB85408DBF7E1AB992008C8F263571B4664CE6300FE",
+      "start_line": 1181,
+      "end_line": 1231,
+      "source": "    candles_info = [info + (prefilled[idx],) for idx, info in enumerate(candles_info)]\n\n    for i in range(length):\n        # update time\n        if store.funding.enabled:\n            store.funding.settle(int(first_candles_set[i, 0]), store)\n        store_app.time = first_candles_set[i, 0] + 60_000\n        i_next = i + 1\n\n        updated_timeframes = {timeframes.MINUTE_1}\n\n        # add candles\n        for candles_arr, candles_pipeline, exchange, symbol, arr_1m in candles_info:\n            if arr_1m is not None:\n                # The candle is already copied into the storage buffer, so\n                # exposing this observed candle only requires an index advance.\n                short_candle = candles_arr[i]\n                arr_1m.index += 1\n            else:\n                if candles_pipeline is None:\n                    short_candle = candles_arr[i]\n                else:\n                    short_candle = candles_pipeline.get_candles(\n                        candles_arr[i: i + candles_pipeline._batch_size], i, -1\n                    )\n\n                # Pipeline output becomes the canonical row used by storage and\n                # higher-timeframe generation for this simulation.\n                candles_arr[i] = short_candle\n\n                add_candle(short_candle, exchange, symbol, '1m', with_execution=False,\n                           with_generation=False)\n\n            # print short candle\n            if print_shorter_period_candles:\n                candle_service.print_candle(short_candle, True, symbol)\n\n            previous_close = candles_arr[i - 1, 2] if i != 0 else None\n            _simulate_price_change_effect(\n                short_candle,\n                exchange,\n                symbol,\n                previous_close=previous_close,\n            )\n\n            # Timestamp replay publishes every completed clock bucket at the\n            # first real source-candle event on or after that bucket's boundary.\n            if store.candles.uses_timestamp_buckets:\n                for timeframe, start in timestamp_generation_schedule.get(i, []):\n                    timeframe_ms = TIMEFRAME_TO_ONE_MINUTES[timeframe] * 60_000\n                    bucket_start = int(candles_arr[start, 0])"
+    },
+    {
+      "path": "jesse/modes/backtest_mode.py",
+      "sha256": "047517B76255C947F483CDB85408DBF7E1AB992008C8F263571B4664CE6300FE",
+      "start_line": 1275,
+      "end_line": 1304,
+      "source": "        if not run_silently:\n            last_update_time = _update_progress_bar(progressbar, run_silently, i, candle_step=420,\n                                                    last_update_time=last_update_time)\n\n        # now that all new generated candles are ready, execute\n        if store.funding.enabled:\n            store.funding.settle(int(store_app.time), store)\n        if store.open_interest.enabled:\n            store.open_interest.advance(int(store_app.time))\n        for r, count, strategy, exchange, symbol in routes_info:\n            if store.candles.uses_timestamp_buckets:\n                if r.timeframe in updated_timeframes:\n                    strategy._execute()\n            # 1m timeframe\n            elif count == 1:\n                strategy._execute()\n            elif i_next % count == 0:\n                # print candle\n                if print_trading_candles:\n                    candle_service.print_candle(candle_service.get_current_candle(exchange, symbol, r.timeframe), False,\n                                 symbol)\n                strategy._execute()\n\n            update_active_orders(exchange, symbol)\n\n        # now check to see if there's any MARKET orders waiting to be executed\n        execute_simulated_market_orders()\n\n        # Timestamp-based sampling keeps sparse market closures as real gaps\n        # instead of treating 1,440 available rows as one calendar day."
+    },
+    {
+      "path": "jesse/modes/backtest_mode.py",
+      "sha256": "047517B76255C947F483CDB85408DBF7E1AB992008C8F263571B4664CE6300FE",
+      "start_line": 1559,
+      "end_line": 1612,
+      "source": "def _execute_opening_gap_orders(\n        previous_close: Optional[float],\n        candle: np.ndarray,\n        exchange: str,\n        symbol: str,\n        active_orders: Optional[List[Order]] = None,\n        opening_gap_orders: Optional[List[Order]] = None,\n) -> bool:\n    \"\"\"Execute crossed resting orders at the first available opening price.\"\"\"\n    orders = opening_gap_orders\n    if orders is None:\n        orders = _get_opening_gap_orders(\n            previous_close,\n            candle,\n            exchange,\n            symbol,\n            active_orders=active_orders,\n        )\n    if not orders:\n        return False\n\n    open_price = candle[1]\n    opening_candle = candle.copy()\n    opening_candle[2:5] = open_price\n    opening_candle[5] = 0\n    _update_all_routes_a_partial_candle(exchange, symbol, opening_candle)\n\n    position = store.positions.get_position(exchange, symbol)\n    if position:\n        position.current_price = open_price\n\n    # Both simulators timestamp fills at the end of the one-minute candle that\n    # exposes the opening price.\n    store.app.time = candle[0] + 60_000\n\n    executed = False\n    for order in orders:\n        # Another fill at this open may close the position and cancel its siblings.\n        if not order.is_active:\n            continue\n\n        # Order.price is the execution price used by accounting. Keep the\n        # submitted trigger or limit available for diagnostics.\n        order.vars = dict(order.vars or {})\n        order.vars['submitted_price'] = order.price\n        order.price = open_price\n        order_service.execute_order(order)\n        executed = True\n\n    return executed\n\n\ndef _get_opening_gap_and_executing_orders(\n        active_orders: List[Order],"
+    },
+    {
+      "path": "jesse/store/state_candles.py",
+      "sha256": "F1C83CB7689036F16BA9EB36CB5FA3952BFA8033D2468C38F2647ECECB28652D",
+      "start_line": 27,
+      "end_line": 48,
+      "source": "    def get_storage(self, exchange: str, symbol: str, timeframe: str) -> DynamicNumpyArray:\n        # inline jh.key() — this is called multiple times per simulated minute\n        try:\n            return self.storage[f'{exchange}-{symbol}-{timeframe}']\n        except KeyError:\n            raise RouteNotFound(symbol, timeframe)\n\n    def init_storage(self, bucket_size: int = 1000) -> None:\n        for r in router.all_formatted_routes:\n            exchange, symbol = r['exchange'], r['symbol']\n\n            # initiate the '1m' timeframes\n            key = jh.key(exchange, symbol, timeframes.MINUTE_1)\n            self.storage[key] = DynamicNumpyArray((bucket_size, 6))\n\n            for timeframe in config['app']['considering_timeframes']:\n                key = jh.key(exchange, symbol, timeframe)\n                # ex: 1440 / 60 + 1 (reserve one for forming candle)\n                total_bigger_timeframe = int((bucket_size / jh.timeframe_to_one_minutes(timeframe)) + 1)\n                self.storage[key] = DynamicNumpyArray((total_bigger_timeframe, 6))\n\n    def forming_estimation(self, exchange: str, symbol: str, timeframe: str) -> tuple:"
+    },
+    {
+      "path": "jesse/libs/dynamic_numpy_array/__init__.py",
+      "sha256": "8907B3D77AAEC2948BB467FEA458F63CA0CCBAE5C3439E1E6F24A755F1EDA7BF",
+      "start_line": 9,
+      "end_line": 22,
+      "source": "\n    A data structure containing a numpy array which expands its memory\n    allocation every N number. Hence, it's both fast and dynamic.\n    \"\"\"\n\n    def __init__(self, shape: tuple, drop_at: int = None):\n        self._state = (np.zeros(shape), -1)\n        self.bucket_size = shape[0]\n        self.shape = shape\n        self.drop_at = drop_at\n\n    @property\n    def array(self) -> np.ndarray:\n        return self._state[0]"
+    },
+    {
+      "path": "jesse/libs/dynamic_numpy_array/__init__.py",
+      "sha256": "8907B3D77AAEC2948BB467FEA458F63CA0CCBAE5C3439E1E6F24A755F1EDA7BF",
+      "start_line": 102,
+      "end_line": 127,
+      "source": "            new_array = np.zeros(new_shape, dtype=array.dtype)\n            if current_index >= 0:\n                new_array[:current_index + 1] = array[:current_index + 1]\n            array = new_array\n\n        # drop N% of the beginning values to free memory\n        if (\n            self.drop_at is not None\n            and new_index != 0\n            and (new_index + 1) % self.drop_at == 0\n        ):\n            shift_num = int(self.drop_at / 2)\n            new_index -= shift_num\n            array = np_shift(array, -shift_num)\n\n        array[new_index] = item\n        self._state = (array, new_index)\n\n    def get_last_item(self):\n        array, index = self._state\n        # validation\n        if index == -1:\n            raise IndexError('list assignment index out of range. array is empty which means no past item exists')\n\n        return array[index]\n"
+    },
+    {
+      "path": "jesse/helpers.py",
+      "sha256": "47893A6ABA9733C4BE172AA31CA5C9C90B4CF892B836BD78F1EE293D0566B0E1",
+      "start_line": 884,
+      "end_line": 889,
+      "source": "def slice_candles(candles: np.ndarray, sequential: bool) -> np.ndarray:\n    warmup_candles_num = get_config('env.data.warmup_candles_num', 240)\n    if not sequential and candles.shape[0] > warmup_candles_num:\n        candles = candles[-warmup_candles_num:]\n    return candles\n"
+    },
+    {
+      "path": "jesse/indicators/atr.py",
+      "sha256": "5F37C3D19C1B3E7E1B3AB92F421A5FA6D89565B2CBACA9DABB4B8367BF09D682",
+      "start_line": 15,
+      "end_line": 32,
+      "source": "def atr(candles: np.ndarray, period: int = 14, sequential: bool = False) -> Union[float, np.ndarray]:\n    \"\"\"\n    ATR - Average True Range using optimized Rust implementation\n\n    :param candles: np.ndarray\n    :param period: int - default: 14\n    :param sequential: bool - default: False\n\n    :return: float | np.ndarray\n    \"\"\"\n    candles = slice_candles(candles, sequential)\n\n    if sequential:\n        return rust_atr(candles, period)\n    # bit-for-bit identical to rust_atr(candles, period)[-1], minus the\n    # full-series allocation (the scalar kernel runs the same recurrence)\n    return np.float64(rust_atr_last(candles, period))"
+    },
+    {
+      "path": "jesse/indicators/ema.py",
+      "sha256": "C5119007F7F57A43A8CC26EEA8E61861CFC509CC5C3FEC9C6EAD1189C2C405F9",
+      "start_line": 16,
+      "end_line": 43,
+      "source": "\ndef ema(candles: np.ndarray, period: int = 5, source_type: str = \"close\", sequential: bool = False) -> Union[\n    float, np.ndarray]:\n    \"\"\"\n    EMA - Exponential Moving Average\n\n    :param candles: np.ndarray\n    :param period: int - default: 5\n    :param source_type: str - default: \"close\"\n    :param sequential: bool - default: False\n\n    :return: float | np.ndarray\n    \"\"\"\n    if len(candles.shape) == 1:\n        source = candles\n    else:\n        candles = slice_candles(candles, sequential)\n        source = get_candle_source(candles, source_type=source_type)\n\n    if sequential:\n        return ema_rust(source, period)\n    # bit-for-bit identical to ema_rust(source, period)[-1], minus the\n    # full-series allocation (the scalar kernel runs the same recurrence)\n    return np.float64(ema_last_rust(source, period))"
+    }
+  ],
+  "anchors": {
+    "K1001": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "CapitalR12K1001R2A6"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "PAXG-USDT",
+          "timeframe": "4h",
+          "strategy": "CapitalR12PaxgR2A6"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "SPY-USDT",
+          "timeframe": "4h",
+          "strategy": "CapitalR12SpyCR2A6"
+        }
+      ],
+      "data_routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "1m"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "PAXG-USDT",
+          "timeframe": "1m"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "SPY-USDT",
+          "timeframe": "1m"
+        }
+      ],
+      "start_date": "2020-10-15",
+      "finish_date": "2025-12-31",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": true,
+      "fast_mode": false,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": true,
+          "order_cancellation": true,
+          "order_execution": true,
+          "position_opened": true,
+          "position_increased": true,
+          "position_reduced": true,
+          "position_closed": true,
+          "shorter_period_candles": false,
+          "trading_candles": true,
+          "balance_update": true
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3
+        }
+      }
+    },
+    "N204": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h",
+          "strategy": "CapitalR12N204R2A6"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "PAXG-USDT",
+          "timeframe": "4h",
+          "strategy": "CapitalR12PaxgR2A6"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "SPY-USDT",
+          "timeframe": "4h",
+          "strategy": "CapitalR12SpyCR2A6"
+        }
+      ],
+      "data_routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "timeframe": "1m"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "PAXG-USDT",
+          "timeframe": "1m"
+        },
+        {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "SPY-USDT",
+          "timeframe": "1m"
+        }
+      ],
+      "start_date": "2020-10-15",
+      "finish_date": "2025-12-31",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": true,
+      "fast_mode": false,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": true,
+          "order_cancellation": true,
+          "order_execution": true,
+          "position_opened": true,
+          "position_increased": true,
+          "position_reduced": true,
+          "position_closed": true,
+          "shorter_period_candles": false,
+          "trading_candles": true,
+          "balance_update": true
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3
+        }
+      }
+    }
+  },
+  "conclusion": "Static TTL/replay-order/history-retention gates resolved; verify final strategy lazyfix/readbacks/check before economy.",
+  "report": "# P: auditoría estática de framework antes de economía\n\nInspección readonly del framework de este checkout fuera de bot/strategies, sin leer fuentes de estrategias fuera de MCP, sin editar framework/indicadores/configuración, sin arrancar motores y sin analizar velas. Las fuentes/recibos/estrategias del proyecto se leen/escriben exclusivamente porMCP; esta revisión de framework usa las instrucciones raíz del repositorio. No se usó run_analysis para leer framework: sus reglas limitan lecturas a inputs/. DockerinspectMountsreadonly confirmó bind C:\\\\dev\\\\trading\\\\regime-trade\\\\jesse→/src del contenedor jesse-research-jesse-1; compose local usa PYTHONPATH/src. No reinicio ni cambios.\n\nHallazgos: Strategy._check tiene IF de cancelación seguido por IF de entradas, no ELSE excluyente. _execute_cancel cancela broker,reset,on_cancel; luego should_short yshould_long pueden reevaluarse en el mismo cierre. Docresumida simplificaeste caso. Pcorregidopreparaplanlazy memoizado porT trasliberarmargen,setupavanzauna sola vezbefore; last_exit_atimpide reentrada trascerrarposición. Broker replay de minuto `_simulate_price_change_effect` ocurre antes de generación final4h y estrategia; una pendiente cruzada en minuto terminado enexpiry puede llenar ANTESdecancel. Si no llena, cancela en ese cierre; puede nuevoevento/condiciónoriginal armarotraorden, sin llenarretroactivamentevela yaobservada. Opening-gap fills ejecutan alopen ytimestamp endM1.\n\nHistoria: ambosAPIself.candles/get_candlesdelegan mismo candle_service.get_candles. Loader usa warmup240×max_timeframe4h en padres yadaptación. CandlesState inicializaDynamicNumpyArray sin drop_at; capacidad inicial5000min no es truncamiento de historia; append expande. getters4h devuelvenhistoriaexpuesta, puedeincluírformandosi lecturaintermedia; P filtra open+4h<=now y validaúltimacerrada. En cierres4h de BTCcontinuo no incorpora una barra parcial posterior. ta.atr scalar llama slice_candles que conserva últimaswarmup240; ta.ema sequential conserva serie completa, mismafunciónlegacy y fuente4h (sinrecorteN26). No se cambia kernelRust ni se afirma hash de runtimeRust; se verifica política de retención/selección/semilla porfuente, no se afirma identidad numérica contra tradesdecartera con otrasadaptaciones/fechas. Anclas K/Nsummaryconfirmanwarmup240,4hBTC/data1m,fastfalse. Aislamiento/funding/M1yfinishañadido siguen cambios declarados de P.\n\nFuentes/extractos y hashesbytes reales en BTC_DISCOVERY_P_FRAMEWORK_AUDIT_20261021.json. Check5962assertions suministradas cubre lógica/geometría usando features artificiales, no se presenta como ejecución de brokerreal. Gates estáticos pre-economía cubiertos por esta revisión y revisión del lazyfix; la economía real debe además respetar aserciones/contadores/ledger. Ningún dato observado ni resultado fue usado para elegir reglas nuevas.\n"
+}

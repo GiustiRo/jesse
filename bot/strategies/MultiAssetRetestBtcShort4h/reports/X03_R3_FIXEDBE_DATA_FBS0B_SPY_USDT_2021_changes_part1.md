@@ -1,0 +1,7 @@
+# FBS0B_SPY_USDT_2021_changes_part1.json
+
+Analysis e59c586237944330917483c5429ccedd. Original JSON payload SHA256 b3be084d613d90bbd4568b05af04c1ed97b413a6330497dcf389d5193ee9aede. Connector retrieved truncated=false. The JSON payload below preserves original content.
+
+```json
+[{"kind":"retained_changed","symbol":"SPY-USDT","side":"long","open":1634630520000,"differences":{"qty":{"reference":21.671,"fixed":21.663},"fee":{"reference":13.884345640731006,"fixed":13.879220138210318},"PNL":{"reference":347.33887531785285,"fixed":347.21065276224664}},"reference_orders":[{"side":"buy","type":"LIMIT","qty":21.671,"filled_qty":21.671,"price":449.2999,"status":"EXECUTED","created_at":1634630400000.0,"canceled_at":null,"executed_at":1634630520000.0,"reduce_only":false,"submitted_via":null},{"side":"sell","type":"STOP","qty":-21.671,"filled_qty":-21.671,"price":465.96840726586606,"status":"EXECUTED","created_at":1636459200000.0,"canceled_at":null,"executed_at":1636567560000.0,"reduce_only":true,"submitted_via":"stop-loss"}],"fixed_orders":[{"side":"buy","type":"LIMIT","qty":21.663,"filled_qty":21.663,"price":449.2999,"status":"EXECUTED","created_at":1634630400000.0,"canceled_at":null,"executed_at":1634630520000.0,"reduce_only":false,"submitted_via":null},{"side":"sell","type":"STOP","qty":-21.663,"filled_qty":-21.663,"price":465.96840726586606,"status":"EXECUTED","created_at":1636459200000.0,"canceled_at":null,"executed_at":1636567560000.0,"reduce_only":true,"submitted_via":"stop-loss"}]}]
+```

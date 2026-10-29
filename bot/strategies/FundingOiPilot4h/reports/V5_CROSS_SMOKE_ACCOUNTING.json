@@ -1,0 +1,42 @@
+{
+  "action": "get_analysis_job",
+  "status": "success",
+  "job": {
+    "id": "9ce7d9b34ff24061b6015aae0c640ba5",
+    "kind": "analysis",
+    "workspace": "storage/mcp/analysis/9ce7d9b34ff24061b6015aae0c640ba5",
+    "inputs": [
+      {
+        "name": "s0",
+        "file": "inputs/s0.json",
+        "session_type": "backtest",
+        "session_id": "73f4d93a-8302-4ccb-b204-2a57dd61c1cb",
+        "session_status": "finished",
+        "title": "MCP Backtest: V5 TECH CROSS 4h",
+        "size_bytes": 19494
+      }
+    ],
+    "status": "succeeded",
+    "pid": 8704,
+    "exit_code": 0,
+    "started_at": "2026-10-21T00:54:53+00:00",
+    "finished_at": "2026-10-21T00:54:53+00:00",
+    "timeout_minutes": 3,
+    "output_truncated": false,
+    "expires_at": "2026-10-22T00:54:53+00:00",
+    "lifetime": "Deleted when a later analysis starts, once 24 hours have passed since it finished (expires_at), or earlier when finished jobs exceed the 50-job or 2 GiB caps (oldest first)."
+  },
+  "artifacts": [
+    {
+      "path": "results.json",
+      "size_bytes": 3432,
+      "kind": "text"
+    }
+  ],
+  "artifacts_truncated": false,
+  "output": "[{\"timeframe\": \"4h\", \"sharpe\": -4.851958848158074, \"session_id\": \"73f4d93a-8302-4ccb-b204-2a57dd61c1cb\", \"strategy\": \"ResearchV5CrossSmoke4h\", \"start\": \"2020-09-01\", \"finish\": \"2020-09-08\", \"n\": 2, \"net\": -259.34121140684465, \"net_pct\": -2.5934121140684465, \"pf\": 0.0, \"pf_no_losses\": false, \"dd\": -3.9727238571333645, \"cagr_pct\": -74.59244087750922, \"turnover\": 1.814619733447606, \"gross\": -243.6977865927431, \"fees\": 8.165788800514227, \"funding\": -7.477636013587345, \"funding_events\": 15, \"proxy_funding\": -7.477636013587345, \"exact_funding\": 0.0, \"unclassified_funding\": 0.0, \"funding_sources\": {\"markPriceKlines.1h_open_proxy\": {\"n\": 15, \"cashflow\": -7.477636013587345}}, \"holding_seconds\": 457860.0, \"exposure\": 0.7570436507936508, \"directions\": {\"long\": {\"n\": 1, \"gross\": -193.77377047354304, \"fees\": 6.226228171451906, \"funding\": -9.850052553102968, \"net\": -209.8500511980979}, \"short\": {\"n\": 1, \"gross\": -49.92401611920006, \"fees\": 1.93956062906232, \"funding\": 2.3724165395156227, \"net\": -49.49116020874676}}, \"exit_order_types\": {\"STOP\": 1, \"MARKET\": 1}, \"months\": [{\"month\": \"2020-09\", \"return_pct\": -2.5934121140684496, \"end_equity\": 9740.658788593155}], \"years\": [{\"year\": 2020, \"return_pct\": -2.5934121140684496, \"end_equity\": 9740.658788593155, \"full_year\": false}], \"semesters\": [{\"period\": \"2020H2\", \"return_pct\": -2.5934121140684496, \"end_equity\": 9740.658788593155, \"full_semester\": false}], \"replay_nominal_gates\": null, \"replay_nominal_eligible\": null, \"funding_sensitivities\": [{\"kind\": \"proxy_only\", \"multiplier\": 0.5, \"net_usdt\": -255.60239340005097, \"net_pct\": -2.5560239340005095, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"proxy_only\", \"multiplier\": 1.5, \"net_usdt\": -263.08002941363833, \"net_pct\": -2.6308002941363835, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 0.5, \"net_usdt\": -255.60239340005097, \"net_pct\": -2.5560239340005095, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}, {\"kind\": \"global_funding\", \"multiplier\": 1.5, \"net_usdt\": -263.08002941363833, \"net_pct\": -2.6308002941363835, \"sign_flip\": false, \"fixed_quantities_not_replay\": true}], \"screen_year_gate\": false, \"base_eligible\": false, \"screen_eligible\": false, \"positive_pnl\": 0.0, \"negative_pnl\": -259.34121140684465, \"best_trade\": -49.49116020874676, \"worst_trade\": -209.8500511980979, \"adjusted_fills\": 0, \"curve_terminal_delta\": 1.8189894035458565e-12, \"sampled_dd_including_terminal_pct\": -3.9727238571333534, \"equity_points\": 8, \"equity_evidence\": \"full_daily\", \"max_accounting_error\": 1.8189894035458565e-12, \"metric_open_indicator\": 1, \"metric_open_pl\": -49.92401611920013}]\n",
+  "output_lines_returned": 1,
+  "earlier_output_omitted": false,
+  "output_truncated": false,
+  "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace."
+}

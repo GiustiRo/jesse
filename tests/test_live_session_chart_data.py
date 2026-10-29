@@ -37,7 +37,8 @@ def test_live_chart_data_builds_a_bounded_route_snapshot(monkeypatch):
     )
     open_trade = SimpleNamespace(exchange='Sandbox', symbol='BTC-USDT', closed_at=None)
 
-    monkeypatch.setattr(live_chart_service.candle_repository, 'fetch_candles_from_db', lambda *args: candles)
+    # Chart loading now delegates timeframe reconstruction to candle_service.
+    monkeypatch.setattr(live_chart_service.candle_service, 'load_chart_candles', lambda *args: candles)
     monkeypatch.setattr(live_chart_service.order_repository, 'get_session_orders', lambda *args: [executed_order, active_order])
     monkeypatch.setattr(live_chart_service.closed_trade_repository, 'find_by_session_id', lambda *args: [closed_trade, open_trade])
     monkeypatch.setattr(live_chart_service.transformers, 'get_order_details', lambda order: {'id': 'order-1'})
@@ -91,7 +92,7 @@ def test_live_chart_data_rejects_routes_outside_the_session():
             session(), 'Sandbox', 'ETH-USDT', '1m'
         )
     except ValueError as e:
-        assert str(e) == 'The requested route does not belong to this live session.'
+        assert str(e) == 'The requested symbol does not belong to this live session.'
     else:
         raise AssertionError('Expected an invalid route error')
 
@@ -104,7 +105,7 @@ def test_live_chart_data_centers_an_older_anchor_and_caps_the_request(monkeypatc
         captured.update(start=start, finish=finish)
         return []
 
-    monkeypatch.setattr(live_chart_service.candle_repository, 'fetch_candles_from_db', fetch)
+    monkeypatch.setattr(live_chart_service.candle_service, 'load_chart_candles', fetch)
     monkeypatch.setattr(live_chart_service.order_repository, 'get_session_orders', lambda *args: [])
     monkeypatch.setattr(live_chart_service.closed_trade_repository, 'find_by_session_id', lambda *args: [])
     monkeypatch.setattr(live_chart_service, 'get_live_charts_snapshot', lambda session_id: {})
@@ -125,7 +126,7 @@ def test_live_chart_data_centers_an_older_anchor_and_caps_the_request(monkeypatc
 
 def test_live_chart_data_merges_durable_history_with_the_redis_tail(monkeypatch):
     fake_session = session()
-    monkeypatch.setattr(live_chart_service.candle_repository, 'fetch_candles_from_db', lambda *args: [])
+    monkeypatch.setattr(live_chart_service.candle_service, 'load_chart_candles', lambda *args: [])
     monkeypatch.setattr(live_chart_service.order_repository, 'get_session_orders', lambda *args: [])
     monkeypatch.setattr(live_chart_service.closed_trade_repository, 'find_by_session_id', lambda *args: [])
     monkeypatch.setattr(live_chart_service.live_chart_repository, 'get_chart_data', lambda *args: {

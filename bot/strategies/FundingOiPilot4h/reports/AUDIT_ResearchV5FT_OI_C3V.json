@@ -1,0 +1,854 @@
+{
+  "status": "passed",
+  "errors": [],
+  "stage": "C3V",
+  "label": "FUNDING_FPOI",
+  "session_id": "13962ea9-197d-49b2-bb9a-69c6c7e7c038",
+  "dashboard_url": "http://localhost:9200/#/backtest/13962ea9-197d-49b2-bb9a-69c6c7e7c038",
+  "summary": {
+    "action": "get_session_results",
+    "status": "success",
+    "session_type": "backtest",
+    "session_id": "13962ea9-197d-49b2-bb9a-69c6c7e7c038",
+    "session_status": "finished",
+    "title": "MCP Backtest: V5 C3 EVAL FUNDING_FPOI",
+    "description": "Frozen V5 Funding C3 evaluation, selection recorded beforehand; one engine serial; diagnostic pair, no reselection.",
+    "description_truncated": false,
+    "created_at": 1792546264000,
+    "updated_at": 1792546294000,
+    "execution_duration": 3.83,
+    "form": {
+      "exchange": "Binance Perpetual Futures",
+      "routes": [
+        {
+          "exchange": "Binance Perpetual Futures",
+          "strategy": "ResearchV5FT_OI_C3V",
+          "symbol": "BTC-USDT",
+          "timeframe": "4h"
+        }
+      ],
+      "data_routes": [],
+      "start_date": "2025-01-01",
+      "finish_date": "2025-07-01",
+      "debug_mode": true,
+      "export_csv": false,
+      "export_json": false,
+      "export_chart": false,
+      "fast_mode": true,
+      "benchmark": false,
+      "config": {
+        "logging": {
+          "order_submission": false,
+          "order_cancellation": false,
+          "order_execution": false,
+          "position_opened": false,
+          "position_increased": false,
+          "position_reduced": false,
+          "position_closed": false,
+          "shorter_period_candles": false,
+          "trading_candles": false,
+          "balance_update": false
+        },
+        "warm_up_candles": 240,
+        "exchange": {
+          "name": "Binance Perpetual Futures",
+          "type": "futures",
+          "balance": 10000,
+          "fee": 0.00045,
+          "futures_leverage_mode": "isolated",
+          "futures_leverage": 3,
+          "slippage_bps": 0
+        },
+        "funding": {
+          "mode": "historical",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571"
+        },
+        "open_interest": {
+          "mode": "historical",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "allow_missing_observations": true,
+          "max_age_ms": 600000
+        }
+      }
+    },
+    "metrics": {
+      "total": 29,
+      "total_winning_trades": 13,
+      "total_losing_trades": 16,
+      "starting_balance": 10000,
+      "finishing_balance": 9901.602794145634,
+      "win_rate": 0.4482758620689655,
+      "win_rate_longs": 0.5,
+      "win_rate_shorts": 0.44,
+      "ratio_avg_win_loss": 1.1450161380651893,
+      "longs_count": 4,
+      "longs_percentage": 13.793103448275861,
+      "shorts_percentage": 86.20689655172414,
+      "shorts_count": 25,
+      "fee": 129.25894914549784,
+      "net_profit": -98.39720585436669,
+      "net_profit_percentage": -0.983972058543667,
+      "average_win": 101.06510455781812,
+      "average_loss": 88.26522281912516,
+      "expectancy": -3.3930070984264447,
+      "expectancy_percentage": -0.03393007098426445,
+      "expected_net_profit_every_100_trades": -3.3930070984264447,
+      "average_holding_period": 118150.3448275862,
+      "average_winning_holding_period": 105230.76923076923,
+      "average_losing_holding_period": 128647.5,
+      "gross_profit": 1313.8463592516355,
+      "gross_loss": -1412.2435651060025,
+      "max_drawdown": -7.817199258166497,
+      "max_underwater_period": 123,
+      "annual_return": -1.9743295340624134,
+      "annualization": 365,
+      "sharpe_ratio": -0.14751808698235905,
+      "calmar_ratio": -0.25256226288460853,
+      "sortino_ratio": -0.22577903480668324,
+      "omega_ratio": 0.9643629226739466,
+      "serenity_index": null,
+      "total_open_trades": 0,
+      "open_pl": 0,
+      "winning_streak": 4,
+      "losing_streak": 6,
+      "largest_losing_trade": -199.61242144504965,
+      "largest_winning_trade": 326.91566542942104,
+      "current_streak": 1,
+      "avg_trades_per_day": 0.16022037975606296,
+      "avg_trades_per_week": 1.1215426582924408,
+      "avg_trades_per_month": 4.877108359774557,
+      "funding": {
+        "mode": "historical",
+        "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+        "cashflow": 20.429754450560253,
+        "rate_kind": "settled",
+        "event_count": 114,
+        "settlements_processed": 543,
+        "mark_price_proxy_count": 0,
+        "status": "applied",
+        "applied": true,
+        "scope": [
+          "BTC-USDT"
+        ],
+        "excluded_symbols": [],
+        "data": {
+          "allow_mark_price_proxy": true,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "mark_price_proxy_count": 4198,
+          "schema": 1,
+          "source": "binance-usdm-fundingRate-v1",
+          "start": 1577836800000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "9c5618c2393e7281467184f804c58032b1219a6057ce6a009324ec4cc089f571",
+          "event_count": 6576,
+          "first_settlement": 1577836800000,
+          "last_settlement": 1767196800001,
+          "largest_gap_ms": 28800047,
+          "status": "ready",
+          "coverage_complete": true,
+          "supported_timestamps": true,
+          "coverage_policy": "vendor_response; BTC maximum eight-hour gap with one-second boundary jitter",
+          "timestamp_policy": "minute boundary; vendor jitter <=1000ms retained in raw settled_at",
+          "publication_delay_ms": 60000,
+          "rate_unit": "decimal_fraction",
+          "mark_price_source": "mixed; settlement marks + explicit markPriceKlines.1h_open_proxy"
+        },
+        "effective_fast_mode": false,
+        "boundary_policy": "before_strategy_decisions; finish_exclusive",
+        "publication_delay_ms": 60000
+      },
+      "open_interest": {
+        "mode": "historical",
+        "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+        "max_age_ms": 600000,
+        "applied": true,
+        "status": "applied",
+        "scope": [
+          "BTC-USDT"
+        ],
+        "data": {
+          "archive_assumptions_acknowledged": true,
+          "archive_catalog": {
+            "first_archive_date": "2020-09-01",
+            "first_archive_last_modified": "2026-03-18T12:30:27.000Z",
+            "first_archive_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+            "point_in_time_certified": false,
+            "source": "binance-usdm-metrics-archive-v1"
+          },
+          "availability_lag_ms": 360000,
+          "exchange": "Binance Perpetual Futures",
+          "finish": 1767225600000,
+          "import_source": "auto",
+          "original_publication_known": false,
+          "period_ms": 300000,
+          "rest_range": null,
+          "schema": 1,
+          "source": "binance-usdm-metrics-archive-v1",
+          "start": 1598918400000,
+          "symbol": "BTC-USDT",
+          "dataset_id": "6694352b75cba232bf1ffa6aa1d62e54e0cf751582ef0a9c4b49972ebc7e1abf",
+          "observation_count": 560390,
+          "expected_observation_count": 561024,
+          "missing_observation_count": 634,
+          "coverage_complete": false,
+          "status": "incomplete",
+          "leading_gap_ms": 0,
+          "trailing_gap_ms": 0,
+          "first_observation": 1598918400000,
+          "last_observation": 1767225300000,
+          "first_available_at": 1598918760000,
+          "last_available_at": 1767225660000,
+          "largest_gap_ms": 37800000,
+          "gap_count": 156,
+          "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+          "history_limit": "Official daily metrics archive; earliest verified listing 2020-09-01",
+          "point_in_time_certified": false,
+          "missing_policy": "no interpolation; unavailable or stale values return None",
+          "cashflow": false,
+          "archive_file_count": 1948,
+          "archive_verified_file_count": 1948,
+          "archive_missing_days": [],
+          "archive_missing_day_count": 0,
+          "archive_identical_duplicate_rows": 75255
+        },
+        "allow_missing_observations": true,
+        "observation_count": 560390,
+        "cashflow": false,
+        "availability_lag_ms": 360000,
+        "availability_policy": "retrospective_archive_period_label_plus_6m_assumption; original_publication_unknown",
+        "current": {
+          "exchange": "Binance Perpetual Futures",
+          "symbol": "BTC-USDT",
+          "observed_at": 1751327400000,
+          "available_at": 1751327760000,
+          "quantity_base": 76513.358,
+          "value_quote": 8190877395.2728
+        }
+      }
+    },
+    "error": null,
+    "has_chart_data": false,
+    "has_charts_image": true,
+    "sections": {
+      "trades": {
+        "count": 29
+      },
+      "equity_curve": {
+        "series": [
+          {
+            "name": "Portfolio",
+            "points": 182
+          }
+        ]
+      },
+      "hyperparameters": {
+        "count": 0
+      },
+      "logs": {
+        "log_size_bytes": 331746
+      }
+    },
+    "location": "On the machine running Jesse, inside the Jesse project folder. Not in the assistant's local workspace.",
+    "dashboard_url": "http://localhost:9200/#/backtest/13962ea9-197d-49b2-bb9a-69c6c7e7c038"
+  },
+  "provenance": {
+    "kind": "V5_PROVENANCE",
+    "line": "FUNDING_TREND",
+    "use_oi": true,
+    "oi_lag_bars": 0,
+    "stop_multiplier": 3,
+    "bar_ms": 14400000,
+    "oi_reference_bars": 6,
+    "atr_offset_bars": 0,
+    "target_mode": "none",
+    "reward_multiple": 1,
+    "max_hold_bars": 180,
+    "start": 1735689600000,
+    "finish": 1751328000000,
+    "active_windows": null,
+    "force_boundaries": [],
+    "final_exit_may_follow": true,
+    "self_checks": null
+  },
+  "full_log_scan": true,
+  "pages": 3,
+  "lines": 1094,
+  "max_line": 1027,
+  "months": 6,
+  "buckets_count": 21,
+  "buckets": [
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-01:all",
+      "bars": 186,
+      "opportunities": 19,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "oi_initialization": 5,
+        "no_setup_price": 47,
+        "carry_sign_reject": 94,
+        "oi_nonrising": 11,
+        "allowed": 3,
+        "in_position_or_pending": 15,
+        "funding_mixed": 10,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_initialization": 5,
+        "oi_nonrising": 11
+      },
+      "feature_reasons": {
+        "setup": 35,
+        "no_setup_price": 47,
+        "carry_sign_reject": 94,
+        "funding_mixed": 10
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-01:none",
+      "bars": 151,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 47,
+        "carry_sign_reject": 94,
+        "funding_mixed": 10
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 47,
+        "carry_sign_reject": 94,
+        "funding_mixed": 10
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-01:short",
+      "bars": 35,
+      "opportunities": 19,
+      "entries": 3,
+      "exits": 3,
+      "primary": {
+        "oi_initialization": 5,
+        "oi_nonrising": 11,
+        "allowed": 3,
+        "in_position_or_pending": 15,
+        "daily_limit": 1
+      },
+      "flags": {
+        "oi_initialization": 5,
+        "oi_nonrising": 11
+      },
+      "feature_reasons": {
+        "setup": 35
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-02:all",
+      "bars": 168,
+      "opportunities": 15,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "carry_sign_reject": 8,
+        "no_setup_price": 39,
+        "allowed": 7,
+        "in_position_or_pending": 65,
+        "funding_mixed": 41,
+        "oi_nonrising": 8
+      },
+      "flags": {
+        "oi_nonrising": 8
+      },
+      "feature_reasons": {
+        "carry_sign_reject": 8,
+        "no_setup_price": 39,
+        "setup": 80,
+        "funding_mixed": 41
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-02:none",
+      "bars": 88,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "carry_sign_reject": 8,
+        "no_setup_price": 39,
+        "funding_mixed": 41
+      },
+      "flags": {},
+      "feature_reasons": {
+        "carry_sign_reject": 8,
+        "no_setup_price": 39,
+        "funding_mixed": 41
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-02:short",
+      "bars": 80,
+      "opportunities": 15,
+      "entries": 7,
+      "exits": 7,
+      "primary": {
+        "allowed": 7,
+        "in_position_or_pending": 65,
+        "oi_nonrising": 8
+      },
+      "flags": {
+        "oi_nonrising": 8
+      },
+      "feature_reasons": {
+        "setup": 80
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-03:all",
+      "bars": 186,
+      "opportunities": 10,
+      "entries": 5,
+      "exits": 4,
+      "primary": {
+        "funding_mixed": 47,
+        "carry_sign_reject": 14,
+        "no_setup_price": 71,
+        "oi_nonrising": 5,
+        "allowed": 5,
+        "in_position_or_pending": 44
+      },
+      "flags": {
+        "oi_nonrising": 5
+      },
+      "feature_reasons": {
+        "funding_mixed": 47,
+        "carry_sign_reject": 14,
+        "no_setup_price": 71,
+        "setup": 54
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-03:long",
+      "bars": 2,
+      "opportunities": 2,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "oi_nonrising": 1,
+        "allowed": 1
+      },
+      "flags": {
+        "oi_nonrising": 1
+      },
+      "feature_reasons": {
+        "setup": 2
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-03:none",
+      "bars": 132,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "funding_mixed": 47,
+        "carry_sign_reject": 14,
+        "no_setup_price": 71
+      },
+      "flags": {},
+      "feature_reasons": {
+        "funding_mixed": 47,
+        "carry_sign_reject": 14,
+        "no_setup_price": 71
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-03:short",
+      "bars": 52,
+      "opportunities": 8,
+      "entries": 4,
+      "exits": 3,
+      "primary": {
+        "allowed": 4,
+        "in_position_or_pending": 44,
+        "oi_nonrising": 4
+      },
+      "flags": {
+        "oi_nonrising": 4
+      },
+      "feature_reasons": {
+        "setup": 52
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-04:all",
+      "bars": 180,
+      "opportunities": 19,
+      "entries": 5,
+      "exits": 6,
+      "primary": {
+        "in_position_or_pending": 16,
+        "no_setup_price": 29,
+        "funding_mixed": 78,
+        "oi_nonrising": 14,
+        "allowed": 5,
+        "carry_sign_reject": 38
+      },
+      "flags": {
+        "oi_nonrising": 14
+      },
+      "feature_reasons": {
+        "setup": 35,
+        "no_setup_price": 29,
+        "funding_mixed": 78,
+        "carry_sign_reject": 38
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-04:long",
+      "bars": 6,
+      "opportunities": 5,
+      "entries": 2,
+      "exits": 2,
+      "primary": {
+        "oi_nonrising": 3,
+        "allowed": 2,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 3
+      },
+      "feature_reasons": {
+        "setup": 6
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-04:none",
+      "bars": 145,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "no_setup_price": 29,
+        "funding_mixed": 78,
+        "carry_sign_reject": 38
+      },
+      "flags": {},
+      "feature_reasons": {
+        "no_setup_price": 29,
+        "funding_mixed": 78,
+        "carry_sign_reject": 38
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-04:short",
+      "bars": 29,
+      "opportunities": 14,
+      "entries": 3,
+      "exits": 4,
+      "primary": {
+        "in_position_or_pending": 15,
+        "oi_nonrising": 11,
+        "allowed": 3
+      },
+      "flags": {
+        "oi_nonrising": 11
+      },
+      "feature_reasons": {
+        "setup": 29
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-05:all",
+      "bars": 186,
+      "opportunities": 14,
+      "entries": 2,
+      "exits": 1,
+      "primary": {
+        "funding_mixed": 23,
+        "allowed": 2,
+        "in_position_or_pending": 6,
+        "carry_sign_reject": 103,
+        "no_setup_price": 40,
+        "oi_nonrising": 12
+      },
+      "flags": {
+        "oi_nonrising": 12
+      },
+      "feature_reasons": {
+        "funding_mixed": 23,
+        "setup": 20,
+        "carry_sign_reject": 103,
+        "no_setup_price": 40
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-05:long",
+      "bars": 6,
+      "opportunities": 1,
+      "entries": 1,
+      "exits": 1,
+      "primary": {
+        "allowed": 1,
+        "in_position_or_pending": 5
+      },
+      "flags": {},
+      "feature_reasons": {
+        "setup": 6
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-05:none",
+      "bars": 166,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "funding_mixed": 23,
+        "carry_sign_reject": 103,
+        "no_setup_price": 40
+      },
+      "flags": {},
+      "feature_reasons": {
+        "funding_mixed": 23,
+        "carry_sign_reject": 103,
+        "no_setup_price": 40
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-05:short",
+      "bars": 14,
+      "opportunities": 13,
+      "entries": 1,
+      "exits": 0,
+      "primary": {
+        "oi_nonrising": 12,
+        "allowed": 1,
+        "in_position_or_pending": 1
+      },
+      "flags": {
+        "oi_nonrising": 12
+      },
+      "feature_reasons": {
+        "setup": 14
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-06:all",
+      "bars": 180,
+      "opportunities": 16,
+      "entries": 7,
+      "exits": 8,
+      "primary": {
+        "funding_mixed": 60,
+        "oi_nonrising": 9,
+        "no_setup_price": 34,
+        "allowed": 7,
+        "in_position_or_pending": 23,
+        "carry_sign_reject": 46,
+        "boundary_or_inactive": 1
+      },
+      "flags": {
+        "oi_nonrising": 9
+      },
+      "feature_reasons": {
+        "funding_mixed": 60,
+        "setup": 39,
+        "no_setup_price": 35,
+        "carry_sign_reject": 46
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-06:none",
+      "bars": 141,
+      "opportunities": 0,
+      "entries": 0,
+      "exits": 0,
+      "primary": {
+        "funding_mixed": 60,
+        "no_setup_price": 34,
+        "carry_sign_reject": 46,
+        "boundary_or_inactive": 1
+      },
+      "flags": {},
+      "feature_reasons": {
+        "funding_mixed": 60,
+        "no_setup_price": 35,
+        "carry_sign_reject": 46
+      }
+    },
+    {
+      "kind": "V5_AUDIT",
+      "key": "2025-06:short",
+      "bars": 39,
+      "opportunities": 16,
+      "entries": 7,
+      "exits": 8,
+      "primary": {
+        "oi_nonrising": 9,
+        "allowed": 7,
+        "in_position_or_pending": 23
+      },
+      "flags": {
+        "oi_nonrising": 9
+      },
+      "feature_reasons": {
+        "setup": 39
+      }
+    }
+  ],
+  "totals": {
+    "bars": 1086,
+    "entries": 29,
+    "exits": 29,
+    "opportunities": 93
+  },
+  "primary": {
+    "oi_initialization": 5,
+    "no_setup_price": 260,
+    "carry_sign_reject": 303,
+    "oi_nonrising": 59,
+    "allowed": 29,
+    "in_position_or_pending": 169,
+    "funding_mixed": 259,
+    "daily_limit": 1,
+    "boundary_or_inactive": 1
+  },
+  "feature_reasons": {
+    "setup": 263,
+    "no_setup_price": 261,
+    "carry_sign_reject": 303,
+    "funding_mixed": 259
+  },
+  "flags": {
+    "oi_initialization": 5,
+    "oi_nonrising": 59
+  },
+  "publications": 543,
+  "hashes_verified": 543,
+  "publication_reasons": {
+    "funding_state": 379,
+    "funding_mixed": 164
+  },
+  "publication_manifest_sha256": "f9f35d895a9f544b0dfc62b3820c3fa0923f300404905e6bff02f933589714f8",
+  "plans_checked": 29,
+  "closes_checked": 29,
+  "close_reasons": {
+    "funding_adverse": 21,
+    "trend_adverse": 7,
+    "stop-loss": 1
+  },
+  "post_audit_forced_closes": 0,
+  "evidence_files": [
+    "ResearchV5FT_OI_C3V_ENTRY_EVIDENCE_01.json"
+  ],
+  "samples": [
+    {
+      "kind": "V5_FUNDING_PUBLICATION",
+      "time": 1735704000000,
+      "valid": true,
+      "reason": "funding_state",
+      "rows": [
+        [
+          1735632000000,
+          1735632060000,
+          0.0001
+        ],
+        [
+          1735660800000,
+          1735660860000,
+          0.0001
+        ],
+        [
+          1735689600015,
+          1735689660000,
+          0.0001
+        ]
+      ],
+      "sha256": "e51abd30fa7f60a94eb703fed04c6d6609827880e5b93b515c0e2812c1fc8701",
+      "settled_at": 1735689600015,
+      "direction": -1,
+      "available_at": 1735689660000,
+      "rate_decimal": 0.0001
+    },
+    {
+      "kind": "V5_FUNDING_PUBLICATION",
+      "time": 1743508800000,
+      "valid": true,
+      "reason": "funding_state",
+      "rows": [
+        [
+          1743436800000,
+          1743436860000,
+          0.00001845
+        ],
+        [
+          1743465600000,
+          1743465660000,
+          0.00003961
+        ],
+        [
+          1743494400001,
+          1743494460000,
+          0.00002889
+        ]
+      ],
+      "sha256": "7766fa777f7711a0edfe5229f4c615a337a41188edea19cf49d992f673343db6",
+      "settled_at": 1743494400001,
+      "direction": -1,
+      "available_at": 1743494460000,
+      "rate_decimal": 0.00002889
+    },
+    {
+      "kind": "V5_FUNDING_PUBLICATION",
+      "time": 1751313600000,
+      "valid": true,
+      "reason": "funding_state",
+      "rows": [
+        [
+          1751241600000,
+          1751241660000,
+          0.00001084
+        ],
+        [
+          1751270400005,
+          1751270460000,
+          0.00002959
+        ],
+        [
+          1751299200002,
+          1751299260000,
+          0.00004923
+        ]
+      ],
+      "sha256": "2d236ba7ff7d1858a4a48d863531d6cff8d7849e4c5b7654f6f353f2c297dcaf",
+      "settled_at": 1751299200002,
+      "direction": -1,
+      "available_at": 1751299260000,
+      "rate_decimal": 0.00004923
+    }
+  ],
+  "limits": "All logs/publication hashes/entry plans/closes checked; every entry preserved in40entry chunks. Other publication windows remain in original logs. Price values checked from contexts; frozen source/checks certify window construction. Financial/order/equity reconciliation is separate captured accounting analysis.",
+  "audited_at": "2026-10-21T01:32:22.599Z"
+}

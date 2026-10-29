@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from jesse.services.market_data_config import validate_session_options
 
 
 fastapi_app = FastAPI()
@@ -51,6 +52,16 @@ class BacktestRequestJson(BaseModel):
 
         if start >= finish:
             raise ValueError('start_date must be earlier than finish_date')
+        saved_config = self.state.get('form', {}).get('config', {})
+        for name in ('funding', 'open_interest'):
+            # The bundled Dashboard may not yet forward optional fields when
+            # formatting engine config. Preserve the explicit saved selection.
+            if name not in self.config and name in saved_config:
+                self.config[name] = saved_config[name]
+        validate_session_options(self.config, {
+            'exchange': self.exchange, 'routes': self.routes,
+            'start_date': self.start_date, 'finish_date': self.finish_date,
+        })
         return self
 
 
@@ -101,6 +112,21 @@ class LiveRequestJson(BaseModel):
     data_routes: List[Dict[str, str]]
     debug_mode: bool
     paper_mode: bool
+
+    @model_validator(mode='after')
+    def validate_optional_live_inputs(self):
+        options = [self.config.get(name) for name in ('funding', 'open_interest')]
+        if any(value is not None and (not isinstance(value, dict) or value.get('mode') != 'disabled')
+               for value in options):
+            # Validate before spawning a worker: an unsupported paper feed must
+            # not leave a session stuck in "starting" without an initialized adapter.
+            try:
+                from jesse_live.funding import validate_live_features
+            except ImportError as exc:
+                raise ValueError('Native funding/OI live inputs require the OSS live adapter') from exc
+            validate_live_features(self.config, 'papertrade' if self.paper_mode else 'livetrade',
+                                   self.exchange, self.routes)
+        return self
 
 
 class LiveCancelRequestJson(BaseModel):

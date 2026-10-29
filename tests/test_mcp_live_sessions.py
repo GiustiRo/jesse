@@ -458,6 +458,7 @@ def test_a_paper_draft_gets_the_dashboard_default_for_its_exchange_and_shared_se
     session_id = result['session_id']
     assert result['dashboard_url'] == f'https://dash.example/#/live/{session_id}'
     expected = {
+        'funding': {'mode': 'disabled'}, 'open_interest': {'mode': 'disabled'},
         'persistency': True, 'generate_candles_from_1m': False,
         'logging': {**LIVE_LOGGING, 'balance_update': False}, 'warm_up_candles': 240,
         'order_backup_check_seconds': 10, 'candle_backup_refresh_seconds': None,
@@ -702,6 +703,37 @@ def test_starting_a_real_draft_sends_its_key_and_the_venue_config(jesse):
     assert args[2:4] == ('Binance Spot', SPOT_KEY) and args[-1] == 'livetrade'
     assert args[5]['exchanges']['Binance Spot']['simulation_model'] == 'spot'
     assert _row(draft['session_id']).session_mode == 'livetrade'
+    _no_secrets(draft, result)
+
+
+def test_live_market_data_opt_ins_survive_the_draft_and_reach_the_engine(jesse):
+    # This is a disposable SQLite credential and a recorded worker invocation;
+    # the fixture's live_mode.run fails if anything actually executes it.
+    key_id = str(uuid.uuid4())
+    ExchangeApiKeys.create(
+        id=key_id, exchange_name='Binance Perpetual Futures', name='funding test',
+        api_key=FAKE_API_KEY, api_secret=FAKE_API_SECRET,
+        additional_fields='{}', created_at=datetime(2026, 9, 1),
+    )
+    before = _settings_json()
+    features = {'funding': {'mode': 'live'}, 'open_interest': {'mode': 'live'}}
+    draft = live_service.create_live_draft_service(
+        paper_mode=False, exchange_api_key_id=key_id, routes=json.dumps(ROUTES), config=features,
+    )
+    assert draft['status'] == 'success'
+    for name, expected in features.items():
+        assert draft['config'][name] == expected
+        assert _form(draft['session_id'])['config'][name] == expected
+
+    result = live_service.start_live_session_service(draft['session_id'])
+    assert result['status'] == 'success'
+    [(function, args)] = jesse.processes.started
+    assert function is sys.modules['jesse_live.live_mode'].run
+    assert args[2:4] == ('Binance Perpetual Futures', key_id)
+    assert args[-1] == 'livetrade'
+    for name, expected in features.items():
+        assert args[5][name] == expected
+    assert _settings_json() == before
     _no_secrets(draft, result)
 
 
