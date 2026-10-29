@@ -4,7 +4,7 @@
   permutation of the union of hours shared by every tramo, so contemporaneous cross-correlation
   survives where two tramos both have the source hour; a tramo without a bar at its source hour
   draws one of its own shocks at random. Mean 0, so nothing is predictable in the mean.
-* planted: noise + P1 (fade after a shock) on 20% of the D63 symbols only: after |z| > 2.5 the
+* planted: noise + P1 (fade after a shock) on every D63 symbol (E1; the protocol had 20%): after |z| > 2.5 the
   next 6 bars drift back by kappa * z / 6 (in z units).
 Volume, funding, eligibility, slippage tiers and tramo ends are the real ones, so the synthetic
 book trades exactly the assets and costs the real one does.
@@ -14,7 +14,10 @@ import numpy as np
 import r62_synth as s62
 import r63_eval as E6
 
-P1_SHARE, P1_SEED = 0.20, 6300
+# E1 (user, 2026-10-29): planted in every D63 symbol. With 20% the oracle basket tops out at a
+# Sharpe of ~0.4 even at kappa 1.2 (data/r63/f1_kappa_share20.json): the DSL trades the whole basket,
+# so the 80% without the edge only add costs and the 0.8 target of §6 was unreachable.
+P1_SHARE, P1_SEED = 1.0, 6300
 P1_Z, P1_BARS = 2.5, 6
 # Oracle program of §6: shock fade z 3, no filters, time exit 6 bars, both sides, maker off 0.25 life 1.
 ORACLE = {'universe': 'alts_1h', 'signal': [{'kind': 'shock', 'params': {'mode': 'fade', 'z': 3}}],

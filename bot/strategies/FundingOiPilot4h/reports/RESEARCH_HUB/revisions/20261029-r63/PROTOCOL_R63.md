@@ -178,4 +178,11 @@ Este protocolo y la partición `data/r63/partition.json` se commitean **antes de
 5. **Poder:** el SPA es conservador a propósito. El resultado negativo descarta ventajas que la calibración C2 sí detecta, no cualquier ventaja.
 
 ## 10. Enmiendas
-(ninguna todavía)
+
+### E1 (2026-10-29, en F1, decisión del usuario, antes de cualquier corrida de la fábrica)
+1. **P1 se planta en el 100% de D63, no en el 20%.**
+   - Con el 20%, el programa oráculo no pasa de un Sharpe medio de 0,40 en la canasta, aunque la ventaja por moneda sea enorme (κ = 1,2; grilla de 0,1 a 1,2 en `data/r63/f1_kappa_share20.json`).
+   - El DSL opera la canasta entera y no puede elegir monedas, así que el 80% sin ventaja solo suma costos. Con eso, el objetivo de 0,8 del §6 era inalcanzable y C2 no podía pasar.
+   - **Hallazgo declarado:** esta fábrica no puede detectar una ventaja que vive en una minoría de monedas. Solo ve ventajas amplias. El resultado de r63 no habla de ventajas concentradas.
+2. **κ:** con el 100%, la grilla original da 0,45 en κ 0,15 y 1,51 en κ 0,20. Se afina entre ambos (0,16 a 0,18, mismas semillas 6301–6306), y la regla del §6 elige **κ = 0,165**, con un Sharpe medio del oráculo de **0,77** (`data/r63/f1_kappa.json`).
+3. **C2** sigue exigiendo un finalista con `shock` fade en `alts_1h` y SPA p < 0,05 en las dos semillas plantadas.

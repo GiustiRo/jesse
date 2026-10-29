@@ -279,6 +279,8 @@ def bench(n=24):
 # F1: kappa of the planted P1 edge (§6), seeds 6301-6306, before any factory run
 # ----------------------------------------------------------------------------------------------
 KAPPA_GRID = (0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50)
+# E1: with P1 in every D63 symbol the 0.8 target falls between the first grid values 0.15 and 0.20.
+KAPPA_GRID_E1 = (0.16, 0.165, 0.17, 0.175, 0.18)   # E1: fine grid between 0.15 (0.45) and 0.20 (1.51), 100% share
 KAPPA_SEEDS = tuple(range(6301, 6307))
 _K = {}
 
@@ -298,12 +300,13 @@ def _kjob(args):
     return kappa, seed, ev.sharpe(E6.basket(per)[1]), sum(len(v) for v in tr.values())
 
 
-def kappa(workers=6):
+def kappa(workers=6, grid=KAPPA_GRID):
     import multiprocessing as mp
-    jobs = [(k, s) for k in KAPPA_GRID for s in KAPPA_SEEDS]
+    jobs = [(k, s) for k in grid for s in KAPPA_SEEDS]
     with mp.get_context('spawn').Pool(workers, initializer=_kinit) as pool:
         res = pool.map(_kjob, jobs, chunksize=1)
-    out = {}
+    prev = os.path.join(OUT, 'f1_kappa.json')
+    out = json.load(open(prev))['grid'] if os.path.exists(prev) else {}
     for k, s, sh, nt in res:
         out.setdefault(f'kappa_{k}', []).append({'seed': s, 'sharpe': sh, 'trades': nt})
     summ = {k: float(np.mean([x['sharpe'] for x in v])) for k, v in out.items()}
@@ -317,7 +320,8 @@ def kappa(workers=6):
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     if cmd == 'kappa':
-        kappa(int(sys.argv[2]) if len(sys.argv) > 2 else 6)
+        kappa(int(sys.argv[2]) if len(sys.argv) > 2 else 6,
+              KAPPA_GRID_E1 if sys.argv[3:] == ['e1'] else KAPPA_GRID)
         sys.exit(0)
     if cmd == 'partition':
         partition()
