@@ -7379,6 +7379,45 @@
     "n_fab": 1614,
     "note": "run real_f2"
    }
-  }
+  },
+  "n_eff_f2": 65.3
+ },
+ "r62_closed": {
+  "date": "2026-10-29",
+  "protocol": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r62/PROTOCOL_R62.md",
+  "candidate": "P-r55 sin cambios",
+  "n_start": 150,
+  "n_final": 155,
+  "n_ceiling": 155,
+  "n_note": "+5 finalistas de F2 entraron al embudo (§0); ninguno pasó el primer escalón (SPA)",
+  "n_fab": 1614,
+  "n_fab_ceiling": 3000,
+  "n_eff_f2": 65.3,
+  "n_regime": 38,
+  "n_tematica": 19,
+  "n_c6_alts_family": 11,
+  "sealed_2025": "sin abrir",
+  "oracle_budget": {
+   "used": 1,
+   "left": 4,
+   "note": "q4 no se consultó: ningún finalista pasó el SPA"
+  },
+  "report": "strategies/FundingOiPilot4h/reports/R62_CLOSE_20261029.md",
+  "amendments": [
+   "E1 detalles de implementación",
+   "E2 cascade con OI BTC desde 2021-01 y ETH desde 2021-12 (usuario)",
+   "E3 calibración plantada y SPA marginal vol-matched",
+   "E4 reingesta gen 0 y relleno al azar del GA",
+   "E5 guardado de series en lote float32"
+  ],
+  "results": {
+   "F0": "proxy de cascadas AUC 0,84; selftests pasan",
+   "F1": "calibración pasa: ruido SPA p 0,16-0,27 sin finalistas; plantado recupera P2 (p~0), no P1",
+   "F2": "1.614 programas; SPA cash p 0,30, marginal p 0,63; mejor Sharpe 1,53 (voljump cripto 1h); ningún finalista pasa",
+   "F3": "se corta en el SPA; sin PBO, filtro sintético ni oráculo"
+  },
+  "open": [
+   "voljump en cripto 1h: familia dominante (4/5 finalistas, rotación p 0,005) pero indistinguible del ruido tras el costo de búsqueda"
+  ]
  }
 }

@@ -1,0 +1,86 @@
+{
+  "format_version": 1,
+  "id": "20261028-r62",
+  "updated_at_utc": "2026-10-29 00:00:00 UTC",
+  "objective": "Descubridor automático con barandas (MAP-Elites + DSL acotado + proponente Claude Code) para un segundo motor no tendencial; embudo SPA/PBO/sintético/oráculo.",
+  "latest": "r62 cerrada: P-r55 sin cambios, N=155 (+5 finalistas), N_fab=1614 (N_eff 65). Calibración F1 pasa (ruido 1,4-1,6 de Sharpe, SPA p 0,16-0,27). F2: SPA cash p 0,30, marginal p 0,63; mejor 1,53 (voljump cripto 1h); ningún finalista pasa. q4 sin consultar; oráculo 1/5.",
+  "next": "r63: ver HANDOFF_R63.md (robustez operativa de P-r55, voljump en H, u otra fábrica con datos nuevos).",
+  "blockers": "Decisión del usuario sobre r63.",
+  "counts": {
+    "r62": {
+      "n_strategies": 155,
+      "n_ceiling": 155,
+      "n_regime": 38,
+      "n_tematica": 19,
+      "n_c6_alts_family": 11,
+      "n_fab": 1614,
+      "n_fab_ceiling": 3000,
+      "n_eff_f2": 65.3
+    }
+  },
+  "decisions": [
+    "2026-10-28 r62: liquidaciones con proxy gratuito (usuario); plan aprobado por el usuario.",
+    "2026-10-28 E2 (usuario): cascade con OI BTC desde 2021-01 y ETH desde 2021-12.",
+    "2026-10-28 F1: calibración pasa (C1 y C2); la fábrica se usa en F2.",
+    "2026-10-29 F2: ningún finalista pasa el SPA; F3 se corta; q4 sin consultar.",
+    "2026-10-29 el usuario aprueba el cierre."
+  ],
+  "supersedes": "20261028-r61",
+  "roadmap": [
+    {
+      "order": 0,
+      "title": "F0 fábrica, cascadas, selftests, q4",
+      "state": "completada (E1, E2)",
+      "depends": "-",
+      "gate": "PROTOCOL_R62 §6, §8"
+    },
+    {
+      "order": 1,
+      "title": "F1 calibración ruido/plantado",
+      "state": "completada, pasa",
+      "depends": "F0",
+      "gate": "PROTOCOL_R62 §7.2"
+    },
+    {
+      "order": 2,
+      "title": "F2 búsqueda real",
+      "state": "completada, 1.614 programas",
+      "depends": "F1",
+      "gate": "N_fab ≤ 3000"
+    },
+    {
+      "order": 3,
+      "title": "F3 embudo",
+      "state": "cortado en SPA (p 0,30 / 0,63)",
+      "depends": "F2",
+      "gate": "PROTOCOL_R62 §7.3"
+    }
+  ],
+  "explorations": [],
+  "documents": [
+    {
+      "label": "r62: protocolo",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r62/PROTOCOL_R62.md"
+    },
+    {
+      "label": "r62: F0",
+      "path": "strategies/FundingOiPilot4h/reports/R62_PHASE0_20261028.md"
+    },
+    {
+      "label": "r62: F1 calibración",
+      "path": "strategies/FundingOiPilot4h/reports/R62_PHASE1_20261028.md"
+    },
+    {
+      "label": "r62: F2 búsqueda real",
+      "path": "strategies/FundingOiPilot4h/reports/R62_PHASE2_20261028.md"
+    },
+    {
+      "label": "r62: cierre",
+      "path": "strategies/FundingOiPilot4h/reports/R62_CLOSE_20261029.md"
+    },
+    {
+      "label": "Handoff a r63",
+      "path": "strategies/FundingOiPilot4h/reports/RESEARCH_HUB/revisions/20261028-r62/HANDOFF_R63.md"
+    }
+  ]
+}
